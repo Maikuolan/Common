@@ -11,9 +11,17 @@
         "php": ">=5.4.0",
         "ext-pcre": "*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8 || ^6.5"
+    },
     "autoload": {
         "psr-4": {
             "Maikuolan\\Common\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Maikuolan\\Common\\Tests\\": "tests/"
         }
     }
 }

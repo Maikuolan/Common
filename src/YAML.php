@@ -38,7 +38,7 @@ class YAML
      */
     public function __construct($In = '')
     {
-        if ($In) {
+        if (isset($In)) {
             $this->process($In, $this->Data);
         }
     }

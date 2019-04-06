@@ -7,7 +7,14 @@ Versioning guidelines for SemVer can be found at: https://semver.org/
 
 === Changes made since last versioned release ===
 
-(none)
+- [2019.03.26; Maikuolan]: Added a new class to the repository, "Complex string
+  handler".
+
+- [2019.03.30; peter279k]: Added support for unit testing and added some tests
+  for the L10N and YAML classes.
+
+- [2019.04.02; Maikuolan]: Added a new class to the repository, "A simple,
+  unified cache handler".
 
 === Version/Release 1.0.0 ===
 FIRST TAGGED RELEASE.

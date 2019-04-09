@@ -8,6 +8,8 @@ The common classes package is intended to provide some of the classes that I ori
 All classes in the common classes package use the namespace `Maikuolan\Common`.
 
 The common classes package currently contains the following classes:
+- **Cache**: A simple, unified cache handler used by CIDRAM and phpMussel for their caching needs. Currently, it supports APCu, Memcached, Redis, PDO, and flatfile caching.
+- **ComplexStringHandler**: The complex string handler class provides an easy way to iterate over the parts of a given string, identified by a given pattern, in order to execute a given closure to those parts of the given string, or to the glue that separates those parts.
 - **L10N**: Used by CIDRAM and phpMussel to handle L10N data, the L10N class reads in an array of L10N strings and provides some safe and simple methods for manipulating and returning those strings when needed, and for handling cardinal plurals, where integers and fractions are concerned alike, based upon the pluralisation rules specified by the L10N from a range of various pluralisation rules available, to be able to suit the needs of most known languages.
 - **YAML**: Used by CIDRAM and phpMussel to handle YAML data, the YAML class is a simple YAML handler intended to adequately serve the needs of the packages and projects where it is implemented. Note however, that isn't a complete YAML solution, instead supporting the YAML specification only to the bare minimum required by those packages and projects known to implement it, and I therefore can't guarantee that it'll necessarily be an ideal solution for other packages and projects, whose exact requirements I mightn't be familiar with.
 
@@ -28,8 +30,10 @@ After you've downloaded the package, or any needed classes, [PSR-4](https://www.
 
 
 ### How to use:
-
-- to do -
+- *[Documentation for the "Cache" class](https://github.com/Maikuolan/Common/blob/master/_docs/Cache.md)*.
+- *[Documentation for the "ComplexStringHandler" class](https://github.com/Maikuolan/Common/blob/master/_docs/ComplexStringHandler.md)*.
+- *[Documentation for the "L10N" class](https://github.com/Maikuolan/Common/blob/master/_docs/L10N.md)*.
+- *[Documentation for the "YAML" class](https://github.com/Maikuolan/Common/blob/master/_docs/YAML.md)*.
 
 ---
 
@@ -45,4 +49,4 @@ Please use the issues page of this repository.
 ---
 
 
-Last Updated: 28 February 2019 (2019.02.28).
+Last Updated: 8 April 2019 (2019.04.08).

@@ -261,6 +261,8 @@ class YAML
                 $Out .= 'true';
             } elseif ($Value === false) {
                 $Out .= 'false';
+            } elseif (preg_match('~[^\t\n\r\x20-\x7e\xa0-\xff]~', $Value)) {
+                $Out .= '0x' . strtolower(bin2hex($Value));
             } elseif (strpos($Value, "\n") !== false) {
                 $Value = str_replace("\n", "\n" . $ThisDepth . ' ', $Value);
                 $Out .= "|\n" . $ThisDepth . ' ' . $Value;

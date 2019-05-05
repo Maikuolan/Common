@@ -1,4 +1,4 @@
-[![PHP >= 5.4.0](https://img.shields.io/badge/PHP-%3E%3D%205.4.0-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
+[![PHP >= 7.2.0](https://img.shields.io/badge/PHP-%3E%3D%205.4.0-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 ## Common Classes Package.
@@ -31,10 +31,10 @@ After you've downloaded the package, or any needed classes, [PSR-4](https://www.
 
 
 ### How to use:
-- *[Documentation for the "Cache" class](https://github.com/Maikuolan/Common/blob/master/_docs/Cache.md)*.
-- *[Documentation for the "ComplexStringHandler" class](https://github.com/Maikuolan/Common/blob/master/_docs/ComplexStringHandler.md)*.
-- *[Documentation for the "L10N" class](https://github.com/Maikuolan/Common/blob/master/_docs/L10N.md)*.
-- *[Documentation for the "YAML" class](https://github.com/Maikuolan/Common/blob/master/_docs/YAML.md)*.
+- *[Documentation for the "Cache" class](https://github.com/Maikuolan/Common/blob/v2/_docs/Cache.md)*.
+- *[Documentation for the "ComplexStringHandler" class](https://github.com/Maikuolan/Common/blob/v2/_docs/ComplexStringHandler.md)*.
+- *[Documentation for the "L10N" class](https://github.com/Maikuolan/Common/blob/v2/_docs/L10N.md)*.
+- *[Documentation for the "YAML" class](https://github.com/Maikuolan/Common/blob/v2/_docs/YAML.md)*.
 
 ---
 
@@ -42,7 +42,7 @@ After you've downloaded the package, or any needed classes, [PSR-4](https://www.
 ### Other information:
 
 #### Licensing:
-Provided using the [GNU General Public License version 2.0](https://github.com/CIDRAM/Aggregator/blob/master/LICENSE.txt) (GPLv2).
+Provided using the [GNU General Public License version 2.0](https://github.com/Maikuolan/Common/blob/v1/LICENSE.txt) (GPLv2).
 
 #### For support:
 Please use the issues page of this repository.
@@ -50,4 +50,4 @@ Please use the issues page of this repository.
 ---
 
 
-Last Updated: 29 April 2019 (2019.04.29).
+Last Updated: 5 May 2019 (2019.05.05).

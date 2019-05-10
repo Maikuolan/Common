@@ -7,7 +7,8 @@ Versioning guidelines for SemVer can be found at: https://semver.org/
 
 === Changes made since last versioned release ===
 
-(none)
+- [2019.05.10; Maikuolan]: Fixed some wrong PHPDoc declarations and slightly
+  refactored. Changed the names of some constants to better conform with PSR-1.
 
 === Version/Release 1.1.0 ===
 MINOR RELEASE.

@@ -39,7 +39,7 @@ Example mixed multi-dimensional array:
 Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e2068657829
 Multi-line example: |
  h e l l o - w o r l d
- :_   _      _ _         _    _            _     _ 
+ :_   _      _ _         _    _            _     _
  | | | |    | | |       | |  | |          | |   | |
  | |_| | ___| | | ___   | |  | | ___  _ __| | __| |
  |  _  |/ _ \ | |/ _ \  | |/\| |/ _ \| '__| |/ _` |
@@ -214,7 +214,7 @@ pqr: 6
 9: 0
 boolVal: false
 boolVal2: true
-multidimensional array: 
+multidimensional array:
  hello: "world"
  hello2: "world2"
 hello3: "world3"
@@ -235,7 +235,7 @@ pqr: 6
 9: 0
 boolVal: false
 boolVal2: true
-multidimensional array: 
+multidimensional array:
  hello: "world"
  hello2: "world2"
 hello3: "world3"
@@ -317,4 +317,4 @@ Also, when reconstructing YAML data, string values are always quoted, whereas ke
 ---
 
 
-Last Updated: 15 April 2019 (2019.04.15).
+Last Updated: 11 May 2019 (2019.05.11).

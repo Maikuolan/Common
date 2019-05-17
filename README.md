@@ -34,6 +34,7 @@ After you've downloaded the package, or any needed classes, [PSR-4](https://www.
 ### How to use:
 - *[Documentation for the "Cache" class](https://github.com/Maikuolan/Common/blob/v2/_docs/Cache.md)*.
 - *[Documentation for the "ComplexStringHandler" class](https://github.com/Maikuolan/Common/blob/v2/_docs/ComplexStringHandler.md)*.
+- *[Documentation for the "Demojibakefier" class](https://github.com/Maikuolan/Common/blob/v2/_docs/Demojibakefier.md)*.
 - *[Documentation for the "L10N" class](https://github.com/Maikuolan/Common/blob/v2/_docs/L10N.md)*.
 - *[Documentation for the "YAML" class](https://github.com/Maikuolan/Common/blob/v2/_docs/YAML.md)*.
 
@@ -48,7 +49,10 @@ Provided using the [GNU General Public License version 2.0](https://github.com/M
 #### For support:
 Please use the issues page of this repository.
 
+#### For contributors:
+[\[CONTRIBUTING.md\] **Want to help?**](https://github.com/Maikuolan/Common/blob/v2/CONTRIBUTING.md)
+
 ---
 
 
-Last Updated: 5 May 2019 (2019.05.05).
+Last Updated: 11 May 2019 (2019.05.11).

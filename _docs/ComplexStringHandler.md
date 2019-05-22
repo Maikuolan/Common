@@ -83,10 +83,10 @@ public function iterateClosure(callable $Closure, bool $Glue = false);
 The recompile method returns a string created using the substrings and delimiters/glue of the previously supplied string, generally intended to be called after any necessary processing has been completed. It accepts no parameters.
 
 ```PHP
-public function recompile();
+public function recompile(): string;
 ```
 
 ---
 
 
-Last Updated: 10 April 2019 (2019.04.10).
+Last Updated: 22 May 2019 (2019.05.22).

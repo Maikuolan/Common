@@ -7,10 +7,21 @@ Versioning guidelines for SemVer can be found at: https://semver.org/
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.0.0 ===
+MAJOR RELEASE (BACKWARDS INCOMPATIBLE).
+
 - [2019.05.10; Maikuolan]: Fixed some wrong PHPDoc declarations, slightly
   refactored, and added PHP7-style type hinting and return type declarations
   for all methods across all classes (where relevant). Changed the names of
   some constants to better conform with PSR-1.
+
+- [2019.05.23; Maikuolan]: Completed writing all documentation for all classes
+  currently provided by the package.
+
+Caleb M (Maikuolan),
+May 29, 2019.
 
 === Version/Release 1.1.0 ===
 MINOR RELEASE.

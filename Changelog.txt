@@ -1,14 +1,21 @@
 Common classes package changelog.
 
-=== VERSIONING GUIDELINES ===
-The common classes package adheres to the SemVer guidelines for versioning.
+=== VERSION RELEASE GUIDELINES ===
+The common classes package adopts and adheres to SemVer (Semantic Versioning).
+For more information about SemVer, please refer to:
+- https://semver.org/
 
-Versioning guidelines for SemVer can be found at: https://semver.org/
+Detailed version release guidelines for the common classes package can be
+found at:
+- https://github.com/Maikuolan/Common/blob/v1/CONTRIBUTING.md#the-common-classes-package-code-style-guidelines
 
 === Changes made since last versioned release ===
 
 - [2019.05.29; Maikuolan]: Added some new plural integer rules to the L10N
   class, extending the number of languages it can potentially support.
+
+- [2019.06.27; Maikuolan]: Added a new class to the repository, "Number
+  Formatter".
 
 === Version/Release 1.1.1 ===
 PATCH RELEASE.

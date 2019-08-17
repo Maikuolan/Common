@@ -17,6 +17,9 @@ found at:
 - [2019.06.27; Maikuolan]: Added a new class to the repository, "Number
   Formatter".
 
+- [2019.08.17; Maikuolan]: Added the ability to chain together multiple L10N
+  objects via L10N's fallback mechanism.
+
 === Version/Release 1.1.1 ===
 PATCH RELEASE.
 

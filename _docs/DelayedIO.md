@@ -46,7 +46,7 @@ So far, so good. But, what if the elements of "$Files" isn't predictable? What i
 
 1. An element appears that corresponds to a file that doesn't exist, or which isn't readable, causing `fopen()` to raise an error, and possibly `do_something()` to raise additional errors (depending on whatever it does).
 2. Maybe the batch operation isn't really necessary for some particular file, and the file's associated data remains unchanged after being processed by `do_something()`. In this case, rewriting the file isn't necessary, so, we end up with an unnecessary IO operation (when we rewrite the file).
-3. If we process repeated elements, we could end up repeating the entire process multiple times for the same files, which isn't necessarily (more unnecessary IO operations).
+3. If we process repeated elements, we could end up needlessly repeating the entire process multiple times for the same files (more unnecessary IO operations).
 
 Problem 1 can be resolved by implementing a simple `is_file()` check and other similar safeguards:
 

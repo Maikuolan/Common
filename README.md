@@ -48,7 +48,7 @@ After you've downloaded the package, or any needed classes, [PSR-4](https://www.
 ### Other information:
 
 #### Licensing:
-Provided using the [GNU General Public License version 2.0](https://github.com/Maikuolan/Common/blob/v1/LICENSE.txt) (GPLv2).
+Provided using the [GNU General Public License version 2.0](https://github.com/Maikuolan/Common/blob/v2/LICENSE.txt) (GPLv2).
 
 #### For support:
 Please use the issues page of this repository.

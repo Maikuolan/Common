@@ -1,0 +1,28 @@
+# An example YAML file.
+
+String foo: "Bar"
+Integer foo: 1234
+Float foo: 123.4
+Example numeric array:
+ - "Bar1"
+ - "Bar2"
+ - "Bar3"
+ - "Bar4"
+Example associative array:
+ Foo1: "Bar1"
+ Foo2: "Bar2"
+ Foo3: "Bar3"
+ Foo4: "Bar4"
+Example mixed multi-dimensional array:
+ - "Bar1"
+ - "Bar2"
+ xFooX: "xBarX"
+ Some int: 4567
+ Sub array:
+  Hello: "World"
+  Sub-sub array:
+   Foobar: "Barfoo"
+Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e2068657829
+Multi-line example: |
+ h e l l o - w o r l d
+ hello-world

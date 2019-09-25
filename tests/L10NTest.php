@@ -7,150 +7,81 @@ use Maikuolan\Common\L10N;
 
 class L10NTest extends TestCase
 {
-    public function testConstructor()
+    public function testWorkingWithSingularForms()
     {
-        $data = [
-            'IntegerRule' => 'int2Type1',
+        $DataEN = [
+            'IntegerRule' => 'int2Type4',
+            'FractionRule' => 'int1',
+            'MyName' => 'Hello! My name is %s.',
+            'YourName' => 'What is your name?',
+            'DoYouSpeak' => 'Do you speak English?'
         ];
 
-        $fallback = [
-            'IntegerRule' => 'int2Type1',
+        $DataFR = [
+            'IntegerRule' => 'int2Type3',
+            'FractionRule' => 'fraction2Type1',
+            'MyName' => 'Bonjour ! Je m\'appelle %s.',
+            'YourName' => 'Quel est votre nom ?'
         ];
 
-        $l10N = new L10N($data, $fallback);
+        $L10N = new L10N($DataFR, $DataEN);
 
-        $this->assertInstanceOf('\Maikuolan\Common\L10N', $l10N);
+        $this->assertSame('Bonjour ! Je m\'appelle Mary Sue.', sprintf($L10N->getString('MyName'), 'Mary Sue'));
+        $this->assertSame('Quel est votre nom ?', $L10N->getString('YourName'));
+        $this->assertSame('Do you speak English?', $L10N->getString('DoYouSpeak'));
     }
 
-    public function pluralDataProviderWithData()
+    public function testWorkingWithPluralForms()
     {
-        return [
-            ['IntegerRule', 'int1', 'int1'],
-            ['IntegerRule', 'int2Type1', 'int2Type1'],
-            ['IntegerRule', 'int2Type2', 'int2Type2'],
-            ['IntegerRule', 'int2Type3', 'int2Type3'],
-            ['IntegerRule', 'int2Type4', 'int2Type4'],
-            ['IntegerRule', 'int3Type1', 'int3Type1'],
-            ['IntegerRule', 'int3Type2', 'int3Type2'],
-            ['IntegerRule', 'int3Type3', 'int3Type3'],
-            ['IntegerRule', 'int3Type4', 'int3Type4'],
-            ['IntegerRule', 'int3Type5', 'int3Type5'],
-            ['IntegerRule', 'int3Type6', 'int3Type6'],
-            ['IntegerRule', 'int3Type7', 'int3Type7'],
-            ['IntegerRule', 'int3Type8', 'int3Type8'],
-            ['IntegerRule', 'int3Type9', 'int3Type9'],
-            ['IntegerRule', 'int4Type1', 'int4Type1'],
-            ['IntegerRule', 'int4Type2', 'int4Type2'],
-            ['IntegerRule', 'int4Type3', 'int4Type3'],
-            ['IntegerRule', 'int4Type4', 'int4Type4'],
-            ['IntegerRule', 'int4Type5', 'int4Type5'],
-            ['IntegerRule', 'int4Type6', 'int4Type6'],
-            ['IntegerRule', 'int5Type1', 'int5Type1'],
-            ['IntegerRule', 'int6Type1', 'int6Type1'],
-            ['IntegerRule', 'int6Type2', 'int6Type2'],
-            ['FractionRule', 'fraction2Type1', 'fraction2Type1'],
-            ['FractionRule', 'fraction2Type2', 'fraction2Type2'],
-        ];
-    }
-
-    /**
-     * @dataProvider pluralDataProviderWithData
-     */
-    public function testGetPluralWithExistedDataString($number, $string, $expected)
-    {
-        $data = [
-            $number => $string,
+        $DataEN = [
+            'IntegerRule' => 'int2Type4',
+            'FractionRule' => 'int1',
+            'apples' => [
+                'There is %s apple on the tree.',
+                'There are %s apples on the tree.'
+            ],
+            'oranges' => [
+                'There is %s orange on the tree.',
+                'There are %s oranges on the tree.'
+            ],
         ];
 
-        $l10N = new L10N($data);
-
-        $this->assertSame($expected, $l10N->getPlural(1, $number));
-    }
-
-    public function pluralDataProviderWithFallback()
-    {
-        return [
-            ['IntegerRule', 'int1', 'int1'],
-            ['IntegerRule', 'int2Type1', 'int2Type1'],
-            ['IntegerRule', 'int2Type2', 'int2Type2'],
-            ['IntegerRule', 'int2Type3', 'int2Type3'],
-            ['IntegerRule', 'int2Type4', 'int2Type4'],
-            ['IntegerRule', 'int3Type1', 'int3Type1'],
-            ['IntegerRule', 'int3Type2', 'int3Type2'],
-            ['IntegerRule', 'int3Type3', 'int3Type3'],
-            ['IntegerRule', 'int3Type4', 'int3Type4'],
-            ['IntegerRule', 'int3Type5', 'int3Type5'],
-            ['IntegerRule', 'int3Type6', 'int3Type6'],
-            ['IntegerRule', 'int3Type7', 'int3Type7'],
-            ['IntegerRule', 'int3Type8', 'int3Type8'],
-            ['IntegerRule', 'int3Type9', 'int3Type9'],
-            ['IntegerRule', 'int4Type1', 'int4Type1'],
-            ['IntegerRule', 'int4Type2', 'int4Type2'],
-            ['IntegerRule', 'int4Type3', 'int4Type3'],
-            ['IntegerRule', 'int4Type4', 'int4Type4'],
-            ['IntegerRule', 'int4Type5', 'int4Type5'],
-            ['IntegerRule', 'int4Type6', 'int4Type6'],
-            ['IntegerRule', 'int5Type1', 'int5Type1'],
-            ['IntegerRule', 'int6Type1', 'int6Type1'],
-            ['IntegerRule', 'int6Type2', 'int6Type2'],
-            ['FractionRule', 'fraction2Type1', 'fraction2Type1'],
-            ['FractionRule', 'fraction2Type2', 'fraction2Type2'],
-        ];
-    }
-
-    /**
-     * @dataProvider pluralDataProviderWithFallback
-     */
-    public function testGetPluralWithExistedFallbackString($number, $string, $expected)
-    {
-        $data = [];
-
-        $fallback = [
-            $number => $string,
+        $DataRU = [
+            'IntegerRule' => 'int3Type4',
+            'FractionRule' => 'int1',
+            'apples' => [
+                'На дереве есть %s яблоко.',
+                'На дереве есть %s яблока.',
+                'На дереве есть %s яблок.'
+            ]
         ];
 
-        $l10N = new L10N($data, $fallback);
+        $L10N = new L10N($DataRU, $DataEN);
 
-        $this->assertSame($expected, $l10N->getPlural(1, $number));
-    }
-
-    public function testGetPluralWithEmptyDataAndFallback()
-    {
-        $l10N = new L10N([], []);
-
-        $this->assertSame('', $l10N->getPlural(1, 'IntegerRule'));
-    }
-
-    public function testGetStringWithExistedDataRule()
-    {
-        $rule = 'IntegerRule';
-        $string = 'int6Type1';
-
-        $data = [
-            $rule => 'int6Type1',
+        $ExpectedRU = [
+            'На дереве есть 0 яблок.',
+            'На дереве есть 1 яблоко.',
+            'На дереве есть 2 яблока.',
+            'На дереве есть 3 яблока.',
+            'На дереве есть 4 яблока.',
+            'На дереве есть 5 яблок.',
         ];
 
-        $l10N = new L10N($data);
-
-        $this->assertSame($string, $l10N->getString($rule));
-    }
-
-    public function testGetStringWithExistedFallbackRule()
-    {
-        $rule = 'IntegerRule';
-        $string = 'int6Type1';
-        $string2 = 'int6Type1';
-
-        $data = [
-            $rule => $string,
+        $ExpectedEN = [
+            'There are 0 oranges on the tree.',
+            'There is 1 orange on the tree.',
+            'There are 2 oranges on the tree.',
+            'There are 3 oranges on the tree.',
+            'There are 4 oranges on the tree.',
+            'There are 5 oranges on the tree.',
         ];
 
-        $fallback = [
-            $rule => $string2,
-        ];
+        foreach (range(0, 5) as $Number) {
+            $this->assertSame($ExpectedRU[$Number], sprintf($L10N->getPlural($Number, 'apples'), $Number));
+        }
 
-        $l10N = new L10N($data, $fallback);
-
-        $this->assertSame('', $l10N->getString('int6Type2'));
+        foreach (range(0, 5) as $Number) {
+            $this->assertSame($ExpectedEN[$Number], sprintf($L10N->getPlural($Number, 'oranges'), $Number));
+        }
     }
 }

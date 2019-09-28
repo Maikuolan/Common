@@ -1,13 +1,21 @@
-language: php
 dist: trusty
+
+language: php
+
 php:
-  - 7.2
-  - 7.3
-  - nightly
+ - '7.2'
+ - '7.3'
+ - 'nightly'
+
 matrix:
-  allow_failures:
-    - php: nightly
+ allow_failures:
+  - php: nightly
+
 install:
-  - composer install
+ - composer install
+
 script:
  - ./vendor/bin/phpunit
+
+notifications:
+ email: false

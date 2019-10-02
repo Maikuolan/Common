@@ -13,6 +13,16 @@ found at:
 
 (none)
 
+=== Version/Release 2.2.0 ===
+MINOR RELEASE.
+
+- [2019.09.25; Maikuolan]: Added a new class to the repository, "Events".
+
+- [2019.09.26; peter279k]: Added tests for the ComplexStringHandler class.
+
+Caleb M (Maikuolan),
+October 2, 2019.
+
 === Version/Release 2.1.0 ===
 MINOR RELEASE.
 

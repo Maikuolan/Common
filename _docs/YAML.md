@@ -165,7 +165,7 @@ Yes. To do this, use the reconstruct method. The reconstruct method supports onl
 public function reconstruct(array $Arr);
 ```
 
-This parameter is the array that you want converted into YAML data. The method returns a string (the YAML data). If you want to convert the the object's own self-contained, already processed YAML data, just use the object's `Data` member as the reconstruct method's parameter.
+This parameter is the array that you want converted into YAML data. The method returns a string (the YAML data). If you want to convert the object's own self-contained, already processed YAML data, just use the object's `Data` member as the reconstruct method's parameter.
 
 As an example:
 
@@ -317,4 +317,4 @@ Also, when reconstructing YAML data, string values are always quoted, whereas ke
 ---
 
 
-Last Updated: 11 May 2019 (2019.05.11).
+Last Updated: 3 October 2019 (2019.10.03).

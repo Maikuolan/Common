@@ -7,7 +7,7 @@
 
 ### Why the name?
 
-When a byte sequence doesn't conform to the expectations of a particular character encoding, and an attempt is made to render that byte sequence into readable characters using that particular character encoding, it can sometimes result in the appearance of [generic replacement characters](https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character) and "[mojibake](https://en.wikipedia.org/wiki/Mojibake)" (文字化け). 
+When a byte sequence doesn't conform to the expectations of a particular character encoding, and an attempt is made to render that byte sequence into readable characters using that particular character encoding, it can sometimes result in the appearance of [generic replacement characters](https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character) and "[mojibake](https://en.wikipedia.org/wiki/Mojibake)" (文字化け).
 
 *Wikipedia excerpt:*
 > *Mojibake* means "character transformation" in Japanese. The word is composed of 文字 (moji, IPA: [mod͡ʑi]), "character" and 化け (bake, IPA: [bäke̞], pronounced "bah-keh"), "transform".
@@ -296,4 +296,4 @@ public $Len = -1;
 ---
 
 
-Last Updated: 22 May 2019 (2019.05.22).
+Last Updated: 3 October 2019 (2019.10.03).

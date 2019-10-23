@@ -11,7 +11,7 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2019.10.23; Maikuolan]: Removed some unnecessary guard code.
 
 === Version/Release 2.2.0 ===
 MINOR RELEASE.

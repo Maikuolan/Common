@@ -11,12 +11,20 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 1.3.1 ===
+PATCH RELEASE.
+
 - [2019.10.23; Maikuolan]: Removed some unnecessary guard code.
 
 - [2019.11.04; Maikuolan]: Updated the Cache class to use REPLACE INTO instead
   of ON DUPLICATE KEY for SET_QUERY (SQLite and others don't properly support
   the latter). Added the checkTablesPDO method to try to automatically create a
   table for the Cache class instance to use when PDO is enabled.
+
+Caleb M (Maikuolan),
+November 4, 2019.
 
 === Version/Release 1.3.0 ===
 MINOR RELEASE.

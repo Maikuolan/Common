@@ -112,6 +112,7 @@ All public methods provided by Cache, along with relevant instructions, are list
 - [__construct method.](#__construct-method)
 - [__destruct method.](#__destruct-method)
 - [connect method.](#connect-method)
+- [checkTablesPDO method.](#checktablespdo-method)
 - [getEntry method.](#getentry-method)
 - [setEntry method.](#setentry-method)
 - [deleteEntry method.](#deleteentry-method)
@@ -147,6 +148,16 @@ Connects the instance to a caching mechanism per the instance configuration (exa
 ```PHP
 public function connect(): bool;
 ```
+
+#### checkTablesPDO method.
+
+Checks whether a table exists for the instance to use and automatically creates it if it doesn't yet exist. Invoked automatically by the connect method when using PDO. Only applies to PDO and should never be called when not using PDO. Doesn't accept any parameters.
+
+```PHP
+public function checkTablesPDO(): bool;
+```
+
+It should be noted that this method hasn't been extensively tested against *every* database driver available to PDO, and therefore possibly may need to be refined/refactored/etc in the future, pending further research, testing and so on.
 
 #### getEntry method.
 
@@ -250,4 +261,4 @@ public function exposeWorkingDataArray();
 ---
 
 
-Last Updated: 22 May 2019 (2019.05.22).
+Last Updated: 4 November 2019 (2019.11.04).

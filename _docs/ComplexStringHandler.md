@@ -11,6 +11,7 @@
 - [generateMarkers method.](#generatemarkers-method)
 - [iterateClosure method.](#iterateclosure-method)
 - [recompile method.](#recompile-method)
+- [__toString magic method.](#__tostring-magic-method)
 
 #### ComplexStringHandler constructor.
 
@@ -86,7 +87,15 @@ The recompile method returns a string created using the substrings and delimiter
 public function recompile(): string;
 ```
 
+#### __toString magic method.
+
+Attempting to use the object as a string should have the same effect as calling `recompile()`.
+
+```PHP
+public function __toString(): string;
+```
+
 ---
 
 
-Last Updated: 22 May 2019 (2019.05.22).
+Last Updated: 10 December 2019 (2019.12.10).

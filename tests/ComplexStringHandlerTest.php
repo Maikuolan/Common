@@ -13,7 +13,7 @@ class ComplexStringHandlerTest extends TestCase
         $ThePattern = '~(\D+)~';
 
         $ComplexStringHandler = new ComplexStringHandler($TheString, $ThePattern, function ($Data) {
-            return $Data === '' ? '' : ' "' . (((int)$Data + 1)) . '" ';
+            return ($Data === '' || $Data === false) ? '' : ' "' . (((int)$Data + 1)) . '" ';
         });
 
         $this->assertInstanceOf(ComplexStringHandler::class, $ComplexStringHandler);
@@ -25,7 +25,7 @@ class ComplexStringHandlerTest extends TestCase
         $ThePattern = '~(\D+)~';
 
         $ComplexStringHandler = new ComplexStringHandler($TheString, $ThePattern, function ($Data) {
-            return $Data === '' ? '' : ' "' . (((int)$Data + 1)) . '" ';
+            return ($Data === '' || $Data === false) ? '' : ' "' . (((int)$Data + 1)) . '" ';
         });
         $ComplexStringHandler->iterateClosure(function ($Data) {
             return '(' . $Data . ')';
@@ -40,7 +40,7 @@ class ComplexStringHandlerTest extends TestCase
         $ThePattern = '~(\D+)~';
 
         $ComplexStringHandler = new ComplexStringHandler($TheString, $ThePattern, function ($Data) {
-            return $Data === '' ? '' : ' "' . (((int)$Data + 1)) . '" ';
+            return ($Data === '' || $Data === false) ? '' : ' "' . (((int)$Data + 1)) . '" ';
         });
         $result = $ComplexStringHandler->iterateClosure(function ($Data) {
             return '(' . $Data . ')';

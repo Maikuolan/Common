@@ -58,7 +58,7 @@ class ComplexStringHandlerTest extends TestCase
         $ComplexStringHandler->Input = $TheString;
         $ComplexStringHandler->generateMarkers($ThePattern);
         $ComplexStringHandler->iterateClosure(function ($Data) {
-            return $Data === '' ? '' : ' "' . (((int)$Data + 1)) . '" ';
+            return ($Data === '' || $Data === false) ? '' : ' "' . (((int)$Data + 1)) . '" ';
         }, false);
         $ComplexStringHandler->iterateClosure(function ($Data) {
             return '(' . $Data . ')';

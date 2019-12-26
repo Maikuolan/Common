@@ -1,6 +1,6 @@
 <?php
 /**
- * Complex string handler (last modified: 2019.12.10).
+ * Complex string handler (last modified: 2019.12.26).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -108,5 +108,4 @@ class ComplexStringHandler
     {
         return $this->recompile();
     }
-
 }

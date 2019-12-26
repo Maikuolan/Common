@@ -15,6 +15,9 @@ found at:
   so that using the object as a string should now have the same effect as
   calling the recompile() method.
 
+- [2019.12.26; Maikuolan]: Added some new character sets and related options to
+  the number formatter.
+
 === Version/Release 2.2.1 ===
 PATCH RELEASE.
 

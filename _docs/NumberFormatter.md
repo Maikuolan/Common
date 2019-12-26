@@ -53,10 +53,18 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Base-12` *[†2]* | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `12`
 `Base-16` *[†2]* | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `16`
 `Mayan` *[†1] [†2]* | `Mayan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `20`
+`Japanese` *[†4]* | `Japanese` | (empty) | (n/a) | (n/a) | `・`<br />(katakana middle dot) | `10`
+`Tamil` *[†3] [†4]* | `Tamil` | (empty) | (n/a) | (n/a) | (empty) | `10`
+`Javanese` | `Javanese` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Roman` *[†3] [†4]* | `Roman` | (empty) | (n/a) | (n/a) | (empty) | `10`
 
 *[†1]: Not actually "commonly used" at all, seeing as it [hasn't actually been actively used since the 17th century](https://en.wikipedia.org/wiki/Maya_script), so, unlikely to be practical, but included anyway as a means of demonstratrating some of what the class can do (think of it as an "easter egg").*
 
 *[†2]: The class fully supports fractions, including the ability to convert between arbitrary bases for both decimals and fractions alike, and including for numeral systems, that the class supports, that mightn't necessarily themselves support fractions natively, or in the contexts where those numeral systems would normally be used. It's not my intention to imply that they should. However, the support already exists, removing it for specific numeral systems would require additional code complexity, and doing so would be generally pointless, I think. Alternatively, any users concerned about this can easily just omit the `$Decimals` parameter when calling `format()` to avoid fractions.*
+
+*[†3]: Fractions not supported in this context, either because fractions don't make sense in the context of the conversion set used, or because supporting fractions in this context would significantly increase complexity.
+
+*[†4]: The conversion set used has a range limit (i.e., numbers outside the range limit can't be rendered or accurately represented).
 
 *(n/a): Means "not applicable".*
 
@@ -105,7 +113,11 @@ $Formats = [
     'Thai-2',
     'Base-12',
     'Base-16',
-    'Mayan'
+    'Mayan',
+    'Japanese',
+    'Tamil',
+    'Javanese',
+    'Roman'
 ];
 
 echo "Format | `\$Obj->format('1234567.89', 2)` | `\$Obj->format('10203040.50607080', 5)`\n---|---|---\n";
@@ -147,6 +159,10 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `Base-12` | `4b6547.a6` | `3500654.60728`
 `Base-16` | `12d687.e2` | `9bafa0.80971`
 `Mayan` | `𝋧𝋮𝋦𝋨𝋧.𝋱𝋨` | `𝋣𝋣𝋯𝋧𝋬𝋠.𝋪𝋡𝋢𝋡𝋤`
+`Japanese` | `百万二十万三万四千五百六十七・八分九厘` | `千万二十万三千四十・五分六毛七忽`
+`Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰`
+`Javanese` | `꧑꧒꧓꧔꧕꧖꧗.꧘꧙` | `꧑꧐꧒꧐꧓꧐꧔꧐.꧕꧐꧖꧐꧗`
+`Roman` | `DLXVII` | `MMMXL`
 
 #### ConversionSet member.
 
@@ -174,6 +190,10 @@ Value | Description
 `Thai` | Thai numerals.
 `Lao` | Lao numerals.
 `Mayan` | Mayan numerals.
+`Japanese` | Japanese numerals. *(Range limit: 10<sup>^-11</sup>+1 ~ 10<sup>^24</sup>-1).*
+`Tamil` | Tamil numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^24</sup>-1).*
+`Javanese` | Javanese numerals.
+`Roman` | Roman numerals. *(Fractions not supported. Range limit: 1 ~ 3999).*
 
 (If needed, the class can easily be extended to add support for additional conversion sets).
 
@@ -452,4 +472,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 27 June 2019 (2019.06.27).
+Last Updated: 26 December 2019 (2019.12.26).

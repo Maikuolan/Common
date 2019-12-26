@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2019.06.27).
+ * Number formatter (last modified: 2019.12.26).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -234,7 +234,151 @@ class NumberFormatter
         'g' => '𝋰',
         'h' => '𝋱',
         'i' => '𝋲',
-        'j' => '𝋳',
+        'j' => '𝋳'
+    ];
+
+    /** Conversion set for Japanese numerals. */
+    private $Japanese = [
+        '0*' => '',
+        '1' => '',
+        '2' => '二',
+        '3' => '三',
+        '4' => '四',
+        '5' => '五',
+        '6' => '六',
+        '7' => '七',
+        '8' => '八',
+        '9' => '九',
+        '^0*1' => '一',
+        '^1' => '十',
+        '^2' => '百',
+        '^3' => '千',
+        '^4' => '万',
+        '^5' => '十万',
+        '^6' => '百万',
+        '^7' => '千万',
+        '^8' => '億',
+        '^9' => '十億',
+        '^10' => '百億',
+        '^11' => '千億',
+        '^12' => '兆',
+        '^13' => '十兆',
+        '^14' => '百兆',
+        '^15' => '千兆',
+        '^16' => '京',
+        '^17' => '十京',
+        '^18' => '百京',
+        '^19' => '千京',
+        '^20' => '垓',
+        '^21' => '十垓',
+        '^22' => '百垓',
+        '^23' => '千垓',
+        '^-1' => '分',
+        '^-2' => '厘',
+        '^-3' => '毛',
+        '^-4' => '糸',
+        '^-5' => '忽',
+        '^-6' => '微',
+        '^-7' => '繊',
+        '^-8' => '沙',
+        '^-9' => '塵',
+        '^-10' => '埃'
+    ];
+
+    /** Conversion set for Tamil numerals. */
+    private $Tamil = [
+        '0*' => '',
+        '1' => '',
+        '2' => '௨',
+        '3' => '௩',
+        '4' => '௪',
+        '5' => '௫',
+        '6' => '௬',
+        '7' => '௭',
+        '8' => '௮',
+        '9' => '௯',
+        '^0*1' => '௧',
+        '^1' => '௰',
+        '^2' => '௱',
+        '^3' => '௲',
+        '^4' => '௰௲',
+        '^5' => '௱௲',
+        '^6' => '௲௲',
+        '^7' => '௰௲௲',
+        '^8' => '௱௲௲',
+        '^9' => '௲௲௲',
+        '^10' => '௰௲௲௲',
+        '^11' => '௱௲௲௲',
+        '^12' => '௲௲௲௲',
+        '^13' => '௰௲௲௲௲',
+        '^14' => '௱௲௲௲௲',
+        '^15' => '௲௲௲௲௲',
+        '^16' => '௰௲௲௲௲௲',
+        '^17' => '௱௲௲௲௲௲',
+        '^18' => '௲௲௲௲௲௲',
+        '^19' => '௰௲௲௲௲௲௲',
+        '^20' => '௱௲௲௲௲௲௲',
+        '^21' => '௲௲௲௲௲௲௲',
+        '^22' => '௰௲௲௲௲௲௲௲',
+        '^23' => '௱௲௲௲௲௲௲௲'
+    ];
+
+    /** Conversion set for Javanese numerals. */
+    private $Javanese = [
+        '0' => '꧐',
+        '1' => '꧑',
+        '2' => '꧒',
+        '3' => '꧓',
+        '4' => '꧔',
+        '5' => '꧕',
+        '6' => '꧖',
+        '7' => '꧗',
+        '8' => '꧘',
+        '9' => '꧙'
+    ];
+
+    /** Conversion set for Roman numerals. */
+    private $Roman = [
+        '0' => '',
+        '1' => '',
+        '2' => '',
+        '3' => '',
+        '4' => '',
+        '5' => '',
+        '6' => '',
+        '7' => '',
+        '8' => '',
+        '9' => '',
+        '^0*1' => 'I',
+        '^0*2' => 'II',
+        '^0*3' => 'III',
+        '^0*4' => 'IV',
+        '^0*5' => 'V',
+        '^0*6' => 'VI',
+        '^0*7' => 'VII',
+        '^0*8' => 'VIII',
+        '^0*9' => 'IX',
+        '^1*1' => 'X',
+        '^1*2' => 'XX',
+        '^1*3' => 'XXX',
+        '^1*4' => 'XL',
+        '^1*5' => 'L',
+        '^1*6' => 'LX',
+        '^1*7' => 'LXX',
+        '^1*8' => 'LXXX',
+        '^1*9' => 'XC',
+        '^2*1' => 'C',
+        '^2*2' => 'CC',
+        '^2*3' => 'CCC',
+        '^2*4' => 'CD',
+        '^2*5' => 'D',
+        '^2*6' => 'DC',
+        '^2*7' => 'DCC',
+        '^2*8' => 'DCCC',
+        '^2*9' => 'CM',
+        '^3*1' => 'M',
+        '^3*2' => 'MM',
+        '^3*3' => 'MMM',
     ];
 
     /**
@@ -385,6 +529,29 @@ class NumberFormatter
             $this->Base = 20;
             return;
         }
+        if ($Format === 'Japanese') {
+            $this->ConversionSet = 'Japanese';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '・';
+            return;
+        }
+        if ($Format === 'Tamil') {
+            $this->ConversionSet = 'Tamil';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '';
+            return;
+        }
+        if ($Format === 'Javanese') {
+            $this->ConversionSet = 'Javanese';
+            $this->GroupSeparator = '';
+            return;
+        }
+        if ($Format === 'Roman') {
+            $this->ConversionSet = 'Roman';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '';
+            return;
+        }
     }
 
     /**
@@ -425,23 +592,44 @@ class NumberFormatter
             $Number = base_convert($Number, 10, $this->Base);
         }
         $DecPos = strlen($Number);
-        for ($Formatted = '', $ThouPos = $this->GroupOffset, $Pos = $DecPos - 1; $Pos > -1; $Pos--) {
+        for ($Unit = 0, $Formatted = '', $ThouPos = $this->GroupOffset, $Pos = $DecPos - 1; $Pos > -1; $Pos--, $Unit++) {
             if ($ThouPos >= $this->GroupSize) {
                 $ThouPos = 1;
                 $Formatted = $this->GroupSeparator . $Formatted;
             } else {
                 $ThouPos++;
             }
-            $ThisChar = substr($Number, $Pos, 1);
-            $Formatted = isset($CSet[$ThisChar]) ? $CSet[$ThisChar] . $Formatted : $ThisChar . $Formatted;
+            $Key = substr($Number, $Pos, 1);
+            if (isset($CSet[$Key . '*'])) {
+                $Formatted = $CSet[$Key . '*'] . $Formatted;
+                continue;
+            }
+            $Add = isset($CSet[$Key]) ? $CSet[$Key] : $Key;
+            if (isset($CSet['^' . $Unit . '*' . $Key])) {
+                $Add .= $CSet['^' . $Unit . '*' . $Key];
+            } elseif (isset($CSet['^' . $Unit])) {
+                $Add .= $CSet['^' . $Unit];
+            }
+            $Formatted = $Add . $Formatted;
         }
         if ($Decimals && $this->DecimalSeparator) {
             $Formatted .= $this->DecimalSeparator;
             for ($Len = strlen($Fraction), $Pos = 0; $Pos < $Len; $Pos++) {
-                $Formatted .= isset($CSet[$Fraction[$Pos]]) ? $CSet[$Fraction[$Pos]] : $Fraction[$Pos];
+                $Key = substr($Fraction, $Pos, 1);
+                if (isset($CSet[$Key . '*'])) {
+                    $Formatted .= $CSet[$Key . '*'];
+                    continue;
+                }
+                $Add = isset($CSet[$Key]) ? $CSet[$Key] : $Key;
+                $NegUnit = ($Pos * -1) - 1;
+                if (isset($CSet['^' . $NegUnit . '*' . $Key])) {
+                    $Add .= $CSet['^' . $NegUnit . '*' . $Key];
+                } elseif (isset($CSet['^' . $NegUnit])) {
+                    $Add .= $CSet['^' . $NegUnit];
+                }
+                $Formatted .= $Add;
             }
         }
         return $Formatted;
     }
-
 }

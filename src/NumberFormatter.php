@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2019.12.26).
+ * Number formatter (last modified: 2019.12.27).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -378,7 +378,35 @@ class NumberFormatter
         '^2*9' => 'CM',
         '^3*1' => 'M',
         '^3*2' => 'MM',
-        '^3*3' => 'MMM',
+        '^3*3' => 'MMM'
+    ];
+
+    /** Conversion set for Odia numerals. */
+    private $Odia = [
+        '0' => '୦',
+        '1' => '୧',
+        '2' => '୨',
+        '3' => '୩',
+        '4' => '୪',
+        '5' => '୫',
+        '6' => '୬',
+        '7' => '୭',
+        '8' => '୮',
+        '9' => '୯'
+    ];
+
+    /** Conversion set for Tibetan numerals. */
+    private $Tibetan = [
+        '0' => '༠',
+        '1' => '༡',
+        '2' => '༢',
+        '3' => '༣',
+        '4' => '༤',
+        '5' => '༥',
+        '6' => '༦',
+        '7' => '༧',
+        '8' => '༨',
+        '9' => '༩'
     ];
 
     /**
@@ -535,21 +563,15 @@ class NumberFormatter
             $this->DecimalSeparator = '・';
             return;
         }
-        if ($Format === 'Tamil') {
-            $this->ConversionSet = 'Tamil';
+        if ($Format === 'Tamil' || $Format === 'Roman') {
+            $this->ConversionSet = $Format;
             $this->GroupSeparator = '';
             $this->DecimalSeparator = '';
             return;
         }
-        if ($Format === 'Javanese') {
-            $this->ConversionSet = 'Javanese';
+        if ($Format === 'Javanese' || $Format === 'Odia' || $Format === 'Tibetan') {
+            $this->ConversionSet = $Format;
             $this->GroupSeparator = '';
-            return;
-        }
-        if ($Format === 'Roman') {
-            $this->ConversionSet = 'Roman';
-            $this->GroupSeparator = '';
-            $this->DecimalSeparator = '';
             return;
         }
     }
@@ -631,5 +653,20 @@ class NumberFormatter
             }
         }
         return $Formatted;
+    }
+
+    /**
+     * Gets the specified conversion set and returns it as a CSV string.
+     *
+     * @param string $Set The specified conversion set.
+     * @return string A CSV string.
+     */
+    public function getSetCSV($Set = '')
+    {
+        if (!$Set || !isset($this->$Set)) {
+            $Set = $this->ConversionSet;
+        }
+        $CSet = $this->$Set;
+        return "'" . implode("','", $CSet) . "'";
     }
 }

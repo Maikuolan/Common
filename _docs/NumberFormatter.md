@@ -9,6 +9,7 @@
 
 - [NumberFormatter constructor.](#numberformatter-constructor)
 - [format method.](#format-method)
+- [getSetCSV method.](#getsetcsv-method)
 - [ConversionSet member.](#conversionset-member)
 - [GroupSeparator member.](#groupseparator-member)
 - [GroupSize member.](#groupsize-member)
@@ -57,14 +58,16 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Tamil` *[†3] [†4]* | `Tamil` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Javanese` | `Javanese` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Roman` *[†3] [†4]* | `Roman` | (empty) | (n/a) | (n/a) | (empty) | `10`
+`Odia` | `Odia` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Tibetan` | `Tibetan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 
 *[†1]: Not actually "commonly used" at all, seeing as it [hasn't actually been actively used since the 17th century](https://en.wikipedia.org/wiki/Maya_script), so, unlikely to be practical, but included anyway as a means of demonstratrating some of what the class can do (think of it as an "easter egg").*
 
 *[†2]: The class fully supports fractions, including the ability to convert between arbitrary bases for both decimals and fractions alike, and including for numeral systems, that the class supports, that mightn't necessarily themselves support fractions natively, or in the contexts where those numeral systems would normally be used. It's not my intention to imply that they should. However, the support already exists, removing it for specific numeral systems would require additional code complexity, and doing so would be generally pointless, I think. Alternatively, any users concerned about this can easily just omit the `$Decimals` parameter when calling `format()` to avoid fractions.*
 
-*[†3]: Fractions not supported in this context, either because fractions don't make sense in the context of the conversion set used, or because supporting fractions in this context would significantly increase complexity.
+*[†3]: Fractions not supported in this context, either because fractions don't make sense in the context of the conversion set used, or because supporting fractions in this context would significantly increase complexity.*
 
-*[†4]: The conversion set used has a range limit (i.e., numbers outside the range limit can't be rendered or accurately represented).
+*[†4]: The conversion set used has a range limit (i.e., numbers outside the range limit can't be rendered or accurately represented).*
 
 *(n/a): Means "not applicable".*
 
@@ -117,7 +120,9 @@ $Formats = [
     'Japanese',
     'Tamil',
     'Javanese',
-    'Roman'
+    'Roman',
+    'Odia',
+    'Tibetan'
 ];
 
 echo "Format | `\$Obj->format('1234567.89', 2)` | `\$Obj->format('10203040.50607080', 5)`\n---|---|---\n";
@@ -163,6 +168,30 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰`
 `Javanese` | `꧑꧒꧓꧔꧕꧖꧗.꧘꧙` | `꧑꧐꧒꧐꧓꧐꧔꧐.꧕꧐꧖꧐꧗`
 `Roman` | `DLXVII` | `MMMXL`
+`Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭`
+`Tibetan` | `༡༢༣༤༥༦༧.༨༩` | `༡༠༢༠༣༠༤༠.༥༠༦༠༧`
+
+#### getSetCSV method.
+
+Gets the specified conversion set and returns it as a CSV string. Not normally needed by the implementation, but can sometimes be useful if the implementation needs further work done on numbers outside the scope of the number formatter itself.
+
+```PHP
+$Obj = new \Maikuolan\Common\NumberFormatter('Javanese');
+echo $Obj->getSetCSV() . PHP_EOL;
+
+// or..
+echo $Obj->getSetCSV('Roman') . PHP_EOL;
+echo $Obj->getSetCSV('Persian') . PHP_EOL;
+// ..etc
+```
+
+Output:
+
+```
+'꧐','꧑','꧒','꧓','꧔','꧕','꧖','꧗','꧘','꧙'
+'','','','','','','','','','','I','II','III','IV','V','VI','VII','VIII','IX','X','XX','XXX','XL','L','LX','LXX','LXXX','XC','C','CC','CCC','CD','D','DC','DCC','DCCC','CM','M','MM','MMM'
+'۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'
+```
 
 #### ConversionSet member.
 
@@ -472,4 +501,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 26 December 2019 (2019.12.26).
+Last Updated: 27 December 2019 (2019.12.27).

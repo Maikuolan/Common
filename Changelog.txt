@@ -14,6 +14,8 @@ found at:
 - [2020.01.01; Bug-fix; Maikuolan]: The cache handler's PDO query template for
   deleting expired cache entries was malformed; Fixed.
 
+- [2020.01.24; Maikuolan]: Added a new class to the repository, "Matrix".
+
 === Version/Release 2.2.2 ===
 PATCH RELEASE.
 

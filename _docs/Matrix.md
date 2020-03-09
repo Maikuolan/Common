@@ -16,6 +16,7 @@
 - [iterateCallback method.](#iteratecallback-method)
 - [iterateCallbackGenerator method.](#iteratecallbackgenerator-method)
 - [iterateCallbackGeneratorInner method.](#iteratecallbackgeneratorinner-method)
+- [Callback functions.](#callback-functions)
 - [Examples.](#examples)
 
 #### Matrix member.
@@ -90,6 +91,40 @@ The iterateCallbackGeneratorInner method is a generator invoked by the iterateCa
 private function iterateCallbackGeneratorInner(array &$Matrix, array &$Indexes, int $Depth, string $KeyRoot = '', callable $Callback, array $Data): \Generator
 ```
 
+#### Callback functions.
+
+An iterateCallback callback function can optionally support up to eight parameters.
+
+The callback function's return value is entirely up to you. It could be the value of the current coordinate, if the intention of your callback function is to fetch the value of the current coordinate, or the return value may be omitted entirely, if your intention is to just perform some changes to its value without necessarily returning anything.
+
+These eight parameters are as follows:
+
+```PHP
+/**
+ * An example callback function.
+ *
+ * @param string $Current The value of the current coordinate.
+ * @param string $Key The key of the current coordinate.
+ * @param string $Previous The value of the previous coordinate.
+ * @param string $KeyPrevious The key of the previous coordinate.
+ * @param string $Next The value of the next coordinate.
+ * @param string $KeyNext The key of the next coordinate.
+ * @param string $Step Can be used to manipulate the vector trajectory.
+ * @param string $Variadic Optional, additional data from iterateCallback's variadic parameter.
+ */
+$Callback = function (&$Current, $Key, &$Previous, $KeyPrevious, &$Next, $KeyNext, &$Step, $Variadic) {
+    // do stuff.
+};
+```
+
+By this point in the documentation, the first six of those parameters are relatively self-explanatory. In short: Whenever iterating over any particular coordinate, as well as for the coordinate in question, it is also possible to access and manipulate the values of the immediately preceding and immediately succeeding coordinates.
+
+It should be noted that in order to actually change any coordinate values, the parameters corresponding to those values must be passed by reference (as per those denoted above). Passing by value instead of by reference will result in the failure of the callback function to affect any changes to the matrix.
+
+The seventh parameter (`$Step` in the example) can be used to manipulate the iteration itself, forcibly shifting the iteration process forwards, backwards, or in whatever way the implementation may need. It should be used with caution, due to the risk of breaking the iteration process entirely or creating unexpected results.
+
+The eighth parameter (`$Variadic` in the example) only needs be to declared if you plan to pass additional parameters to iterateCallback, and will be populated by those additional parameters.
+
 #### Examples.
 
 An example for generating a simple two-dimensional matrix, whereby each vector has a magnitude of three, and applying a simple callback function to it:
@@ -146,6 +181,8 @@ Because that matrix has exactly two dimensions, its values could be described in
 The "dimensions", in this example, could be described as the columns and rows of the table, or as "up" and "down", with each individual cell in the table described as a "coordinate". Each dimension ("up" or "down"), in combination with the specified "magnitude" (in this case, three) forms a "vector", which could also be regarded as the values of a particular set of coordinates (e.g.; 1, 2, 3; 4, 5, 6; 7, 8, 9; 1, 4, 7; 2, 5, 8; 3, 6, 9; etc).
 
 However, the Matrix class isn't aware of any particular notion of "rows" and "columns", of "up" and "down", of "left" and "right", of "forward" and "backward" or of anything else like that; such terms are useful as a means of describing a particular vector to a human, but for the Matrix class, which can tolerate any arbitrary number of dimensions and any arbitrary magnitude (available RAM, processor cycles, and time permitting), such words are generally meaningless, and it may be easier to simply describe vectors in terms of belonging to the first dimension, the second dimension, the third dimension and so on.
+
+You may also notice that, despite having a magnitude of three, for the coordinates to which the callback function should be applied, the example specifies `0-2,0-2`. Remember that in PHP, indexed arrays begin at 0, rather than at 1; that's why the example specifies `0-2,0-2`, rather than `1-3,1-3`. To further clarify how iterateCallback interprets coordinates: A single, complete coordinate is expressed by its exact position along each dimension, separated by commas. A range of coordinates can be expression by using a range of values instead of an exact position, separated by a hyphen. So, because the example above is a two-dimensional matrix, we need two exact positions, or two valid ranges, in order to express the coordinates we want (i.e., we might instead use `0-2,0-2,0-2` if it were a three-dimensional matrix, or `0-2,0-2,0-2,0-2` if it were a four-dimensional matrix and so on).
 
 ---
 

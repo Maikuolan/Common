@@ -11,10 +11,20 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.3.0 ===
+MINOR RELEASE.
+
 - [2020.01.01; Bug-fix; Maikuolan]: The cache handler's PDO query template for
   deleting expired cache entries was malformed; Fixed.
 
 - [2020.01.24; Maikuolan]: Added a new class to the repository, "Matrix".
+
+- [2020.03.09; Maikuolan]: Updated the matrix handler's documentation.
+
+Caleb M (Maikuolan),
+March 9, 2020.
 
 === Version/Release 2.2.2 ===
 PATCH RELEASE.

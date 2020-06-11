@@ -1,6 +1,6 @@
 <?php
 /**
- * Events orchestrator (last modified: 2019.12.26).
+ * Events orchestrator (last modified: 2020.06.11).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -17,10 +17,14 @@ namespace Maikuolan\Common;
 
 class Events
 {
-    /** Event handlers. */
+    /**
+     * @var array Event handlers.
+     */
     private $Handlers = [];
 
-    /** The status of various events and their handlers. */
+    /**
+     * @var array The status of various events and their handlers.
+     */
     private $Status = [];
 
     /**

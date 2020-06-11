@@ -11,7 +11,7 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2020.06.11; Maikuolan]: Slightly improved some PHPDoc annotations.
 
 === Version/Release 2.3.0 ===
 MINOR RELEASE.

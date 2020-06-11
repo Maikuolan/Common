@@ -14,6 +14,8 @@ found at:
 - [2020.01.01; Bug-fix; Maikuolan]: The cache handler's PDO query template for
   deleting expired cache entries was malformed; Fixed.
 
+- [2020.06.11; Maikuolan]: Slightly improved some PHPDoc annotations.
+
 === Version/Release 1.3.2 ===
 PATCH RELEASE.
 

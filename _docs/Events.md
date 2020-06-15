@@ -34,7 +34,7 @@ The first parameter is the name of the event that the handler should be added to
 
 The addHandler method returns true when the handler is successfully added to the event, or false otherwise (e.g., if the event has previously been protected by addHandlerFinal).
 
-The fireEvent method enables a handler to optionally accept a single string parameter from the event that invokes it, but doesn't capture any returned data from the handler. A handler is therefore not required to return anyting, but it would nonetheless be considered good practice to return at least a simple boolean true/false for whether the handler has executed successfully, in order to facilitate any potential unit test requirements that the implementation might have. Any additional parameters accepted by the handler should contain default values and therefore be optional, as to avoid any potential complications when invoked by fireEvent.
+The fireEvent method enables a handler to optionally accept a single string parameter from the event that invokes it, but doesn't capture any returned data from the handler. A handler is therefore not required to return anything, but it would nonetheless be considered good practice to return at least a simple boolean true/false for whether the handler has executed successfully, in order to facilitate any potential unit test requirements that the implementation might have. Any additional parameters accepted by the handler should contain default values and therefore be optional, as to avoid any potential complications when invoked by fireEvent.
 
 #### addHandlerFinal method.
 
@@ -108,4 +108,4 @@ $Events->fireEvent('aHypotheticalEvent');
 ---
 
 
-Last Updated: 2 October 2019 (2019.10.02).
+Last Updated: 15 June 2020 (2020.06.15).

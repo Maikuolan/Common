@@ -97,7 +97,7 @@ class Events
             return false;
         }
         foreach ($this->Handlers[$Event] as $Handler) {
-            $Handler($Data, &$Misc);
+            $Handler($Data, $Misc);
         }
         return true;
     }

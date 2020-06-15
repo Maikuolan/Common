@@ -34,7 +34,7 @@ The first parameter is the name of the event that the handler should be added to
 
 The addHandler method returns true when the handler is successfully added to the event, or false otherwise (e.g., if the event has previously been protected by addHandlerFinal).
 
-The fireEvent method enables a handler to optionally accept a single string parameter from the event that invokes it, but doesn't capture any returned data from the handler. A handler is therefore not required to return anyting, but it would nonetheless be considered good practice to return at least a simple boolean true/false for whether the handler has executed successfully, in order to facilitate any potential unit test requirements that the implementation might have. Any additional parameters accepted by the handler should contain default values and therefore be optional, as to avoid any potential complications when invoked by fireEvent.
+The fireEvent method enables a handler to accept any number of optional parameters (the first parameter must be a string, and is passed by value; any subsequent parameters can be of any type, and are passed by reference). Handler aren't required to return anything, but may optionally return true/false to indicate whether execution was successful, which may help in facilitating any potential unit test requirements that the implementation might have.
 
 #### addHandlerFinal method.
 
@@ -56,10 +56,10 @@ public function destroyEvent(string $Event): bool
 
 #### fireEvent method.
 
-The fireEvent method is used to iteratively execute all the handlers in the event's handler stack. It accepts two parameters.
+The fireEvent method is used to iteratively execute all the handlers in the event's handler stack. It accepts one mandatory parameter, and may accept any number of optional parameters.
 
 ```PHP
-public function fireEvent(string $Event, string $Data = ''): bool
+public function fireEvent(string $Event, string $Data = '', &...$Misc): bool
 ```
 
 The first parameter is the name of the event to fire. The second parameter is an optional string to supply to each handler in the stack when executed.
@@ -108,4 +108,4 @@ $Events->fireEvent('aHypotheticalEvent');
 ---
 
 
-Last Updated: 2 October 2019 (2019.10.02).
+Last Updated: 15 June 2020 (2020.06.15).

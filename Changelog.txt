@@ -11,7 +11,19 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.3.1 ===
+PATCH RELEASE.
+
 - [2020.06.11; Maikuolan]: Slightly improved some PHPDoc annotations.
+
+- [2020.06.15; Maikuolan]: Added the ability to the events orchestrator's
+  fireEvent method to accept any number of optional parameters to be passed by
+  reference (v2 only).
+
+Caleb M (Maikuolan),
+June 15, 2020.
 
 === Version/Release 2.3.0 ===
 MINOR RELEASE.

@@ -16,6 +16,9 @@ found at:
 - [2020.07.06; Maikuolan]: Added the ability to the cache handler to enforce
   hard limits for key names.
 
+- [2020.07.14; Maikuolan]: Removed some accidental duplicates from the
+  Demojibakefier's supported() list.
+
 === Version/Release 2.3.2 ===
 PATCH RELEASE.
 

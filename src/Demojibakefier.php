@@ -1,6 +1,6 @@
 <?php
 /**
- * Demojibakefier (last modified: 2020.06.11).
+ * Demojibakefier (last modified: 2020.07.14).
  *
  * Intended to normalise the character encoding of a given string to a
  * preferred character encoding when the given string's byte sequences don't
@@ -101,10 +101,6 @@ class Demojibakefier
             'UCS-4',
             'CP437',
             'CP737',
-            'CP775',
-            'CP775',
-            'CP775',
-            'CP775',
             'CP775',
             'CP850',
             'CP852',

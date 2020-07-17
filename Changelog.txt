@@ -19,6 +19,8 @@ found at:
 - [2020.07.14; Maikuolan]: Removed some accidental duplicates from the
   Demojibakefier's supported() list.
 
+- [2020.07.17; Maikuolan]: Slightly refactored DelayedIO.
+
 === Version/Release 2.3.2 ===
 PATCH RELEASE.
 

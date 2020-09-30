@@ -13,7 +13,7 @@ found at:
 
 (none)
 
-=== Version/Release 2.3.3 ===
+=== Version/Release 1.3.4 ===
 PATCH RELEASE.
 
 - [2020.07.05; Maikuolan]: Slightly refactored the cache handler.

@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.3.3 ===
+PATCH RELEASE.
+
 - [2020.07.05; Maikuolan]: Slightly refactored the cache handler.
 
 - [2020.07.06; Maikuolan]: Added the ability to the cache handler to enforce
@@ -20,6 +25,12 @@ found at:
   Demojibakefier's supported() list.
 
 - [2020.07.17; Maikuolan]: Slightly refactored DelayedIO.
+
+- [2020.09.30; Maikuolan]: Added the ability to split strings into segments to
+  the demojibakefier.
+
+Caleb M (Maikuolan),
+September 30, 2020.
 
 === Version/Release 2.3.2 ===
 PATCH RELEASE.

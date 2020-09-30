@@ -111,6 +111,7 @@ This time, it should produce something like this (note that the output of guard 
 - [guard method.](#guard-method)
 - [Last member.](#last-member)
 - [Len member.](#len-member)
+- [Segments member.](#segments-member)
 
 #### Demojibakefier's constructor.
 
@@ -171,10 +172,6 @@ Character encoding types currently known and suported by the Demojibakefier:
 - UCS-4
 - CP437
 - CP737
-- CP775
-- CP775
-- CP775
-- CP775
 - CP775
 - CP850
 - CP852
@@ -293,7 +290,15 @@ The `Len` member is an integer populated by the `normalise` method, representing
 public $Len = -1;
 ```
 
+#### Segments member.
+
+Within a string being normalised, defines the maximum number of segments it can be split into to be normalised separately.
+
+```PHP
+public $Segments = 65536;
+```
+
 ---
 
 
-Last Updated: 3 October 2019 (2019.10.03).
+Last Updated: 30 September 2020 (2020.09.30).

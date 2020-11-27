@@ -11,7 +11,9 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2020.11.27; Maikuolan]: Ditched external test frameworks in favour of GitHub
+  Actions. Replaced existing tests. (More work needs to eventually be done
+  towards tests. This will eventually happen at some point).
 
 === Version/Release 2.3.3 ===
 PATCH RELEASE.

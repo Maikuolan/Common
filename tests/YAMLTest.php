@@ -46,6 +46,7 @@ $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'exa
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 
 if ($Expected !== $Object->Data) {
+    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
     exit(9);
 }
 
@@ -58,6 +59,7 @@ if ($ProcessResult !== true) {
 }
 
 if ($Expected !== $Object->Data) {
+    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
     exit(11);
 }
 
@@ -68,9 +70,11 @@ $NoNewLineYAML = "No new end of line";
 $Object = new \Maikuolan\Common\YAML();
 
 if ($Object->process($InvalidYAML, $Object->Data) !== false) {
+    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
     exit(12);
 }
 
 if ($Object->process($NoNewLineYAML, $Object->Data) !== false) {
+    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
     exit(13);
 }

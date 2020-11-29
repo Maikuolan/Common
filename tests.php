@@ -23,10 +23,11 @@ $ClassesDir = __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
 // Run tests.
 foreach (['ComplexStringHandler', 'L10N', 'YAML'] as $Case) {
     if (!is_readable($ClassesDir . $Case . '.php') || !is_readable($TestsDir . $Case . 'Test.php')) {
+        echo $Case . '.php is not readable.' . PHP_EOL;
         exit(1);
     }
     require $TestsDir . $Case . 'Test.php';
 }
 
-// All tests passed.
+echo 'All tests passed.' . PHP_EOL;
 exit(0);

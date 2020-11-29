@@ -27,12 +27,15 @@ $DataFR = [
 $L10N = new \Maikuolan\Common\L10N($DataFR, $DataEN);
 
 if ('Bonjour ! Je m\'appelle Mary Sue.' !== sprintf($L10N->getString('MyName'), 'Mary Sue')) {
+    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
     exit(4);
 }
 if ('Quel est votre nom ?' !== $L10N->getString('YourName')) {
+    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
     exit(5);
 }
 if ('Do you speak English?' !== $L10N->getString('DoYouSpeak')) {
+    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
     exit(6);
 }
 
@@ -81,12 +84,14 @@ $ExpectedEN = [
 
 foreach (range(0, 5) as $Number) {
     if ($ExpectedRU[$Number] !== sprintf($L10N->getPlural($Number, 'apples'), $Number)) {
+        echo 'Test failed: ' . $Case . '().' . PHP_EOL;
         exit(7);
     }
 }
 
 foreach (range(0, 5) as $Number) {
     if ($ExpectedEN[$Number] !== sprintf($L10N->getPlural($Number, 'oranges'), $Number)) {
+        echo 'Test failed: ' . $Case . '().' . PHP_EOL;
         exit(8);
     }
 }

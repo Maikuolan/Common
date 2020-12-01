@@ -60,14 +60,16 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Roman` *[†3] [†4]* | `Roman` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Odia` | `Odia` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Tibetan` | `Tibetan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Hebrew` *[†3] [†4]* | `Hebrew` | (empty) | (n/a) | (n/a) | (empty) | `10`
+`Armenian` *[†3] [†4]* | `Armenian` | (empty) | (n/a) | (n/a) | (empty) | `10`
 
 *[†1]: Not actually "commonly used" at all, seeing as it [hasn't actually been actively used since the 17th century](https://en.wikipedia.org/wiki/Maya_script), so, unlikely to be practical, but included anyway as a means of demonstratrating some of what the class can do (think of it as an "easter egg").*
 
 *[†2]: The class fully supports fractions, including the ability to convert between arbitrary bases for both decimals and fractions alike, and including for numeral systems, that the class supports, that mightn't necessarily themselves support fractions natively, or in the contexts where those numeral systems would normally be used. It's not my intention to imply that they should. However, the support already exists, removing it for specific numeral systems would require additional code complexity, and doing so would be generally pointless, I think. Alternatively, any users concerned about this can easily just omit the `$Decimals` parameter when calling `format()` to avoid fractions.*
 
-*[†3]: Fractions not supported in this context, either because fractions don't make sense in the context of the conversion set used, or because supporting fractions in this context would significantly increase complexity.*
+*[†3]: Fractions not supported in this context, either because fractions don't make sense in the context of the conversion set used, or because supporting fractions in this context would significantly increase code complexity.*
 
-*[†4]: The conversion set used has a range limit (i.e., numbers outside the range limit can't be rendered or accurately represented).*
+*[†4]: The conversion set used has a range limit (i.e., numbers outside the range limit can't be rendered or represented accurately).*
 
 *(n/a): Means "not applicable".*
 
@@ -122,54 +124,58 @@ $Formats = [
     'Javanese',
     'Roman',
     'Odia',
-    'Tibetan'
+    'Tibetan',
+    'Hebrew',
+    'Armenian'
 ];
 
-echo "Format | `\$Obj->format('1234567.89', 2)` | `\$Obj->format('10203040.50607080', 5)`\n---|---|---\n";
+echo "Format | `\$Obj->format('1234567.89', 2)` | `\$Obj->format('10203040.50607080', 5)`| `\$Obj->format('100.75', 3)`\n---|---|---|---\n";
 
 foreach ($Formats as $Format) {
     $Obj = new \Maikuolan\Common\NumberFormatter($Format);
-    echo '`' . $Format . '` | `' . $Obj->format('1234567.89', 2) . '` | `' . $Obj->format('10203040.50607080', 5) . "`\n";
+    echo '`' . $Format . '` | `' . $Obj->format('1234567.89', 2) . '` | `' . $Obj->format('10203040.50607080', 5) . '` | `' . $Obj->format('100.75', 3) . "`\n";
 }
 ```
 
 Output:
 
-Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)`
----|---|---
-`NoSep-1` | `1234567.89` | `10203040.50607`
-`NoSep-2` | `1234567,89` | `10203040,50607`
-`Latin-1` | `1,234,567.89` | `10,203,040.50607`
-`Latin-2` | `1 234 567.89` | `10 203 040.50607`
-`Latin-3` | `1.234.567,89` | `10.203.040,50607`
-`Latin-4` | `1 234 567,89` | `10 203 040,50607`
-`Latin-5` | `1,234,567·89` | `10,203,040·50607`
-`China-1` | `123,4567.89` | `1020,3040.50607`
-`India-1` | `12,34,567.89` | `1,02,03,040.50607`
-`India-2` | `१२,३४,५६७.८९` | `१,०२,०३,०४०.५०६०७`
-`India-3` | `૧૨,૩૪,૫૬૭.૮૯` | `૧,૦૨,૦૩,૦૪૦.૫૦૬૦૭`
-`India-4` | `੧੨,੩੪,੫੬੭.੮੯` | `੧,੦੨,੦੩,੦੪੦.੫੦੬੦੭`
-`India-5` | `೧೨,೩೪,೫೬೭.೮೯` | `೧,೦೨,೦೩,೦೪೦.೫೦೬೦೭`
-`India-6` | `౧౨,౩౪,౫౬౭.౮౯` | `౧,౦౨,౦౩,౦౪౦.౫౦౬౦౭`
-`Arabic-1` | `١٢٣٤٥٦٧٫٨٩` | `١٠٢٠٣٠٤٠٫٥٠٦٠٧`
-`Arabic-2` | `١٬٢٣٤٬٥٦٧٫٨٩` | `١٠٬٢٠٣٬٠٤٠٫٥٠٦٠٧`
-`Arabic-3` | `۱٬۲۳۴٬۵۶۷٫۸۹` | `۱۰٬۲۰۳٬۰۴۰٫۵۰۶۰۷`
-`Arabic-4` | `۱۲٬۳۴٬۵۶۷٫۸۹` | `۱٬۰۲٬۰۳٬۰۴۰٫۵۰۶۰۷`
-`Bengali-1` | `১২,৩৪,৫৬৭.৮৯` | `১,০২,০৩,০৪০.৫০৬০৭`
-`Burmese-1` | `၁၂၃၄၅၆၇.၈၉` | `၁၀၂၀၃၀၄၀.၅၀၆၀၇`
-`Khmer-1` | `១.២៣៤.៥៦៧,៨៩` | `១០.២០៣.០៤០,៥០៦០៧`
-`Lao-1` | `໑໒໓໔໕໖໗.໘໙` | `໑໐໒໐໓໐໔໐.໕໐໖໐໗`
-`Thai-1` | `๑,๒๓๔,๕๖๗.๘๙` | `๑๐,๒๐๓,๐๔๐.๕๐๖๐๗`
-`Thai-2` | `๑๒๓๔๕๖๗.๘๙` | `๑๐๒๐๓๐๔๐.๕๐๖๐๗`
-`Base-12` | `4b6547.a6` | `3500654.60728`
-`Base-16` | `12d687.e2` | `9bafa0.80971`
-`Mayan` | `𝋧𝋮𝋦𝋨𝋧.𝋱𝋨` | `𝋣𝋣𝋯𝋧𝋬𝋠.𝋪𝋡𝋢𝋡𝋤`
-`Japanese` | `百万二十万三万四千五百六十七・八分九厘` | `千万二十万三千四十・五分六毛七忽`
-`Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰`
-`Javanese` | `꧑꧒꧓꧔꧕꧖꧗.꧘꧙` | `꧑꧐꧒꧐꧓꧐꧔꧐.꧕꧐꧖꧐꧗`
-`Roman` | `DLXVII` | `MMMXL`
-`Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭`
-`Tibetan` | `༡༢༣༤༥༦༧.༨༩` | `༡༠༢༠༣༠༤༠.༥༠༦༠༧`
+Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)`| `$Obj->format('100.75', 3)`
+---|---|---|---
+`NoSep-1` | `1234567.89` | `10203040.50607` | `100.750`
+`NoSep-2` | `1234567,89` | `10203040,50607` | `100,750`
+`Latin-1` | `1,234,567.89` | `10,203,040.50607` | `100.750`
+`Latin-2` | `1 234 567.89` | `10 203 040.50607` | `100.750`
+`Latin-3` | `1.234.567,89` | `10.203.040,50607` | `100,750`
+`Latin-4` | `1 234 567,89` | `10 203 040,50607` | `100,750`
+`Latin-5` | `1,234,567·89` | `10,203,040·50607` | `100·750`
+`China-1` | `123,4567.89` | `1020,3040.50607` | `100.750`
+`India-1` | `12,34,567.89` | `1,02,03,040.50607` | `100.750`
+`India-2` | `१२,३४,५६७.८९` | `१,०२,०३,०४०.५०६०७` | `१००.७५०`
+`India-3` | `૧૨,૩૪,૫૬૭.૮૯` | `૧,૦૨,૦૩,૦૪૦.૫૦૬૦૭` | `૧૦૦.૭૫૦`
+`India-4` | `੧੨,੩੪,੫੬੭.੮੯` | `੧,੦੨,੦੩,੦੪੦.੫੦੬੦੭` | `੧੦੦.੭੫੦`
+`India-5` | `೧೨,೩೪,೫೬೭.೮೯` | `೧,೦೨,೦೩,೦೪೦.೫೦೬೦೭` | `೧೦೦.೭೫೦`
+`India-6` | `౧౨,౩౪,౫౬౭.౮౯` | `౧,౦౨,౦౩,౦౪౦.౫౦౬౦౭` | `౧౦౦.౭౫౦`
+`Arabic-1` | `١٢٣٤٥٦٧٫٨٩` | `١٠٢٠٣٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠`
+`Arabic-2` | `١٬٢٣٤٬٥٦٧٫٨٩` | `١٠٬٢٠٣٬٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠`
+`Arabic-3` | `۱٬۲۳۴٬۵۶۷٫۸۹` | `۱۰٬۲۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰`
+`Arabic-4` | `۱۲٬۳۴٬۵۶۷٫۸۹` | `۱٬۰۲٬۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰`
+`Bengali-1` | `১২,৩৪,৫৬৭.৮৯` | `১,০২,০৩,০৪০.৫০৬০৭` | `১০০.৭৫০`
+`Burmese-1` | `၁၂၃၄၅၆၇.၈၉` | `၁၀၂၀၃၀၄၀.၅၀၆၀၇` | `၁၀၀.၇၅၀`
+`Khmer-1` | `១.២៣៤.៥៦៧,៨៩` | `១០.២០៣.០៤០,៥០៦០៧` | `១០០,៧៥០`
+`Lao-1` | `໑໒໓໔໕໖໗.໘໙` | `໑໐໒໐໓໐໔໐.໕໐໖໐໗` | `໑໐໐.໗໕໐`
+`Thai-1` | `๑,๒๓๔,๕๖๗.๘๙` | `๑๐,๒๐๓,๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐`
+`Thai-2` | `๑๒๓๔๕๖๗.๘๙` | `๑๐๒๐๓๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐`
+`Base-12` | `4b6547.a8` | `3500654.60a5a` | `84.900`
+`Base-16` | `12d687.e3` | `9bafa0.818dd` | `64.c00`
+`Mayan` | `𝋧𝋮𝋦𝋨𝋧.𝋱𝋰` | `𝋣𝋣𝋯𝋧𝋬𝋠.𝋪𝋢𝋨𝋫𝋦` | `𝋥𝋠.𝋯𝋠𝋠`
+`Japanese` | `百万二十万三万四千五百六十七・八分九厘` | `千万二十万三千四十・五分六毛七忽` | `百・七分五厘`
+`Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰` | `௱`
+`Javanese` | `꧑꧒꧓꧔꧕꧖꧗.꧘꧙` | `꧑꧐꧒꧐꧓꧐꧔꧐.꧕꧐꧖꧐꧗` | `꧑꧐꧐.꧗꧕꧐`
+`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `C̅C̅MMMXL` | `C`
+`Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭` | `୧୦୦.୭୫୦`
+`Tibetan` | `༡༢༣༤༥༦༧.༨༩` | `༡༠༢༠༣༠༤༠.༥༠༦༠༧` | `༡༠༠.༧༥༠`
+`Hebrew` | `א׳׳ב׳קג׳יד׳הךוסז` | `א׳י׳׳׳ב׳ק׳יג׳דמ` | `אק`
+`Armenian` | `Ռ̅Մ̅Լ̅ՏՇԿԷ` | `Մ̅ՎԽ` | `Ճ`
 
 #### getSetCSV method.
 
@@ -222,7 +228,11 @@ Value | Description
 `Japanese` | Japanese numerals. *(Range limit: 10<sup>^-11</sup>+1 ~ 10<sup>^24</sup>-1).*
 `Tamil` | Tamil numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^24</sup>-1).*
 `Javanese` | Javanese numerals.
-`Roman` | Roman numerals. *(Fractions not supported. Range limit: 1 ~ 3999).*
+`Roman` | Roman numerals. *(Fractions not supported. Range limit: 1 ~ 3,999,999).*
+`Odia` | Odia numerals.
+`Tibetan` | Tibetan numerals.
+`Hebrew` | Hebrew numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^16</sup>-1).*
+`Armenian` | Armenian numerals. *(Fractions not supported. Range limit: 1 ~ 9,999,999).*
 
 (If needed, the class can easily be extended to add support for additional conversion sets).
 
@@ -459,40 +469,40 @@ for ($Obj->Base = 2; $Obj->Base < 37; $Obj->Base++) {
 Output:
 
 ```
-Base 2: 1,010.1000 ~ 100,000,000.0101
-Base 3: 101.1111 ~ 100,111.0211
+Base 2: 1,010.1000 ~ 100,000,000.0100
+Base 3: 101.1111 ~ 100,111.0202
 Base 4: 22.2000 ~ 10,000.1000
-Base 5: 20.2100 ~ 2,011.1210
-Base 6: 14.3000 ~ 1,104.1413
-Base 7: 13.3500 ~ 514.1104
+Base 5: 20.2222 ~ 2,011.1111
+Base 6: 14.3000 ~ 1,104.1300
+Base 7: 13.3333 ~ 514.1515
 Base 8: 12.4000 ~ 400.2000
-Base 9: 11.4410 ~ 314.2241
+Base 9: 11.4444 ~ 314.2222
 Base 10: 10.5000 ~ 256.2500
-Base 11: a.5500 ~ 213.2749
+Base 11: a.5555 ~ 213.2828
 Base 12: a.6000 ~ 194.3000
-Base 13: a.6499 ~ 169.3249
-Base 14: a.7000 ~ 144.3500
-Base 15: a.7499 ~ 121.3749
+Base 13: a.6666 ~ 169.3333
+Base 14: a.7000 ~ 144.3700
+Base 15: a.7777 ~ 121.3b3b
 Base 16: a.8000 ~ 100.4000
-Base 17: a.8499 ~ f1.4249
-Base 18: a.9000 ~ e4.4499
-Base 19: a.9500 ~ d9.4750
+Base 17: a.8888 ~ f1.4444
+Base 18: a.9000 ~ e4.4900
+Base 19: a.9999 ~ d9.4e4e
 Base 20: a.a000 ~ cg.5000
-Base 21: a.a500 ~ c4.5250
-Base 22: a.b000 ~ be.5500
-Base 23: a.b500 ~ b3.5749
+Base 21: a.aaaa ~ c4.5555
+Base 22: a.b000 ~ be.5b00
+Base 23: a.bbbb ~ b3.5h5h
 Base 24: a.c000 ~ ag.6000
-Base 25: a.c500 ~ a6.6250
-Base 26: a.d000 ~ 9m.6499
-Base 27: a.d500 ~ 9d.6749
+Base 25: a.cccc ~ a6.6666
+Base 26: a.d000 ~ 9m.6d00
+Base 27: a.dddd ~ 9d.6k6k
 Base 28: a.e000 ~ 94.7000
-Base 29: a.e500 ~ 8o.7250
-Base 30: a.f000 ~ 8g.7499
-Base 31: a.f500 ~ 88.7750
+Base 29: a.eeee ~ 8o.7777
+Base 30: a.f000 ~ 8g.7f00
+Base 31: a.ffff ~ 88.7n7n
 Base 32: a.g000 ~ 80.8000
-Base 33: a.g499 ~ 7p.8249
-Base 34: a.h000 ~ 7i.8499
-Base 35: a.h499 ~ 7b.8750
+Base 33: a.gggg ~ 7p.8888
+Base 34: a.h000 ~ 7i.8h00
+Base 35: a.hhhh ~ 7b.8q8q
 Base 36: a.i000 ~ 74.9000
 ```
 
@@ -501,4 +511,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 27 December 2019 (2019.12.27).
+Last Updated: 1 December 2020 (2020.12.01).

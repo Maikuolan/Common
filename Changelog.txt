@@ -15,6 +15,10 @@ found at:
   Actions. Replaced existing tests. (More work needs to eventually be done
   towards tests. This will eventually happen at some point).
 
+- [2020.12.01; Maikuolan]: Refactored the number formatter, improving the
+  conversion of fractions between different bases, and added two new character
+  sets.
+
 === Version/Release 2.3.3 ===
 PATCH RELEASE.
 

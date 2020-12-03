@@ -19,6 +19,9 @@ found at:
   conversion of fractions between different bases, and added two new character
   sets.
 
+- [2020.12.03; Maikuolan]: Added tests for the NumberFormatter class and also
+  added some more character sets.
+
 === Version/Release 1.3.4 ===
 PATCH RELEASE.
 

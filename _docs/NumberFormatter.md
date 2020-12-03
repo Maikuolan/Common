@@ -28,40 +28,44 @@ To use the number formatter, you'll firstly need to instantiate it. You don't ne
 Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `DecimalSeparator` | `Base`
 ---|---|---|---|---|---|---
 *Default values (e.g., when the parameter is omitted) and*  `Latin-1`. | `Western` | `,`<br />(comma) | `3` | `0` | `.`<br />(decimal) | `10`
-`NoSep-1` | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
-`NoSep-2` | `Western` | (empty) | (n/a) | (n/a) | `,`<br />(comma) | `10`
-`Latin-2` | `Western` | ` `<br />(non-breaking space) | `3` | `0` | `.`<br />(decimal) | `10`
-`Latin-3` | `Western` | `.`<br />(decimal) | `3` | `0` | `,`<br />(comma) | `10`
-`Latin-4` | `Western` | ` `<br />(non-breaking space) | `3` | `0` | `,`<br />(comma) | `10`
-`Latin-5` | `Western` | `,`<br />(comma) | `3` | `0` | `·`<br />(middle dot) | `10`
+`Arabic-1` | `Eastern` | (empty) | (n/a) | (n/a) | `٬`<br />(arabic decimal separator) | `10`
+`Arabic-2` | `Eastern` | `٬`<br />(arabic thousands separator) | `3` | `0` | `٬`<br />(arabic decimal separator) | `10`
+`Arabic-3` or `Persian` | `Persian` | `٬`<br />(arabic thousands separator) | `3` | `0` | `٬`<br />(arabic decimal separator) | `10`
+`Arabic-4` or `Urdu` | `Persian` | `٬`<br />(arabic thousands separator) | `2` | `-1` | `٬`<br />(arabic decimal separator) | `10`
+`Armenian` *[†3] [†4]* | `Armenian` | (empty) | (n/a) | (n/a) | (empty) | `10`
+`Base-12` *[†2]* | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `12`
+`Base-16` *[†2]* | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `16`
+`Bengali-1` or `Nagari` | `Nagari` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
+`Burmese-1` | `Burmese` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `China-1` | `Western` | `,`<br />(comma) | `4` | `0` | `.`<br />(decimal) | `10`
+`Chinese-Simplified-Financial` *[†4]* | `ChineseSimplifiedFinancial` | (empty) | (n/a) | (n/a) | `点`<br />(U+70B9) | `10`
+`Chinese-Simplified` *[†4]* | `ChineseSimplified` | (empty) | (n/a) | (n/a) | `点`<br />(U+70B9) | `10`
+`Chinese-Traditional-Financial` *[†4]* | `ChineseTraditionalFinancial` | (empty) | (n/a) | (n/a) | `點`<br />(U+9EDE) | `10`
+`Chinese-Traditional` *[†4]* | `ChineseTraditional` | (empty) | (n/a) | (n/a) | `點`<br />(U+9EDE) | `10`
+`Hebrew` *[†3] [†4]* | `Hebrew` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `India-1` | `Western` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-2` or `Devanagari` | `Devanagari` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-3` or `Gujarati` | `Gujarati` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-4` or `Gurmukhi` | `Gurmukhi` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-5` or `Kannada` | `Kannada` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-6` or `Telugu` | `Telugu` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
-`Arabic-1` | `Eastern` | (empty) | (n/a) | (n/a) | `٬`<br />(arabic decimal separator) | `10`
-`Arabic-2` | `Eastern` | `٬`<br />(arabic thousands separator) | `3` | `0` | `٬`<br />(arabic decimal separator) | `10`
-`Arabic-3` or `Persian` | `Persian` | `٬`<br />(arabic thousands separator) | `3` | `0` | `٬`<br />(arabic decimal separator) | `10`
-`Arabic-4` or `Urdu` | `Persian` | `٬`<br />(arabic thousands separator) | `2` | `-1` | `٬`<br />(arabic decimal separator) | `10`
-`Bengali-1` or `Nagari` | `Nagari` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
-`Burmese-1` | `Burmese` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Japanese` *[†4]* | `Japanese` | (empty) | (n/a) | (n/a) | `・`<br />(katakana middle dot) | `10`
+`Javanese` | `Javanese` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Khmer-1` | `Burmese` | `.`<br />(decimal) | `3` | `0` | `,`<br />(comma) | `10`
 `Lao-1` | `Lao` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Latin-2` | `Western` | ` `<br />(non-breaking space) | `3` | `0` | `.`<br />(decimal) | `10`
+`Latin-3` | `Western` | `.`<br />(decimal) | `3` | `0` | `,`<br />(comma) | `10`
+`Latin-4` | `Western` | ` `<br />(non-breaking space) | `3` | `0` | `,`<br />(comma) | `10`
+`Latin-5` | `Western` | `,`<br />(comma) | `3` | `0` | `·`<br />(middle dot) | `10`
+`Mayan` *[†1] [†2]* | `Mayan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `20`
+`NoSep-1` | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`NoSep-2` | `Western` | (empty) | (n/a) | (n/a) | `,`<br />(comma) | `10`
+`Odia` | `Odia` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Roman` *[†3] [†4]* | `Roman` | (empty) | (n/a) | (n/a) | (empty) | `10`
+`Tamil` *[†3] [†4]* | `Tamil` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Thai-1` | `Thai` | `,`<br />(comma) | `3` | `0` | `.`<br />(decimal) | `10`
 `Thai-2` | `Thai` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
-`Base-12` *[†2]* | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `12`
-`Base-16` *[†2]* | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `16`
-`Mayan` *[†1] [†2]* | `Mayan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `20`
-`Japanese` *[†4]* | `Japanese` | (empty) | (n/a) | (n/a) | `・`<br />(katakana middle dot) | `10`
-`Tamil` *[†3] [†4]* | `Tamil` | (empty) | (n/a) | (n/a) | (empty) | `10`
-`Javanese` | `Javanese` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
-`Roman` *[†3] [†4]* | `Roman` | (empty) | (n/a) | (n/a) | (empty) | `10`
-`Odia` | `Odia` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Tibetan` | `Tibetan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
-`Hebrew` *[†3] [†4]* | `Hebrew` | (empty) | (n/a) | (n/a) | (empty) | `10`
-`Armenian` *[†3] [†4]* | `Armenian` | (empty) | (n/a) | (n/a) | (empty) | `10`
 
 *[†1]: Not actually "commonly used" at all, seeing as it [hasn't actually been actively used since the 17th century](https://en.wikipedia.org/wiki/Maya_script), so, unlikely to be practical, but included anyway as a means of demonstratrating some of what the class can do (think of it as an "easter egg").*
 
@@ -92,41 +96,45 @@ Example:
 ```PHP
 <?php
 $Formats = [
-    'NoSep-1',
-    'NoSep-2',
-    'Latin-1',
-    'Latin-2',
-    'Latin-3',
-    'Latin-4',
-    'Latin-5',
+    'Arabic-1',
+    'Arabic-2',
+    'Arabic-3',
+    'Arabic-4',
+    'Armenian',
+    'Base-12',
+    'Base-16',
+    'Bengali-1',
+    'Burmese-1',
     'China-1',
+    'Chinese-Simplified',
+    'Chinese-Simplified-Financial',
+    'Chinese-Traditional',
+    'Chinese-Traditional-Financial',
+    'Hebrew',
     'India-1',
     'India-2',
     'India-3',
     'India-4',
     'India-5',
     'India-6',
-    'Arabic-1',
-    'Arabic-2',
-    'Arabic-3',
-    'Arabic-4',
-    'Bengali-1',
-    'Burmese-1',
+    'Japanese',
+    'Javanese',
     'Khmer-1',
     'Lao-1',
+    'Latin-1',
+    'Latin-2',
+    'Latin-3',
+    'Latin-4',
+    'Latin-5',
+    'Mayan',
+    'NoSep-1',
+    'NoSep-2',
+    'Odia',
+    'Roman',
+    'Tamil',
     'Thai-1',
     'Thai-2',
-    'Base-12',
-    'Base-16',
-    'Mayan',
-    'Japanese',
-    'Tamil',
-    'Javanese',
-    'Roman',
-    'Odia',
-    'Tibetan',
-    'Hebrew',
-    'Armenian'
+    'Tibetan'
 ];
 
 echo "Format | `\$Obj->format('1234567.89', 2)` | `\$Obj->format('10203040.50607080', 5)`| `\$Obj->format('100.75', 3)`\n---|---|---|---\n";
@@ -141,41 +149,45 @@ Output:
 
 Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)`| `$Obj->format('100.75', 3)`
 ---|---|---|---
-`NoSep-1` | `1234567.89` | `10203040.50607` | `100.750`
-`NoSep-2` | `1234567,89` | `10203040,50607` | `100,750`
-`Latin-1` | `1,234,567.89` | `10,203,040.50607` | `100.750`
-`Latin-2` | `1 234 567.89` | `10 203 040.50607` | `100.750`
-`Latin-3` | `1.234.567,89` | `10.203.040,50607` | `100,750`
-`Latin-4` | `1 234 567,89` | `10 203 040,50607` | `100,750`
-`Latin-5` | `1,234,567·89` | `10,203,040·50607` | `100·750`
+`Arabic-1` | `١٢٣٤٥٦٧٫٨٩` | `١٠٢٠٣٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠`
+`Arabic-2` | `١٬٢٣٤٬٥٦٧٫٨٩` | `١٠٬٢٠٣٬٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠`
+`Arabic-3` | `۱٬۲۳۴٬۵۶۷٫۸۹` | `۱۰٬۲۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰`
+`Arabic-4` | `۱۲٬۳۴٬۵۶۷٫۸۹` | `۱٬۰۲٬۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰`
+`Armenian` | `Ռ̅Մ̅Լ̅ՏՇԿԷ` | `Մ̅ՎԽ` | `Ճ`
+`Base-12` | `4b6547.a8` | `3500654.60a5a` | `84.900`
+`Base-16` | `12d687.e3` | `9bafa0.818dd` | `64.c00`
+`Bengali-1` | `১২,৩৪,৫৬৭.৮৯` | `১,০২,০৩,০৪০.৫০৬০৭` | `১০০.৭৫০`
+`Burmese-1` | `၁၂၃၄၅၆၇.၈၉` | `၁၀၂၀၃၀၄၀.၅၀၆၀၇` | `၁၀၀.၇၅၀`
 `China-1` | `123,4567.89` | `1020,3040.50607` | `100.750`
+`Chinese-Simplified` | `一百万二十万三万四千五百六十七点八九` | `一千万二十万三千四十〇点五〇六〇七` | `一百〇点七五〇`
+`Chinese-Simplified-Financial` | `壹佰萬贰拾萬叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟萬贰拾萬叁仟肆拾零点伍零陆零柒` | `壹佰零点柒伍零`
+`Chinese-Traditional` | `一百萬二十萬三萬四千五百六十七點八九` | `一千萬二十萬三千四十零點五零六零七` | `一百零點七五零`
+`Chinese-Traditional-Financial` | `壹佰萬貳拾萬參萬肆仟伍佰陸拾柒點捌玖` | `壹仟萬貳拾萬參仟肆拾零點伍零陸零柒` | `壹佰零點柒伍零`
+`Hebrew` | `א׳׳ב׳קג׳יד׳הךוסז` | `א׳י׳׳׳ב׳ק׳יג׳דמ` | `אק`
 `India-1` | `12,34,567.89` | `1,02,03,040.50607` | `100.750`
 `India-2` | `१२,३४,५६७.८९` | `१,०२,०३,०४०.५०६०७` | `१००.७५०`
 `India-3` | `૧૨,૩૪,૫૬૭.૮૯` | `૧,૦૨,૦૩,૦૪૦.૫૦૬૦૭` | `૧૦૦.૭૫૦`
 `India-4` | `੧੨,੩੪,੫੬੭.੮੯` | `੧,੦੨,੦੩,੦੪੦.੫੦੬੦੭` | `੧੦੦.੭੫੦`
 `India-5` | `೧೨,೩೪,೫೬೭.೮೯` | `೧,೦೨,೦೩,೦೪೦.೫೦೬೦೭` | `೧೦೦.೭೫೦`
 `India-6` | `౧౨,౩౪,౫౬౭.౮౯` | `౧,౦౨,౦౩,౦౪౦.౫౦౬౦౭` | `౧౦౦.౭౫౦`
-`Arabic-1` | `١٢٣٤٥٦٧٫٨٩` | `١٠٢٠٣٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠`
-`Arabic-2` | `١٬٢٣٤٬٥٦٧٫٨٩` | `١٠٬٢٠٣٬٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠`
-`Arabic-3` | `۱٬۲۳۴٬۵۶۷٫۸۹` | `۱۰٬۲۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰`
-`Arabic-4` | `۱۲٬۳۴٬۵۶۷٫۸۹` | `۱٬۰۲٬۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰`
-`Bengali-1` | `১২,৩৪,৫৬৭.৮৯` | `১,০২,০৩,০৪০.৫০৬০৭` | `১০০.৭৫০`
-`Burmese-1` | `၁၂၃၄၅၆၇.၈၉` | `၁၀၂၀၃၀၄၀.၅၀၆၀၇` | `၁၀၀.၇၅၀`
+`Japanese` | `百万二十万三万四千五百六十七・八九分` | `千万二十万三千四十・五六厘七糸` | `百・七五分`
+`Javanese` | `꧑꧒꧓꧔꧕꧖꧗.꧘꧙` | `꧑꧐꧒꧐꧓꧐꧔꧐.꧕꧐꧖꧐꧗` | `꧑꧐꧐.꧗꧕꧐`
 `Khmer-1` | `១.២៣៤.៥៦៧,៨៩` | `១០.២០៣.០៤០,៥០៦០៧` | `១០០,៧៥០`
 `Lao-1` | `໑໒໓໔໕໖໗.໘໙` | `໑໐໒໐໓໐໔໐.໕໐໖໐໗` | `໑໐໐.໗໕໐`
+`Latin-1` | `1,234,567.89` | `10,203,040.50607` | `100.750`
+`Latin-2` | `1 234 567.89` | `10 203 040.50607` | `100.750`
+`Latin-3` | `1.234.567,89` | `10.203.040,50607` | `100,750`
+`Latin-4` | `1 234 567,89` | `10 203 040,50607` | `100,750`
+`Latin-5` | `1,234,567·89` | `10,203,040·50607` | `100·750`
+`Mayan` | `𝋧𝋮𝋦𝋨𝋧.𝋱𝋰` | `𝋣𝋣𝋯𝋧𝋬𝋠.𝋪𝋢𝋨𝋫𝋦` | `𝋥𝋠.𝋯𝋠𝋠`
+`NoSep-1` | `1234567.89` | `10203040.50607` | `100.750`
+`NoSep-2` | `1234567,89` | `10203040,50607` | `100,750`
+`Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭` | `୧୦୦.୭୫୦`
+`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `C̅C̅MMMXL` | `C`
+`Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰` | `௱`
 `Thai-1` | `๑,๒๓๔,๕๖๗.๘๙` | `๑๐,๒๐๓,๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐`
 `Thai-2` | `๑๒๓๔๕๖๗.๘๙` | `๑๐๒๐๓๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐`
-`Base-12` | `4b6547.a8` | `3500654.60a5a` | `84.900`
-`Base-16` | `12d687.e3` | `9bafa0.818dd` | `64.c00`
-`Mayan` | `𝋧𝋮𝋦𝋨𝋧.𝋱𝋰` | `𝋣𝋣𝋯𝋧𝋬𝋠.𝋪𝋢𝋨𝋫𝋦` | `𝋥𝋠.𝋯𝋠𝋠`
-`Japanese` | `百万二十万三万四千五百六十七・八分九厘` | `千万二十万三千四十・五分六毛七忽` | `百・七分五厘`
-`Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰` | `௱`
-`Javanese` | `꧑꧒꧓꧔꧕꧖꧗.꧘꧙` | `꧑꧐꧒꧐꧓꧐꧔꧐.꧕꧐꧖꧐꧗` | `꧑꧐꧐.꧗꧕꧐`
-`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `C̅C̅MMMXL` | `C`
-`Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭` | `୧୦୦.୭୫୦`
 `Tibetan` | `༡༢༣༤༥༦༧.༨༩` | `༡༠༢༠༣༠༤༠.༥༠༦༠༧` | `༡༠༠.༧༥༠`
-`Hebrew` | `א׳׳ב׳קג׳יד׳הךוסז` | `א׳י׳׳׳ב׳ק׳יג׳דמ` | `אק`
-`Armenian` | `Ռ̅Մ̅Լ̅ՏՇԿԷ` | `Մ̅ՎԽ` | `Ճ`
 
 #### getSetCSV method.
 
@@ -212,27 +224,31 @@ Currently supported values:
 Value | Description
 ---|---
 `Western` | Standard numerals (0-9), alternatively known as Western Arabic numerals, Arabic numerals, Hindu-Arabic numerals, etc.
-`Eastern` | Eastern Arabic numerals.
-`Persian` | Persian/Urdu numerals (Eastern Arabic variant).
-`Nagari` | Nagari/Bengali/Bangla numerals.
+`Armenian` | Armenian numerals. *(Fractions not supported. Range limit: 1 ~ 9,999,999).*
+`Burmese` | Burmese numerals.
+`ChineseSimplifiedFinancial` | Financial simplified Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
+`ChineseSimplified` | Standard simplified Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
+`ChineseTraditionaFinanciall` | Financial traditional Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
+`ChineseTraditional` | Standard traditional Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
 `Devanagari` | Devanagari numerals.
+`Eastern` | Eastern Arabic numerals.
 `Gujarati` | Gujarati numerals.
 `Gurmukhi` | Gurmukhi numerals.
+`Hebrew` | Hebrew numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^16</sup>-1).*
+`Japanese` | Japanese numerals. *(Range limit: 10<sup>^-11</sup>+1 ~ 10<sup>^24</sup>-1).*
+`Javanese` | Javanese numerals.
 `Kannada` | Kannada numerals.
-`Telugu` | Telugu numerals.
-`Burmese` | Burmese numerals.
 `Khmer` | Khmer numerals.
-`Thai` | Thai numerals.
 `Lao` | Lao numerals.
 `Mayan` | Mayan numerals.
-`Japanese` | Japanese numerals. *(Range limit: 10<sup>^-11</sup>+1 ~ 10<sup>^24</sup>-1).*
-`Tamil` | Tamil numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^24</sup>-1).*
-`Javanese` | Javanese numerals.
-`Roman` | Roman numerals. *(Fractions not supported. Range limit: 1 ~ 3,999,999).*
+`Nagari` | Nagari/Bengali/Bangla numerals.
 `Odia` | Odia numerals.
+`Persian` | Persian/Urdu numerals (Eastern Arabic variant).
+`Roman` | Roman numerals. *(Fractions not supported. Range limit: 1 ~ 3,999,999).*
+`Tamil` | Tamil numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^24</sup>-1).*
+`Telugu` | Telugu numerals.
+`Thai` | Thai numerals.
 `Tibetan` | Tibetan numerals.
-`Hebrew` | Hebrew numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^16</sup>-1).*
-`Armenian` | Armenian numerals. *(Fractions not supported. Range limit: 1 ~ 9,999,999).*
 
 (If needed, the class can easily be extended to add support for additional conversion sets).
 
@@ -511,4 +527,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 1 December 2020 (2020.12.01).
+Last Updated: 1 December 2020 (2020.12.03).

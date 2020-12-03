@@ -55,6 +55,7 @@ $Object = new \Maikuolan\Common\YAML();
 $ProcessResult = $Object->process($RawYAML, $Object->Data);
 
 if ($ProcessResult !== true) {
+    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
     exit(10);
 }
 

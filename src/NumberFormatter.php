@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2020.12.01).
+ * Number formatter (last modified: 2020.12.03).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -631,6 +631,266 @@ class NumberFormatter
     ];
 
     /**
+     * @var array Conversion set for standard simplified Chinese numerals.
+     */
+    private $ChineseSimplified = [
+        '0*' => '',
+        '-0*' => '〇',
+        '1' => '一',
+        '2' => '二',
+        '3' => '三',
+        '4' => '四',
+        '5' => '五',
+        '6' => '六',
+        '7' => '七',
+        '8' => '八',
+        '9' => '九',
+        '^0=0' => '〇',
+        '^1' => '十',
+        '^2' => '百',
+        '^3' => '千',
+        '^4' => '万',
+        '^5' => '十万',
+        '^6' => '百万',
+        '^7' => '千万',
+        '^8' => '亿',
+        '^9' => '十亿',
+        '^10' => '百亿',
+        '^11' => '千亿',
+        '^12' => '兆',
+        '^13' => '十兆',
+        '^14' => '百兆',
+        '^15' => '千兆',
+        '^16' => '京',
+        '^17' => '十京',
+        '^18' => '百京',
+        '^19' => '千京',
+        '^20' => '垓',
+        '^21' => '十垓',
+        '^22' => '百垓',
+        '^23' => '千垓',
+        '^24' => '秭',
+        '^25' => '十秭',
+        '^26' => '百秭',
+        '^27' => '千秭',
+        '^28' => '穰',
+        '^29' => '十穰',
+        '^30' => '百穰',
+        '^31' => '千穰',
+        '^32' => '沟',
+        '^33' => '十沟',
+        '^34' => '百沟',
+        '^35' => '千沟',
+        '^36' => '涧',
+        '^37' => '十涧',
+        '^38' => '百涧',
+        '^39' => '千涧',
+        '^40' => '正',
+        '^41' => '十正',
+        '^42' => '百正',
+        '^43' => '千正',
+        '^44' => '载',
+        '^45' => '十载',
+        '^46' => '百载',
+        '^47' => '千载'
+    ];
+
+    /**
+     * @var array Conversion set for standard traditional Chinese numerals.
+     */
+    private $ChineseTraditional = [
+        '0*' => '',
+        '-0*' => '零',
+        '1' => '一',
+        '2' => '二',
+        '3' => '三',
+        '4' => '四',
+        '5' => '五',
+        '6' => '六',
+        '7' => '七',
+        '8' => '八',
+        '9' => '九',
+        '^0=0' => '零',
+        '^1' => '十',
+        '^2' => '百',
+        '^3' => '千',
+        '^4' => '萬',
+        '^5' => '十萬',
+        '^6' => '百萬',
+        '^7' => '千萬',
+        '^8' => '億',
+        '^9' => '十億',
+        '^10' => '百億',
+        '^11' => '千億',
+        '^12' => '兆',
+        '^13' => '十兆',
+        '^14' => '百兆',
+        '^15' => '千兆',
+        '^16' => '京',
+        '^17' => '十京',
+        '^18' => '百京',
+        '^19' => '千京',
+        '^20' => '垓',
+        '^21' => '十垓',
+        '^22' => '百垓',
+        '^23' => '千垓',
+        '^24' => '秭',
+        '^25' => '十秭',
+        '^26' => '百秭',
+        '^27' => '千秭',
+        '^28' => '穰',
+        '^29' => '十穰',
+        '^30' => '百穰',
+        '^31' => '千穰',
+        '^32' => '溝',
+        '^33' => '十溝',
+        '^34' => '百溝',
+        '^35' => '千溝',
+        '^36' => '澗',
+        '^37' => '十澗',
+        '^38' => '百澗',
+        '^39' => '千澗',
+        '^40' => '正',
+        '^41' => '十正',
+        '^42' => '百正',
+        '^43' => '千正',
+        '^44' => '載',
+        '^45' => '十載',
+        '^46' => '百載',
+        '^47' => '千載'
+    ];
+
+    /**
+     * @var array Conversion set for financial simplified Chinese numerals.
+     */
+    private $ChineseSimplifiedFinancial = [
+        '0*' => '',
+        '-0*' => '零',
+        '1' => '壹',
+        '2' => '贰',
+        '3' => '叁',
+        '4' => '肆',
+        '5' => '伍',
+        '6' => '陆',
+        '7' => '柒',
+        '8' => '捌',
+        '9' => '玖',
+        '^0=0' => '零',
+        '^1' => '拾',
+        '^2' => '佰',
+        '^3' => '仟',
+        '^4' => '萬',
+        '^5' => '拾萬',
+        '^6' => '佰萬',
+        '^7' => '仟萬',
+        '^8' => '億',
+        '^9' => '拾億',
+        '^10' => '佰億',
+        '^11' => '仟億',
+        '^12' => '兆',
+        '^13' => '拾兆',
+        '^14' => '佰兆',
+        '^15' => '仟兆',
+        '^16' => '京',
+        '^17' => '拾京',
+        '^18' => '佰京',
+        '^19' => '仟京',
+        '^20' => '垓',
+        '^21' => '拾垓',
+        '^22' => '佰垓',
+        '^23' => '仟垓',
+        '^24' => '秭',
+        '^25' => '拾秭',
+        '^26' => '佰秭',
+        '^27' => '仟秭',
+        '^28' => '穰',
+        '^29' => '拾穰',
+        '^30' => '佰穰',
+        '^31' => '仟穰',
+        '^32' => '沟',
+        '^33' => '拾沟',
+        '^34' => '佰沟',
+        '^35' => '仟沟',
+        '^36' => '涧',
+        '^37' => '拾涧',
+        '^38' => '佰涧',
+        '^39' => '仟涧',
+        '^40' => '正',
+        '^41' => '拾正',
+        '^42' => '佰正',
+        '^43' => '仟正',
+        '^44' => '载',
+        '^45' => '拾载',
+        '^46' => '佰载',
+        '^47' => '仟载'
+    ];
+
+    /**
+     * @var array Conversion set for financial traditional Chinese numerals.
+     */
+    private $ChineseTraditionalFinancial = [
+        '0*' => '',
+        '-0*' => '零',
+        '1' => '壹',
+        '2' => '貳',
+        '3' => '參',
+        '4' => '肆',
+        '5' => '伍',
+        '6' => '陸',
+        '7' => '柒',
+        '8' => '捌',
+        '9' => '玖',
+        '^0=0' => '零',
+        '^1' => '拾',
+        '^2' => '佰',
+        '^3' => '仟',
+        '^4' => '萬',
+        '^5' => '拾萬',
+        '^6' => '佰萬',
+        '^7' => '仟萬',
+        '^8' => '億',
+        '^9' => '拾億',
+        '^10' => '佰億',
+        '^11' => '仟億',
+        '^12' => '兆',
+        '^13' => '拾兆',
+        '^14' => '佰兆',
+        '^15' => '仟兆',
+        '^16' => '京',
+        '^17' => '拾京',
+        '^18' => '佰京',
+        '^19' => '仟京',
+        '^20' => '垓',
+        '^21' => '拾垓',
+        '^22' => '佰垓',
+        '^23' => '仟垓',
+        '^24' => '秭',
+        '^25' => '拾秭',
+        '^26' => '佰秭',
+        '^27' => '仟秭',
+        '^28' => '穰',
+        '^29' => '拾穰',
+        '^30' => '佰穰',
+        '^31' => '仟穰',
+        '^32' => '沟',
+        '^33' => '拾沟',
+        '^34' => '佰沟',
+        '^35' => '仟沟',
+        '^36' => '涧',
+        '^37' => '拾涧',
+        '^38' => '佰涧',
+        '^39' => '仟涧',
+        '^40' => '正',
+        '^41' => '拾正',
+        '^42' => '佰正',
+        '^43' => '仟正',
+        '^44' => '载',
+        '^45' => '拾载',
+        '^46' => '佰载',
+        '^47' => '仟载'
+    ];
+
+    /**
      * @var array Symbols quick lookup table.
      */
     private $Symbols = [
@@ -853,6 +1113,30 @@ class NumberFormatter
             $this->GroupSeparator = '';
             return;
         }
+        if ($Format === 'Chinese-Simplified') {
+            $this->ConversionSet = 'ChineseSimplified';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '点';
+            return;
+        }
+        if ($Format === 'Chinese-Traditional') {
+            $this->ConversionSet = 'ChineseTraditional';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '點';
+            return;
+        }
+        if ($Format === 'Chinese-Simplified-Financial') {
+            $this->ConversionSet = 'ChineseSimplifiedFinancial';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '点';
+            return;
+        }
+        if ($Format === 'Chinese-Traditional-Financial') {
+            $this->ConversionSet = 'ChineseTraditionalFinancial';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '點';
+            return;
+        }
     }
 
     /**
@@ -895,20 +1179,20 @@ class NumberFormatter
             }
             $Key = substr($Number, $Pos, 1);
             $Double = $Pos > 0 ? substr($Number, $Pos - 1, 1) . $Key : '';
-            if (isset($CSet[$Double . '*'])) {
-                $Formatted = $CSet[$Double . '*'] . $Formatted;
-                continue;
-            }
-            if (isset($CSet[$Key . '*'])) {
-                $Formatted = $CSet[$Key . '*'] . $Formatted;
-                continue;
-            }
             if (isset($CSet['^' . $Unit . '=' . $Double])) {
                 $Formatted = $CSet['^' . $Unit . '=' . $Double] . $Formatted;
                 continue;
             }
             if (isset($CSet['^' . $Unit . '=' . $Key])) {
                 $Formatted = $CSet['^' . $Unit . '=' . $Key] . $Formatted;
+                continue;
+            }
+            if (isset($CSet[$Double . '*'])) {
+                $Formatted = $CSet[$Double . '*'] . $Formatted;
+                continue;
+            }
+            if (isset($CSet[$Key . '*'])) {
+                $Formatted = $CSet[$Key . '*'] . $Formatted;
                 continue;
             }
             $Add = $CSet[$Key] ?? $Key;
@@ -923,12 +1207,24 @@ class NumberFormatter
             $Formatted .= $this->DecimalSeparator;
             for ($Len = strlen($Fraction), $Pos = 0; $Pos < $Len; $Pos++) {
                 $Key = substr($Fraction, $Pos, 1);
+                $NegUnit = '-' . $Pos;
+                if (isset($CSet['^' . $NegUnit . '=' . $Key])) {
+                    $Formatted .= $CSet['^' . $NegUnit . '=' . $Key];
+                    continue;
+                }
+                if (isset($CSet['-' . $Key . '*'])) {
+                    $Formatted .= $CSet['-' . $Key . '*'];
+                    continue;
+                }
                 if (isset($CSet[$Key . '*'])) {
                     $Formatted .= $CSet[$Key . '*'];
                     continue;
                 }
-                $Add = $CSet[$Key] ?? $Key;
-                $NegUnit = ($Pos * -1) - 1;
+                if (isset($CSet['-' . $Key])) {
+                    $Add = $CSet['-' . $Key];
+                } else {
+                    $Add = $CSet[$Key] ?? $Key;
+                }
                 if (isset($CSet['^' . $NegUnit . '*' . $Key])) {
                     $Add .= $CSet['^' . $NegUnit . '*' . $Key];
                 } elseif (isset($CSet['^' . $NegUnit])) {

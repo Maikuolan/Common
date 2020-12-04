@@ -231,7 +231,7 @@ Value | Description
 `Burmese` | Burmese numerals.
 `ChineseSimplifiedFinancial` | Financial simplified Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
 `ChineseSimplified` | Standard simplified Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
-`ChineseTraditionaFinanciall` | Financial traditional Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
+`ChineseTraditionaFinancial` | Financial traditional Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
 `ChineseTraditional` | Standard traditional Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
 `Devanagari` | Devanagari numerals.
 `Eastern` | Eastern Arabic numerals.

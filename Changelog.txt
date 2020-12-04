@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.4.0 ===
+MINOR RELEASE.
+
 - [2020.11.27; Maikuolan]: Ditched external test frameworks in favour of GitHub
   Actions. Replaced existing tests. (More work needs to eventually be done
   towards tests. This will eventually happen at some point).
@@ -21,6 +26,9 @@ found at:
 
 - [2020.12.03; Maikuolan]: Added tests for the NumberFormatter class and also
   added some more character sets.
+
+Caleb M (Maikuolan),
+December 4, 2020.
 
 === Version/Release 2.3.3 ===
 PATCH RELEASE.

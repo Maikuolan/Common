@@ -14,6 +14,8 @@ found at:
 - [2020.12.07; Maikuolan]: Updated the number formatter to prevent leading
   decimal separators in the absence of representing any whole digits.
 
+- [2020.12.07; Maikuolan]: Added support for dozenal/duodecimal numerals.
+
 === Version/Release 2.4.0 ===
 MINOR RELEASE.
 

@@ -63,6 +63,8 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `NoSep-2` | `Western` | (empty) | (n/a) | (n/a) | `,`<br />(comma) | `10`
 `Odia` | `Odia` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Roman` *[†3] [†4]* | `Roman` | (empty) | (n/a) | (n/a) | (empty) | `10`
+`SDN-Dwiggins` | `Dwiggins` | `,`<br />(comma) | `3` | `0` | `;`<br />(semicolon) | `12`
+`SDN-Pitman` | `Pitman` | `,`<br />(comma) | `3` | `0` | `;`<br />(semicolon) | `12`
 `Tamil` *[†3] [†4]* | `Tamil` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Thai-1` | `Thai` | `,`<br />(comma) | `3` | `0` | `.`<br />(decimal) | `10`
 `Thai-2` | `Thai` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
@@ -133,13 +135,15 @@ $Formats = [
     'NoSep-2',
     'Odia',
     'Roman',
+    'SDN-Dwiggins',
+    'SDN-Pitman',
     'Tamil',
     'Thai-1',
     'Thai-2',
     'Tibetan'
 ];
 
-echo "Format | `\$Obj->format('1234567.89', 2)` | `\$Obj->format('10203040.50607080', 5)`| `\$Obj->format('100.75', 3)`\n---|---|---|---\n";
+echo "Format | `\$Obj->format('1234567.89', 2)` | `\$Obj->format('10203040.50607080', 5)` | `\$Obj->format('100.75', 3)`\n---|---|---|---\n";
 
 foreach ($Formats as $Format) {
     $Obj = new \Maikuolan\Common\NumberFormatter($Format);
@@ -149,8 +153,8 @@ foreach ($Formats as $Format) {
 
 Output:
 
-Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)`| `$Obj->format('100.75', 3)`
----|---|---|---
+Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)` | `$Obj->format('100.75', 3)`
+:--|--:|--:|--:
 `Arabic-1` | `١٢٣٤٥٦٧٫٨٩` | `١٠٢٠٣٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠`
 `Arabic-2` | `١٬٢٣٤٬٥٦٧٫٨٩` | `١٠٬٢٠٣٬٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠`
 `Arabic-3` | `۱٬۲۳۴٬۵۶۷٫۸۹` | `۱۰٬۲۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰`
@@ -187,6 +191,8 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `NoSep-2` | `1234567,89` | `10203040,50607` | `100,750`
 `Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭` | `୧୦୦.୭୫୦`
 `Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `C̅C̅MMMXL` | `C`
+`SDN-Dwiggins` | `4E6,547;X8` | `3,500,654;60X5X` | `84;900`
+`SDN-Pitman` | `4↋6,547;↊8` | `3,500,654;60↊5↊` | `84;900`
 `Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰` | `௱`
 `Thai-1` | `๑,๒๓๔,๕๖๗.๘๙` | `๑๐,๒๐๓,๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐`
 `Thai-2` | `๑๒๓๔๕๖๗.๘๙` | `๑๐๒๐๓๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐`
@@ -531,4 +537,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 3 December 2020 (2020.12.03).
+Last Updated: 7 December 2020 (2020.12.07).

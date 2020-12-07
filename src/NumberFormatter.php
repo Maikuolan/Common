@@ -912,6 +912,16 @@ class NumberFormatter
     ];
 
     /**
+     * @var array Conversion set for "dozenal" numerals (Dwiggins).
+     */
+    private $Dwiggins = ['a' => 'X', 'b' => 'E'];
+
+    /**
+     * @var array Conversion set for "dozenal" numerals (Dwiggins).
+     */
+    private $Pitman = ['a' => '↊', 'b' => '↋'];
+
+    /**
      * @var array Symbols quick lookup table.
      */
     private $Symbols = [
@@ -1156,6 +1166,12 @@ class NumberFormatter
             $this->ConversionSet = 'ChineseTraditionalFinancial';
             $this->GroupSeparator = '';
             $this->DecimalSeparator = '點';
+            return;
+        }
+        if ($Format === 'SDN-Dwiggins' || $Format === 'SDN-Pitman') {
+            $this->ConversionSet = substr($Format, 4);
+            $this->DecimalSeparator = ';';
+            $this->Base = 12;
             return;
         }
     }

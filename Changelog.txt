@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2020.12.07; Maikuolan]: Updated the number formatter to prevent leading
+  decimal separators in the absence of representing any whole digits.
 
 === Version/Release 2.4.0 ===
 MINOR RELEASE.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2020.12.03).
+ * Number formatter (last modified: 2020.12.07).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1251,6 +1251,9 @@ class NumberFormatter
                 }
                 $Formatted .= $Digit . $Power;
             }
+        }
+        if (($DecLen = strlen($this->DecimalSeparator)) && substr($Formatted, 0, $DecLen) === $this->DecimalSeparator) {
+            $Formatted = substr($Formatted, $DecLen);
         }
         return $Formatted;
     }

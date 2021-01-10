@@ -56,7 +56,7 @@ public $Data = [];
 The createMatrix method is used to create a new matrix for the instance. It accepts three parameters. The first parameter, `$Dimensions`, describes the number of dimensions the matrix should have, and must be an integer (refer to the Dimensions member). The second parameter, `$Magnitude`, describes the magnitude that each dimension of the matrix should have, and must be either an integer or an array of integers (refer to the Magnitude member). The third parameter, `$Data`, describes the default data that each coordinate should be populated with (refer to the Data member). It has no return value.
 
 ```PHP
-public function createMatrix(int $Dimensions, $Magnitude, $Data)
+public function createMatrix(int $Dimensions, $Magnitude, $Data);
 ```
 
 #### populateVector method.
@@ -64,7 +64,7 @@ public function createMatrix(int $Dimensions, $Magnitude, $Data)
 The populateVector method is invoked by the createMatrix method, and recursively by itself, and is used to populate each vector when creating a new matrix for the instance. It accepts two parameters. The first parameter, `$Vector`, is the particular vector to be populated, passed by reference. The second parameter, `$Dimension`, is an integer incremented at each recursion, describing to the method which dimension, as a number, is to be populated, allowing the recursion to cease upon reaching the total number of dimensions the matrix should have, and allowing the method to correctly determine the magnitude intended for each vector. It has no return value.
 
 ```PHP
-private function populateVector(array &$Vector, int $Dimension)
+private function populateVector(array &$Vector, int $Dimension);
 ```
 
 #### iterateCallback method.
@@ -72,7 +72,7 @@ private function populateVector(array &$Vector, int $Dimension)
 The iterateCallback method allows applying a callback function over some specified coordinates. It accepts a minimum of one parameter. The first parameter, `$Description`, describes the particular coordinates where the callback should be applied, and can be an integer or a string. The second parameter, `$Callback`, is the callback function to be applied. The second parameter is optional, and when omitted, defaults to returning the value of the coordinate from where it is to be applied. Any subsequently provided parameters are accepted as an optional, third, variadic parameter, `$Data`, which is then provided to the callback function at each call. The return value of the iterateCallback method is determined by the callback function applied, which generally means an array of return values from the callback function itself in relation to its application over the specified coordinates.
 
 ```PHP
-public function iterateCallback($Description, callable $Callback = null, ...$Data)
+public function iterateCallback($Description, callable $Callback = null, ...$Data);
 ```
 
 #### iterateCallbackGenerator method.
@@ -187,4 +187,4 @@ You may also notice that, despite having a magnitude of three, for the coordinat
 ---
 
 
-Last Updated: 9 March 2020 (2020.03.09).
+Last Updated: 10 January 2021 (2021.01.10).

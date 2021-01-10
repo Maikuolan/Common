@@ -16,6 +16,8 @@ found at:
 
 - [2020.12.07; Maikuolan]: Added support for dozenal/duodecimal numerals.
 
+- [2021.01.10; Maikuolan]: Added a new class to the repository, "Request".
+
 === Version/Release 1.4.0 ===
 MINOR RELEASE.
 

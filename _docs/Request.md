@@ -122,7 +122,7 @@ The method returns a string (either the returned resource, or an empty string on
 The class also implements the magic method `__invoke`, as a way to alias back to `request` when the instance is utilised as a callable or function.
 
 ```PHP
-public function __invoke(...$Params): string
+public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0);
 ```
 
 #### inCsv method.

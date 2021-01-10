@@ -61,7 +61,7 @@ class Request
      * @param int $Depth Recursion depth of the current closure instance.
      * @return string The results of the request, or an empty string upon failure.
      */
-    public function request(string $URI, $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0): string
+    public function request($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0)
     {
         /** Test channel triggers. */
         foreach ($this->Channels['Triggers'] as $TriggerName => $TriggerURI) {
@@ -178,9 +178,9 @@ class Request
     /**
      * Allow calling the instance as a function (proxies to request).
      */
-    public function __invoke(...$Params): string
+    public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0)
     {
-        return $this->request(...$Params);
+        return $this->request($URI, $Params, $Timeout, $Headers, $Depth);
     }
 
     /**
@@ -190,7 +190,7 @@ class Request
      * @param string $CSV The CSV to look in.
      * @return bool True when found; False when not found.
      */
-    public function inCsv(string $Value, string $CSV): bool
+    public function inCsv($Value, $CSV)
     {
         if (!$Value || !$CSV) {
             return false;
@@ -211,7 +211,7 @@ class Request
      *
      * @param string $Message The message to send.
      */
-    public function sendMessage(string $Message)
+    public function sendMessage($Message)
     {
         if ($this->SendToOut !== true) {
             return;

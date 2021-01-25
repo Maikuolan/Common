@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2020.12.07).
+ * Number formatter (last modified: 2021.01.25).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -922,6 +922,48 @@ class NumberFormatter
     private $Pitman = ['a' => '↊', 'b' => '↋'];
 
     /**
+     * @var array Conversion set for fullwidth numerals.
+     */
+    private $Fullwidth = [
+        '0' => '０',
+        '1' => '１',
+        '2' => '２',
+        '3' => '３',
+        '4' => '４',
+        '5' => '５',
+        '6' => '６',
+        '7' => '７',
+        '8' => '８',
+        '9' => '９',
+        'a' => 'ａ',
+        'b' => 'ｂ',
+        'c' => 'ｃ',
+        'd' => 'ｄ',
+        'e' => 'ｅ',
+        'f' => 'ｆ',
+        'g' => 'ｇ',
+        'h' => 'ｈ',
+        'i' => 'ｉ',
+        'j' => 'ｊ',
+        'k' => 'ｋ',
+        'l' => 'ｌ',
+        'm' => 'ｍ',
+        'n' => 'ｎ',
+        'o' => 'ｏ',
+        'p' => 'ｐ',
+        'q' => 'ｑ',
+        'r' => 'ｒ',
+        's' => 'ｓ',
+        't' => 'ｔ',
+        'u' => 'ｕ',
+        'v' => 'ｖ',
+        'w' => 'ｗ',
+        'x' => 'ｘ',
+        'y' => 'ｙ',
+        'z' => 'ｚ'
+    ];
+
+    /**
      * @var array Symbols quick lookup table.
      */
     private $Symbols = [
@@ -1172,6 +1214,11 @@ class NumberFormatter
             $this->ConversionSet = substr($Format, 4);
             $this->DecimalSeparator = ';';
             $this->Base = 12;
+            return;
+        }
+        if ($Format === 'Fullwidth') {
+            $this->ConversionSet = 'Fullwidth';
+            $this->GroupSeparator = '';
             return;
         }
     }

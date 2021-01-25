@@ -125,6 +125,7 @@ $Formats = [
     'Chinese-Simplified-Financial',
     'Chinese-Traditional',
     'Chinese-Traditional-Financial',
+    'Fullwidth',
     'Hebrew',
     'India-1',
     'India-2',
@@ -170,6 +171,7 @@ $Expected = '
 `Chinese-Simplified-Financial` | `壹佰贰拾叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟贰拾叁仟肆拾点伍零陆零柒` | `壹佰点柒伍零`
 `Chinese-Traditional` | `一百二十三萬四千五百六十七點八九` | `一千二十三千四十點五零六零七` | `一百點七五零`
 `Chinese-Traditional-Financial` | `壹佰貳拾叄萬肆仟伍佰陸拾柒點捌玖` | `壹仟貳拾叄仟肆拾點伍零陸零柒` | `壹佰點柒伍零`
+`Fullwidth` | `１２３４５６７.８９` | `１０２０３０４０.５０６０７` | `１００.７５０`
 `Hebrew` | `א׳׳ב׳קג׳יד׳ךסז` | `א׳י׳ב׳קג׳מ` | `ק`
 `India-1` | `12,34,567.89` | `1,02,03,040.50607` | `100.750`
 `India-2` | `१२,३४,५६७.८९` | `१,०२,०३,०४०.५०६०७` | `१००.७५०`

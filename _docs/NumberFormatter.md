@@ -42,6 +42,7 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Chinese-Simplified` *[†4]* | `ChineseSimplified` | (empty) | (n/a) | (n/a) | `点`<br />(U+70B9) | `10`
 `Chinese-Traditional-Financial` *[†4]* | `ChineseTraditionalFinancial` | (empty) | (n/a) | (n/a) | `點`<br />(U+9EDE) | `10`
 `Chinese-Traditional` *[†4]* | `ChineseTraditional` | (empty) | (n/a) | (n/a) | `點`<br />(U+9EDE) | `10`
+`Fullwidth` | `Fullwidth` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Hebrew` *[†3] [†4]* | `Hebrew` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `India-1` | `Western` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-2` or `Devanagari` | `Devanagari` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
@@ -113,6 +114,7 @@ $Formats = [
     'Chinese-Simplified-Financial',
     'Chinese-Traditional',
     'Chinese-Traditional-Financial',
+    'Fullwidth',
     'Hebrew',
     'India-1',
     'India-2',
@@ -169,6 +171,7 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `Chinese-Simplified-Financial` | `壹佰贰拾叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟贰拾叁仟肆拾点伍零陆零柒` | `壹佰点柒伍零`
 `Chinese-Traditional` | `一百二十三萬四千五百六十七點八九` | `一千二十三千四十點五零六零七` | `一百點七五零`
 `Chinese-Traditional-Financial` | `壹佰貳拾叄萬肆仟伍佰陸拾柒點捌玖` | `壹仟貳拾叄仟肆拾點伍零陸零柒` | `壹佰點柒伍零`
+`Fullwidth` | `１２３４５６７.８９` | `１０２０３０４０.５０６０７` | `１００.７５０`
 `Hebrew` | `א׳׳ב׳קג׳יד׳ךסז` | `א׳י׳ב׳קג׳מ` | `ק`
 `India-1` | `12,34,567.89` | `1,02,03,040.50607` | `100.750`
 `India-2` | `१२,३४,५६७.८९` | `१,०२,०३,०४०.५०६०७` | `१००.७५०`
@@ -243,6 +246,7 @@ Value | Description
 `Eastern` | Eastern Arabic numerals.
 `Gujarati` | Gujarati numerals.
 `Gurmukhi` | Gurmukhi numerals.
+`Fullwidth` | Fullwidth numerals.
 `Hebrew` | Hebrew numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^16</sup>-1).*
 `Japanese` | Japanese numerals. *(Range limit: 10<sup>^-11</sup>+1 ~ 10<sup>^24</sup>-1).*
 `Javanese` | Javanese numerals.
@@ -537,4 +541,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 7 December 2020 (2020.12.07).
+Last Updated: 25 January 2021 (2021.01.25).

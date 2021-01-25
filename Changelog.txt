@@ -18,6 +18,8 @@ found at:
 
 - [2021.01.10; Maikuolan]: Added a new class to the repository, "Request".
 
+- [2021.01.25; Maikuolan]: Added support for fullwidth numerals.
+
 === Version/Release 2.4.0 ===
 MINOR RELEASE.
 

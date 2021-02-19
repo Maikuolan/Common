@@ -302,19 +302,17 @@ Is the reconstructed YAML data, and the original YAML data, the same? Yes.
 
 ### Supported data types:
 
-The YAML class supports arrays, integers, floats, booleans, strings, multi-line strings (identified using pipes; `|`), and hexadecimal data (identified via unquoted strings containing the hexadecimal data, beginning with `0x`). The YAML class does not support null, callables, closures, or objects.
+The YAML class supports arrays, integers, floats, booleans (`true`, `+`, `false`, `-`), null (`null`, `~`), strings, multi-line strings (`|`), folded multi-line strings (`>`), and hexadecimal data (`0x`).
 
-If you specify `null` as the value for an item in some YAML data, the YAML class will process it as a literal string "null". When using reconstruct, if one of the array elements is `null`, the corresponding item will have no specified value, effectively boolean `false` (due to that subsequent reprocessing would cause the corresponding array element to be `false`).
-
-When using reconstruct, if one of the array elements is an object, a closure, or a callable, a fatal error will occur. Don't ever do this.
+The YAML class does not support callables, closures, or objects. If objects, closures, or callables are supplied to reconstruct, a fatal error will occur. Don't ever do this.
 
 The YAML class allows YAML data to contain comments. The YAML class considers all data, beginning with a non-escaped hash (or number sign; `#`), and ending at any valid line ending (e.g., `\n`, `\r`), to be a comment. Therefore, all hashes, within any valid strings, within any unprocessed YAML data, should be escaped (i.e., `\#`), in order to be processed correctly by the YAML class.
 
-Within unprocessed YAML data, integers, floats, booleans, and hexadecimal data should never be quoted. Quoting for strings is optional, and it generally doesn't matter whether you choose to quote strings (i.e., quoting for strings is not strict). However, strings should always be quoted if the intended data type would be otherwise ambiguous. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all result in strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would result in a boolean, an integer, and a float, respectively. Quoting for keys is treated in the same manner as quoting for values.
+Within unprocessed YAML data, integers, floats, booleans, null, and hexadecimal data should never be quoted. Quoting for strings is optional, and it generally doesn't matter whether you choose to quote strings (i.e., quoting for strings is not strict). However, strings should always be quoted if the intended data type would otherwise be ambiguous. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all result in strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would result in a boolean, an integer, and a float respectively. Quoting for keys is treated in the same manner as quoting for values.
 
-Also, when reconstructing YAML data, string values are always quoted, whereas keys (regardless of data type) are never quoted. Therefore, if you ever need to reverse-process YAML data for any reason (i.e., process some YAML data, and then reconstruct the resulting array back into YAML data again; e.g., for testing purposes), you should also always quote string values (i.e., approach value quoting strictly), should never quote keys, and should never use "true" or "false" as names for keys (because unquoted, they'll look like booleans, and booleans can't be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstruted YAML data).
+Also, when reconstructing YAML data, string values are always quoted, whereas keys (regardless of data type) are never quoted. Therefore, if you ever need to reverse-process YAML data for any reason (i.e., process some YAML data, and then reconstruct the resulting array back into YAML data again; e.g., for testing purposes), you should also always quote string values (i.e., approach value quoting strictly), should never quote keys, and should never use "true", "false", or "null" as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstruted YAML data).
 
 ---
 
 
-Last Updated: 3 October 2019 (2019.10.03).
+Last Updated: 19 February 2021 (2021.02.19).

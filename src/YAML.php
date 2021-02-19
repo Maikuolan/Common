@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2020.06.11).
+ * YAML handler (last modified: 2021.02.19).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -32,6 +32,21 @@ class YAML
      * @var bool Whether to render multi-line values.
      */
     private $MultiLine = false;
+
+    /**
+     * @var bool Whether to render folded multi-line values.
+     */
+    private $MultiLineFolded = false;
+
+    /**
+     * @var string Default indent to use when reconstructing YAML data.
+     */
+    public $Indent = ' ';
+
+    /**
+     * @var int Single line to folded multi-line string length limit.
+     */
+    public $FoldedAt = 120;
 
     /**
      * Can optionally begin processing data as soon as the object is
@@ -70,15 +85,17 @@ class YAML
                 return;
             }
         }
-        if ($ValueLow === 'true' || $ValueLow === 'y') {
+        if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
             $Value = true;
-        } elseif ($ValueLow === 'false' || $ValueLow === 'n') {
+        } elseif ($ValueLow === 'false' || $ValueLow === 'n' || $Value === '-') {
             $Value = false;
+        } elseif ($ValueLow === 'null' || $Value === '~') {
+            $Value = null;
         } elseif (substr($Value, 0, 2) === '0x' && ($HexTest = substr($Value, 2)) && !preg_match('/[^\da-f]/i', $HexTest) && !($ValueLen % 2)) {
             $Value = hex2bin($HexTest);
         } elseif (preg_match('~^\d+$~', $Value)) {
             $Value = (int)$Value;
-        } elseif (preg_match('~^\d+\.\d+$~', $Value)) {
+        } elseif (preg_match('~^(?:\d+\.\d+|\d+(?:\.\d+)?[Ee][-+]\d+)$~', $Value)) {
             $Value = (float)$Value;
         } elseif (!$ValueLen) {
             $Value = false;
@@ -100,6 +117,7 @@ class YAML
         }
         if ($Depth === 0) {
             $this->MultiLine = false;
+            $this->MultiLineFolded = false;
         }
         $In = str_replace("\r", '', $In);
         $Key = $Value = $SendTo = '';
@@ -121,11 +139,15 @@ class YAML
                 if ($TabLen === 0) {
                     $TabLen = $ThisTab;
                 }
-                if (!$this->MultiLine) {
+                if (!$this->MultiLine && !$this->MultiLineFolded) {
                     $SendTo .= $ThisLine . "\n";
                 } else {
                     if ($SendTo) {
-                        $SendTo .= "\n";
+                        if ($this->MultiLine) {
+                            $SendTo .= "\n";
+                        } elseif (substr($ThisLine, $TabLen, 1) !== ' ' && substr($SendTo, -1) !== ' ') {
+                            $SendTo .= ' ';
+                        }
                     }
                     $SendTo .= substr($ThisLine, $TabLen);
                 }
@@ -136,7 +158,7 @@ class YAML
                 if (empty($Key)) {
                     return false;
                 }
-                if (!$this->MultiLine) {
+                if (!$this->MultiLine && !$this->MultiLineFolded) {
                     if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
                         $Arr[$Key] = [];
                     }
@@ -153,7 +175,7 @@ class YAML
             }
         }
         if ($SendTo && !empty($Key)) {
-            if (!$this->MultiLine) {
+            if (!$this->MultiLine && !$this->MultiLineFolded) {
                 if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
                     $Arr[$Key] = [];
                 }
@@ -231,6 +253,7 @@ class YAML
             $Value = false;
         }
         $this->MultiLine = ($Value === '|');
+        $this->MultiLineFolded = ($Value === '>');
         return true;
     }
 
@@ -249,26 +272,32 @@ class YAML
                 $Out .= "---\n";
                 continue;
             }
-            $ThisDepth = str_repeat(' ', $Depth);
+            $ThisDepth = str_repeat($this->Indent, $Depth);
             $Out .= $ThisDepth . ($Sequential ? '-' : $Key . ':');
             if (is_array($Value)) {
                 $Out .= "\n";
                 $this->processInner($Value, $Out, $Depth + 1);
                 continue;
-            } else {
-                $Out .= ' ';
             }
+            $Out .= $this->Indent;
             if ($Value === true) {
                 $Out .= 'true';
             } elseif ($Value === false) {
                 $Out .= 'false';
+            } elseif ($Value === null) {
+                $Out .= 'null';
             } elseif (preg_match('~[^\t\n\r\x20-\x7e\xa0-\xff]~', $Value)) {
                 $Out .= '0x' . strtolower(bin2hex($Value));
             } elseif (strpos($Value, "\n") !== false) {
-                $Value = str_replace("\n", "\n" . $ThisDepth . ' ', $Value);
-                $Out .= "|\n" . $ThisDepth . ' ' . $Value;
+                $Value = str_replace("\n", "\n" . $ThisDepth . $this->Indent, $Value);
+                $Out .= "|\n" . $ThisDepth . $this->Indent . $Value;
             } elseif (is_string($Value)) {
-                $Out .= '"' . $Value . '"';
+                if (strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
+                    $Value = wordwrap($Value, $this->FoldedAt, "\n" . $ThisDepth . $this->Indent);
+                    $Out .= ">\n" . $ThisDepth . $this->Indent . $Value;
+                } else {
+                    $Out .= '"' . $Value . '"';
+                }
             } else {
                 $Out .= $Value;
             }

@@ -26,3 +26,10 @@ Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e2068657829
 Multi-line example: |
  h e l l o - w o r l d
  hello-world
+Example booleans and null:
+ This is true: true
+ This is also true: +
+ This is false: false
+ This is also false: -
+ This is null: null
+ This is also null: ~

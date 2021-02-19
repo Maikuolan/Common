@@ -97,13 +97,13 @@ Base 35: a.hhhh ~ 7b.8q8q
 Base 36: a.i000 ~ 74.9000
 ';
 
-$Actual = '';
-
 $Obj = new \Maikuolan\Common\NumberFormatter();
 
+$Actual = '';
 for ($Obj->Base = 2; $Obj->Base < 37; $Obj->Base++) {
     $Actual .= "\nBase " . $Obj->Base . ': ' . $Obj->format('10.5', 4) . ' ~ ' . $Obj->format('256.25', 4);
 }
+$Actual .= "\n";
 
 if ($Actual !== $Expected) {
     echo 'Test failed: ' . $Case . '().' . PHP_EOL;
@@ -203,11 +203,11 @@ $Expected = '
 ';
 
 $Actual = '';
-
 foreach ($Formats as $Format) {
     $Obj = new \Maikuolan\Common\NumberFormatter($Format);
     $Actual .= "\n`" . $Format . '` | `' . $Obj->format('1234567.89', 2) . '` | `' . $Obj->format('10203040.50607080', 5) . '` | `' . $Obj->format('100.75', 3) . '`';
 }
+$Actual .= "\n";
 
 if ($Actual !== $Expected) {
     echo 'Test failed: ' . $Case . '().' . PHP_EOL;

@@ -39,6 +39,14 @@ $Expected = [
     ],
     'Example hex-encoded data' => 'Hello World (but in hex)',
     'Multi-line example' => "h e l l o - w o r l d\nhello-world",
+    'Example booleans and null' => [
+        'This is true' => true,
+        'This is also true' => true,
+        'This is false' => false,
+        'This is also false' => false,
+        'This is null' => null,
+        'This is also null' => null
+    ],
 ];
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'example.yaml');

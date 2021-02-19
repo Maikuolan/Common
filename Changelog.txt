@@ -20,6 +20,10 @@ found at:
 
 - [2021.01.25; Maikuolan]: Added support for fullwidth numerals.
 
+- [2021.02.19; Maikuolan]: Added support for null values and folded multi-line
+  values to the YAML handler, plus some additional aliases for true and false.
+  Also updated some of the test files.
+
 === Version/Release 1.4.0 ===
 MINOR RELEASE.
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2021.02.19).
+ * YAML handler (last modified: 2021.02.20).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -13,10 +13,8 @@
  * (Maikuolan). Earliest iteration and deployment of "YAML handler" COPYRIGHT
  * 2016 and beyond by Caleb Mazalevskis (Maikuolan).
  *
- * Note: The YAML handler is intended to adequately serve the needs of the
- * packages and projects where it is implemented, but isn't a complete YAML
- * solution, instead supporting the YAML specification only to the bare minimum
- * required by those packages and projects known to implement it.
+ * Note: Some parts of the YAML specification isn't supported by this class.
+ * See the included documentation for more information.
  */
 
 namespace Maikuolan\Common;
@@ -49,6 +47,11 @@ class YAML
     public $FoldedAt = 120;
 
     /**
+     * @var array Used to cache any anchors found in the document.
+     */
+    public $Anchors = [];
+
+    /**
      * Can optionally begin processing data as soon as the object is
      * instantiated, or just instantiate first, and manually make any needed
      * calls afterwards (though the former is recommended over the latter).
@@ -71,6 +74,26 @@ class YAML
      */
     private function normaliseValue(&$Value, $ValueLen, $ValueLow)
     {
+        /** Check for anchors and populate if necessary. */
+        $AnchorMatches = [];
+        if (
+            preg_match('~^&([\dA-Za-z]+) +(.*)$~', $Value, $AnchorMatches) &&
+            isset($AnchorMatches[1], $AnchorMatches[2])
+        ) {
+            $Value = $AnchorMatches[2];
+            $this->Anchors[$AnchorMatches[1]] = $Value;
+            $ValueLen = strlen($Value);
+            $ValueLow = strtolower($Value);
+        } elseif (
+            preg_match('~^\*([\dA-Za-z]+)$~', $Value, $AnchorMatches) &&
+            isset($AnchorMatches[1], $this->Anchors[$AnchorMatches[1]])
+        ) {
+            $Value = $this->Anchors[$AnchorMatches[1]];
+            $ValueLen = strlen($Value);
+            $ValueLow = strtolower($Value);
+        }
+
+        /** Check for string quotes. */
         foreach ([
             ['"', '"', 1],
             ["'", "'", 1],
@@ -85,6 +108,7 @@ class YAML
                 return;
             }
         }
+
         if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
             $Value = true;
         } elseif ($ValueLow === 'false' || $ValueLow === 'n' || $Value === '-') {
@@ -201,7 +225,11 @@ class YAML
      */
     private function processLine(&$ThisLine, &$ThisTab, &$Key, &$Value, array &$Arr)
     {
-        if (substr($ThisLine, -1) === ':' && strpos($ThisLine, ': ') === false) {
+        if ($ThisLine === '---') {
+            $Key = '---';
+            $Value = false;
+            $Arr[$Key] = $Value;
+        } elseif (substr($ThisLine, -1) === ':' && strpos($ThisLine, ': ') === false) {
             $Key = substr($ThisLine, $ThisTab, -1);
             $KeyLen = strlen($Key);
             $KeyLow = strtolower($Key);
@@ -316,5 +344,15 @@ class YAML
         $Out = '';
         $this->processInner($Arr, $Out);
         return $Out . "\n";
+    }
+
+    /**
+     * PHP's magic "__toString" method to act as an alias for "reconstruct".
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->reconstruct($this->Data);
     }
 }

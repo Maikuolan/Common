@@ -24,6 +24,9 @@ found at:
   values to the YAML handler, plus some additional aliases for true and false.
   Also updated some of the test files.
 
+- [2021.02.20; Maikuolan]: Added support for __toString and for anchors to the
+  YAML handler. Also updated some PHPDocs.
+
 === Version/Release 2.4.0 ===
 MINOR RELEASE.
 

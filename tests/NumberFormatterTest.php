@@ -55,8 +55,8 @@ for ($Obj->Base = 2; $Obj->Base < 37; $Obj->Base++) {
 }
 
 if ($Actual !== $Expected) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(12);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
 
 $Expected = '
@@ -105,9 +105,10 @@ for ($Obj->Base = 2; $Obj->Base < 37; $Obj->Base++) {
 }
 $Actual .= "\n";
 
+$ExitCode++;
 if ($Actual !== $Expected) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(13);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
 
 $Formats = [
@@ -209,7 +210,8 @@ foreach ($Formats as $Format) {
 }
 $Actual .= "\n";
 
+$ExitCode++;
 if ($Actual !== $Expected) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(14);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }

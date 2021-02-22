@@ -37,7 +37,7 @@ $Expected = [
             ],
         ],
     ],
-    'Example hex-encoded data' => 'Hello World (but in hex)',
+    'Example hex-encoded data' => "Hello World (but in hex)\0",
     'Multi-line example' => "h e l l o - w o r l d\nhello-world",
     'Example booleans and null' => [
         'This is true' => true,
@@ -47,6 +47,8 @@ $Expected = [
         'This is null' => null,
         'This is also null' => null
     ],
+    'Anchored text push' => 'Some placeholder text.',
+    'Anchored text pull' => 'Some placeholder text.'
 ];
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'example.yaml');
@@ -54,22 +56,24 @@ $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'exa
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 
 if ($Expected !== $Object->Data) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(9);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
 
 $Object = new \Maikuolan\Common\YAML();
 
 $ProcessResult = $Object->process($RawYAML, $Object->Data);
 
+$ExitCode++;
 if ($ProcessResult !== true) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(10);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
 
+$ExitCode++;
 if ($Expected !== $Object->Data) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(11);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
 
 $InvalidYAML = 1000;
@@ -78,12 +82,14 @@ $NoNewLineYAML = "No new end of line";
 
 $Object = new \Maikuolan\Common\YAML();
 
+$ExitCode++;
 if ($Object->process($InvalidYAML, $Object->Data) !== false) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(12);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
 
+$ExitCode++;
 if ($Object->process($NoNewLineYAML, $Object->Data) !== false) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(13);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }

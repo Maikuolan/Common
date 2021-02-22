@@ -27,16 +27,18 @@ $DataFR = [
 $L10N = new \Maikuolan\Common\L10N($DataFR, $DataEN);
 
 if ('Bonjour ! Je m\'appelle Mary Sue.' !== sprintf($L10N->getString('MyName'), 'Mary Sue')) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(4);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
+$ExitCode++;
 if ('Quel est votre nom ?' !== $L10N->getString('YourName')) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(5);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
+$ExitCode++;
 if ('Do you speak English?' !== $L10N->getString('DoYouSpeak')) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(6);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
 
 $DataEN = [
@@ -83,15 +85,17 @@ $ExpectedEN = [
 ];
 
 foreach (range(0, 5) as $Number) {
+    $ExitCode++;
     if ($ExpectedRU[$Number] !== sprintf($L10N->getPlural($Number, 'apples'), $Number)) {
-        echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-        exit(7);
+        echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+        exit($ExitCode);
     }
 }
 
 foreach (range(0, 5) as $Number) {
+    $ExitCode++;
     if ($ExpectedEN[$Number] !== sprintf($L10N->getPlural($Number, 'oranges'), $Number)) {
-        echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-        exit(8);
+        echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+        exit($ExitCode);
     }
 }

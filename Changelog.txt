@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 1.5.0 ===
+MINOR RELEASE.
+
 - [2020.12.07; Maikuolan]: Updated the number formatter to prevent leading
   decimal separators in the absence of representing any whole digits.
 
@@ -26,6 +31,11 @@ found at:
 
 - [2021.02.20; Maikuolan]: Added support for __toString and for anchors to the
   YAML handler. Also updated some PHPDocs.
+
+- [2021.02.22; Maikuolan]: Added tests for the Demojibakefier class.
+
+Caleb M (Maikuolan),
+February 22, 2020.
 
 === Version/Release 1.4.0 ===
 MINOR RELEASE.

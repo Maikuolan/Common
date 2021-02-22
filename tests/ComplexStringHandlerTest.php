@@ -20,9 +20,11 @@ $ComplexStringHandler->iterateClosure(function ($Data) {
 }, true);
 
 if ('(ab) "1" (cd) "2" (ef) "3" (gh) "4" (ij) "5" (kl) "6" (mn) "7" (op) "8" (qr) "9" (st) "10" (uv)' !== $ComplexStringHandler->recompile()) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(2);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }
+
+$ExitCode++;
 
 $ComplexStringHandler = new \Maikuolan\Common\ComplexStringHandler();
 $ComplexStringHandler->Input = $TheString;
@@ -35,6 +37,6 @@ $ComplexStringHandler->iterateClosure(function ($Data) {
 }, true);
 
 if ('(ab) "1" (cd) "2" (ef) "3" (gh) "4" (ij) "5" (kl) "6" (mn) "7" (op) "8" (qr) "9" (st) "10" (uv)' !== $ComplexStringHandler->recompile()) {
-    echo 'Test failed: ' . $Case . '().' . PHP_EOL;
-    exit(3);
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
 }

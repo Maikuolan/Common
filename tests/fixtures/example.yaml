@@ -1,5 +1,3 @@
-# An example YAML file.
-
 String foo: "Bar"
 Integer foo: 1234
 Float foo: 123.4
@@ -22,7 +20,7 @@ Example mixed multi-dimensional array:
   Hello: "World"
   Sub-sub array:
    Foobar: "Barfoo"
-Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e2068657829
+Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e206865782900
 Multi-line example: |
  h e l l o - w o r l d
  hello-world
@@ -33,3 +31,5 @@ Example booleans and null:
  This is also false: -
  This is null: null
  This is also null: ~
+Anchored text push: &TestAnchor Some placeholder text.
+Anchored text pull: *TestAnchor

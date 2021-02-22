@@ -41,7 +41,6 @@ $Reversed = explode("\n", $Demojibakefier->guard($Sample), 2);
 /** Now let's check whether Demojibakefier can reverse it itself. */
 $ExitCode++;
 if ($Reversed[0] !== $TextKO || $Reversed[1] !== $TextZH) {
-    var_dump($Reversed);
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }

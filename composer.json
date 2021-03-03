@@ -5,7 +5,9 @@
     "license": "GPL-2.0-or-later",
     "support": {
         "issues": "https://github.com/Maikuolan/Common/issues",
-        "source": "https://github.com/Maikuolan/Common"
+        "source": "https://github.com/Maikuolan/Common",
+        "docs": "https://github.com/Maikuolan/Common/tree/v1/_docs",
+        "rss": "https://github.com/Maikuolan/Common/releases.atom"
     },
     "require": {
         "php": ">=5.4.0",

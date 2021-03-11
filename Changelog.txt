@@ -11,7 +11,7 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2021.03.11; Maikuolan]: Added some missing return type declarations.
 
 === Version/Release 2.5.0 ===
 MINOR RELEASE.

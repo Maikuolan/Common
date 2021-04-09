@@ -13,6 +13,8 @@ found at:
 
 - [2021.03.11; Maikuolan]: Added some missing return type declarations.
 
+- [2021.04.09; Maikuolan]: Added a new class to the repository, "Operation".
+
 === Version/Release 2.5.0 ===
 MINOR RELEASE.
 

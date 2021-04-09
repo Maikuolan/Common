@@ -11,7 +11,7 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2021.04.09; Maikuolan]: Added a new class to the repository, "Operation".
 
 === Version/Release 1.5.0 ===
 MINOR RELEASE.

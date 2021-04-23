@@ -1,6 +1,6 @@
 <?php
 /**
- * Operation handler (last modified: 2021.04.10).
+ * Operation handler (last modified: 2021.04.23).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -224,6 +224,7 @@ class Operation
         }
         if (is_string($Data)) {
             if (preg_match('~^(?:trim|str(?:tolower|toupper|len))\(\)~i', $Segment)) {
+                $Segment = substr($Segment, 0, -2);
                 $Data = $Segment($Data);
             }
         }

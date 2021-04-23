@@ -15,6 +15,9 @@ found at:
 
 - [2021.04.09; Maikuolan]: Added a new class to the repository, "Operation".
 
+- [2020.04.23; Bug-fix; Maikuolan]: Found a fixed an issue with function calls
+  from the dataTraverse method of the newly added Operation class.
+
 === Version/Release 2.5.0 ===
 MINOR RELEASE.
 

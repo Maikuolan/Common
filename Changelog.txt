@@ -11,12 +11,20 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.6.0 ===
+MINOR RELEASE.
+
 - [2021.03.11; Maikuolan]: Added some missing return type declarations.
 
 - [2021.04.09; Maikuolan]: Added a new class to the repository, "Operation".
 
-- [2020.04.23; Bug-fix; Maikuolan]: Found a fixed an issue with function calls
+- [2021.04.23; Bug-fix; Maikuolan]: Found a fixed an issue with function calls
   from the dataTraverse method of the newly added Operation class.
+
+Caleb M (Maikuolan),
+April 24, 2021.
 
 === Version/Release 2.5.0 ===
 MINOR RELEASE.
@@ -40,7 +48,7 @@ MINOR RELEASE.
 - [2021.02.22; Maikuolan]: Added tests for the Demojibakefier class.
 
 Caleb M (Maikuolan),
-February 22, 2020.
+February 22, 2021.
 
 === Version/Release 2.4.0 ===
 MINOR RELEASE.

@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2020.06.11).
+ * L10N handler (last modified: 2021.05.21).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -104,9 +104,9 @@ class L10N
     private function int3Type3(int $Int): int
     {
         if ($Int === 2) {
-            return 2;
+            return 1;
         }
-        return ($Int === 1) ? 0 : 1;
+        return ($Int === 1) ? 0 : 2;
     }
 
     /** For e.g., Russian, Ukrainian, Bosnian, Croatian, Serbian. */

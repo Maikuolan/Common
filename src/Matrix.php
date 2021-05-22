@@ -141,8 +141,14 @@ class Matrix
                     $Last = -1;
                 }
             }
-            $Indexes[] = ['First' => $First, 'Last' => $Last];
+            $Indexes[] = ['First' => (int)$First, 'Last' => (int)$Last];
             $Dimension++;
+        }
+
+        /** Exception: Number of indexes doesn't match number of dimensions. */
+        if (($IndexCount = count($Indexes)) !== $this->Dimensions) {
+            throw new \Exception(sprintf('iterateCallback() expects %d dimensions, but %d were given', $this->Dimensions, $IndexCount));
+            return;
         }
 
         /** Perform iteration. */
@@ -200,7 +206,6 @@ class Matrix
 
         /** Iterate through ranges. */
         for ($Index['Current'] = $Index['First']; $Index['Current'] <= $Index['Last']; $Index['Current']++) {
-
             /** Guard. */
             if (!isset($Matrix[$Index['Current']])) {
                 continue;
@@ -213,7 +218,6 @@ class Matrix
             $Key = $KeyRoot . (strlen($KeyRoot) ? ',' : '') . $Index['Current'];
 
             if (is_numeric($Index['Current'])) {
-
                 /** Get previous coordinate. */
                 if (isset($Matrix[$Index['Current'] - 1])) {
                     $Previous = &$Matrix[$Index['Current'] - 1];

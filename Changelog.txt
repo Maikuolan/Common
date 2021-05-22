@@ -20,8 +20,8 @@ found at:
   Improved and refactored some of the docblock comments across all classes.
   Added an exception to the Matrix handler for when the number of dimensions
   given to iterateCallback doesn't match the Matrix's number of dimensions.
-  Added tests for the Matrix handler class. Added tests for the Delayed file IO
-  class.
+  Added tests for the matrix handler, the delayed file IO, the events
+  orchestrator, and the request handler classes.
 
 === Version/Release 2.6.0 ===
 MINOR RELEASE.

@@ -127,6 +127,8 @@ class DelayedIO
 
     /**
      * All pending modified files are written at object destruction.
+     *
+     * @return void
      */
     public function __destruct()
     {

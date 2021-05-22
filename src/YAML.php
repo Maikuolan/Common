@@ -63,6 +63,7 @@ class YAML
      * calls afterwards (though the former is recommended over the latter).
      *
      * @param string $In The data to process.
+     * @return void
      */
     public function __construct($In = '')
     {
@@ -77,6 +78,7 @@ class YAML
      * @param string|int|bool $Value The value to be normalised.
      * @param int $ValueLen The length of the value to be normalised.
      * @param string|int|bool $ValueLow The value to be normalised, lowercased.
+     * @return void
      */
     private function normaliseValue(&$Value, $ValueLen, $ValueLow)
     {
@@ -297,6 +299,7 @@ class YAML
      * @param array $Arr The array to reconstruct from.
      * @param string $Out The reconstructed YAML.
      * @param int $Depth The level depth.
+     * @return void
      */
     private function processInner(array $Arr, &$Out, $Depth = 0)
     {

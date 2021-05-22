@@ -21,7 +21,7 @@ if ($Object->Matrix !== [
     exit($ExitCode);
 }
 
-$Object->iterateCallback('0-3,0-3,0-3', function (&$Current, $Key) {
+$Object->iterateCallback('0-2,0-2,0-2', function (&$Current, $Key) {
     $Current = $Key;
 });
 

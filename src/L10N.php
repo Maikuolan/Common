@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2021.05.21).
+ * L10N handler (last modified: 2021.05.22).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -46,6 +46,13 @@ class L10N
      * @var array All relevant fallback L10N data.
      */
     public $Fallback = [];
+
+    /**
+     * @var string The tag/release the version of this file belongs to (might
+     *      be needed by some implementations to ensure compatibility).
+     * @link https://github.com/Maikuolan/Common/tags
+     */
+    const VERSION = '1.6.1';
 
     /** For when there aren't multiple forms. */
     private function int1()

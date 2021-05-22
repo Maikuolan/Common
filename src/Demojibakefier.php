@@ -1,6 +1,6 @@
 <?php
 /**
- * Demojibakefier (last modified: 2021.03.03).
+ * Demojibakefier (last modified: 2021.05.22).
  *
  * Intended to normalise the character encoding of a given string to a
  * preferred character encoding when the given string's byte sequences don't
@@ -49,6 +49,13 @@ class Demojibakefier
 
     /** Some early control characters (w/o tabs, CR, or LF). */
     const CTRL0 = '\x00-\x08\x0b\x0c\x0e-\x1f';
+
+    /**
+     * @var string The tag/release the version of this file belongs to (might
+     *      be needed by some implementations to ensure compatibility).
+     * @link https://github.com/Maikuolan/Common/tags
+     */
+    const VERSION = '1.6.1';
 
     /**
      * @param string $NormaliseTo The encoding to normalise to (defaults to UTF-8).

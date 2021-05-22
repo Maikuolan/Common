@@ -1031,6 +1031,7 @@ class NumberFormatter
     /**
      * @param string $Format Can use this to quickly set commonly used
      *      definitions during object instantiation.
+     * @return void
      */
     public function __construct(string $Format = '')
     {

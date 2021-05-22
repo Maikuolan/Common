@@ -63,6 +63,7 @@ class YAML
      * calls afterwards (though the former is recommended over the latter).
      *
      * @param string $In The data to process.
+     * @return void
      */
     public function __construct(string $In = '')
     {

@@ -172,6 +172,7 @@ class Matrix
      * @param array $Indexes The coordinates to iterate over.
      * @param callable $Callback The callback function to iterate.
      * @param array $Data Other data optionally passed to the callback.
+     * @return \Generator
      */
     private function iterateCallbackGenerator(array $Indexes, callable $Callback, array $Data): \Generator
     {
@@ -187,6 +188,7 @@ class Matrix
      * @param string $KeyRoot Need to supply the correct key for return values.
      * @param callable $Callback The callback function to iterate.
      * @param array $Data Other data optionally passed to the callback.
+     * @return \Generator
      */
     private function iterateCallbackGeneratorInner(array &$Matrix, array &$Indexes, int $Depth, string $KeyRoot = '', callable $Callback, array $Data): \Generator
     {

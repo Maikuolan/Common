@@ -43,6 +43,7 @@ class ComplexStringHandler
      * @param string $Data The data supplied to the class at object instantiation.
      * @param string $Pattern An optional pattern to immediately call $this->generateMarkers.
      * @param callable $Closure An optional closure to immediately call $this->iterateClosure.
+     * @return void
      */
     public function __construct(string $Data = '', string $Pattern = '', callable $Closure = null)
     {

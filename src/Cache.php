@@ -166,6 +166,7 @@ class Cache
      * Construct object and set working data if needed.
      *
      * @param array|null $WorkingData An optional array of default cache data.
+     * @return void
      */
     public function __construct(array $WorkingData = null)
     {
@@ -176,6 +177,8 @@ class Cache
 
     /**
      * Object destructor. Used to close any open connections, save cache to disk, etc.
+     *
+     * @return void
      */
     public function __destruct()
     {
@@ -761,6 +764,7 @@ class Cache
      *
      * @param string $Key The key to check. Transforms the key if it doesn't
      *      conform; Does nothing otherwise.
+     * @return void
      */
     private function enforceKeyLimit(string &$Key)
     {

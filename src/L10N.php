@@ -538,10 +538,7 @@ class L10N
         } else {
             $Choice = 0;
         }
-        if (isset($Choices[$Choice])) {
-            return $Choices[$Choice];
-        }
-        return isset($Choices[0]) ? $Choices[0] : '';
+        return $Choices[$Choice] ?? $Choices[0] ?? '';
     }
 
     /**
@@ -558,7 +555,7 @@ class L10N
         if ($this->Fallback instanceof \Maikuolan\Common\L10N) {
             return $this->Fallback->getString($String);
         }
-        return isset($this->Fallback[$String]) ? $this->Fallback[$String] : '';
+        return $this->Fallback[$String] ?? '';
     }
 
     /**

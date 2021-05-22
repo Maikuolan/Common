@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.6.1 ===
+PATCH RELEASE.
+
 - [2021.05.21; Maikuolan]: Adjusted the ints returned by L10N's int3Type3 so
   they'd make more sense. Added some more languages to L10N's rules
   documentation.
@@ -22,6 +27,9 @@ found at:
   given to iterateCallback doesn't match the Matrix's number of dimensions.
   Added tests for the matrix handler, the delayed file IO, the events
   orchestrator, and the request handler classes.
+
+Caleb M (Maikuolan),
+May 22, 2021.
 
 === Version/Release 2.6.0 ===
 MINOR RELEASE.

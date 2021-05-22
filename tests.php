@@ -21,7 +21,7 @@ $TestsDir = __DIR__ . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR;
 $ClassesDir = __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
 
 // Run tests.
-foreach (['ComplexStringHandler', 'Demojibakefier', 'L10N', 'NumberFormatter', 'Operation', 'YAML'] as $Case) {
+foreach (['ComplexStringHandler', 'Demojibakefier', 'L10N', 'Matrix', 'NumberFormatter', 'Operation', 'YAML'] as $Case) {
     if (!is_readable($ClassesDir . $Case . '.php') || !is_readable($TestsDir . $Case . 'Test.php')) {
         echo $Case . '.php is not readable.' . PHP_EOL;
         exit(1);

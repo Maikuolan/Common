@@ -15,6 +15,9 @@ found at:
   they'd make more sense. Added some more languages to L10N's rules
   documentation.
 
+- [2021.05.22; Maikuolan]: Added a public version constant to all classes,
+  since it might be needed by some implementations to ensure compatibility.
+
 === Version/Release 2.6.0 ===
 MINOR RELEASE.
 

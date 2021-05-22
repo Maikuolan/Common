@@ -1,6 +1,6 @@
 <?php
 /**
- * A simple, unified cache handler (last modified: 2021.03.03).
+ * A simple, unified cache handler (last modified: 2021.05.22).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -154,6 +154,13 @@ class Cache
      * @link https://github.com/memcached/memcached/blob/master/memcached.h#L56
      */
     public const KEY_SIZE_LIMIT = 128;
+
+    /**
+     * @var string The tag/release the version of this file belongs to (might
+     *      be needed by some implementations to ensure compatibility).
+     * @link https://github.com/Maikuolan/Common/tags
+     */
+    public const VERSION = '2.6.1';
 
     /**
      * Construct object and set working data if needed.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2021.01.25).
+ * Number formatter (last modified: 2021.05.22).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1020,6 +1020,13 @@ class NumberFormatter
         'y' => '34',
         'z' => '35'
     ];
+
+    /**
+     * @var string The tag/release the version of this file belongs to (might
+     *      be needed by some implementations to ensure compatibility).
+     * @link https://github.com/Maikuolan/Common/tags
+     */
+    public const VERSION = '2.6.1';
 
     /**
      * @param string $Format Can use this to quickly set commonly used

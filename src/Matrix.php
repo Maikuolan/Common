@@ -1,6 +1,6 @@
 <?php
 /**
- * Matrix handler (last modified: 2021.04.05).
+ * Matrix handler (last modified: 2021.05.22).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -36,6 +36,13 @@ class Matrix
      * @var mixed The default data to be used to populate each coordinate.
      */
     public $Data = [];
+
+    /**
+     * @var string The tag/release the version of this file belongs to (might
+     *      be needed by some implementations to ensure compatibility).
+     * @link https://github.com/Maikuolan/Common/tags
+     */
+    public const VERSION = '2.6.1';
 
     /**
      * Create the matrix.

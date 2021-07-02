@@ -13,6 +13,15 @@ found at:
 
 (none)
 
+=== Version/Release 2.6.2 ===
+PATCH RELEASE.
+
+- [2021.07.02; Maikuolan]: Allow dots to be escaped for dataTraverse in the
+  operation handler.
+
+Caleb M (Maikuolan),
+July 2, 2021.
+
 === Version/Release 2.6.1 ===
 PATCH RELEASE.
 

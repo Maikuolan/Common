@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2021.07.02).
+ * YAML handler (last modified: 2021.07.10).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -137,6 +137,8 @@ class YAML
     }
 
     /**
+     * Process YAML data.
+     *
      * @param string $In The data to be processed.
      * @param array $Arr Where to store the processed data.
      * @param int $Depth Tab depth (inherited through recursion; ignore it).

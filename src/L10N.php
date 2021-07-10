@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2021.07.02).
+ * L10N handler (last modified: 2021.07.10).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -559,8 +559,11 @@ class L10N
     }
 
     /**
+     * Constructor.
+     *
      * @param array $Data The L10N data.
      * @param array|\Maikuolan\Common\L10N $Fallback The fallback L10N data (optional).
+     * @return void
      */
     public function __construct(array $Data = [], $Fallback = [])
     {

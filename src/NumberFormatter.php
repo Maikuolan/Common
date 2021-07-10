@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2021.07.02).
+ * Number formatter (last modified: 2021.07.10).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1029,6 +1029,8 @@ class NumberFormatter
     const VERSION = '1.6.2';
 
     /**
+     * Constructor.
+     *
      * @param string $Format Can use this to quickly set commonly used
      *      definitions during object instantiation.
      * @return void

@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2021.07.10).
+ * YAML handler (last modified: 2021.08.25).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -24,6 +24,11 @@ class YAML
      * @var array An array to contain all the data processed by the handler.
      */
     public $Data = [];
+
+    /**
+     * @var array Used as a data source for inline variables.
+     */
+    public $Refs = [];
 
     /**
      * @var bool Whether to render multi-line values.
@@ -55,12 +60,12 @@ class YAML
      *      be needed by some implementations to ensure compatibility).
      * @link https://github.com/Maikuolan/Common/tags
      */
-    const VERSION = '1.6.2';
+    const VERSION = '1.7.0';
 
     /**
      * Can optionally begin processing data as soon as the object is
      * instantiated, or just instantiate first, and manually make any needed
-     * calls afterwards (though the former is recommended over the latter).
+     * calls afterwards if preferred.
      *
      * @param string $In The data to process.
      * @return void
@@ -68,7 +73,7 @@ class YAML
     public function __construct($In = '')
     {
         if ($In) {
-            $this->process($In, $this->Data);
+            $this->process($In, $this->Data, 0, true);
         }
     }
 
@@ -97,6 +102,21 @@ class YAML
             isset($AnchorMatches[1], $this->Anchors[$AnchorMatches[1]])
         ) {
             $Value = $this->Anchors[$AnchorMatches[1]];
+            $ValueLen = strlen($Value);
+            $ValueLow = strtolower($Value);
+        }
+
+        /** Check for inline variables. */
+        if (
+            preg_match_all('~\{\{ ?([.\dA-Z_a-z]+) ?\}\}~', $Value, $VarMatches) &&
+            isset($VarMatches[0][0], $VarMatches[1][0])
+        ) {
+            $MatchCount = count($VarMatches[0]);
+            for ($Index = 0; $Index < $MatchCount; $Index++) {
+                if (($Extracted = $this->dataTraverse($this->Refs, $VarMatches[1][$Index])) && is_string($Extracted)) {
+                    $Value = str_replace($VarMatches[0][$Index], $Extracted, $Value);
+                }
+            }
             $ValueLen = strlen($Value);
             $ValueLow = strtolower($Value);
         }
@@ -142,12 +162,16 @@ class YAML
      * @param string $In The data to be processed.
      * @param array $Arr Where to store the processed data.
      * @param int $Depth Tab depth (inherited through recursion; ignore it).
+     * @param bool $Refs Whether to set refs for inline variables.
      * @return bool True when entire process completes successfully. False to exit early.
      */
-    public function process($In, array &$Arr, $Depth = 0)
+    public function process($In, array &$Arr, $Depth = 0, $Refs = false)
     {
         if (!is_string($In) || strpos($In, "\n") === false) {
             return false;
+        }
+        if ($Refs) {
+            $this->Refs = &$Arr;
         }
         if ($Depth === 0) {
             $this->MultiLine = false;
@@ -365,5 +389,28 @@ class YAML
     public function __toString()
     {
         return $this->reconstruct($this->Data);
+    }
+
+    /**
+     * Traverse data path.
+     *
+     * @param mixed $Data The data to traverse.
+     * @param string|array $Path The path to traverse.
+     * @return mixed The traversed data, or an empty string on failure.
+     */
+    public function dataTraverse(&$Data, $Path = [])
+    {
+        if (!is_array($Path)) {
+            $Path = preg_split('~(?<!\\\)\.~', $Path) ?: [];
+        }
+        $Segment = array_shift($Path);
+        if ($Segment === null || strlen($Segment) === 0) {
+            return is_scalar($Data) ? $Data : '';
+        }
+        $Segment = str_replace('\.', '.', $Segment);
+        if (is_array($Data)) {
+            return isset($Data[$Segment]) ? $this->dataTraverse($Data[$Segment], $Path) : '';
+        }
+        return $this->dataTraverse($Data, $Path);
     }
 }

@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2021.08.25; Maikuolan]: Inline variables (similar to as is done with
+  Ansible) can now be used in data for the YAML handler.
 
 === Version/Release 2.6.2 ===
 PATCH RELEASE.

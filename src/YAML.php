@@ -81,11 +81,9 @@ class YAML
      * Normalises the values defined by the processLine method.
      *
      * @param string|int|bool $Value The value to be normalised.
-     * @param int $ValueLen The length of the value to be normalised.
-     * @param string|int|bool $ValueLow The value to be normalised, lowercased.
      * @return void
      */
-    private function normaliseValue(&$Value, $ValueLen, $ValueLow)
+    private function normaliseValue(&$Value)
     {
         /** Check for anchors and populate if necessary. */
         $AnchorMatches = [];
@@ -95,31 +93,18 @@ class YAML
         ) {
             $Value = $AnchorMatches[2];
             $this->Anchors[$AnchorMatches[1]] = $Value;
-            $ValueLen = strlen($Value);
-            $ValueLow = strtolower($Value);
         } elseif (
             preg_match('~^\*([\dA-Za-z]+)$~', $Value, $AnchorMatches) &&
             isset($AnchorMatches[1], $this->Anchors[$AnchorMatches[1]])
         ) {
             $Value = $this->Anchors[$AnchorMatches[1]];
-            $ValueLen = strlen($Value);
-            $ValueLow = strtolower($Value);
         }
 
         /** Check for inline variables. */
-        if (
-            preg_match_all('~\{\{ ?([.\dA-Z_a-z]+) ?\}\}~', $Value, $VarMatches) &&
-            isset($VarMatches[0][0], $VarMatches[1][0])
-        ) {
-            $MatchCount = count($VarMatches[0]);
-            for ($Index = 0; $Index < $MatchCount; $Index++) {
-                if (($Extracted = $this->dataTraverse($this->Refs, $VarMatches[1][$Index])) && is_string($Extracted)) {
-                    $Value = str_replace($VarMatches[0][$Index], $Extracted, $Value);
-                }
-            }
-            $ValueLen = strlen($Value);
-            $ValueLow = strtolower($Value);
-        }
+        $this->tryStringDataTraverseByRef($Value);
+
+        $ValueLen = strlen($Value);
+        $ValueLow = strtolower($Value);
 
         /** Check for string quotes. */
         foreach ([
@@ -224,6 +209,7 @@ class YAML
                         return false;
                     }
                 } else {
+                    $this->tryStringDataTraverseByRef($SendTo);
                     $Arr[$Key] = $SendTo;
                 }
                 $SendTo = '';
@@ -241,6 +227,7 @@ class YAML
                     return false;
                 }
             } else {
+                $this->tryStringDataTraverseByRef($SendTo);
                 $Arr[$Key] = $SendTo;
             }
         }
@@ -265,9 +252,7 @@ class YAML
             $Arr[$Key] = $Value;
         } elseif (substr($ThisLine, -1) === ':' && strpos($ThisLine, ': ') === false) {
             $Key = substr($ThisLine, $ThisTab, -1);
-            $KeyLen = strlen($Key);
-            $KeyLow = strtolower($Key);
-            $this->normaliseValue($Key, $KeyLen, $KeyLow);
+            $this->normaliseValue($Key);
             if (!isset($Arr[$Key])) {
                 $Arr[$Key] = false;
             }
@@ -275,16 +260,14 @@ class YAML
         } elseif (substr($ThisLine, $ThisTab, 2) === '- ') {
             $Value = substr($ThisLine, $ThisTab + 2);
             $ValueLen = strlen($Value);
-            $ValueLow = strtolower($Value);
-            $this->normaliseValue($Value, $ValueLen, $ValueLow);
+            $this->normaliseValue($Value);
             if ($ValueLen > 0) {
                 $Arr[] = $Value;
             }
         } elseif (($DelPos = strpos($ThisLine, ': ')) !== false) {
             $Key = substr($ThisLine, $ThisTab, $DelPos - $ThisTab);
             $KeyLen = strlen($Key);
-            $KeyLow = strtolower($Key);
-            $this->normaliseValue($Key, $KeyLen, $KeyLow);
+            $this->normaliseValue($Key);
             if (!$Key) {
                 if (substr($ThisLine, $ThisTab, $DelPos - $ThisTab + 2) !== '0: ') {
                     return false;
@@ -293,8 +276,7 @@ class YAML
             }
             $Value = substr($ThisLine, $ThisTab + $KeyLen + 2);
             $ValueLen = strlen($Value);
-            $ValueLow = strtolower($Value);
-            $this->normaliseValue($Value, $ValueLen, $ValueLow);
+            $this->normaliseValue($Value);
             if ($ValueLen > 0) {
                 $Arr[$Key] = $Value;
             }
@@ -306,9 +288,7 @@ class YAML
             $Value = false;
         } elseif (strpos($ThisLine, ':') === false && strlen($ThisLine) > 1) {
             $Key = $ThisLine;
-            $KeyLen = strlen($Key);
-            $KeyLow = strtolower($Key);
-            $this->normaliseValue($Key, $KeyLen, $KeyLow);
+            $this->normaliseValue($Key);
             if (!isset($Arr[$Key])) {
                 $Arr[$Key] = false;
             }
@@ -412,5 +392,29 @@ class YAML
             return isset($Data[$Segment]) ? $this->dataTraverse($Data[$Segment], $Path) : '';
         }
         return $this->dataTraverse($Data, $Path);
+    }
+
+    /**
+     * Attempt string data path traverse by reference.
+     *
+     * @param mixed $Data The data to traverse.
+     * @return void
+     */
+    public function tryStringDataTraverseByRef(&$Data)
+    {
+        if (
+            empty($this->Refs) ||
+            !is_string($Data) ||
+            !preg_match_all('~\{\{ ?([.\dA-Z_a-z]+) ?\}\}~', $Data, $VarMatches) ||
+            !isset($VarMatches[0][0], $VarMatches[1][0])
+        ) {
+            return;
+        }
+        $MatchCount = count($VarMatches[0]);
+        for ($Index = 0; $Index < $MatchCount; $Index++) {
+            if (($Extracted = $this->dataTraverse($this->Refs, $VarMatches[1][$Index])) && is_string($Extracted)) {
+                $Data = str_replace($VarMatches[0][$Index], $Extracted, $Data);
+            }
+        }
     }
 }

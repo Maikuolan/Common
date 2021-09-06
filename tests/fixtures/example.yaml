@@ -1,3 +1,7 @@
+Deep outermost:
+ Deep outer:
+  Deep inner:
+   Deep innermost: "Thus, from here, within this variable, a value is inserted"
 String foo: "Bar"
 Integer foo: 1234
 Float foo: 123.4
@@ -33,3 +37,4 @@ Example booleans and null:
  This is also null: ~
 Anchored text push: &TestAnchor Some placeholder text.
 Anchored text pull: *TestAnchor
+Inserts test: "Hello world; {{Deep outermost.Deep outer.Deep inner.Deep innermost}}; It should work, hopefully."

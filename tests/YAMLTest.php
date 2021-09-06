@@ -68,8 +68,8 @@ if ($Expected !== $Object->Data) {
 }
 
 $Object = new \Maikuolan\Common\YAML();
-$ProcessResult = $Object->process($RawYAML, $Object->Data);
 $Object->Refs = &$Object->Data;
+$ProcessResult = $Object->process($RawYAML, $Object->Data);
 $ExitCode++;
 if ($ProcessResult !== true) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;

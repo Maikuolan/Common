@@ -10,6 +10,13 @@
 require $ClassesDir . $Case . '.php';
 
 $Expected = [
+    'Deep outermost' => [
+        'Deep outer' => [
+            'Deep inner' => [
+                'Deep innermost' => 'Thus, from here, within this variable, a value is inserted'
+            ]
+        ]
+    ],
     'String foo' => 'Bar',
     'Integer foo' => 1234,
     'Float foo' => 123.4,
@@ -17,13 +24,13 @@ $Expected = [
         0 => 'Bar1',
         1 => 'Bar2',
         2 => 'Bar3',
-        3 => 'Bar4',
+        3 => 'Bar4'
     ],
     'Example associative array' => [
         'Foo1' => 'Bar1',
         'Foo2' => 'Bar2',
         'Foo3' => 'Bar3',
-        'Foo4' => 'Bar4',
+        'Foo4' => 'Bar4'
     ],
     'Example mixed multi-dimensional array' => [
         0 => 'Bar1',
@@ -33,9 +40,9 @@ $Expected = [
         'Sub array' => [
             'Hello' => 'World',
             'Sub-sub array' => [
-                'Foobar' => 'Barfoo',
-            ],
-        ],
+                'Foobar' => 'Barfoo'
+            ]
+        ]
     ],
     'Example hex-encoded data' => "Hello World (but in hex)\0",
     'Multi-line example' => "h e l l o - w o r l d\nhello-world",
@@ -48,7 +55,8 @@ $Expected = [
         'This is also null' => null
     ],
     'Anchored text push' => 'Some placeholder text.',
-    'Anchored text pull' => 'Some placeholder text.'
+    'Anchored text pull' => 'Some placeholder text.',
+    'Inserts test' => 'Hello world; Thus, from here, within this variable, a value is inserted; It should work, hopefully.'
 ];
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'example.yaml');

@@ -107,7 +107,8 @@ class YAML
         if (substr($Value, 0, 1) === '[' && substr($Value, -1) === ']') {
             $Value = explode(',', substr($Value, 1, -1));
             foreach ($Value as &$ThisValue) {
-                $this->normaliseValue(trim($ThisValue));
+                $ThisValue = trim($ThisValue);
+                $this->normaliseValue($ThisValue);
             }
             return;
         }

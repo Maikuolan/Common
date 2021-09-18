@@ -56,7 +56,8 @@ $Expected = [
     ],
     'Anchored text push' => 'Some placeholder text.',
     'Anchored text pull' => 'Some placeholder text.',
-    'Inserts test' => 'Hello world; Thus, from here, within this variable, a value is inserted; It should work, hopefully.'
+    'Inserts test' => 'Hello world; Thus, from here, within this variable, a value is inserted; It should work, hopefully.',
+    'Inline array example' => ['this', 'is', 'a', 'test.', 'Foo', 'Bar', true, false, 123]
 ];
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'example.yaml');

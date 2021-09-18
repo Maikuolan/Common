@@ -14,6 +14,8 @@ found at:
 - [2021.08.25; Maikuolan]: Inline variables (similar to as is done with
   Ansible) can now be used in data for the YAML handler.
 
+- [2021.09.18; Maikuolan]: The YAML handler now supports inline arrays.
+
 === Version/Release 1.6.2 ===
 PATCH RELEASE.
 

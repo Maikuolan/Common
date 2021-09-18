@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2021.09.06).
+ * YAML handler (last modified: 2021.09.18).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -102,6 +102,15 @@ class YAML
 
         /** Check for inline variables. */
         $this->tryStringDataTraverseByRef($Value);
+
+        /** Check for inline arrays. */
+        if (substr($Value, 0, 1) === '[' && substr($Value, -1) === ']') {
+            $Value = explode(',', substr($Value, 1, -1));
+            foreach ($Value as &$ThisValue) {
+                $this->normaliseValue($ThisValue);
+            }
+            return;
+        }
 
         $ValueLen = strlen($Value);
         $ValueLow = strtolower($Value);

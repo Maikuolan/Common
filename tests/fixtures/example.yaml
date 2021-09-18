@@ -38,3 +38,4 @@ Example booleans and null:
 Anchored text push: &TestAnchor Some placeholder text.
 Anchored text pull: *TestAnchor
 Inserts test: "Hello world; {{Deep outermost.Deep outer.Deep inner.Deep innermost}}; It should work, hopefully."
+Inline array example: [this, is, a, test., "Foo", "Bar", true, false, 123]

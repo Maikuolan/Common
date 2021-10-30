@@ -1,6 +1,6 @@
 <?php
 /**
- * Complex string handler (last modified: 2021.07.10).
+ * Complex string handler (last modified: 2021.10.30).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -37,7 +37,7 @@ class ComplexStringHandler
      *      be needed by some implementations to ensure compatibility).
      * @link https://github.com/Maikuolan/Common/tags
      */
-    public const VERSION = '2.6.2';
+    public const VERSION = '2.7.0';
 
     /**
      * Constructor.
@@ -58,6 +58,16 @@ class ComplexStringHandler
                 }
             }
         }
+    }
+
+    /**
+     * PHP's magic "__toString" method to act as an alias for "recompile".
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->recompile();
     }
 
     /**
@@ -123,15 +133,5 @@ class ComplexStringHandler
             }
         }
         return $Output;
-    }
-
-    /**
-     * PHP's magic "__toString" method to act as an alias for "recompile".
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->recompile();
     }
 }

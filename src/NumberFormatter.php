@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2021.07.10).
+ * Number formatter (last modified: 2021.08.25).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1026,7 +1026,7 @@ class NumberFormatter
      *      be needed by some implementations to ensure compatibility).
      * @link https://github.com/Maikuolan/Common/tags
      */
-    public const VERSION = '2.6.2';
+    public const VERSION = '2.7.0';
 
     /**
      * Constructor.

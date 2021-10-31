@@ -12,6 +12,7 @@ Let's start with an example. CIDRAM leverages the Cache class via the `Initialis
 ```PHP
     /** Create new cache object. */
     $CIDRAM['Cache'] = new \Maikuolan\Common\Cache();
+    $CIDRAM['Cache']->Prefix = $CIDRAM['Config']['supplementary_cache_options']['prefix'];
     $CIDRAM['Cache']->EnableAPCu = $CIDRAM['Config']['supplementary_cache_options']['enable_apcu'];
     $CIDRAM['Cache']->EnableMemcached = $CIDRAM['Config']['supplementary_cache_options']['enable_memcached'];
     $CIDRAM['Cache']->EnableRedis = $CIDRAM['Config']['supplementary_cache_options']['enable_redis'];
@@ -27,6 +28,7 @@ Let's start with an example. CIDRAM leverages the Cache class via the `Initialis
     $CIDRAM['Cache']->FFDefault = $CIDRAM['Vault'] . 'cache.dat';
 
     if (!$CIDRAM['Cache']->connect()) {
+        $CIDRAM['Events']->fireEvent('final');
         if ($CIDRAM['Cache']->Using === 'FF') {
             header('Content-Type: text/plain');
             die('[CIDRAM] ' . $CIDRAM['L10N']->getString('Error_WriteCache'));
@@ -58,6 +60,7 @@ Note: If you want the instance to store and fetch cache items internally, within
 After creating an instance of Cache, before leveraging any of its methods, we should configure it. The excerpt below is provided as an example (the actual values used in the excerpt are the default values for the instance members the values are being assigned to, and therefore have no effect in this particular example; they're optional too, and so, any that aren't likely to ever be needed by the implementation can effectively be omitted and ignored).
 
 ```PHP
+$Instance->Prefix = ''; // String (optional; when populated, prepends this value to the keys for all entries).
 $Instance->EnableAPCu = false; // Boolean (whether to try using APCu).
 $Instance->EnableMemcached = false; // Boolean (whether to try using Memcached).
 $Instance->EnableRedis = false; // Boolean (whether to try using Redis).
@@ -261,4 +264,4 @@ public function exposeWorkingDataArray();
 ---
 
 
-Last Updated: 4 November 2019 (2019.11.04).
+Last Updated: 31 October 2021 (2021.10.31).

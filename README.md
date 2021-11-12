@@ -52,17 +52,17 @@ Please use the issues page of this repository.
 
 ### Current major version development status:
 
-⬇Stage reached⬇ ➡Major version➡ | v1-v2
+Development stage | Major versions
 :--|:-:
-Pre-Alpha<em><br />- Exploring early concepts/ideas. No code written/available yet.</em> | ✔
-Alpha<em><br />- Branched, but unstable. Not production-ready (high risk if used).</em> | ✔
-Beta<em><br />- Branched, but unstable. Not production-ready (low risk if used).</em> | ✔
-Stable<em><br />- First production-ready version has been tagged/released.</em> | ✔
-Mature<em><br />- Multiple stable versions/releases exist.</em> | ✔
-Locked<em><br />- Still maintained, but new features won't be implemented anymore.</em> |
-EoL/Dead<em><br />- Not maintained anymore. If possible, stop using, and update ASAP.</em> |
+__Stage 1/7: Pre-Alpha__<em><br />- Exploring early concepts/ideas. No code written/available yet.</em> |
+__Stage 2/7: Alpha__<em><br />- Branched, but unstable. Not production-ready (high risk if used).</em> |
+__Stage 3/7: Beta__<em><br />- Branched, but unstable. Not production-ready (low risk if used).</em> |
+__Stage 4/7: Stable__<em><br />- First production-ready version has been tagged/released. Actively maintained.</em> |
+__Stage 5/7: Mature__<em><br />- Multiple stable versions/releases exist. Actively maintained.</em> | __v1~v2__<em><br />Everything here. No other major versions exist yet.</em>
+__Stage 6/7: Locked__<em><br />- Still maintained (security, etc), but new features won't be implemented anymore.</em> |
+__Stage 7/7: EoL/Dead__<em><br />- Not maintained anymore, and support not guaranteed. If possible, stop using, and update ASAP.</em> |
 
 ---
 
 
-Last Updated: 19 April 2021 (2021.04.19).
+Last Updated: 12 November 2021 (2021.11.12).

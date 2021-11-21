@@ -1,5 +1,5 @@
-[![v1: PHP >= 5.4.0](https://img.shields.io/badge/v1-PHP%20%3E%3D%205.4.0-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
-[![v2: PHP >= 7.2.0](https://img.shields.io/badge/v2-PHP%20%3E%3D%207.2.0-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
+[![v1: PHP >= 5.4](https://img.shields.io/badge/v1-PHP%20%3E%3D%205.4-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
+[![v2: PHP >= 7.2](https://img.shields.io/badge/v2-PHP%20%3E%3D%207.2-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 ## Common Classes Package.
@@ -51,19 +51,4 @@ Please use the issues page of this repository.
 ---
 
 
-### Current major version development status:
-
-Development stage | Major versions
-:--|:-:
-__Stage 1/7: Pre-Alpha__<em><br />- Exploring early concepts/ideas. No code written/available yet.</em> |
-__Stage 2/7: Alpha__<em><br />- Branched, but unstable. Not production-ready (high risk if used).</em> |
-__Stage 3/7: Beta__<em><br />- Branched, but unstable. Not production-ready (low risk if used).</em> |
-__Stage 4/7: Stable__<em><br />- First production-ready version has been tagged/released. Actively maintained.</em> |
-__Stage 5/7: Mature__<em><br />- Multiple stable versions/releases exist. Actively maintained.</em> | __v1~v2__<em><br />Everything here. No other major versions exist yet.</em>
-__Stage 6/7: Locked__<em><br />- Still maintained (security, etc), but new features won't be implemented anymore.</em> |
-__Stage 7/7: EoL/Dead__<em><br />- Not maintained anymore, and support not guaranteed. If possible, stop using, and update ASAP.</em> |
-
----
-
-
-Last Updated: 12 November 2021 (2021.11.12).
+Last Updated: 21 November 2021 (2021.11.21).

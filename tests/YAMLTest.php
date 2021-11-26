@@ -46,6 +46,7 @@ $Expected = [
     ],
     'Example hex-encoded data' => "Hello World (but in hex)\0",
     'Multi-line example' => "h e l l o - w o r l d\nhello-world",
+    'Folded multi-line example' => 'Hello world. This is an example.',
     'Example booleans and null' => [
         'This is true' => true,
         'This is also true' => true,

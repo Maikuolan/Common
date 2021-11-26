@@ -7,13 +7,17 @@
 
 ### How to use:
 
-The YAML class can process YAML data either during instantiation, or after instantiation. If you specifically need to validate YAML data, without necessarily needing to actually work with it, or if you need to run tests using the YAML class, it's better to have the class process YAML data after instantiation. Otherwise, if you just need to process YAML data in order to work with it, and don't necessarily need to validate anything and don't necessarily need to run any tests, it's better to have the class process YAML data during instantiation.
+The YAML class can process YAML data either during or after instantiation. Which of the two strategies is best to use will depend on the exact needs and purpose of your implementation.
 
 Assuming an example YAML file as follows:
 
 ```YAML
 # An example YAML file.
 
+Deep outermost:
+ Deep outer:
+  Deep inner:
+   Deep innermost: "Thus, from here, within this variable, a value is inserted"
 String foo: "Bar"
 Integer foo: 1234
 Float foo: 123.4
@@ -36,7 +40,7 @@ Example mixed multi-dimensional array:
   Hello: "World"
   Sub-sub array:
    Foobar: "Barfoo"
-Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e2068657829
+Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e206865782900
 Multi-line example: |
  h e l l o - w o r l d
  :_   _      _ _         _    _            _     _
@@ -45,6 +49,25 @@ Multi-line example: |
  |  _  |/ _ \ | |/ _ \  | |/\| |/ _ \| '__| |/ _` |
  | | | |  __/ | | (_) | \  /\  / (_) | |  | | (_| |
  \_| |_/\___|_|_|\___/   \/  \/ \___/|_|  |_|\__,_|
+Folded multi-line example: >
+ Hello
+ world.
+ This
+ is
+ an
+ example.
+Example booleans and null:
+ This is true: true
+ This is also true: +
+ This is false: false
+ This is also false: -
+ This is null: null
+ This is also null: ~
+Anchored text push: &TestAnchor Some placeholder text.
+Anchored text pull: *TestAnchor
+Inserts test: "Hello world; {{Deep outermost.Deep outer.Deep inner.Deep innermost}}; It should work, hopefully."
+Inline array example: [this, is, a, test., "Foo", "Bar", true, false, 123]
+
 # Anyway, I think you get the idea...
 ```
 
@@ -58,7 +81,7 @@ $RawYAML = file_get_contents(__DIR__ . '/example.yaml');
 // Then, we'll instantiate the new YAML object.
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 
-// The actual processed data will be contained by the public member "Data". We'll var_dump it to show its contents.
+// The actual processed data will be contained by the public member "Data". We'll use var_dump to show its contents.
 var_dump($Object->Data);
 ```
 
@@ -75,14 +98,25 @@ $Object = new \Maikuolan\Common\YAML();
 // Now, to process the raw YAML data.
 $Object->process($RawYAML, $Object->Data);
 
-// The actual processed data will be contained by the public member "Data". We'll var_dump it to show its contents.
+// The actual processed data will be contained by the public member "Data". We'll use var_dump to show its contents.
 var_dump($Object->Data);
 ```
 
 In both cases, the expected output (which should be the same):
 
 ```
-array(8) {
+array(15) {
+  ["Deep outermost"]=>
+  array(1) {
+    ["Deep outer"]=>
+    array(1) {
+      ["Deep inner"]=>
+      array(1) {
+        ["Deep innermost"]=>
+        string(58) "Thus, from here, within this variable, a value is inserted"
+      }
+    }
+  }
   ["String foo"]=>
   string(3) "Bar"
   ["Integer foo"]=>
@@ -133,7 +167,7 @@ array(8) {
     }
   }
   ["Example hex-encoded data"]=>
-  string(24) "Hello World (but in hex)"
+  string(25) "Hello World (but in hex) "
   ["Multi-line example"]=>
   string(326) "h e l l o - w o r l d
 :_   _      _ _         _    _            _     _
@@ -142,27 +176,73 @@ array(8) {
 |  _  |/ _ \ | |/ _ \  | |/\| |/ _ \| '__| |/ _` |
 | | | |  __/ | | (_) | \  /\  / (_) | |  | | (_| |
 \_| |_/\___|_|_|\___/   \/  \/ \___/|_|  |_|\__,_|"
+  ["Folded multi-line example"]=>
+  string(32) "Hello world. This is an example."
+  ["Example booleans and null"]=>
+  array(6) {
+    ["This is true"]=>
+    bool(true)
+    ["This is also true"]=>
+    bool(true)
+    ["This is false"]=>
+    bool(false)
+    ["This is also false"]=>
+    bool(false)
+    ["This is null"]=>
+    NULL
+    ["This is also null"]=>
+    NULL
+  }
+  ["Anchored text push"]=>
+  string(22) "Some placeholder text."
+  ["Anchored text pull"]=>
+  string(22) "Some placeholder text."
+  ["Inserts test"]=>
+  string(99) "Hello world; Thus, from here, within this variable, a value is inserted; It should work, hopefully."
+  ["Inline array example"]=>
+  array(9) {
+    [0]=>
+    string(4) "this"
+    [1]=>
+    string(2) "is"
+    [2]=>
+    string(1) "a"
+    [3]=>
+    string(5) "test."
+    [4]=>
+    string(3) "Foo"
+    [5]=>
+    string(3) "Bar"
+    [6]=>
+    bool(true)
+    [7]=>
+    bool(false)
+    [8]=>
+    int(123)
+  }
 }
 ```
 
-The reason for the difference, is quite simple: The process method will return true or false, depending on whether it was able to successfully process the YAML data (whereas a constructor doesn't have any return value). This means that you can use the return value of the process method to validate whether the input (the first parameter of the process method) is valid YAML data (valid, at least, to the extent supported by the class; an important distinction, given that the class is designed to support the YAML specification only to the bare minimum extent required by its original implementations, CIDRAM and phpMussel).
+You'll notice that in the example provided for processing YAML data post-instantiation, the `process` method is used. You can use the return value of the `process` method to determine whether the input (the first parameter of the process method) is valid YAML data (to the extent supported by the class).
 
-The process method actually supports three parameters:
+The `process` method supports four parameters:
 
 ```PHP
-public function process(string $In, array &$Arr, int $Depth = 0);
+public function process(string $In, array &$Arr, int $Depth = 0, bool $Refs = false): bool;
 ```
 
-The second parameter of the process method, generally, should always point to the `Data` member of the same object. The `Data` member is an array intended specifically for holding the processed YAML data. It's possible to point it elsewhere without causing problems, and pointing it elsewhere could be necessary for some implementations, but keeping all the object's own data self-contained is generally a cleaner, more recommended approach.
+The second parameter, generally, should always point to the `Data` member of the same object. The `Data` member is an array intended specifically for holding the processed YAML data. It's possible to point it elsewhere without causing problems, and pointing it elsewhere could be necessary for some implementations, but keeping all the object's own data self-contained is generally a cleaner, more recommended approach.
 
 The third parameter should never be populated by the implementation. The process method can call itself recursively, and the third parameter is populated during such recursive calls by the method itself.
+
+The fourth parameter is an optional boolean, false by default. When set to true, the array referenced by the second parameter will be referenced to the `Refs` member, which can be used as a data source for inline variables (similar to what Ansible can do with YAML). The `Refs` member can also be populated manually, or not at all, if preferred.
 
 ##### *Can the reverse be done, too? Can an array be converted into YAML data?*
 
 Yes. To do this, use the reconstruct method. The reconstruct method supports only one parameter:
 
 ```PHP
-public function reconstruct(array $Arr);
+public function reconstruct(array $Arr): string
 ```
 
 This parameter is the array that you want converted into YAML data. The method returns a string (the YAML data). If you want to convert the object's own self-contained, already processed YAML data, just use the object's `Data` member as the reconstruct method's parameter.
@@ -202,6 +282,7 @@ echo $NewData;
 ```
 
 The expected output:
+
 ```
 foo: "bar"
 1: "abc"
@@ -251,12 +332,13 @@ echo PHP_EOL . PHP_EOL;
 
 $Reconstructed = $Object->reconstruct($Object->Data);
 
-echo 'Is the reconstructed YAML data, and the original YAML data, the same? ';
+echo 'Is the reconstructed YAML data and the original YAML data the same? ';
 
 echo $YAML === $Reconstructed ? 'Yes.' : 'No.';
 ```
 
 The expected output:
+
 ```
 The YAML data, processed into an array:
 array(13) {
@@ -294,8 +376,10 @@ array(13) {
 }
 
 
-Is the reconstructed YAML data, and the original YAML data, the same? Yes.
+Is the reconstructed YAML data and the original YAML data the same? Yes.
 ```
+
+Worth noting, however, that reconstruction isn't aware about references, anchors, or inline variables. So, if you're reconstructing YAML data originating from a source utilising references, anchors, or inline variables, those won't be included in the reconstructed data.
 
 ---
 
@@ -310,9 +394,86 @@ The YAML class allows YAML data to contain comments. The YAML class considers al
 
 Within unprocessed YAML data, integers, floats, booleans, null, and hexadecimal data should never be quoted. Quoting for strings is optional, and it generally doesn't matter whether you choose to quote strings (i.e., quoting for strings is not strict). However, strings should always be quoted if the intended data type would otherwise be ambiguous. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all result in strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would result in a boolean, an integer, and a float respectively. Quoting for keys is treated in the same manner as quoting for values.
 
-Also, when reconstructing YAML data, string values are always quoted, whereas keys (regardless of data type) are never quoted. Therefore, if you ever need to reverse-process YAML data for any reason (i.e., process some YAML data, and then reconstruct the resulting array back into YAML data again; e.g., for testing purposes), you should also always quote string values (i.e., approach value quoting strictly), should never quote keys, and should never use "true", "false", or "null" as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstruted YAML data).
+Also, when reconstructing YAML data, string values are always quoted, whereas keys (regardless of data type) are never quoted. Therefore, if you ever need to reverse-process YAML data for any reason (i.e., process some YAML data, and then reconstruct the resulting array back into YAML data again; e.g., for testing purposes), you should also always quote string values (i.e., approach value quoting strictly), should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstruted YAML data).
+
+The YAML handler also supports anchors, and also inline variables (when correctly registered to the `Refs` member), which can be traversed via dot notation.
+
+Example anchor usage:
+
+```YAML
+Anchored text push: &TestAnchor "Lorem ipsum."
+Anchored text pull: *TestAnchor
+```
+
+Result:
+
+```
+array(2) {
+  ["Anchored text push"]=>
+  string(12) "Lorem ipsum."
+  ["Anchored text pull"]=>
+  string(12) "Lorem ipsum."
+}
+```
+
+Example inline variable usage:
+
+```YAML
+Foo:
+ Bar: "Baz"
+Foz: "Hello there! My name is {{Foo.Bar}}! :-)"
+```
+
+Result:
+
+```
+array(2) {
+  ["Foo"]=>
+  array(1) {
+    ["Bar"]=>
+    string(3) "Baz"
+  }
+  ["Foz"]=>
+  string(32) "Hello there! My name is Baz! :-)"
+}
+```
 
 ---
 
 
-Last Updated: 19 February 2021 (2021.02.19).
+### Public class members:
+
+```PHP
+public $Data = [];
+```
+
+An array to contain all the data processed by the handler.
+
+```PHP
+public $Refs = [];
+```
+
+Used as a data source for inline variables.
+
+```PHP
+public $Indent = ' ';
+```
+
+Default indent to use when reconstructing YAML data.
+
+```PHP
+public $FoldedAt = 120;
+```
+
+Single line to folded multi-line string length limit.
+
+```PHP
+public $Anchors = [];
+```
+
+Used to cache any anchors found in the document.
+
+---
+
+
+Last Updated: 26 November 2021 (2021.11.26).

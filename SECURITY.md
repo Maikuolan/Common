@@ -1,8 +1,12 @@
 # Security Policy
 
-## Supported Versions
+## Version Support Status
 
-Please refer to the "[current major version development status](https://github.com/Maikuolan/Common#current-major-version-development-status)" listed at this repository's README.
+Status | Major Version
+---|---
+EoL/Dead/Unsupported | n/a
+Stable/Mature/Supported | v1~v2
+Unstable/Alpha/Beta/Planning | n/a
 
 ## Reporting a Vulnerability
 
@@ -12,7 +16,7 @@ If it affects only versions on branches that've already reached "EoL/Dead" statu
 
 If it affects any versions on any currently maintained branches (tagged or otherwise, and including any active dev code), I'll do what I can to fix the problem as soon as possible (assuming that it hasn't already been fixed since the latest available versions at the affected branches).
 
-If the vulnerability has already been fixed, is already public knowledge, or has otherwise already been publicly disclosed somehow by the project somewhere (e.g., in the changelogs, at the issues page, etc), the best course of action would be to report all pertinent details directly to the issues page at this repository. If an issue concerning the vulnerability already exists, I would ask that you append your report to that issue, rather than creating additional issues (to avoid duplicity and clutter at the issues page). If no such issue exists yet, I welcome you to create one.
+If the vulnerability has already been fixed, is already public knowledge, or has otherwise already been publicly disclosed somehow by the project somewhere (e.g., in the changelogs, at the issues page, etc), the best course of action would be to report all pertinent details directly to the issues page at this repository. If an issue concerning the vulnerability already exists, I would ask that you append your report to that issue, rather than creating additional issues (to avoid duplication and clutter at the issues page). If no such issue exists yet, I welcome you to create one.
 
 However, if the vulnerability hasn't been fixed yet, isn't yet public knowledge, and hasn't yet been publicly disclosed by the project anywhere (i.e., if you've found a "zero-day"), I would ask then that you keep user safety in mind and to report your findings in a responsible, conscientious manner. Public disclosure of previously unknown vulnerabilities and "zero-days", when affecting currently supported versions, could directly put users at risk from those that may wish to do them, their websites, or their data harm. (This, of course, refers only to vulnerabilities; Bugs or faults in the codebase that wouldn't generally be regarded as vulnerabilities could still be posted directly to the issues page).
 
@@ -20,4 +24,4 @@ In cases where reporting to the issues page or to publicly accessible channels w
 
 ## Currently Known Vulnerabilities
 
-*None yet. :-)*
+None yet. :-)

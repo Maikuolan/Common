@@ -242,7 +242,7 @@ The fourth parameter is an optional boolean, false by default. When set to true,
 Yes. To do this, use the reconstruct method. The reconstruct method supports only one parameter:
 
 ```PHP
-public function reconstruct(array $Arr): string
+public function reconstruct(array $Arr, bool $UseCaptured = false): string
 ```
 
 This parameter is the array that you want converted into YAML data. The method returns a string (the YAML data). If you want to convert the object's own self-contained, already processed YAML data, just use the object's `Data` member as the reconstruct method's parameter.
@@ -381,6 +381,8 @@ Is the reconstructed YAML data and the original YAML data the same? Yes.
 
 Worth noting, however, that reconstruction isn't aware about references, anchors, or inline variables. So, if you're reconstructing YAML data originating from a source utilising references, anchors, or inline variables, those won't be included in the reconstructed data.
 
+When the second parameter, `UseCaptured`, is set to `true`, the YAML data will be reconstructed using the comment headers and indent style captured previously by the `process` method. The parameter's default value is `false`.
+
 ---
 
 
@@ -463,6 +465,12 @@ Last indent used when processing YAML data.
 
 ```PHP
 public $LastIndent = '';
+```
+
+Captured header comments from the YAML data.
+
+```PHP
+public $CapturedHeader = '';
 ```
 
 Default indent to use when reconstructing YAML data.

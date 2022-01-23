@@ -41,6 +41,11 @@ class YAML
     public $LastIndent = '';
 
     /**
+     * @var string Captured header comments from the YAML data.
+     */
+    public $CapturedHeader = '';
+
+    /**
      * @var int Single line to folded multi-line string length limit.
      */
     public $FoldedAt = 120;
@@ -113,6 +118,11 @@ class YAML
             $this->MultiLine = false;
             $this->MultiLineFolded = false;
             $this->LastIndent = '';
+            $this->CapturedHeader = '';
+            $Captured = [];
+            if (preg_match('~^(##\\\\(?:\n#[^\n]*)+\n##/\n\n|(?:#[^\n]*\n)+\n)~m', $In, $Captured)) {
+                $this->CapturedHeader = $Captured[0];
+            }
         }
         $In = str_replace("\r", '', $In);
         $Key = $Value = $SendTo = '';
@@ -193,11 +203,20 @@ class YAML
      * Reconstruct YAML.
      *
      * @param array $Arr The array to reconstruct from.
+     * @param bool $UseCaptured Whether to use captured values.
      * @return string The reconstructed YAML.
      */
-    public function reconstruct(array $Arr)
+    public function reconstruct(array $Arr, $UseCaptured = false)
     {
         $Out = '';
+        if ($UseCaptured) {
+            if ($this->LastIndent !== '') {
+                $this->Indent = $this->LastIndent;
+            }
+            if ($this->CapturedHeader !== '') {
+                $Out .= $this->CapturedHeader;
+            }
+        }
         $this->processInner($Arr, $Out);
         return $Out;
     }
@@ -418,13 +437,21 @@ class YAML
                 $Out .= 'false';
             } elseif ($Value === null) {
                 $Out .= 'null';
-            } elseif (preg_match('~[^\t\n\r\x20-\x7e\xa0-\xff]~', $Value)) {
+            } elseif (preg_match(
+                '~[^\t\n\r\x20-\xff]|' .
+                '[\xc2-\xdf](?![\x80-\xbf])|' .
+                '\xe0(?![\xa0-\xbf][\x80-\xbf])|' .
+                '[\xe1-\xec](?![\x80-\xbf]{2})|' .
+                '\xed(?![\x80-\x9f][\x80-\xbf])|' .
+                '\xf0(?![\x90-\xbf][\x80-\xbf]{2})[\xf0-\xf3](?![\x80-\xbf]{3})\xf4(?![\x80-\x9f][\x80-\xbf]{2})~',
+            $Value)) {
                 $Out .= '0x' . strtolower(bin2hex($Value));
             } elseif (strpos($Value, "\n") !== false) {
-                $Value = str_replace("\n", "\n" . $ThisDepth . $this->Indent, $Value);
+                $Value = str_replace(["\n", '#'], ["\n" . $ThisDepth . $this->Indent, '\#'], $Value);
                 $Out .= "|\n" . $ThisDepth . $this->Indent . $Value;
             } elseif (is_string($Value)) {
-                if (strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
+                $Value = str_replace('#', '\#', $Value);
+                if ($this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
                     $Value = wordwrap($Value, $this->FoldedAt, "\n" . $ThisDepth . $this->Indent);
                     $Out .= ">\n" . $ThisDepth . $this->Indent . $Value;
                 } else {

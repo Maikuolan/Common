@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2022.01.23; Maikuolan]: Provided a means to avoid some theoretical
+  problems with data reconstruction by the YAML handler.
 
 === Version/Release 1.7.0 ===
 MINOR RELEASE.

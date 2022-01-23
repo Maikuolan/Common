@@ -459,6 +459,12 @@ Used as a data source for inline variables.
 public $Indent = ' ';
 ```
 
+Last indent used when processing YAML data.
+
+```PHP
+public $LastIndent = '';
+```
+
 Default indent to use when reconstructing YAML data.
 
 ```PHP
@@ -476,4 +482,4 @@ Used to cache any anchors found in the document.
 ---
 
 
-Last Updated: 26 November 2021 (2021.11.26).
+Last Updated: 23 January 2022 (2022.01.23).

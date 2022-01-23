@@ -444,7 +444,8 @@ class YAML
                 '[\xe1-\xec](?![\x80-\xbf]{2})|' .
                 '\xed(?![\x80-\x9f][\x80-\xbf])|' .
                 '\xf0(?![\x90-\xbf][\x80-\xbf]{2})[\xf0-\xf3](?![\x80-\xbf]{3})\xf4(?![\x80-\x9f][\x80-\xbf]{2})~',
-            $Value)) {
+                $Value
+            )) {
                 $Out .= '0x' . strtolower(bin2hex($Value));
             } elseif (strpos($Value, "\n") !== false) {
                 $Value = str_replace(["\n", '#'], ["\n" . $ThisDepth . $this->Indent, '\#'], $Value);

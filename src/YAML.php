@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2021.10.30).
+ * YAML handler (last modified: 2022.01.23).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -34,6 +34,11 @@ class YAML
      * @var string Default indent to use when reconstructing YAML data.
      */
     public $Indent = ' ';
+
+    /**
+     * @var string Last indent used when processing YAML data.
+     */
+    public $LastIndent = '';
 
     /**
      * @var int Single line to folded multi-line string length limit.
@@ -107,6 +112,7 @@ class YAML
         if ($Depth === 0) {
             $this->MultiLine = false;
             $this->MultiLineFolded = false;
+            $this->LastIndent = '';
         }
         $In = str_replace("\r", '', $In);
         $Key = $Value = $SendTo = '';
@@ -123,6 +129,9 @@ class YAML
             $ThisTab = 0;
             while (($Chr = substr($ThisLine, $ThisTab, 1)) && ($Chr === ' ' || $Chr === "\t")) {
                 $ThisTab++;
+            }
+            if ($this->LastIndent === '') {
+                $this->LastIndent = str_repeat(substr($ThisLine, 0, 1), $ThisTab);
             }
             if (($ThisTab > $Depth)) {
                 if ($TabLen === 0) {
@@ -190,7 +199,7 @@ class YAML
     {
         $Out = '';
         $this->processInner($Arr, $Out);
-        return $Out . "\n";
+        return $Out;
     }
 
     /**
@@ -402,7 +411,7 @@ class YAML
                 $this->processInner($Value, $Out, $Depth + 1);
                 continue;
             }
-            $Out .= $this->Indent;
+            $Out .= ' ';
             if ($Value === true) {
                 $Out .= 'true';
             } elseif ($Value === false) {

@@ -32,8 +32,8 @@ Example associative array:
  Foo3: "Bar3"
  Foo4: "Bar4"
 Example mixed multi-dimensional array:
- - "Bar1"
- - "Bar2"
+ 0: "Bar1"
+ 1: "Bar2"
  xFooX: "xBarX"
  Some int: 4567
  Sub array:
@@ -63,7 +63,7 @@ Example booleans and null:
  This is also false: -
  This is null: null
  This is also null: ~
-Anchored text push: &TestAnchor Some placeholder text.
+Anchored text push: &TestAnchor "Some placeholder text."
 Anchored text pull: *TestAnchor
 Inserts test: "Hello world; {{Deep outermost.Deep outer.Deep inner.Deep innermost}}; It should work, hopefully."
 Inline array example: [this, is, a, test., "Foo", "Bar", true, false, 123]

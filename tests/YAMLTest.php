@@ -69,12 +69,6 @@ if ($Expected !== $Object->Data) {
     exit($ExitCode);
 }
 
-$Reconstructed = $Object->reconstruct($Object->Data, true, true);
-if ($Reconstructed !== $RawYAML) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
-    exit($ExitCode);
-}
-
 $Object = new \Maikuolan\Common\YAML();
 $Object->Refs = &$Object->Data;
 $ProcessResult = $Object->process($RawYAML, $Object->Data);

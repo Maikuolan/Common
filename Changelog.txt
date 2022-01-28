@@ -14,6 +14,10 @@ found at:
 - [2022.01.23; Maikuolan]: Provided a means to avoid some theoretical
   problems with data reconstruction by the YAML handler.
 
+- [2022.01.28; Maikuolan]: Added the ability to reconstruct anchors to the YAML
+  handler. Added guards against invalid data types for keys to the YAML
+  handler.
+
 === Version/Release 2.7.0 ===
 MINOR RELEASE.
 

@@ -239,13 +239,13 @@ The fourth parameter is an optional boolean, false by default. When set to true,
 
 ##### *Can the reverse be done, too? Can an array be converted into YAML data?*
 
-Yes. To do this, use the reconstruct method. The reconstruct method supports only one parameter:
+Yes. To do this, use the reconstruct method. The reconstruct method supports three parameters:
 
 ```PHP
-public function reconstruct(array $Arr, bool $UseCaptured = false): string
+public function reconstruct(array $Arr, bool $UseCaptured = false, bool $DoWithAnchors = false): string
 ```
 
-This parameter is the array that you want converted into YAML data. The method returns a string (the YAML data). If you want to convert the object's own self-contained, already processed YAML data, just use the object's `Data` member as the reconstruct method's parameter.
+The first parameter is the array that you want converted into YAML data. If you want to convert the object's own self-contained, already processed YAML data, just use the object's `Data` member as the reconstruct method's parameter.
 
 As an example:
 
@@ -379,9 +379,11 @@ array(13) {
 Is the reconstructed YAML data and the original YAML data the same? Yes.
 ```
 
-Worth noting, however, that reconstruction isn't aware about references, anchors, or inline variables. So, if you're reconstructing YAML data originating from a source utilising references, anchors, or inline variables, those won't be included in the reconstructed data.
-
 When the second parameter, `UseCaptured`, is set to `true`, the YAML data will be reconstructed using the comment headers and indent style captured previously by the `process` method. The parameter's default value is `false`.
+
+When the third parameter, `DoWithAnchors`, is set to `true`, the method will *attempt* to reconstruct the anchors utilised by the YAML data. However, success requires that the instance be aware of the existence of those anchors, whether by reconstruction occurring via the same instance as that where the YAML data containing the necessary anchors has already been processed, or by manually populating the instance's internal anchors array. The parameter's default value is `false`.
+
+The method returns a string (the reconstructed YAML data).
 
 ---
 
@@ -392,7 +394,7 @@ The YAML class supports arrays, integers, floats, booleans (`true`, `+`, `false`
 
 The YAML class does not support callables, closures, or objects. If objects, closures, or callables are supplied to reconstruct, a fatal error will occur. Don't ever do this.
 
-The YAML class allows YAML data to contain comments. The YAML class considers all data, beginning with a non-escaped hash (or number sign; `#`), and ending at any valid line ending (e.g., `\n`, `\r`), to be a comment. Therefore, all hashes, within any valid strings, within any unprocessed YAML data, should be escaped (i.e., `\#`), in order to be processed correctly by the YAML class.
+The YAML class allows YAML data to contain comments. The YAML class considers all data, beginning with a non-escaped hash (`#`), and ending at any valid line ending (e.g., `\n`, `\r`), to be a comment. Therefore, all hashes *not* intended to indicate the beginning of a comment should be properly escaped (i.e., `\#`), in order to ensure the YAML data is processed as intended.
 
 Within unprocessed YAML data, integers, floats, booleans, null, and hexadecimal data should never be quoted. Quoting for strings is optional, and it generally doesn't matter whether you choose to quote strings (i.e., quoting for strings is not strict). However, strings should always be quoted if the intended data type would otherwise be ambiguous. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all result in strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would result in a boolean, an integer, and a float respectively. Quoting for keys is treated in the same manner as quoting for values.
 
@@ -490,4 +492,4 @@ Used to cache any anchors found in the document.
 ---
 
 
-Last Updated: 23 January 2022 (2022.01.23).
+Last Updated: 28 January 2022 (2022.01.28).

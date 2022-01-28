@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.01.23).
+ * YAML handler (last modified: 2022.01.28).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -64,6 +64,16 @@ class YAML
      * @var bool Whether to render folded multi-line values.
      */
     private $MultiLineFolded = false;
+
+    /**
+     * @var array Used to determine which anchors have been reconstructed.
+     */
+    private $AnchorsDone = [];
+
+    /**
+     * @var bool Whether to try reconstructing anchors during reconstruction.
+     */
+    private $DoWithAnchors = false;
 
     /**
      * @var string The tag/release the version of this file belongs to (might
@@ -135,7 +145,7 @@ class YAML
             if (!($ThisLine = preg_replace(['/(?<!\\\)#.*$/', '/\s+$/'], '', $ThisLine))) {
                 continue;
             }
-            $ThisLine = str_replace('\#', '#', $ThisLine);
+            $ThisLine = str_replace(['\#', "\\\\"], ['#', "\\"], $ThisLine);
             $ThisTab = 0;
             while (($Chr = substr($ThisLine, $ThisTab, 1)) && ($Chr === ' ' || $Chr === "\t")) {
                 $ThisTab++;
@@ -204,11 +214,13 @@ class YAML
      *
      * @param array $Arr The array to reconstruct from.
      * @param bool $UseCaptured Whether to use captured values.
+     * @param bool $DoWithAnchors Whether to try reconstructing anchors.
      * @return string The reconstructed YAML.
      */
-    public function reconstruct(array $Arr, $UseCaptured = false)
+    public function reconstruct(array $Arr, $UseCaptured = false, $DoWithAnchors = false)
     {
         $Out = '';
+        $this->DoWithAnchors = (count($this->Anchors) && $DoWithAnchors);
         if ($UseCaptured) {
             if ($this->LastIndent !== '') {
                 $this->Indent = $this->LastIndent;
@@ -218,6 +230,8 @@ class YAML
             }
         }
         $this->processInner($Arr, $Out);
+        $this->AnchorsDone = [];
+        $this->DoWithAnchors = false;
         return $Out;
     }
 
@@ -271,41 +285,44 @@ class YAML
     /**
      * Normalises the values defined by the processLine method.
      *
-     * @param string|int|bool $Value The value to be normalised.
+     * @param string $Value The value to be normalised.
+     * @param bool $EnforceScalar Whether to enforce using scalar data.
      * @return void
      */
-    private function normaliseValue(&$Value)
+    private function normaliseValue(&$Value, $EnforceScalar = false)
     {
-        /** Check for anchors and populate if necessary. */
-        $AnchorMatches = [];
-        if (
-            preg_match('~^&([\dA-Za-z]+) +(.*)$~', $Value, $AnchorMatches) &&
-            isset($AnchorMatches[1], $AnchorMatches[2])
-        ) {
-            $Value = $AnchorMatches[2];
-            $this->Anchors[$AnchorMatches[1]] = $Value;
-        } elseif (
-            preg_match('~^\*([\dA-Za-z]+)$~', $Value, $AnchorMatches) &&
-            isset($AnchorMatches[1], $this->Anchors[$AnchorMatches[1]])
-        ) {
-            $Value = $this->Anchors[$AnchorMatches[1]];
-        }
-
-        /** Check for inline variables. */
-        $this->tryStringDataTraverseByRef($Value);
-
-        /** Check for inline arrays. */
-        if (substr($Value, 0, 1) === '[' && substr($Value, -1) === ']') {
-            $Value = explode(',', substr($Value, 1, -1));
-            foreach ($Value as &$ThisValue) {
-                $ThisValue = trim($ThisValue);
-                $this->normaliseValue($ThisValue);
+        /** Not executed for keys. */
+        if (!$EnforceScalar) {
+            /** Check for anchors and populate if necessary. */
+            $AnchorMatches = [];
+            if (
+                preg_match('~^&([\dA-Za-z]+) +(.*)$~', $Value, $AnchorMatches) &&
+                isset($AnchorMatches[1], $AnchorMatches[2])
+            ) {
+                $Value = $AnchorMatches[2];
+                $this->Anchors[$AnchorMatches[1]] = $Value;
+            } elseif (
+                preg_match('~^\*([\dA-Za-z]+)$~', $Value, $AnchorMatches) &&
+                isset($AnchorMatches[1], $this->Anchors[$AnchorMatches[1]])
+            ) {
+                $Value = $this->Anchors[$AnchorMatches[1]];
             }
-            return;
+
+            /** Check for inline variables. */
+            $this->tryStringDataTraverseByRef($Value);
+
+            /** Check for inline arrays. */
+            if (substr($Value, 0, 1) === '[' && substr($Value, -1) === ']') {
+                $Value = explode(',', substr($Value, 1, -1));
+                foreach ($Value as &$ThisValue) {
+                    $ThisValue = trim($ThisValue);
+                    $this->normaliseValue($ThisValue);
+                }
+                return;
+            }
         }
 
         $ValueLen = strlen($Value);
-        $ValueLow = strtolower($Value);
 
         /** Check for string quotes. */
         foreach ([
@@ -323,9 +340,18 @@ class YAML
             }
         }
 
+        /** Executed only for keys. */
+        if ($EnforceScalar) {
+            if (preg_match('~^\d+$~', $Value)) {
+                $Value = (int)$Value;
+            }
+            return;
+        }
+
+        $ValueLow = strtolower($Value);
         if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
             $Value = true;
-        } elseif ($ValueLow === 'false' || $ValueLow === 'n' || $Value === '-') {
+        } elseif ($ValueLow === 'false' || $ValueLow === 'n' || $Value === '-' || $ValueLen === 0) {
             $Value = false;
         } elseif ($ValueLow === 'null' || $Value === '~') {
             $Value = null;
@@ -335,10 +361,6 @@ class YAML
             $Value = (int)$Value;
         } elseif (preg_match('~^(?:\d+\.\d+|\d+(?:\.\d+)?[Ee][-+]\d+)$~', $Value)) {
             $Value = (float)$Value;
-        } elseif (!$ValueLen) {
-            $Value = false;
-        } else {
-            $Value = (string)$Value;
         }
     }
 
@@ -360,7 +382,7 @@ class YAML
             $Arr[$Key] = $Value;
         } elseif (substr($ThisLine, -1) === ':' && strpos($ThisLine, ': ') === false) {
             $Key = substr($ThisLine, $ThisTab, -1);
-            $this->normaliseValue($Key);
+            $this->normaliseValue($Key, true);
             if (!isset($Arr[$Key])) {
                 $Arr[$Key] = false;
             }
@@ -375,7 +397,7 @@ class YAML
         } elseif (($DelPos = strpos($ThisLine, ': ')) !== false) {
             $Key = substr($ThisLine, $ThisTab, $DelPos - $ThisTab);
             $KeyLen = strlen($Key);
-            $this->normaliseValue($Key);
+            $this->normaliseValue($Key, true);
             if (!$Key) {
                 if (substr($ThisLine, $ThisTab, $DelPos - $ThisTab + 2) !== '0: ') {
                     return false;
@@ -396,7 +418,7 @@ class YAML
             $Value = false;
         } elseif (strpos($ThisLine, ':') === false && strlen($ThisLine) > 1) {
             $Key = $ThisLine;
-            $this->normaliseValue($Key);
+            $this->normaliseValue($Key, true);
             if (!isset($Arr[$Key])) {
                 $Arr[$Key] = false;
             }
@@ -432,11 +454,11 @@ class YAML
             }
             $Out .= ' ';
             if ($Value === true) {
-                $Out .= 'true';
+                $ToAdd = 'true';
             } elseif ($Value === false) {
-                $Out .= 'false';
+                $ToAdd = 'false';
             } elseif ($Value === null) {
-                $Out .= 'null';
+                $ToAdd = 'null';
             } elseif (preg_match(
                 '~[^\t\n\r\x20-\xff]|' .
                 '[\xc2-\xdf](?![\x80-\xbf])|' .
@@ -446,22 +468,41 @@ class YAML
                 '\xf0(?![\x90-\xbf][\x80-\xbf]{2})[\xf0-\xf3](?![\x80-\xbf]{3})\xf4(?![\x80-\x9f][\x80-\xbf]{2})~',
                 $Value
             )) {
-                $Out .= '0x' . strtolower(bin2hex($Value));
+                $ToAdd = '0x' . strtolower(bin2hex($Value));
             } elseif (strpos($Value, "\n") !== false) {
-                $Value = str_replace(["\n", '#'], ["\n" . $ThisDepth . $this->Indent, '\#'], $Value);
-                $Out .= "|\n" . $ThisDepth . $this->Indent . $Value;
+                $ToAdd = "|\n" . $ThisDepth . $this->Indent . str_replace(
+                    ["\n", "\\", '#'],
+                    ["\n" . $ThisDepth . $this->Indent, "\\\\", '\#'],
+                    $Value
+                );
             } elseif (is_string($Value)) {
-                $Value = str_replace('#', '\#', $Value);
+                $Value = str_replace(["\\", '#'], ["\\\\", '\#'], $Value);
                 if ($this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
-                    $Value = wordwrap($Value, $this->FoldedAt, "\n" . $ThisDepth . $this->Indent);
-                    $Out .= ">\n" . $ThisDepth . $this->Indent . $Value;
+                    $ToAdd = ">\n" . $ThisDepth . $this->Indent . wordwrap(
+                        $Value,
+                        $this->FoldedAt,
+                        "\n" . $ThisDepth . $this->Indent
+                    );
                 } else {
-                    $Out .= '"' . $Value . '"';
+                    $ToAdd = '"' . $Value . '"';
                 }
             } else {
-                $Out .= $Value;
+                $ToAdd = $Value;
             }
-            $Out .= "\n";
+            if ($this->DoWithAnchors) {
+                foreach ($this->Anchors as $Name => $Data) {
+                    if ($Data === $ToAdd) {
+                        if (empty($this->AnchorsDone[$Name])) {
+                            $ToAdd = '&' . $Name . ' ' . $ToAdd;
+                            $this->AnchorsDone[$Name] = true;
+                        } else {
+                            $ToAdd = '*' . $Name;
+                        }
+                        break;
+                    }
+                }
+            }
+            $Out .= $ToAdd . "\n";
         }
     }
 }

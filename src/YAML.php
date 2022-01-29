@@ -60,7 +60,7 @@ class YAML
      * @var bool Whether to escape according to the YAML specification.
      * @link https://yaml.org/spec/1.2.2/#57-escaped-characters
      */
-    public $EscapeBySpec = true;
+    public $EscapeBySpec = false;
 
     /**
      * @var bool Whether to render multi-line values.

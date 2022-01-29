@@ -1,5 +1,5 @@
 ##\
-# YAML handler test fixtures.
+# YAML handler fixtures for testing accepted syntax and data types.
 #
 # This file is a part of the "common classes package", utilised by a number of
 # packages and projects, including CIDRAM and phpMussel.
@@ -13,26 +13,33 @@ Deep outermost:
 String foo: "Bar"
 Integer foo: 1234
 Float foo: 123.4
-Example numeric array:
+Example implicit numeric array:
+ - "Bar0"
  - "Bar1"
  - "Bar2"
  - "Bar3"
- - "Bar4"
+Example explicit numeric array:
+ 0: "Bar0"
+ 1: "Bar1"
+ 2: "Bar2"
+ 3: "Bar3"
 Example associative array:
  Foo1: "Bar1"
  Foo2: "Bar2"
  Foo3: "Bar3"
  Foo4: "Bar4"
 Example mixed multi-dimensional array:
- 0: "Bar1"
- 1: "Bar2"
+ -: "Bar0"
+ -: "Bar1"
+ 2: "Bar2"
+ 3: "Bar3"
  xFooX: "xBarX"
  Some int: 4567
  Sub array:
   Hello: "World"
   Sub-sub array:
    Foobar: "Barfoo"
-Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e206865782900
+Hex-encoded string example: 0x48656c6c6f20576f726c64202862757420696e206865782900
 Multi-line example: |
  h e l l o - w o r l d
  hello-world
@@ -50,7 +57,11 @@ Example booleans and null:
  This is also false: -
  This is null: null
  This is also null: ~
-Anchored text push: &TestAnchor "Some placeholder text."
-Anchored text pull: *TestAnchor
+Testing anchors:
+ Anchored text push: &TestAnchor "Some placeholder text."
+ Anchored text pull: *TestAnchor
+Escaped stuff: "They said, \"Our number is \#123-456-789.\""
 Inserts test: "Hello world; {{Deep outermost.Deep outer.Deep inner.Deep innermost}}; It should work, hopefully."
 Inline array example: [this, is, a, test., "Foo", "Bar", true, false, 123]
+Escaped stuff: "They said, \"Our number is \#123-456-789.\""
+End of file: ":-)"

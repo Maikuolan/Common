@@ -29,8 +29,8 @@ Example associative array:
  Foo3: "Bar3"
  Foo4: "Bar4"
 Example mixed multi-dimensional array:
- -: "Bar0"
- -: "Bar1"
+ - "Bar0"
+ - "Bar1"
  2: "Bar2"
  3: "Bar3"
  xFooX: "xBarX"

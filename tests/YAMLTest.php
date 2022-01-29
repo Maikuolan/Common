@@ -86,7 +86,6 @@ $ExpectedForReconstruction = [
             ]
         ]
     ],
-    'Hex-encoded string example' => "Hello World (but in hex)\0",
     'Multi-line example' => "h e l l o - w o r l d\nhello-world",
     'Example booleans and null' => [
         'This is true' => true,
@@ -105,6 +104,7 @@ $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'syn
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 if ($ExpectedForSyntax !== $Object->Data) {
+    var_dump($Object->Data);die;
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }

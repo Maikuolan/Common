@@ -10,10 +10,10 @@ String foo: "Bar"
 Integer foo: 1234
 Float foo: 123.4
 Example implicit numeric array:
+ - "Bar0"
  - "Bar1"
  - "Bar2"
  - "Bar3"
- - "Bar4"
 Example associative array:
  Foo1: "Bar1"
  Foo2: "Bar2"
@@ -28,7 +28,6 @@ Example mixed multi-dimensional array:
   Hello: "World"
   Sub-sub array:
    Foobar: "Barfoo"
-Hex-encoded string example: 0x48656c6c6f20576f726c64202862757420696e206865782900
 Multi-line example: |
  h e l l o - w o r l d
  hello-world

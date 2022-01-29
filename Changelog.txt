@@ -19,6 +19,7 @@ found at:
   handler.
 
 - [2022.01.29; Maikuolan]: Added UTF-16 and UTF-32 support to the YAML handler.
+  Added the optional ability to perform spec-compliant (un/)escaping.
 
 === Version/Release 1.7.0 ===
 MINOR RELEASE.

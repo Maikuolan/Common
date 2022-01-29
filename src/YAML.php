@@ -52,8 +52,15 @@ class YAML
 
     /**
      * @var array Used to cache any anchors found in the document.
+     * @link https://yaml.org/spec/1.2.2/#692-node-anchors
      */
     public $Anchors = [];
+
+    /**
+     * @var bool Whether to escape according to the YAML specification.
+     * @link https://yaml.org/spec/1.2.2/#57-escaped-characters
+     */
+    public $EscapeBySpec = true;
 
     /**
      * @var bool Whether to render multi-line values.
@@ -220,7 +227,6 @@ class YAML
             if (!($ThisLine = preg_replace(['/(?<!\\\)#.*$/', '/\s+$/'], '', $ThisLine))) {
                 continue;
             }
-            $ThisLine = str_replace(['\#', "\\\\"], ['#', "\\"], $ThisLine);
             $ThisTab = 0;
             while (($Chr = substr($ThisLine, $ThisTab, 1)) && ($Chr === ' ' || $Chr === "\t")) {
                 $ThisTab++;
@@ -398,6 +404,9 @@ class YAML
         }
 
         $ValueLen = strlen($Value);
+        if (!$this->EscapeBySpec) {
+            $Value = str_replace(['\#', "\\\\"], ['#', "\\"], $Value);
+        }
 
         /** Check for string quotes. */
         foreach ([
@@ -411,6 +420,9 @@ class YAML
         ] as $Wrapper) {
             if (substr($Value, 0, $Wrapper[2]) === $Wrapper[0] && substr($Value, $ValueLen - $Wrapper[2]) === $Wrapper[1]) {
                 $Value = substr($Value, $Wrapper[2], $ValueLen - ($Wrapper[2] * 2));
+                if ($this->EscapeBySpec) {
+                    $Value = $this->unescape($Value, $Wrapper[0]);
+                }
                 return;
             }
         }
@@ -545,13 +557,18 @@ class YAML
             )) {
                 $ToAdd = '0x' . strtolower(bin2hex($Value));
             } elseif (strpos($Value, "\n") !== false) {
-                $ToAdd = "|\n" . $ThisDepth . $this->Indent . str_replace(
-                    ["\n", "\\", '#'],
-                    ["\n" . $ThisDepth . $this->Indent, "\\\\", '\#'],
-                    $Value
-                );
+                $ToAdd = "|\n" . $ThisDepth . $this->Indent;
+                if ($this->EscapeBySpec) {
+                    $ToAdd .= str_replace("\n", "\n" . $ThisDepth . $this->Indent, $this->escape($Value));
+                } else {
+                    $ToAdd .= str_replace(["\n", "\\", '#'], ["\n" . $ThisDepth . $this->Indent, "\\\\", '\#'], $Value);
+                }
             } elseif (is_string($Value)) {
-                $Value = str_replace(["\\", '#'], ["\\\\", '\#'], $Value);
+                if ($this->EscapeBySpec) {
+                    $Value = $this->escape($Value);
+                } else {
+                    $Value = str_replace(["\\", '#'], ["\\\\", '\#'], $Value);
+                }
                 if ($this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
                     $ToAdd = ">\n" . $ThisDepth . $this->Indent . wordwrap(
                         $Value,
@@ -579,5 +596,43 @@ class YAML
             }
             $Out .= $ToAdd . "\n";
         }
+    }
+
+    /**
+     * Escape according to the YAML specification (this implementation prefers
+     * double-quotes over single-quotes for reconstruction).
+     *
+     * @param string $Value The string to escape.
+     * @return string The escaped string.
+     */
+    private function escape($Value = '')
+    {
+        return str_replace(
+            ["\\", '#', "\0", "\x07", "\x08", "\t", "\n", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\x85", "\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9"],
+            ["\\\\", '\#', '\0', '\a', '\b', '\t', '\n', '\v', '\f', '\r', '\e', '\"', '\/', '\N', '\_', '\L', '\P'],
+            $Value
+        );
+    }
+
+    /**
+     * Unescape according to the YAML specification.
+     *
+     * @param string $Value The string to unescape.
+     * @param string $Style The quote style used.
+     * @return string The unescaped string.
+     */
+    private function unescape($Value = '', $Style = '"')
+    {
+        if ($Style === '"' || $Style === "\xe2\x80\x9c" || $Style === "\x91") {
+            return str_replace(
+                ['\#', '\0', '\a', '\b', '\t', '\n', '\v', '\f', '\r', '\e', '\"', '\/', '\N', '\_', '\L', '\P', "\\\\"],
+                ['#', "\0", "\x07", "\x08", "\t", "\n", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\x85", "\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9", "\\"],
+                $Value
+            );
+        }
+        if ($Style === "'" || $Style === "\xe2\x80\x98" || $Style === "\x93") {
+            return str_replace("''", "'", $Value);
+        }
+        return $Value;
     }
 }

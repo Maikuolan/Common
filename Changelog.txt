@@ -18,6 +18,8 @@ found at:
   handler. Added guards against invalid data types for keys to the YAML
   handler.
 
+- [2022.01.29; Maikuolan]: Added UTF-16 and UTF-32 support to the YAML handler.
+
 === Version/Release 1.7.0 ===
 MINOR RELEASE.
 

@@ -50,7 +50,7 @@ class Demojibakefier
     /**
      * @var string Some early control characters (w/o tabs, CR, or LF).
      */
-    const CTRL0 = '\0-\8\x0b\x0c\x0e-\x1f';
+    const CTRL0 = '\x00-\x08\x0b\x0c\x0e-\x1f';
 
     /**
      * @var string The tag/release the version of this file belongs to (might
@@ -493,7 +493,7 @@ class Demojibakefier
             $Arr['UCS-2']['Weight']++;
         }
         /** Commonly found in UCS-4/UTF-32. */
-        if (preg_match('~\0{2}|\x1b~', $String)) {
+        if (preg_match('~\0\0|\x1b~', $String)) {
             foreach (['UCS-4', 'UTF-32BE', 'UTF-32LE'] as $Frequent) {
                 if (isset($Arr[$Frequent]['Weight'])) {
                     $Arr[$Frequent]['Weight']++;

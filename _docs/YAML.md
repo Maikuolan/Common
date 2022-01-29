@@ -45,7 +45,7 @@ Example booleans and null:
 Testing anchors:
  Anchored text push: &TestAnchor "Some placeholder text."
  Anchored text pull: *TestAnchor
-Escaped stuff: "They said, \"Our number is \#123-456-789.\""
+Escaped stuff: "Our number is \#123-456-789."
 End of file: ":-)"
 ```
 
@@ -155,7 +155,7 @@ hello-world"
     string(22) "Some placeholder text."
   }
   ["Escaped stuff"]=>
-  string(42) "They said, \"Our number is #123-456-789.\""
+  string(27) "Our number is #123-456-789."
   ["End of file"]=>
   string(3) ":-)"
 }

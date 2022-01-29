@@ -403,10 +403,10 @@ class YAML
             }
         }
 
-        $ValueLen = strlen($Value);
         if (!$this->EscapeBySpec) {
             $Value = str_replace(['\#', "\\\\"], ['#', "\\"], $Value);
         }
+        $ValueLen = strlen($Value);
 
         /** Check for string quotes. */
         foreach ([

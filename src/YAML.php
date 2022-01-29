@@ -559,7 +559,7 @@ class YAML
             } elseif (strpos($Value, "\n") !== false) {
                 $ToAdd = "|\n" . $ThisDepth . $this->Indent;
                 if ($this->EscapeBySpec) {
-                    $ToAdd .= str_replace("\n", "\n" . $ThisDepth . $this->Indent, $this->escape($Value));
+                    $ToAdd .= str_replace("\n", "\n" . $ThisDepth . $this->Indent, $this->escape($Value, false));
                 } else {
                     $ToAdd .= str_replace(["\n", "\\", '#'], ["\n" . $ThisDepth . $this->Indent, "\\\\", '\#'], $Value);
                 }
@@ -603,13 +603,18 @@ class YAML
      * double-quotes over single-quotes for reconstruction).
      *
      * @param string $Value The string to escape.
+     * @param bool $Newlines Whether to escape newlines.
      * @return string The escaped string.
      */
-    private function escape($Value = '')
+    private function escape($Value = '', $Newlines = true)
     {
+        $Value = str_replace("\\", "\\\\", $Value);
+        if ($Newlines) {
+            $Value = str_replace("\n", '\n', $Value);
+        }
         return str_replace(
-            ["\\", '#', "\0", "\x07", "\x08", "\t", "\n", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\x85", "\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9"],
-            ["\\\\", '\#', '\0', '\a', '\b', '\t', '\n', '\v', '\f', '\r', '\e', '\"', '\/', '\N', '\_', '\L', '\P'],
+            ['#', "\0", "\x07", "\x08", "\t", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\x85", "\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9"],
+            ['\#', '\0', '\a', '\b', '\t', '\v', '\f', '\r', '\e', '\"', '\/', '\N', '\_', '\L', '\P'],
             $Value
         );
     }

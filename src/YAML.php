@@ -164,7 +164,7 @@ class YAML
                 if (preg_match('~^\0\0(?:\0|\xFE\xFF)~', $In)) {
                     $In = substr($In, 4);
                     $this->LastInputEncoding = 'UTF-32BE';
-                } elseif (preg_match('~^(?:\xFF\xFE|.\0\0\0)~', $In)) {
+                } elseif (preg_match('~^(?:\xFF\xFE|.\0)\0\0~', $In)) {
                     $In = substr($In, 4);
                     $this->LastInputEncoding = 'UTF-32LE';
                 } elseif (preg_match('~^(?:\xFE\xFF|\0)~', $In)) {
@@ -195,10 +195,10 @@ class YAML
                     $Attempt = iconv($this->LastInputEncoding, 'UTF-8', $In);
                     if (
                         $Attempt === false ||
-                        !$this->Demojibakefier->checkConformity($Attempt, $this->LastInputEncoding) ||
+                        !$this->Demojibakefier->checkConformity($Attempt, 'UTF-8') ||
                         strcmp(iconv('UTF-8', $this->LastInputEncoding, $Attempt), $In) !== 0
                     ) {
-                        return;
+                        return false;
                     }
                     $In = $Attempt;
 

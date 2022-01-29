@@ -103,12 +103,14 @@ $ExpectedForReconstruction = [
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'syntax.yaml');
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
+$Object->EscapeBySpec = true;
 if ($ExpectedForSyntax !== $Object->Data) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
 
 $Object = new \Maikuolan\Common\YAML();
+$Object->EscapeBySpec = true;
 $Object->Refs = &$Object->Data;
 $ProcessResult = $Object->process($RawYAML, $Object->Data);
 $ExitCode++;
@@ -141,6 +143,7 @@ if ($Object->process($NoNewLineYAML, $Object->Data) !== false) {
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'reconstruct.yaml');
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
+$Object->EscapeBySpec = true;
 $ExitCode++;
 if ($ExpectedForReconstruction !== $Object->Data) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
@@ -169,6 +172,7 @@ $ExpectedForUTF16 = [
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'utf16be.yaml');
 $Object = new \Maikuolan\Common\YAML($RawYAML);
+$Object->EscapeBySpec = true;
 $ExitCode++;
 if ($ExpectedForUTF16 !== $Object->Data) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
@@ -177,6 +181,7 @@ if ($ExpectedForUTF16 !== $Object->Data) {
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'utf16le.yaml');
 $Object = new \Maikuolan\Common\YAML($RawYAML);
+$Object->EscapeBySpec = true;
 $ExitCode++;
 if ($ExpectedForUTF16 !== $Object->Data) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;

@@ -428,7 +428,7 @@ public $Anchors = [];
 Used to cache any anchors found in the document.
 
 ```PHP
-public $EscapeBySpec = true;
+public $EscapeBySpec = false;
 ```
 
 Indicates whether to escape according to the spec. When false, only hashes (used for comments) and slashes (used for escaping) are escaped. When true, the instance will attempt to escape in accordance with the YAML specification.

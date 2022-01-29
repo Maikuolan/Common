@@ -38,5 +38,5 @@ Example booleans and null:
 Testing anchors:
  Anchored text push: &TestAnchor "Some placeholder text."
  Anchored text pull: *TestAnchor
-Escaping test: "They said, \"Our number is \#123-456-789.\""
+Escaping test: "Our number is \#123-456-789."
 End of file: ":-)"

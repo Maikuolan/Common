@@ -154,3 +154,32 @@ if ($Reconstructed !== $RawYAML) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
+
+$ExpectedForUTF16 = [
+    'String foo' => 'Bar',
+    'Integer foo' => 1234,
+    'Float foo' => 123.4,
+    'Example implicit numeric array' => ['Bar0', 'Bar1', 'Bar2', 'Bar3'],
+    'Example associative array' => [
+        'Foo1' => 'Bar1',
+        'Foo2' => 'Bar2',
+        'Foo3' => 'Bar3',
+        'Foo4' => 'Bar4'
+    ]
+];
+
+$RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'utf16be.yaml');
+$Object = new \Maikuolan\Common\YAML($RawYAML);
+$ExitCode++;
+if ($ExpectedForUTF16 !== $Object->Data) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
+}
+
+$RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'utf16le.yaml');
+$Object = new \Maikuolan\Common\YAML($RawYAML);
+$ExitCode++;
+if ($ExpectedForUTF16 !== $Object->Data) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
+}

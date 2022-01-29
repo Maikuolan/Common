@@ -76,6 +76,16 @@ class YAML
     private $DoWithAnchors = false;
 
     /**
+     * @var string Encoding used by the most recent process input.
+     */
+    private $LastInputEncoding = '';
+
+    /**
+     * @var \Maikuolan\Common\Demojibakefier Used to support various encodings.
+     */
+    private $Demojibakefier = null;
+
+    /**
      * @var string The tag/release the version of this file belongs to (might
      *      be needed by some implementations to ensure compatibility).
      * @link https://github.com/Maikuolan/Common/tags
@@ -128,13 +138,69 @@ class YAML
             $this->Refs = &$Arr;
         }
 
-        /** Reset multiline flags, indents, and attempt header capture, etc. */
+        /** Things to do at the beginning of the process execution. */
         if ($Depth === 0) {
             $this->MultiLine = false;
             $this->MultiLineFolded = false;
             $this->LastIndent = '';
             $this->CapturedHeader = '';
             $Captured = [];
+
+            /** Support various encodings. */
+            if (class_exists('\Maikuolan\Common\Demojibakefier')) {
+                $this->Demojibakefier = new \Maikuolan\Common\Demojibakefier();
+
+                /**
+                 * Attempt to determine input encoding.
+                 * @link https://yaml.org/spec/1.2.2/#52-character-encodings
+                 */
+                if (preg_match('~^\0\0(?:\0|\xFE\xFF)~', $In)) {
+                    $In = substr($In, 4);
+                    $this->LastInputEncoding = 'UTF-32BE';
+                } elseif (preg_match('~^(?:\xFF\xFE|.\0\0\0)~', $In)) {
+                    $In = substr($In, 4);
+                    $this->LastInputEncoding = 'UTF-32LE';
+                } elseif (preg_match('~^(?:\xFE\xFF|\0)~', $In)) {
+                    $In = substr($In, 2);
+                    $this->LastInputEncoding = 'UTF-16BE';
+                } elseif (preg_match('~^(?:\xFF\xFE|.\0)~', $In)) {
+                    $In = substr($In, 2);
+                    $this->LastInputEncoding = 'UTF-16LE';
+                } else {
+                    if (substr($In, 0, 3) === "\xEF\xBB\xBF") {
+                        $In = substr($In, 3);
+                    }
+                    $this->LastInputEncoding = 'UTF-8';
+                }
+
+                /** Fail if non-compliant. */
+                if (!$this->Demojibakefier->checkConformity($In, $this->LastInputEncoding)) {
+                    return false;
+                }
+
+                /** Attempt to normalise encoding if not already UTF-8. */
+                if ($this->LastInputEncoding !== 'UTF-8') {
+                    /** Suppress errors to avoid potentially flooding logs. */
+                    set_error_handler(function ($errno) {
+                        return false;
+                    });
+
+                    $Attempt = iconv($this->LastInputEncoding, 'UTF-8', $In);
+                    if (
+                        $Attempt === false ||
+                        !$this->Demojibakefier->checkConformity($Attempt, $this->LastInputEncoding) ||
+                        strcmp(iconv('UTF-8', $this->LastInputEncoding, $Attempt), $In) !== 0
+                    ) {
+                        return false;
+                    }
+                    $In = $Attempt;
+
+                    /** We're done.. Restore the error handler. */
+                    restore_error_handler();
+                }
+            }
+
+            /** Attempt to capture header comments. */
             if (preg_match('~^(##\\\\(?:\n#[^\n]*)+\n##/\n\n|(?:#[^\n]*\n)+\n)~m', $In, $Captured)) {
                 $this->CapturedHeader = $Captured[0];
             }

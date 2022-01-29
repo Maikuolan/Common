@@ -104,7 +104,6 @@ $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'syn
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 if ($ExpectedForSyntax !== $Object->Data) {
-    var_dump($Object->Data);die;
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }

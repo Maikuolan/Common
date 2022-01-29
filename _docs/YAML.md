@@ -9,19 +9,13 @@
 
 The YAML class can process YAML data either during or after instantiation. Which of the two strategies is best to use will depend on the exact needs and purpose of your implementation.
 
-Assuming an example YAML file as follows:
+Using the following YAML data as an example:
 
 ```YAML
-# An example YAML file.
-
-Deep outermost:
- Deep outer:
-  Deep inner:
-   Deep innermost: "Thus, from here, within this variable, a value is inserted"
 String foo: "Bar"
 Integer foo: 1234
 Float foo: 123.4
-Example numeric array:
+Example implicit numeric array:
  - "Bar1"
  - "Bar2"
  - "Bar3"
@@ -32,43 +26,27 @@ Example associative array:
  Foo3: "Bar3"
  Foo4: "Bar4"
 Example mixed multi-dimensional array:
- 0: "Bar1"
- 1: "Bar2"
+ 0: "Bar0"
+ 1: "Bar1"
  xFooX: "xBarX"
  Some int: 4567
  Sub array:
   Hello: "World"
   Sub-sub array:
    Foobar: "Barfoo"
-Example hex-encoded data: 0x48656c6c6f20576f726c64202862757420696e206865782900
+Hex-encoded string example: 0x48656c6c6f20576f726c64202862757420696e206865782900
 Multi-line example: |
  h e l l o - w o r l d
- :_   _      _ _         _    _            _     _
- | | | |    | | |       | |  | |          | |   | |
- | |_| | ___| | | ___   | |  | | ___  _ __| | __| |
- |  _  |/ _ \ | |/ _ \  | |/\| |/ _ \| '__| |/ _` |
- | | | |  __/ | | (_) | \  /\  / (_) | |  | | (_| |
- \_| |_/\___|_|_|\___/   \/  \/ \___/|_|  |_|\__,_|
-Folded multi-line example: >
- Hello
- world.
- This
- is
- an
- example.
+ hello-world
 Example booleans and null:
  This is true: true
- This is also true: +
  This is false: false
- This is also false: -
  This is null: null
- This is also null: ~
-Anchored text push: &TestAnchor "Some placeholder text."
-Anchored text pull: *TestAnchor
-Inserts test: "Hello world; {{Deep outermost.Deep outer.Deep inner.Deep innermost}}; It should work, hopefully."
-Inline array example: [this, is, a, test., "Foo", "Bar", true, false, 123]
-
-# Anyway, I think you get the idea...
+Testing anchors:
+ Anchored text push: &TestAnchor "Some placeholder text."
+ Anchored text pull: *TestAnchor
+Escaped stuff: "They said, \"Our number is \#123-456-789.\""
+End of file: ":-)"
 ```
 
 An example of processing that YAML data during instantiation:
@@ -76,7 +54,7 @@ An example of processing that YAML data during instantiation:
 ```PHP
 <?php
 // First, let's fetch the example YAML file's raw data.
-$RawYAML = file_get_contents(__DIR__ . '/example.yaml');
+$RawYAML = file_get_contents(__DIR__ . '/reconstruct.yaml');
 
 // Then, we'll instantiate the new YAML object.
 $Object = new \Maikuolan\Common\YAML($RawYAML);
@@ -90,7 +68,7 @@ An example of processing that YAML data after instantiation:
 ```PHP
 <?php
 // First, let's fetch the example YAML file's raw data.
-$RawYAML = file_get_contents(__DIR__ . '/example.yaml');
+$RawYAML = file_get_contents(__DIR__ . '/reconstruct.yaml');
 
 // Then, we'll instantiate the new YAML object.
 $Object = new \Maikuolan\Common\YAML();
@@ -105,25 +83,14 @@ var_dump($Object->Data);
 In both cases, the expected output (which should be the same):
 
 ```
-array(15) {
-  ["Deep outermost"]=>
-  array(1) {
-    ["Deep outer"]=>
-    array(1) {
-      ["Deep inner"]=>
-      array(1) {
-        ["Deep innermost"]=>
-        string(58) "Thus, from here, within this variable, a value is inserted"
-      }
-    }
-  }
+array(12) {
   ["String foo"]=>
   string(3) "Bar"
   ["Integer foo"]=>
   int(1234)
   ["Float foo"]=>
   float(123.4)
-  ["Example numeric array"]=>
+  ["Example implicit numeric array"]=>
   array(4) {
     [0]=>
     string(4) "Bar1"
@@ -148,9 +115,9 @@ array(15) {
   ["Example mixed multi-dimensional array"]=>
   array(5) {
     [0]=>
-    string(4) "Bar1"
+    string(4) "Bar0"
     [1]=>
-    string(4) "Bar2"
+    string(4) "Bar1"
     ["xFooX"]=>
     string(5) "xBarX"
     ["Some int"]=>
@@ -166,60 +133,31 @@ array(15) {
       }
     }
   }
-  ["Example hex-encoded data"]=>
+  ["Hex-encoded string example"]=>
   string(25) "Hello World (but in hex) "
   ["Multi-line example"]=>
-  string(326) "h e l l o - w o r l d
-:_   _      _ _         _    _            _     _
-| | | |    | | |       | |  | |          | |   | |
-| |_| | ___| | | ___   | |  | | ___  _ __| | __| |
-|  _  |/ _ \ | |/ _ \  | |/\| |/ _ \| '__| |/ _` |
-| | | |  __/ | | (_) | \  /\  / (_) | |  | | (_| |
-\_| |_/\___|_|_|\___/   \/  \/ \___/|_|  |_|\__,_|"
-  ["Folded multi-line example"]=>
-  string(32) "Hello world. This is an example."
+  string(33) "h e l l o - w o r l d
+hello-world"
   ["Example booleans and null"]=>
-  array(6) {
+  array(3) {
     ["This is true"]=>
-    bool(true)
-    ["This is also true"]=>
     bool(true)
     ["This is false"]=>
     bool(false)
-    ["This is also false"]=>
-    bool(false)
     ["This is null"]=>
     NULL
-    ["This is also null"]=>
-    NULL
   }
-  ["Anchored text push"]=>
-  string(22) "Some placeholder text."
-  ["Anchored text pull"]=>
-  string(22) "Some placeholder text."
-  ["Inserts test"]=>
-  string(99) "Hello world; Thus, from here, within this variable, a value is inserted; It should work, hopefully."
-  ["Inline array example"]=>
-  array(9) {
-    [0]=>
-    string(4) "this"
-    [1]=>
-    string(2) "is"
-    [2]=>
-    string(1) "a"
-    [3]=>
-    string(5) "test."
-    [4]=>
-    string(3) "Foo"
-    [5]=>
-    string(3) "Bar"
-    [6]=>
-    bool(true)
-    [7]=>
-    bool(false)
-    [8]=>
-    int(123)
+  ["Testing anchors"]=>
+  array(2) {
+    ["Anchored text push"]=>
+    string(22) "Some placeholder text."
+    ["Anchored text pull"]=>
+    string(22) "Some placeholder text."
   }
+  ["Escaped stuff"]=>
+  string(42) "They said, \"Our number is #123-456-789.\""
+  ["End of file"]=>
+  string(3) ":-)"
 }
 ```
 
@@ -283,7 +221,7 @@ echo $NewData;
 
 The expected output:
 
-```
+```YAML
 foo: "bar"
 1: "abc"
 2: "def"
@@ -492,4 +430,4 @@ Used to cache any anchors found in the document.
 ---
 
 
-Last Updated: 28 January 2022 (2022.01.28).
+Last Updated: 29 January 2022 (2022.01.29).

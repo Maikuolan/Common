@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.01.28).
+ * YAML handler (last modified: 2022.01.29).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -118,12 +118,17 @@ class YAML
      */
     public function process(string $In, array &$Arr, int $Depth = 0, bool $Refs = false): bool
     {
+        /** Guard for potentially invalid data. */
         if (strpos($In, "\n") === false) {
             return false;
         }
+
+        /** Assign refs array for inline variables. */
         if ($Refs) {
             $this->Refs = &$Arr;
         }
+
+        /** Reset multiline flags, indents, and attempt header capture, etc. */
         if ($Depth === 0) {
             $this->MultiLine = false;
             $this->MultiLineFolded = false;
@@ -134,9 +139,13 @@ class YAML
                 $this->CapturedHeader = $Captured[0];
             }
         }
+
         $In = str_replace("\r", '', $In);
-        $Key = $Value = $SendTo = '';
-        $TabLen = $SoL = 0;
+        $Key = '';
+        $Value = '';
+        $SendTo = '';
+        $TabLen = 0;
+        $SoL = 0;
         while ($SoL !== false) {
             $ThisLine = (
                 ($EoL = strpos($In, "\n", $SoL)) === false

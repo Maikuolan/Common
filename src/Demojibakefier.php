@@ -1,6 +1,6 @@
 <?php
 /**
- * Demojibakefier (last modified: 2021.10.30).
+ * Demojibakefier (last modified: 2022.01.29).
  *
  * Intended to normalise the character encoding of a given string to a
  * preferred character encoding when the given string's byte sequences don't
@@ -50,7 +50,7 @@ class Demojibakefier
     /**
      * @var string Some early control characters (w/o tabs, CR, or LF).
      */
-    protected const CTRL0 = '\x00-\x08\x0b\x0c\x0e-\x1f';
+    protected const CTRL0 = '\0-\8\x0b\x0c\x0e-\x1f';
 
     /**
      * @var string The tag/release the version of this file belongs to (might
@@ -479,11 +479,11 @@ class Demojibakefier
             $Arr['BIG5']['Weight'] += strlen($TestElse) ? 2 : 1;
         }
         /** For when it (..kinda sorta maybe) looks like UTF-16BE. */
-        if (isset($Arr['UTF-16BE']['Weight']) && preg_match('~\x00[\x20-\x7e]|[\xd8-\xdb][\x00-\xff][\xdc-\xdf][\x00-\xff]|[\xd8-\xdb][\x00-\xff][\xdc-\xdf][\x00-\xff]~', $String)) {
+        if (isset($Arr['UTF-16BE']['Weight']) && preg_match('~\0[\x20-\x7e]|[\xd8-\xdb][\x00-\xff][\xdc-\xdf][\x00-\xff]|[\xd8-\xdb][\x00-\xff][\xdc-\xdf][\x00-\xff]~', $String)) {
             $Arr['UTF-16BE']['Weight']++;
         }
         /** For when it (..kinda sorta maybe) looks like UTF-16LE. */
-        if (isset($Arr['UTF-16LE']['Weight']) && preg_match('~[\x20-\x7e]\x00|[\x00-\xff][\xdc-\xdf][\x00-\xff][\xd8-\xdb]|[\x00-\xff][\xdc-\xdf][\x00-\xff][\xd8-\xdb]~', $String)) {
+        if (isset($Arr['UTF-16LE']['Weight']) && preg_match('~[\x20-\x7e]\0|[\x00-\xff][\xdc-\xdf][\x00-\xff][\xd8-\xdb]|[\x00-\xff][\xdc-\xdf][\x00-\xff][\xd8-\xdb]~', $String)) {
             $Arr['UTF-16LE']['Weight']++;
         }
         /** Commonly found in UCS-2. */
@@ -491,7 +491,7 @@ class Demojibakefier
             $Arr['UCS-2']['Weight']++;
         }
         /** Commonly found in UCS-4/UTF-32. */
-        if (preg_match('~\x00{2}|\x1b~', $String)) {
+        if (preg_match('~\0{2}|\x1b~', $String)) {
             foreach (['UCS-4', 'UTF-32BE', 'UTF-32LE'] as $Frequent) {
                 if (isset($Arr[$Frequent]['Weight'])) {
                     $Arr[$Frequent]['Weight']++;
@@ -610,10 +610,10 @@ class Demojibakefier
             $WeightBE = 0;
             $WeightLE = 0;
             foreach ($Split as $Pair) {
-                if (preg_match('~^\x00\x00..$~', $Pair)) {
+                if (preg_match('~^\0\0..$~', $Pair)) {
                     $WeightBE++;
                 }
-                if (preg_match('~^..\x00\x00$~', $Pair)) {
+                if (preg_match('~^..\0\0$~', $Pair)) {
                     $WeightLE++;
                 }
             }

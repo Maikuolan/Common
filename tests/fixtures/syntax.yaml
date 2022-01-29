@@ -60,8 +60,7 @@ Example booleans and null:
 Testing anchors:
  Anchored text push: &TestAnchor "Some placeholder text."
  Anchored text pull: *TestAnchor
-Escaped stuff: "They said, \"Our number is \#123-456-789.\""
+Escaping test: "They said, \"Our number is \#123-456-789.\""
 Inserts test: "Hello world; {{Deep outermost.Deep outer.Deep inner.Deep innermost}}; It should work, hopefully."
 Inline array example: [this, is, a, test., "Foo", "Bar", true, false, 123]
-Escaped stuff: "They said, \"Our number is \#123-456-789.\""
 End of file: ":-)"

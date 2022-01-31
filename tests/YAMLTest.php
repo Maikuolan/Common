@@ -57,7 +57,12 @@ $ExpectedForSyntax = [
         'Anchored text push' => 'Some placeholder text.',
         'Anchored text pull' => 'Some placeholder text.'
     ],
-    'Escaping test' => 'Our number is #123-456-789.',
+    'Escaping test' => [
+        'They said, \"Our number is #123-456-789\".',
+        'こんにちは世界。 \xE3\x81\x93\xE3\x82\x93\xE3\x81\xAB\xE3\x81\xA1\xE3\x81\xAF\xE4\xB8\x96\xE7\x95\x8C\xE3\x80\x82 \u3053\u3093\u306B\u3061\u306F\u4E16\u754C\u3002 \U00003053\U00003093\U0000306B\U00003061\U0000306F\U00004E16\U0000754C\U00003002',
+        'مرحبا بالعالم. \xD9\x85\xD8\xB1\xD8\xAD\xD8\xA8\xD8\xA7 \xD8\xA8\xD8\xA7\xD9\x84\xD8\xB9\xD8\xA7\xD9\x84\xD9\x85.',
+        '你好世界。 \xE4\xBD\xA0\xE5\xA5\xBD\xE4\xB8\x96\xE7\x95\x8C\xE3\x80\x82 \u4F60\u597D\u4E16\u754C\u3002 \U00004F60\U0000597D\U00004E16\U0000754C\U00003002',
+    ],
     'Inserts test' => 'Hello world; Thus, from here, within this variable, a value is inserted; It should work, hopefully.',
     'Inline array example' => ['this', 'is', 'a', 'test.', 'Foo', 'Bar', true, false, 123],
     'End of file' => ':-)'
@@ -119,6 +124,28 @@ if ($ProcessResult !== true) {
 
 $ExitCode++;
 if ($ExpectedForSyntax !== $Object->Data) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
+}
+
+$Object->Data = [];
+$Object->EscapeBySpec = true;
+$ProcessResult = $Object->process($RawYAML, $Object->Data);
+$ExitCode++;
+if ($ProcessResult !== true) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
+}
+
+$ExpectedForBySpecEscaped = $ExpectedForSyntax;
+$ExpectedForBySpecEscaped['Escaping test'] = [
+    'They said, "Our number is #123-456-789".',
+    'こんにちは世界。 こんにちは世界。 こんにちは世界。 こんにちは世界。',
+    'مرحبا بالعالم. مرحبا بالعالم.',
+    '你好世界。 你好世界。 你好世界。 你好世界。'
+];
+$ExitCode++;
+if ($ExpectedForBySpecEscaped !== $Object->Data) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }

@@ -429,6 +429,7 @@ class YAML
 
         /** Executed only for keys. */
         if ($EnforceScalar) {
+            $Value = trim($Value);
             if (preg_match('~^\d+$~', $Value)) {
                 $Value = (int)$Value;
             }
@@ -546,29 +547,11 @@ class YAML
                 $ToAdd = 'false';
             } elseif ($Value === null) {
                 $ToAdd = 'null';
-            } elseif (preg_match(
-                '~[^\t\n\r\x20-\xff]|' .
-                '[\xc2-\xdf](?![\x80-\xbf])|' .
-                '\xe0(?![\xa0-\xbf][\x80-\xbf])|' .
-                '[\xe1-\xec](?![\x80-\xbf]{2})|' .
-                '\xed(?![\x80-\x9f][\x80-\xbf])|' .
-                '\xf0(?![\x90-\xbf][\x80-\xbf]{2})[\xf0-\xf3](?![\x80-\xbf]{3})\xf4(?![\x80-\x9f][\x80-\xbf]{2})~',
-                $Value
-            )) {
-                $ToAdd = '0x' . strtolower(bin2hex($Value));
             } elseif (strpos($Value, "\n") !== false) {
                 $ToAdd = "|\n" . $ThisDepth . $this->Indent;
-                if ($this->EscapeBySpec) {
-                    $ToAdd .= str_replace("\n", "\n" . $ThisDepth . $this->Indent, $this->escape($Value, false));
-                } else {
-                    $ToAdd .= str_replace(["\n", "\\", '#'], ["\n" . $ThisDepth . $this->Indent, "\\\\", '\#'], $Value);
-                }
+                $ToAdd .= str_replace("\n", "\n" . $ThisDepth . $this->Indent, $this->escape($Value, false));
             } elseif (is_string($Value)) {
-                if ($this->EscapeBySpec) {
-                    $Value = $this->escape($Value);
-                } else {
-                    $Value = str_replace(["\\", '#'], ["\\\\", '\#'], $Value);
-                }
+                $Value = $this->escape($Value);
                 if ($this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
                     $ToAdd = ">\n" . $ThisDepth . $this->Indent . wordwrap(
                         $Value,
@@ -599,8 +582,7 @@ class YAML
     }
 
     /**
-     * Escape according to the YAML specification (this implementation prefers
-     * double-quotes over single-quotes for reconstruction).
+     * Escape according to the YAML specification.
      *
      * @param string $Value The string to escape.
      * @param bool $Newlines Whether to escape newlines.
@@ -612,11 +594,33 @@ class YAML
         if ($Newlines) {
             $Value = str_replace("\n", '\n', $Value);
         }
-        return str_replace(
-            ['#', "\0", "\x07", "\x08", "\t", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\xC2\x85", "\xC2\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9"],
-            ['\#', '\0', '\a', '\b', '\t', '\v', '\f', '\r', '\e', '\"', '\/', '\N', '\_', '\L', '\P'],
+        $Value = str_replace(
+            ['#', "\0", "\7", "\8", "\t", "\x0B", "\x0C", "\x0D", "\x1B", "\xC2\x85", "\xC2\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9"],
+            ['\#', '\0', '\a', '\b', '\t', '\v', '\f', '\r', '\e', '\N', '\_', '\L', '\P'],
             $Value
         );
+        $Value = preg_replace_callback([
+            '~[\x01-\x06\x0E\x0F\x10-\x1A\x1C-\x1F\x7F\xC0\xC1\xF5-\xFF]~',
+            '~[\xC2-\xDF](?![\x80-\xBF])~',
+            '~\xE0(?![\xA0-\xBF][\x80-\xBF])~',
+            '~[\xE1-\xEC](?![\x80-\xBF]{2})~',
+            '~\xED(?![\x80-\x9F][\x80-\xBF])~',
+            '~\xF0(?![\x90-\xBF][\x80-\xBF]{2})~',
+            '~\xF1(?![\x80-\xBF]{3})~',
+            '~\xF2(?![\x80-\xBF]{3})~',
+            '~\xF3(?![\x80-\xBF]{3})~',
+            '~\xF4(?![\x80-\x8F][\x80-\xBF]{2})~',
+            '~(?<=[\x00-\x7F\xF5-\xFF])[\x80-\xBF]~',
+            '~(?<=[\xE0-\xEF])[\x80-\xBF](?![\x80-\xBF])~',
+            '~(?<=[\xF0-\xF4])[\x80-\xBF](?![\x80-\xBF]{2})~',
+            '~(?<=[\xF0-\xF4][\x80-\xBF])[\x80-\xBF](?![\x80-\xBF])~'
+        ], function ($Match) {
+            return '\\x' . bin2hex($Match[0]);
+        }, $Value);
+        if ($this->EscapeBySpec) {
+            $Value = str_replace(['"', '/'], ['\"', '\/'], $Value);
+        }
+        return $Value;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Demojibakefier (last modified: 2022.01.29).
+ * Demojibakefier (last modified: 2022.01.31).
  *
  * Intended to normalise the character encoding of a given string to a
  * preferred character encoding when the given string's byte sequences don't
@@ -162,7 +162,7 @@ class Demojibakefier
          * @link https://tools.ietf.org/html/rfc3629#section-4
          */
         if ($Encoding === 'UTF-8') {
-            return !preg_match('~[' . self::CTRL0 . '\x7f\xc0\xc1\xf5-\xff]|[\xc2-\xdf](?![\x80-\xbf])|\xe0(?![\xa0-\xbf][\x80-\xbf])|[\xe1-\xec](?![\x80-\xbf]{2})|\xed(?![\x80-\x9f][\x80-\xbf])|\xf0(?![\x90-\xbf][\x80-\xbf]{2})[\xf0-\xf3](?![\x80-\xbf]{3})\xf4(?![\x80-\x9f][\x80-\xbf]{2})~', $String);
+            return !preg_match('~[' . self::CTRL0 . '\x7f\xc0\xc1\xf5-\xff]|[\xc2-\xdf](?![\x80-\xbf])|\xe0(?![\xa0-\xbf][\x80-\xbf])|[\xe1-\xec](?![\x80-\xbf]{2})|\xed(?![\x80-\x9f][\x80-\xbf])|\xf0(?![\x90-\xbf][\x80-\xbf]{2})|[\xf1-\xf3](?![\x80-\xbf]{3})|\xf4(?![\x80-\x8f][\x80-\xbf]{2})~', $String);
         }
         /**
          * @link https://en.wikipedia.org/wiki/UTF-16

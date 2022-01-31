@@ -24,6 +24,9 @@ found at:
 - [2022.01.31; Bug-fix; Maikuolan]: Fixed a small typo in one of the
   Demojibakefier's regular expressions.
 
+- [2022.01.31; Maikuolan]: Added the ability to specify the preferred style of
+  quotes for strings for the YAML handler.
+
 === Version/Release 1.7.0 ===
 MINOR RELEASE.
 

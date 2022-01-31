@@ -160,9 +160,10 @@ class Demojibakefier
         }
         /**
          * @link https://tools.ietf.org/html/rfc3629#section-4
+         * @link https://stackify.dev/253347-regex-to-detect-invalid-utf-8-string
          */
         if ($Encoding === 'UTF-8') {
-            return !preg_match('~[' . self::CTRL0 . '\x7f\xc0\xc1\xf5-\xff]|[\xc2-\xdf](?![\x80-\xbf])|\xe0(?![\xa0-\xbf][\x80-\xbf])|[\xe1-\xec](?![\x80-\xbf]{2})|\xed(?![\x80-\x9f][\x80-\xbf])|\xf0(?![\x90-\xbf][\x80-\xbf]{2})|[\xf1-\xf3](?![\x80-\xbf]{3})|\xf4(?![\x80-\x8f][\x80-\xbf]{2})~', $String);
+            return !preg_match('~[' . self::CTRL0 . '\x7f\xc0\xc1\xf5-\xff]|[\xc2-\xdf](?![\x80-\xbf])|\xe0(?![\xa0-\xbf][\x80-\xbf])|[\xe1-\xec](?![\x80-\xbf]{2})|\xed(?![\x80-\x9f][\x80-\xbf])|\xf0(?![\x90-\xbf][\x80-\xbf]{2})|[\xf1-\xf3](?![\x80-\xbf]{3})|\xf4(?![\x80-\x8f][\x80-\xbf]{2})|(?<=[\x00-\x7f\xf5-\xff])[\x80-\xbf]|(?<=[\xe0-\xef])[\x80-\xbf](?![\x80-\xbf])|(?<=[\xf0-\xf4])[\x80-\xbf](?![\x80-\xbf]{2})|(?<=[\xf0-\xf4][\x80-\xbf])[\x80-\xbf](?![\x80-\xbf])~', $String);
         }
         /**
          * @link https://en.wikipedia.org/wiki/UTF-16

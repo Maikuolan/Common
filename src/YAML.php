@@ -629,11 +629,53 @@ class YAML
     private function unescape(string $Value = '', string $Style = '"'): string
     {
         if ($Style === '"' || $Style === "\xe2\x80\x9c" || $Style === "\x91") {
-            return str_replace(
+            $Value = str_replace(
                 ['\#', '\0', '\a', '\b', '\t', '\n', '\v', '\f', '\r', '\e', '\"', '\/', '\N', '\_', '\L', '\P', "\\\\"],
                 ['#', "\0", "\x07", "\x08", "\t", "\n", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\xC2\x85", "\xC2\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9", "\\"],
                 $Value
             );
+            $Captured = [];
+            if (preg_match_all('~\\\\x([\dA-Fa-f]{2})~', $Value, $Captured)) {
+                $Captured = array_unique($Captured[1]);
+                foreach ($Captured as $Bytes) {
+                    $Value = str_replace('\\x' . $Bytes, hex2bin($Bytes), $Value);
+                }
+            }
+            $Captured = [];
+            if (preg_match_all('~\\\\u([\dA-Fa-f]{4})~', $Value, $Captured)) {
+                set_error_handler(function ($errno) {
+                    return;
+                });
+                $Captured = array_unique($Captured[1]);
+                foreach ($Captured as $Bytes) {
+                    $Decoded = hex2bin($Bytes);
+                    $Attempt = iconv('UTF-16BE', 'UTF-8', $Decoded);
+                    $Reversed = $Attempt === false ? '' : iconv('UTF-8', 'UTF-16BE', $Attempt);
+                    if ($Attempt !== false && strcmp($Reversed, $Decoded) === 0) {
+                        $Decoded = $Attempt;
+                    }
+                    $Value = str_replace('\\u' . $Bytes, $Decoded, $Value);
+                }
+                restore_error_handler();
+            }
+            $Captured = [];
+            if (preg_match_all('~\\\\U([\dA-Fa-f]{8})~', $Value, $Captured)) {
+                set_error_handler(function ($errno) {
+                    return;
+                });
+                $Captured = array_unique($Captured[1]);
+                foreach ($Captured as $Bytes) {
+                    $Decoded = hex2bin($Bytes);
+                    $Attempt = iconv('UTF-32BE', 'UTF-8', $Decoded);
+                    $Reversed = $Attempt === false ? '' : iconv('UTF-8', 'UTF-32BE', $Attempt);
+                    if ($Attempt !== false && strcmp($Reversed, $Decoded) === 0) {
+                        $Decoded = $Attempt;
+                    }
+                    $Value = str_replace('\\U' . $Bytes, $Decoded, $Value);
+                }
+                restore_error_handler();
+            }
+            return $Value;
         }
         if ($Style === "'" || $Style === "\xe2\x80\x98" || $Style === "\x93") {
             return str_replace("''", "'", $Value);

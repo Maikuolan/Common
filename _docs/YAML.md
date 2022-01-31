@@ -45,7 +45,7 @@ Example booleans and null:
 Testing anchors:
  Anchored text push: &TestAnchor "Some placeholder text."
  Anchored text pull: *TestAnchor
-Escaped stuff: "Our number is \#123-456-789."
+Escaping test: "Our number is \#123-456-789."
 End of file: ":-)"
 ```
 
@@ -154,7 +154,7 @@ hello-world"
     ["Anchored text pull"]=>
     string(22) "Some placeholder text."
   }
-  ["Escaped stuff"]=>
+  ["Escaping test"]=>
   string(27) "Our number is #123-456-789."
   ["End of file"]=>
   string(3) ":-)"
@@ -436,4 +436,4 @@ Indicates whether to escape according to the spec. When false, only hashes (used
 ---
 
 
-Last Updated: 29 January 2022 (2022.01.29).
+Last Updated: 31 January 2022 (2022.01.31).

@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.01.29).
+ * YAML handler (last modified: 2022.01.31).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -613,7 +613,7 @@ class YAML
             $Value = str_replace("\n", '\n', $Value);
         }
         return str_replace(
-            ['#', "\0", "\x07", "\x08", "\t", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\x85", "\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9"],
+            ['#', "\0", "\x07", "\x08", "\t", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\xC2\x85", "\xC2\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9"],
             ['\#', '\0', '\a', '\b', '\t', '\v', '\f', '\r', '\e', '\"', '\/', '\N', '\_', '\L', '\P'],
             $Value
         );
@@ -631,7 +631,7 @@ class YAML
         if ($Style === '"' || $Style === "\xe2\x80\x9c" || $Style === "\x91") {
             return str_replace(
                 ['\#', '\0', '\a', '\b', '\t', '\n', '\v', '\f', '\r', '\e', '\"', '\/', '\N', '\_', '\L', '\P', "\\\\"],
-                ['#', "\0", "\x07", "\x08", "\t", "\n", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\x85", "\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9", "\\"],
+                ['#', "\0", "\x07", "\x08", "\t", "\n", "\x0B", "\x0C", "\x0D", "\x1B", '"', '/', "\xC2\x85", "\xC2\xA0", "\xE2\x80\xA8", "\xE2\x80\xA9", "\\"],
                 $Value
             );
         }

@@ -21,6 +21,9 @@ found at:
 - [2022.01.29; Maikuolan]: Added UTF-16 and UTF-32 support to the YAML handler.
   Added the optional ability to perform spec-compliant (un/)escaping.
 
+- [2022.01.31; Bug-fix; Maikuolan]: Fixed a small typo in one of the
+  Demojibakefier's regular expressions.
+
 === Version/Release 2.7.0 ===
 MINOR RELEASE.
 

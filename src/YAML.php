@@ -63,6 +63,11 @@ class YAML
     public $EscapeBySpec = false;
 
     /**
+     * @var string The preferred style of quotes to use for strings.
+     */
+    public $Quotes = '"';
+
+    /**
      * @var bool Whether to render multi-line values.
      */
     private $MultiLine = false;
@@ -559,7 +564,7 @@ class YAML
                         "\n" . $ThisDepth . $this->Indent
                     );
                 } else {
-                    $ToAdd = '"' . $Value . '"';
+                    $ToAdd = $this->Quotes . $Value . $this->Quotes;
                 }
             } else {
                 $ToAdd = $Value;
@@ -590,6 +595,12 @@ class YAML
      */
     private function escape(string $Value = '', bool $Newlines = true): string
     {
+        if ($this->Quotes === "'" && $this->EscapeBySpec) {
+            return str_replace("'", "''", $Value);
+        }
+        if ($this->Quotes !== '"') {
+            return $Value;
+        }
         $Value = str_replace("\\", "\\\\", $Value);
         if ($Newlines) {
             $Value = str_replace("\n", '\n', $Value);

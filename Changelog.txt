@@ -25,7 +25,8 @@ found at:
   Demojibakefier's regular expressions.
 
 - [2022.01.31; Maikuolan]: Added the ability to specify the preferred style of
-  quotes for strings for the YAML handler.
+  quotes for strings for the YAML handler. Added support for hexadecimal,
+  binary, and octal number notation.
 
 === Version/Release 2.7.0 ===
 MINOR RELEASE.

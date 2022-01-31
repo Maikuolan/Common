@@ -34,7 +34,6 @@ Example mixed multi-dimensional array:
   Hello: "World"
   Sub-sub array:
    Foobar: "Barfoo"
-Hex-encoded string example: 0x48656c6c6f20576f726c64202862757420696e206865782900
 Multi-line example: |
  h e l l o - w o r l d
  hello-world
@@ -83,7 +82,7 @@ var_dump($Object->Data);
 In both cases, the expected output (which should be the same):
 
 ```
-array(12) {
+array(14) {
   ["String foo"]=>
   string(3) "Bar"
   ["Integer foo"]=>
@@ -133,8 +132,6 @@ array(12) {
       }
     }
   }
-  ["Hex-encoded string example"]=>
-  string(25) "Hello World (but in hex) "
   ["Multi-line example"]=>
   string(33) "h e l l o - w o r l d
 hello-world"
@@ -156,6 +153,12 @@ hello-world"
   }
   ["Escaping test"]=>
   string(27) "Our number is #123-456-789."
+  ["Hexadecimal number notation"]=>
+  int(65536)
+  ["Binary number notation"]=>
+  int(16)
+  ["Octal number notation"]=>
+  int(4096)
   ["End of file"]=>
   string(3) ":-)"
 }
@@ -328,13 +331,13 @@ The method returns a string (the reconstructed YAML data).
 
 ### Supported data types:
 
-The YAML class supports arrays, integers, floats, booleans (`true`, `+`, `false`, `-`), null (`null`, `~`), strings, multi-line strings (`|`), folded multi-line strings (`>`), and hexadecimal data (`0x`).
+The YAML class supports arrays, integers, floats, booleans (`true`, `+`, `false`, `-`), null (`null`, `~`), strings, multi-line strings (`|`), folded multi-line strings (`>`), hexadecimal number notation (`0x`), binary number notation (`0b`), and octal number notation (`0o`).
 
 The YAML class does not support callables, closures, or objects. If objects, closures, or callables are supplied to reconstruct, a fatal error will occur. Don't ever do this.
 
 The YAML class allows YAML data to contain comments. The YAML class considers all data, beginning with a non-escaped hash (`#`), and ending at any valid line ending (e.g., `\n`, `\r`), to be a comment. Therefore, all hashes *not* intended to indicate the beginning of a comment should be properly escaped (i.e., `\#`), in order to ensure the YAML data is processed as intended.
 
-Within unprocessed YAML data, integers, floats, booleans, null, and hexadecimal data should never be quoted. Quoting for strings is optional, and it generally doesn't matter whether you choose to quote strings (i.e., quoting for strings is not strict). However, strings should always be quoted if the intended data type would otherwise be ambiguous. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all result in strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would result in a boolean, an integer, and a float respectively. Quoting for keys is treated in the same manner as quoting for values.
+Within unprocessed YAML data, non-string data should never be quoted. Quoting for strings is optional, and it generally doesn't matter whether you choose to quote strings (i.e., quoting for strings is not strict). However, strings should always be quoted if the intended data type would otherwise be ambiguous. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all result in strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would result in a boolean, an integer, and a float respectively. Quoting for keys is treated in the same manner as quoting for values.
 
 Also, when reconstructing YAML data, string values are always quoted, whereas keys (regardless of data type) are never quoted. Therefore, if you ever need to reverse-process YAML data for any reason (i.e., process some YAML data, and then reconstruct the resulting array back into YAML data again; e.g., for testing purposes), you should also always quote string values (i.e., approach value quoting strictly), should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstruted YAML data).
 

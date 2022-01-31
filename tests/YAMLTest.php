@@ -42,7 +42,6 @@ $ExpectedForSyntax = [
             ]
         ]
     ],
-    'Hex-encoded string example' => "Hello World (but in hex)\0",
     'Multi-line example' => "h e l l o - w o r l d\nhello-world",
     'Folded multi-line example' => 'Hello world. This is an example.',
     'Example booleans and null' => [
@@ -65,6 +64,9 @@ $ExpectedForSyntax = [
     ],
     'Inserts test' => 'Hello world; Thus, from here, within this variable, a value is inserted; It should work, hopefully.',
     'Inline array example' => ['this', 'is', 'a', 'test.', 'Foo', 'Bar', true, false, 123],
+    'Hexadecimal number notation' => 65536,
+    'Binary number notation' => 16,
+    'Octal number notation' => 4096,
     'End of file' => ':-)'
 ];
 
@@ -185,6 +187,9 @@ $ExpectedForUTF16 = [
     'String foo' => 'Bar',
     'Integer foo' => 1234,
     'Float foo' => 123.4,
+    'Hexadecimal number notation' => 65536,
+    'Binary number notation' => 16,
+    'Octal number notation' => 4096,
     'Example implicit numeric array' => ['Bar0', 'Bar1', 'Bar2', 'Bar3'],
     'Example associative array' => [
         'Foo1' => 'Bar1',

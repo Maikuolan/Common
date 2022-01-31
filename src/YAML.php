@@ -448,8 +448,12 @@ class YAML
             $Value = false;
         } elseif ($ValueLow === 'null' || $Value === '~') {
             $Value = null;
-        } elseif (substr($Value, 0, 2) === '0x' && ($HexTest = substr($Value, 2)) && !preg_match('/[^\da-f]/i', $HexTest) && !($ValueLen % 2)) {
-            $Value = hex2bin($HexTest);
+        } elseif (preg_match('~^0x[\dA-Fa-f]+$~', $Value)) {
+            $Value = hexdec(substr($Value, 2));
+        } elseif (preg_match('~^0o[0-8]+$~', $Value)) {
+            $Value = octdec(substr($Value, 2));
+        } elseif (preg_match('~^0b[01]+$~', $Value)) {
+            $Value = bindec(substr($Value, 2));
         } elseif (preg_match('~^\d+$~', $Value)) {
             $Value = (int)$Value;
         } elseif (preg_match('~^(?:\d+\.\d+|\d+(?:\.\d+)?[Ee][-+]\d+)$~', $Value)) {

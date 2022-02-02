@@ -67,18 +67,34 @@ class L10N
         if (is_array($Fallback) || $Fallback instanceof \Maikuolan\Common\L10N) {
             $this->Fallback = $Fallback;
         }
-        if (!empty($Data['IntegerRule']) && method_exists($this, $Data['IntegerRule'])) {
-            $this->IntegerRule = $Data['IntegerRule'];
+        if (!empty($Data['IntegerRule'])) {
+            if (method_exists($this, $Data['IntegerRule'])) {
+                $this->IntegerRule = $Data['IntegerRule'];
+            } else {
+                $this->IntegerRule = $this->getIntegerRule($Data['IntegerRule']);
+            }
         }
-        if (!empty($Data['FractionRule']) && method_exists($this, $Data['FractionRule'])) {
-            $this->FractionRule = $Data['FractionRule'];
+        if (!empty($Data['FractionRule'])) {
+            if (method_exists($this, $Data['FractionRule'])) {
+                $this->FractionRule = $Data['FractionRule'];
+            } else {
+                $this->FractionRule = $this->getFractionRule($Data['FractionRule']);
+            }
         }
         if (is_array($Fallback)) {
-            if (!empty($Fallback['IntegerRule']) && method_exists($this, $Fallback['IntegerRule'])) {
-                $this->FallbackIntegerRule = $Fallback['IntegerRule'];
+            if (!empty($Fallback['IntegerRule'])) {
+                if (method_exists($this, $Fallback['IntegerRule'])) {
+                    $this->FallbackIntegerRule = $Fallback['IntegerRule'];
+                } else {
+                    $this->FallbackIntegerRule = $this->getIntegerRule($Fallback['IntegerRule']);
+                }
             }
-            if (!empty($Fallback['FractionRule']) && method_exists($this, $Fallback['FractionRule'])) {
-                $this->FallbackFractionRule = $Fallback['FractionRule'];
+            if (!empty($Fallback['FractionRule'])) {
+                if (method_exists($this, $Fallback['FractionRule'])) {
+                    $this->FallbackFractionRule = $Fallback['FractionRule'];
+                } else {
+                    $this->FallbackFractionRule = $this->getFractionRule($Fallback['FractionRule']);
+                }
             }
         }
     }
@@ -98,7 +114,7 @@ class L10N
             $FractionRule = $this->FractionRule;
         } elseif ($this->Fallback instanceof \Maikuolan\Common\L10N) {
             return $this->Fallback->getPlural($Number, $String);
-        } elseif (isset($this->Fallback[$String])) {
+        } elseif (is_array($this->Fallback) && isset($this->Fallback[$String])) {
             $Choices = $this->Fallback[$String];
             $IntegerRule = $this->FallbackIntegerRule;
             $FractionRule = $this->FallbackFractionRule;
@@ -615,5 +631,387 @@ class L10N
     private function fraction2Type2($Fraction)
     {
         return ($Fraction >= 1) ? 1 : 0;
+    }
+
+    /**
+     * Attempts to automatically determine an appropriate integer rule to use
+     * based upon the specified ISO 639-1/639-2 language code (the former
+     * preferred, the latter used if the former isn't available).
+     * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
+     * @link https://cldr.unicode.org/index/cldr-spec/plural-rules
+     * @link https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html
+     *
+     * @param string $Code An ISO 639-1/639-2 language code.
+     * @return string An appropriate integer rule to use.
+     */
+    public function getIntegerRule($Code)
+    {
+        /** For different rules based on region, country, or dialect. */
+        if (($Pos = strpos($Code, '-')) !== false) {
+            if ($Code === 'pt-BR') {
+                return 'int2Type3';
+            }
+
+            /** Try falling back to standard codes. */
+            $Code = substr($Code, 0, $Pos);
+        }
+
+        if (in_array($Code, [
+            'ceb',
+            'fil',
+            'tl'
+        ], true)) {
+            return 'int2Type1';
+        }
+
+        if (in_array($Code, [
+            'is',
+            'mk'
+        ], true)) {
+            return 'int2Type2';
+        }
+
+        if (in_array($Code, [
+            'ak',
+            'am',
+            'as',
+            'bh',
+            'bn',
+            'doi',
+            'fa',
+            'ff',
+            'fr',
+            'gu',
+            'guw',
+            'hi',
+            'hy',
+            'kab',
+            'kn',
+            'ln',
+            'mg',
+            'nso',
+            'pa',
+            'si',
+            'ti',
+            'tlh',
+            'wa',
+            'zu'
+        ], true)) {
+            return 'int2Type3';
+        }
+
+        if (in_array($Code, [
+            'af',
+            'an',
+            'asa',
+            'ast',
+            'az',
+            'bal',
+            'bem',
+            'bez',
+            'bg',
+            'brx',
+            'ca',
+            'ce',
+            'cgg',
+            'chr',
+            'da',
+            'de',
+            'dv',
+            'ee',
+            'el',
+            'en',
+            'eo',
+            'es',
+            'et',
+            'eu',
+            'fi',
+            'fo',
+            'fur',
+            'fy',
+            'gl',
+            'gsw',
+            'ha',
+            'haw',
+            'hu',
+            'ia',
+            'io',
+            'it',
+            'jgo',
+            'jmc',
+            'ka',
+            'kaj',
+            'kcg',
+            'kk',
+            'kkj',
+            'kl',
+            'ks',
+            'ksb',
+            'ku',
+            'ky',
+            'lb',
+            'lg',
+            'lij',
+            'mas',
+            'mgo',
+            'mi',
+            'ml',
+            'mn',
+            'mr',
+            'nah',
+            'nb',
+            'nd',
+            'ne',
+            'nl',
+            'nn',
+            'nnh',
+            'no',
+            'nr',
+            'ny',
+            'nyn',
+            'om',
+            'or',
+            'os',
+            'pap',
+            'ps',
+            'pt',
+            'rm',
+            'rof',
+            'rwk',
+            'saq',
+            'sc',
+            'scn',
+            'sco',
+            'sd',
+            'seh',
+            'sjn',
+            'sm',
+            'sn',
+            'so',
+            'sq',
+            'ss',
+            'ssy',
+            'st',
+            'sv',
+            'sw',
+            'syr',
+            'ta',
+            'te',
+            'teo',
+            'tig',
+            'tk',
+            'tn',
+            'tr',
+            'ts',
+            'ug',
+            'ur',
+            'uz',
+            've',
+            'vo',
+            'vun',
+            'wae',
+            'xh',
+            'xog',
+            'yi'
+        ], true)) {
+            return 'int2Type4';
+        }
+
+        if (in_array($Code, [
+            'lv',
+            'prg'
+        ], true)) {
+            return 'int3Type1';
+        }
+
+        if (in_array($Code, [
+            'ksh',
+            'lag'
+        ], true)) {
+            return 'int3Type2';
+        }
+
+        if (in_array($Code, [
+            'fj',
+            'iu',
+            'naq',
+            'sat',
+            'se',
+            'sma',
+            'smj',
+            'smn',
+            'sms'
+        ], true)) {
+            return 'int3Type3';
+        }
+
+        if (in_array($Code, [
+            'be',
+            'bs',
+            'hr',
+            'ru',
+            'sh',
+            'sr',
+            'uk'
+        ], true)) {
+            return 'int3Type4';
+        }
+
+        if (in_array($Code, [
+            'pl'
+        ], true)) {
+            return 'int3Type5';
+        }
+
+        if (in_array($Code, [
+            'lt'
+        ], true)) {
+            return 'int3Type6';
+        }
+
+        if (in_array($Code, [
+            'shi'
+        ], true)) {
+            return 'int3Type7';
+        }
+
+        if (in_array($Code, [
+            'ro',
+            'mo'
+        ], true)) {
+            return 'int3Type8';
+        }
+
+        if (in_array($Code, [
+            'cs',
+            'sk'
+        ], true)) {
+            return 'int3Type9';
+        }
+
+        if (in_array($Code, [
+            'qya',
+            'tkl'
+        ], true)) {
+            return 'int3Type10';
+        }
+
+        if (in_array($Code, [
+            'gv'
+        ], true)) {
+            return 'int4Type1';
+        }
+
+        if (in_array($Code, [
+            'gd'
+        ], true)) {
+            return 'int4Type2';
+        }
+
+        if (in_array($Code, [
+            'br'
+        ], true)) {
+            return 'int4Type3';
+        }
+
+        if (in_array($Code, [
+            'dsb',
+            'hsb',
+            'sl'
+        ], true)) {
+            return 'int4Type4';
+        }
+
+        if (in_array($Code, [
+            'he'
+        ], true)) {
+            return 'int4Type5';
+        }
+
+        if (in_array($Code, [
+            'mt'
+        ], true)) {
+            return 'int4Type6';
+        }
+
+        if (in_array($Code, [
+            'ga'
+        ], true)) {
+            return 'int5Type1';
+        }
+
+        if (in_array($Code, [
+            'ar'
+        ], true)) {
+            return 'int6Type1';
+        }
+
+        if (in_array($Code, [
+            'cy'
+        ], true)) {
+            return 'int6Type2';
+        }
+
+        if (in_array($Code, [
+            'kw'
+        ], true)) {
+            return 'int6Type3';
+        }
+
+        /** Default rule. */
+        return 'int1';
+    }
+
+    /**
+     * Attempts to automatically determine an appropriate fraction rule to use
+     * based upon the specified ISO 639-1/639-2 language code (the former
+     * preferred, the latter used if the former isn't available).
+     * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
+     * @link https://cldr.unicode.org/index/cldr-spec/plural-rules
+     * @link https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html
+     *
+     * @param string $Code An ISO 639-1/639-2 language code.
+     * @return string An appropriate fraction rule to use.
+     */
+    public function getFractionRule($Code)
+    {
+        /** For different rules based on region, country, or dialect. */
+        if (($Pos = strpos($Code, '-')) !== false) {
+            if ($Code === 'pt-BR') {
+                return 'fraction2Type1';
+            }
+
+            /** Try falling back to standard codes. */
+            $Code = substr($Code, 0, $Pos);
+        }
+
+        if (in_array($Code, [
+            'da',
+            'ff',
+            'fr',
+            'hy',
+            'kab',
+            'lag'
+        ], true)) {
+            return 'fraction2Type1';
+        }
+
+        if (in_array($Code, [
+            'am',
+            'as',
+            'bn',
+            'doi',
+            'fa',
+            'gu',
+            'hi',
+            'kn',
+            'shi',
+            'zu'
+        ], true)) {
+            return 'fraction2Type2';
+        }
+
+        /** Default rule. */
+        return 'int1';
     }
 }

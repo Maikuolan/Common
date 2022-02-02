@@ -30,6 +30,8 @@ found at:
 
 - [2022.02.02; Maikuolan]: Updated the L10N handler's supported languages and
   plural rules documentation. Added Ol Chiki support to the number formatter.
+  Added the ability to the L10N handler to automatically determine appropriate
+  integer and fraction rules to use based upon a language code specified.
 
 === Version/Release 2.7.0 ===
 MINOR RELEASE.

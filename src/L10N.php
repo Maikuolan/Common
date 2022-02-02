@@ -23,7 +23,7 @@ class L10N
     public $Data = [];
 
     /**
-     * @var array All relevant fallback L10N data.
+     * @var array|\Maikuolan\Common\L10N All relevant fallback L10N data.
      */
     public $Fallback = [];
 

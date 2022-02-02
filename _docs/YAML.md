@@ -434,7 +434,11 @@ Used to cache any anchors found in the document.
 public $EscapeBySpec = false;
 ```
 
-Indicates whether to escape according to the spec. When false, only hashes (used for comments) and slashes (used for escaping) are escaped. When true, the instance will attempt to escape in accordance with the YAML specification.
+Indicates whether to escape according to the YAML specification.
+
+When `EscapeBySpec` is set to true and single quotes are set as the preferred style for the instance, apostrophes (`'`) will be escaped with another apostrophe (in accordance with the YAML specification), but nothing else will be escaped. When `EscapeBySpec` is set to true and double quotes are set as the preferred style for the instance, quotes (`"`) and forward-slashes (`/`) will escaped in addition to same escaping that would normally be performed regardless of whether `EscapeBySpec` is set to true or false (e.g., escaping non-printable bytes, hashes, back-slashes, etc). When something other than single quotes or double quotes is set as the preferred style for the instance, no escaping will be performed at all, regardless of whether `EscapeBySpec` is set to true or false. When `EscapeBySpec` is set to false, whether single quotes or double quotes is set as the preferred style for the instance makes no difference to what gets escaped.
+
+When `EscapeBySpec` is set to true, unescaping is performed in accordance with the YAML specification: For single-quoted strings, only apostrophes (`'`) are unescaped, and for double-quoted strings, any bytes escaped according to UTF-8 (`\x..`), UTF-16 (`\u....`), UTF-32 (`\u........`), etc are unescaped, and all extended characters are unescaped (e.g., `\n`, `\r`, `\t`, etc). When `EscapeBySpec` is set to false, escaped hashes (`\#`) and back-slashes (`\\`) are unescaped, but nothing else.
 
 ```PHP
 public $Quotes = '"';
@@ -445,4 +449,4 @@ The preferred style of quotes to use for strings (double `"`, or single `'`).
 ---
 
 
-Last Updated: 31 January 2022 (2022.01.31).
+Last Updated: 2 February 2022 (2022.02.02).

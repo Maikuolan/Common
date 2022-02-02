@@ -28,6 +28,9 @@ found at:
   quotes for strings for the YAML handler. Added support for hexadecimal,
   binary, and octal number notation.
 
+- [2022.02.02; Maikuolan]: Updated the L10N handler's supported languages and
+  plural rules documentation.
+
 === Version/Release 1.7.0 ===
 MINOR RELEASE.
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2021.10.30).
+ * L10N handler (last modified: 2022.02.02).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -149,7 +149,7 @@ class L10N
     }
 
     /**
-     * Two grammatical numbers, type one. For e.g., Tagalog.
+     * Two grammatical numbers, type one. For e.g., Cebuano, Filipino, Tagalog.
      *
      * @param int $Int The plurality/number of things.
      * @return int 0: Singular form. 1: Other form.
@@ -175,7 +175,7 @@ class L10N
 
     /**
      * Two grammatical numbers, type three. For e.g., Armenian, Bangla,
-     * French, Hindi, Marathi, Zulu.
+     * French, Gujarati, Hindi, Zulu.
      *
      * @param int $Int The plurality/number of things.
      * @return int 0: Singular form. 1: Other form.
@@ -228,7 +228,7 @@ class L10N
     }
 
     /**
-     * Three grammatical numbers, type three. For e.g., Cornish, Inuktitut.
+     * Three grammatical numbers, type three. For e.g., Inuktitut.
      *
      * @param int $Int The plurality/number of things.
      * @return int 0: Singular form. 1: Dual form. 2: Other form.
@@ -315,8 +315,8 @@ class L10N
         if ($Int === 1) {
             return 0;
         }
-        $Tail2 = $Int % 100;
-        if ($Int < 20 || ($Tail2 > 0 && $Tail2 < 20)) {
+        $Tail = $Int % 100;
+        if ($Int < 20 || ($Tail > 1 && $Tail < 20)) {
             return 1;
         }
         return 2;
@@ -569,6 +569,33 @@ class L10N
     }
 
     /**
+     * Six grammatical numbers, type three. For e.g., Cornish.
+     *
+     * @param int $Int The plurality/number of things.
+     * @return int 0: Singular form. 1: Dual form. 2: Trial form. 3: Other form. 4: Many form. 5: Zero form.
+     */
+    private function int6Type3($Int)
+    {
+        if ($Int === 0) {
+            return 5;
+        }
+        if ($Int === 1) {
+            return 0;
+        }
+        $Tail = $Int % 10;
+        if ($Tail === 1) {
+            return 4;
+        }
+        if ($Tail === 2) {
+            return 1;
+        }
+        if ($Tail === 3) {
+            return 2;
+        }
+        return 3;
+    }
+
+    /**
      * Two fraction forms, type one. For e.g., Armenian, Danish, French, Portuguese.
      *
      * @param float $Fraction The fraction of things.
@@ -580,7 +607,7 @@ class L10N
     }
 
     /**
-     * Two fraction forms, type two. For e.g., Amharic, Bangla, Hindi, Marathi.
+     * Two fraction forms, type two. For e.g., Amharic, Bangla, Hindi.
      *
      * @param float $Fraction The fraction of things.
      * @return int 0: Singular form. 1: Other form.

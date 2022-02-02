@@ -29,7 +29,7 @@ found at:
   binary, and octal number notation.
 
 - [2022.02.02; Maikuolan]: Updated the L10N handler's supported languages and
-  plural rules documentation.
+  plural rules documentation. Added Ol Chiki support to the number formatter.
 
 === Version/Release 1.7.0 ===
 MINOR RELEASE.

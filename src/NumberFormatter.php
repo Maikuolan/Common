@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2021.08.25).
+ * Number formatter (last modified: 2022.02.02).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -961,6 +961,22 @@ class NumberFormatter
         'x' => 'ｘ',
         'y' => 'ｙ',
         'z' => 'ｚ'
+    ];
+
+    /**
+     * @var array Conversion set for Ol Chiki numerals (used by Santali).
+     */
+    private $OlChiki = [
+        '0' => '᱐',
+        '1' => '᱑',
+        '2' => '᱒',
+        '3' => '᱓',
+        '4' => '᱔',
+        '5' => '᱕',
+        '6' => '᱖',
+        '7' => '᱗',
+        '8' => '᱘',
+        '9' => '᱙'
     ];
 
     /**

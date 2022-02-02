@@ -208,11 +208,8 @@ Gets the specified conversion set and returns it as a CSV string. Not normally n
 ```PHP
 $Obj = new \Maikuolan\Common\NumberFormatter('Javanese');
 echo $Obj->getSetCSV() . PHP_EOL;
-
-// or..
 echo $Obj->getSetCSV('Roman') . PHP_EOL;
 echo $Obj->getSetCSV('Persian') . PHP_EOL;
-// ..etc
 ```
 
 Output:
@@ -257,6 +254,7 @@ Value | Description
 `Mongolian` | Mongolian numerals.
 `Nagari` | Nagari/Bengali/Bangla numerals.
 `Odia` | Odia numerals.
+`OlChiki` | Ol Chiki numerals.
 `Persian` | Persian/Urdu numerals (Eastern Arabic variant).
 `Roman` | Roman numerals. *(Fractions not supported. Range limit: 1 ~ 3,999,999).*
 `Tamil` | Tamil numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^24</sup>-1).*
@@ -541,4 +539,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 25 January 2021 (2021.01.25).
+Last Updated: 2 February 2022 (2022.02.02).

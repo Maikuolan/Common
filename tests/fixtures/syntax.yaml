@@ -28,6 +28,11 @@ Example associative array:
  Foo2: "Bar2"
  Foo3: "Bar3"
  Foo4: "Bar4"
+Example null set:
+ ? "Bar0"
+ ? "Bar1"
+ ? "Bar2"
+ ? "Bar3"
 Example mixed multi-dimensional array:
  - "Bar0"
  - "Bar1"
@@ -69,4 +74,57 @@ Inline array example: [this, is, a, test., "Foo", "Bar", true, false, 123]
 Hexadecimal number notation: 0x10000
 Binary number notation: 0b10000
 Octal number notation: 0o10000
+Example explicit tags (type coercion):
+ Normal string: &NormalString "123 Hello"
+ Make the string a bool: !!bool "123 Hello"
+ Make the string a float: !!float "123 Hello"
+ Make the string a null set: !!set "123 Hello"
+ Make the string a null: !!null "123 Hello"
+ Make the string a numeric array: !!seq "123 Hello"
+ Make the string an integer: !!int "123 Hello"
+ Make the string an integer from an anchor: !!int *NormalString
+ Normal integer: &NormalInteger 12345
+ Make the integer a bool: !!bool 12345
+ Make the integer a float: !!float 12345
+ Make the integer a null set: !!set 12345
+ Make the integer a null: !!null 12345
+ Make the integer a numeric array: !!seq 12345
+ Make the integer a string: !!str 12345
+ Make the integer a string from an anchor: !!str *NormalInteger
+ Normal float: &NormalFloat 123.456
+ Make the float a bool: !!bool 123.456
+ Make the float a null: !!null 123.456
+ Make the float a string: !!str 123.456
+ Make the float an integer: !!int 123.456
+ Make the float an integer from an anchor: !!int *NormalFloat
+ Normal array: &NormalArray ["Foo", "Bar", 1]
+ Make the array a bool: !!bool ["Foo", "Bar", 1]
+ Make the array a float: !!float ["Foo", "Bar", 1]
+ Make the array a null set: !!set ["Foo", "Bar", 1]
+ Make the array a null: !!null ["Foo", "Bar", 1]
+ Make the array a numeric array: !!seq ["Foo", "Bar", 1]
+ Make the array an integer: !!int ["Foo", "Bar", 1]
+ Make the array an integer from an anchor: !!int *NormalArray
+ To bool:
+  - !!bool "0"
+  - !!bool "1"
+  - !!bool "Hello"
+  - !!bool "fAlSe"
+  - !!bool "false"
+  - !!bool "tRuE"
+  - !!bool "true"
+  - !!bool 0
+  - !!bool 1
+  - !!bool null
+ To int:
+  - !!int "0"
+  - !!int "1"
+  - !!int "Hello"
+  - !!int false
+  - !!int null
+  - !!int true
+ To string:
+  - !!str null
+  - !!str true
+  - !!str false
 End of file: ":-)"

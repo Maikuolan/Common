@@ -19,6 +19,11 @@ Example associative array:
  Foo2: "Bar2"
  Foo3: "Bar3"
  Foo4: "Bar4"
+Example null set:
+ ? "Bar0"
+ ? "Bar1"
+ ? "Bar2"
+ ? "Bar3"
 Example mixed multi-dimensional array:
  0: "Bar0"
  1: "Bar1"

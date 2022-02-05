@@ -33,6 +33,11 @@ found at:
   Added the ability to the L10N handler to automatically determine appropriate
   integer and fraction rules to use based upon a language code specified.
 
+- [2022.02.05; Maikuolan]: Added support for null sets (mapping keys) and some
+  basic, rudimentary support for explicit tags and and related type coercion to
+  the YAML handler. Support for explicit tags currently only works on
+  individual entries, not entire blocks (I aim to implement the latter soon).
+
 === Version/Release 1.7.0 ===
 MINOR RELEASE.
 

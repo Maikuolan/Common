@@ -28,6 +28,12 @@ $ExpectedForSyntax = [
         'Foo3' => 'Bar3',
         'Foo4' => 'Bar4'
     ],
+    'Example null set' => [
+        'Bar0' => null,
+        'Bar1' => null,
+        'Bar2' => null,
+        'Bar3' => null
+    ],
     'Example mixed multi-dimensional array' => [
         0 => 'Bar0',
         1 => 'Bar1',
@@ -67,6 +73,41 @@ $ExpectedForSyntax = [
     'Hexadecimal number notation' => 65536,
     'Binary number notation' => 16,
     'Octal number notation' => 4096,
+    'Example explicit tags (type coercion)' => [
+        'Normal string' => '123 Hello',
+        'Make the string a bool' => true,
+        'Make the string a float' => 123.0,
+        'Make the string a null set' => ['123 Hello' => null],
+        'Make the string a null' => null,
+        'Make the string a numeric array' => ['123 Hello'],
+        'Make the string an integer' => 123,
+        'Make the string an integer from an anchor' => 123,
+        'Normal integer' => 12345,
+        'Make the integer a bool' => true,
+        'Make the integer a float' => 12345.0,
+        'Make the integer a null set' => [12345 => null],
+        'Make the integer a null' => null,
+        'Make the integer a numeric array' => [12345],
+        'Make the integer a string' => '12345',
+        'Make the integer a string from an anchor' => '12345',
+        'Normal float' => 123.456,
+        'Make the float a bool' => true,
+        'Make the float a null' => null,
+        'Make the float a string' => '123.456',
+        'Make the float an integer' => 123,
+        'Make the float an integer from an anchor' => 123,
+        'Normal array' => ['Foo', 'Bar', 1],
+        'Make the array a bool' => true,
+        'Make the array a float' => 3.0,
+        'Make the array a null set' => ['Foo' => null, 'Bar' => null, 1 => null],
+        'Make the array a null' => null,
+        'Make the array a numeric array' => ['Foo', 'Bar', 1],
+        'Make the array an integer' => 3,
+        'Make the array an integer from an anchor' => 3,
+        'To bool' => [false, true, true, false, false, true, true, false, true, false],
+        'To int' => [0, 1, 0, 0, 0, 1],
+        'To string' => ['null', 'true', 'false']
+    ],
     'End of file' => ':-)'
 ];
 
@@ -80,6 +121,12 @@ $ExpectedForReconstruction = [
         'Foo2' => 'Bar2',
         'Foo3' => 'Bar3',
         'Foo4' => 'Bar4'
+    ],
+    'Example null set' => [
+        'Bar0' => null,
+        'Bar1' => null,
+        'Bar2' => null,
+        'Bar3' => null
     ],
     'Example mixed multi-dimensional array' => [
         0 => 'Bar0',
@@ -196,6 +243,12 @@ $ExpectedForUTF16 = [
         'Foo2' => 'Bar2',
         'Foo3' => 'Bar3',
         'Foo4' => 'Bar4'
+    ],
+    'Example null set' => [
+        'Bar0' => null,
+        'Bar1' => null,
+        'Bar2' => null,
+        'Bar3' => null
     ]
 ];
 

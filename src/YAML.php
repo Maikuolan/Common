@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.01.31).
+ * YAML handler (last modified: 2022.02.05).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -377,6 +377,14 @@ class YAML
      */
     private function normaliseValue(string &$Value, bool $EnforceScalar = false): void
     {
+        /** Resolve tags. */
+        if (preg_match('~^!([!\dA-Za-z]+) (.*)$~', $Value, $Resolved)) {
+            $Tag = strtolower($Resolved[1]);
+            $Value = $Resolved[2];
+        } else {
+            $Tag = '';
+        }
+
         /** Not executed for keys. */
         if (!$EnforceScalar) {
             /** Check for anchors and populate if necessary. */
@@ -404,6 +412,9 @@ class YAML
                     $ThisValue = trim($ThisValue);
                     $this->normaliseValue($ThisValue);
                 }
+                if ($Tag !== '') {
+                    $Value = $this->coerce($Value, $EnforceScalar, $Tag);
+                }
                 return;
             }
         }
@@ -428,6 +439,9 @@ class YAML
                 if ($this->EscapeBySpec) {
                     $Value = $this->unescape($Value, $Wrapper[0]);
                 }
+                if ($Tag !== '') {
+                    $Value = $this->coerce($Value, $EnforceScalar, $Tag);
+                }
                 return;
             }
         }
@@ -435,9 +449,16 @@ class YAML
         /** Executed only for keys. */
         if ($EnforceScalar) {
             $Value = trim($Value);
-            if (preg_match('~^\d+$~', $Value)) {
+            if ($Tag !== '') {
+                $Value = $this->coerce($Value, $EnforceScalar, $Tag);
+            } elseif (preg_match('~^\d+$~', $Value)) {
                 $Value = (int)$Value;
             }
+            return;
+        }
+
+        if ($Tag !== '') {
+            $Value = $this->coerce($Value, $EnforceScalar, $Tag);
             return;
         }
 
@@ -484,6 +505,11 @@ class YAML
                 $Arr[$Key] = false;
             }
             $Value = false;
+        } elseif (substr($ThisLine, $ThisTab, 2) === '? ') {
+            $Key = substr($ThisLine, $ThisTab + 2);
+            $this->normaliseValue($Key, true);
+            $Value = null;
+            $Arr[$Key] = null;
         } elseif (substr($ThisLine, $ThisTab, 2) === '- ') {
             $Value = substr($ThisLine, $ThisTab + 2);
             $ValueLen = strlen($Value);
@@ -537,13 +563,19 @@ class YAML
     private function processInner(array $Arr, string &$Out, int $Depth = 0): void
     {
         $Sequential = (array_keys($Arr) === range(0, count($Arr) - 1));
+        $NullSet = $this->isNullSet($Arr);
         foreach ($Arr as $Key => $Value) {
             if ($Key === '---' && $Value === false) {
                 $Out .= "---\n";
                 continue;
             }
             $ThisDepth = str_repeat($this->Indent, $Depth);
-            $Out .= $ThisDepth . ($Sequential ? '-' : $Key . ':');
+            if ($NullSet && !$Sequential) {
+                $Out .= $ThisDepth . '?';
+                $Value = $Key;
+            } else {
+                $Out .= $ThisDepth . ($Sequential ? '-' : $Key . ':');
+            }
             if (is_array($Value)) {
                 $Out .= "\n";
                 $this->processInner($Value, $Out, $Depth + 1);
@@ -696,6 +728,158 @@ class YAML
         }
         if ($Style === "'" || $Style === "\xe2\x80\x98" || $Style === "\x93") {
             return str_replace("''", "'", $Value);
+        }
+        return $Value;
+    }
+
+    /**
+     * Check whether an array is a null set.
+     *
+     * @param array $Arr The array.
+     * @return bool True for null set; False otherwise.
+     */
+    private function isNullSet(array $Arr): bool
+    {
+        foreach ($Arr as $Value) {
+            if ($Value !== null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Coerces a value according to the specified tag.
+     *
+     * @param mixed $Value The value to be coerced.
+     * @param bool $EnforceScalar Whether to enforce using scalar data.
+     * @param string $Tag The resolved tag.
+     * @return mixed The coerced value.
+     */
+    private function coerce($Value, bool $EnforceScalar, string $Tag)
+    {
+        if ($Tag === '!null') {
+            return null;
+        }
+        if (!$EnforceScalar) {
+            if ($Tag === '!map' || $Tag === '!omap') {
+                if (!is_array($Value)) {
+                    $this->normaliseValue($Value);
+                    return [$Value];
+                }
+                $Arr = [];
+                foreach ($Value as $ThisKey => $ThisValue) {
+                    $this->normaliseValue($ThisKey, true);
+                    $this->normaliseValue($ThisValue);
+                    $Arr[$ThisKey] = $ThisValue;
+                }
+                return $Arr;
+            }
+            if ($Tag === '!seq') {
+                if (!is_array($Value)) {
+                    $this->normaliseValue($Value);
+                    return [$Value];
+                }
+                $Arr = [];
+                foreach ($Value as $ThisValue) {
+                    $this->normaliseValue($ThisValue);
+                    $Arr[] = $ThisValue;
+                }
+                return $Arr;
+            }
+            if ($Tag === '!set') {
+                if (!is_array($Value)) {
+                    return [$Value => null];
+                }
+                $Arr = [];
+                foreach ($Value as $ThisValue) {
+                    if (!is_scalar($ThisValue)) {
+                        continue;
+                    }
+                    $Arr[$ThisValue] = null;
+                }
+                return $Arr;
+            }
+        }
+        if (is_string($Value)) {
+            $ValueLen = strlen($Value);
+            $ValueLow = strtolower($Value);
+        } else {
+            if (is_array($Value)) {
+                $ValueLen = count($Value);
+            } else {
+                $ValueLen = empty($Value) ? 0 : 1;
+            }
+            $ValueLow = $Value;
+        }
+        if ($Tag === '!bool') {
+            if (is_bool($Value)) {
+                return $Value;
+            }
+            if (!is_scalar($Value)) {
+                return $ValueLen > 0;
+            }
+            if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
+                return true;
+            }
+            if ($ValueLow === 'false' || $ValueLow === 'n' || $Value === '-' || $ValueLen === 0 || $ValueLow === 'null' || $Value === '~') {
+                return false;
+            }
+            return (bool)$Value;
+        }
+        if ($Tag === '!float') {
+            if (is_float($Value)) {
+                return $Value;
+            }
+            if (!is_scalar($Value)) {
+                return (float)$ValueLen;
+            }
+            if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
+                return 1.0;
+            }
+            return (float)$Value;
+        }
+        if ($Tag === '!int') {
+            if (is_int($Value)) {
+                return $Value;
+            }
+            if (!is_scalar($Value)) {
+                return $ValueLen;
+            }
+            if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
+                return 1;
+            }
+            return (int)$Value;
+        }
+        if ($Tag === '!str') {
+            if ($Value === null) {
+                return 'null';
+            }
+            if ($Value === true) {
+                return 'true';
+            }
+            if ($Value === false) {
+                return 'false';
+            }
+            if (is_string($Value)) {
+                if (($ValueLen % 2) === 0 && preg_match('~^0x[\dA-Fa-f]+$~', $Value)) {
+                    return hex2bin(substr($Value, 2));
+                }
+                if (($ValueLen % 8) === 2 && preg_match('~^0b[01]+$~', $Value)) {
+                    $Try = dechex(bindec(substr($Value, 2)));
+                    if ((strlen($Try) % 2) === 0) {
+                        return hex2bin($Try);
+                    }
+                }
+                if (preg_match('~^0o[0-8]+$~', $Value)) {
+                    $Try = dechex(octdec(substr($Value, 2)));
+                    if ((strlen($Try) % 2) === 0) {
+                        return hex2bin($Try);
+                    }
+                }
+                return $Value;
+            }
+            return is_scalar($Value) ? (string)$Value : '';
         }
         return $Value;
     }

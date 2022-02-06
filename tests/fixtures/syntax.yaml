@@ -127,4 +127,17 @@ Example explicit tags (type coercion):
   - !!str null
   - !!str true
   - !!str false
+Binary single-line example: !!binary SGVsbG8gd29ybGQhIDotKQ==
+Binary multi-line example: !!binary |
+ TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCw
+ gc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYW
+ duYSBhbGlxdWEu
+Make an array a null set: !!set
+ Foo: "Bar"
+ Foz: "Baz"
+ Far: "Boo"
+Make an array a sequential (numeric): !!seq
+ Foo: "Bar"
+ Foz: "Baz"
+ Far: "Boo"
 End of file: ":-)"

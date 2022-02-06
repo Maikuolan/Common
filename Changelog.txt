@@ -38,6 +38,9 @@ found at:
   the YAML handler. Support for explicit tags currently only works on
   individual entries, not entire blocks (I aim to implement the latter soon).
 
+- [2022.02.06; Maikuolan]: Added support for binary tags. Explicit tags can now
+  be used for both individual entries and entire blocks alike.
+
 === Version/Release 2.7.0 ===
 MINOR RELEASE.
 

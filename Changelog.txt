@@ -39,7 +39,8 @@ found at:
   individual entries, not entire blocks (I aim to implement the latter soon).
 
 - [2022.02.06; Maikuolan]: Added support for binary tags. Explicit tags can now
-  be used for both individual entries and entire blocks alike.
+  be used for both individual entries and entire blocks alike. Added support
+  for flow mapping to the YAML handler.
 
 === Version/Release 2.7.0 ===
 MINOR RELEASE.

@@ -108,6 +108,10 @@ $ExpectedForSyntax = [
         'To int' => [0, 1, 0, 0, 0, 1],
         'To string' => ['null', 'true', 'false']
     ],
+    'Binary single-line example' => 'Hello world! :-)',
+    'Binary multi-line example' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'Make an array a null set' => ['Bar' => null, 'Baz' => null, 'Boo' => null],
+    'Make an array a sequential (numeric)' => ['Bar', 'Baz', 'Boo'],
     'End of file' => ':-)'
 ];
 

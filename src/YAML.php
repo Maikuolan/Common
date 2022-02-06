@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.02.05).
+ * YAML handler (last modified: 2022.02.06).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -96,6 +96,11 @@ class YAML
      * @var \Maikuolan\Common\Demojibakefier Used to support various encodings.
      */
     private $Demojibakefier = null;
+
+    /**
+     * @var string Used for coercing blocks.
+     */
+    private $LastResolvedTag = '';
 
     /**
      * @var string The tag/release the version of this file belongs to (might
@@ -239,7 +244,7 @@ class YAML
             if ($this->LastIndent === '') {
                 $this->LastIndent = str_repeat(substr($ThisLine, 0, 1), $ThisTab);
             }
-            if (($ThisTab > $Depth)) {
+            if ($ThisTab > $Depth) {
                 if ($TabLen === 0) {
                     $TabLen = $ThisTab;
                 }
@@ -262,37 +267,46 @@ class YAML
                 if (empty($Key)) {
                     return false;
                 }
+                $Success = true;
                 if (!$this->MultiLine && !$this->MultiLineFolded) {
                     if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
                         $Arr[$Key] = [];
                     }
-                    if (!$this->process($SendTo, $Arr[$Key], $TabLen)) {
-                        return false;
-                    }
+                    $Success = $this->process($SendTo, $Arr[$Key], $TabLen);
                 } else {
                     $this->tryStringDataTraverseByRef($SendTo);
                     $Arr[$Key] = $SendTo;
+                }
+                if (isset($ThisBlockTag) && $ThisBlockTag !== '') {
+                    $Arr[$Key] = $this->coerce($Arr[$Key], false, $ThisBlockTag);
+                }
+                if (!$Success) {
+                    return false;
                 }
                 $SendTo = '';
             }
             if (!$this->processLine($ThisLine, $ThisTab, $Key, $Value, $Arr)) {
                 return false;
             }
+            $ThisBlockTag = $this->LastResolvedTag;
         }
+        $Success = true;
         if ($SendTo && !empty($Key)) {
+            $Success = true;
             if (!$this->MultiLine && !$this->MultiLineFolded) {
                 if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
                     $Arr[$Key] = [];
                 }
-                if (!$this->process($SendTo, $Arr[$Key], $TabLen)) {
-                    return false;
-                }
+                $Success = $this->process($SendTo, $Arr[$Key], $TabLen);
             } else {
                 $this->tryStringDataTraverseByRef($SendTo);
                 $Arr[$Key] = $SendTo;
             }
+            if (isset($ThisBlockTag) && $ThisBlockTag !== '') {
+                $Arr[$Key] = $this->coerce($Arr[$Key], false, $ThisBlockTag);
+            }
         }
-        return true;
+        return $Success;
     }
 
     /**
@@ -378,9 +392,15 @@ class YAML
     private function normaliseValue(&$Value, $EnforceScalar = false)
     {
         /** Resolve tags. */
-        if (preg_match('~^!([!\dA-Za-z]+) (.*)$~', $Value, $Resolved)) {
+        if (preg_match('~^!([!\dA-Za-z]+)(?: (.*))?$~', $Value, $Resolved)) {
             $Tag = strtolower($Resolved[1]);
-            $Value = $Resolved[2];
+            if (!$EnforceScalar) {
+                $this->LastResolvedTag = $Tag;
+            }
+            $Value = isset($Resolved[2]) ? $Resolved[2] : '';
+            if ($Value === '|' || $Value === '') {
+                return;
+            }
         } else {
             $Tag = '';
         }
@@ -494,6 +514,9 @@ class YAML
      */
     private function processLine(&$ThisLine, &$ThisTab, &$Key, &$Value, array &$Arr)
     {
+        /** Reset last resolved tag. */
+        $this->LastResolvedTag = '';
+
         if ($ThisLine === '---') {
             $Key = '---';
             $Value = false;
@@ -764,25 +787,35 @@ class YAML
         if (!$EnforceScalar) {
             if ($Tag === '!map' || $Tag === '!omap') {
                 if (!is_array($Value)) {
-                    $this->normaliseValue($Value);
+                    if (is_string($Value)) {
+                        $this->normaliseValue($Value);
+                    }
                     return [$Value];
                 }
                 $Arr = [];
                 foreach ($Value as $ThisKey => $ThisValue) {
-                    $this->normaliseValue($ThisKey, true);
-                    $this->normaliseValue($ThisValue);
+                    if (is_string($ThisKey)) {
+                        $this->normaliseValue($ThisKey, true);
+                    }
+                    if (is_string($ThisValue)) {
+                        $this->normaliseValue($ThisValue);
+                    }
                     $Arr[$ThisKey] = $ThisValue;
                 }
                 return $Arr;
             }
             if ($Tag === '!seq') {
                 if (!is_array($Value)) {
-                    $this->normaliseValue($Value);
+                    if (is_string($Value)) {
+                        $this->normaliseValue($Value);
+                    }
                     return [$Value];
                 }
                 $Arr = [];
                 foreach ($Value as $ThisValue) {
-                    $this->normaliseValue($ThisValue);
+                    if (is_string($ThisValue)) {
+                        $this->normaliseValue($ThisValue);
+                    }
                     $Arr[] = $ThisValue;
                 }
                 return $Arr;
@@ -810,7 +843,7 @@ class YAML
             } else {
                 $ValueLen = empty($Value) ? 0 : 1;
             }
-            $ValueLow = $Value;
+            $ValueLow = '';
         }
         if ($Tag === '!bool') {
             if (is_bool($Value)) {
@@ -862,24 +895,15 @@ class YAML
                 return 'false';
             }
             if (is_string($Value)) {
-                if (($ValueLen % 2) === 0 && preg_match('~^0x[\dA-Fa-f]+$~', $Value)) {
-                    return hex2bin(substr($Value, 2));
-                }
-                if (($ValueLen % 8) === 2 && preg_match('~^0b[01]+$~', $Value)) {
-                    $Try = dechex(bindec(substr($Value, 2)));
-                    if ((strlen($Try) % 2) === 0) {
-                        return hex2bin($Try);
-                    }
-                }
-                if (preg_match('~^0o[0-8]+$~', $Value)) {
-                    $Try = dechex(octdec(substr($Value, 2)));
-                    if ((strlen($Try) % 2) === 0) {
-                        return hex2bin($Try);
-                    }
-                }
                 return $Value;
             }
             return is_scalar($Value) ? (string)$Value : '';
+        }
+        if ($Tag === '!binary') {
+            if ($Value === '' || !is_string($Value)) {
+                return '';
+            }
+            return base64_decode(preg_replace('~\s~', '', $Value));
         }
         return $Value;
     }

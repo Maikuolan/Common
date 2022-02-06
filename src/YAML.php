@@ -292,7 +292,6 @@ class YAML
         }
         $Success = true;
         if ($SendTo && !empty($Key)) {
-            $Success = true;
             if (!$this->MultiLine && !$this->MultiLineFolded) {
                 if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
                     $Arr[$Key] = [];
@@ -425,7 +424,7 @@ class YAML
             /** Check for inline variables. */
             $this->tryStringDataTraverseByRef($Value);
 
-            /** Check for inline arrays. */
+            /** Check for flow sequence. */
             if (substr($Value, 0, 1) === '[' && substr($Value, -1) === ']') {
                 $Value = explode(',', substr($Value, 1, -1));
                 foreach ($Value as &$ThisValue) {
@@ -435,6 +434,24 @@ class YAML
                 if ($Tag !== '') {
                     $Value = $this->coerce($Value, $EnforceScalar, $Tag);
                 }
+                return;
+            }
+
+            /** Check for flow mapping. */
+            if (substr($Value, 0, 1) === '{' && substr($Value, -1) === '}') {
+                $Value = explode(',', substr($Value, 1, -1));
+                $NewArr = [];
+                foreach ($Value as $Entry) {
+                    if (($CPos = strpos($Entry, ': ')) === false) {
+                        continue;
+                    }
+                    $NewKey = trim(substr($Entry, 0, $CPos));
+                    $this->normaliseValue($NewKey, true);
+                    $NewValue = trim(substr($Entry, $CPos + 2));
+                    $this->normaliseValue($NewValue);
+                    $NewArr[$NewKey] = $NewValue;
+                }
+                $Value = $Tag !== '' ? $this->coerce($NewArr, $EnforceScalar, $Tag) : $NewArr;
                 return;
             }
         }

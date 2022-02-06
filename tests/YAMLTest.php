@@ -110,8 +110,13 @@ $ExpectedForSyntax = [
     ],
     'Binary single-line example' => 'Hello world! :-)',
     'Binary multi-line example' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    'Make an array a null set' => ['Bar' => null, 'Baz' => null, 'Boo' => null],
-    'Make an array a sequential (numeric)' => ['Bar', 'Baz', 'Boo'],
+    'Make the array into a null set' => ['Bar' => null, 'Baz' => null, 'Boo' => null],
+    'Make the array sequential (numeric)' => ['Bar', 'Baz', 'Boo'],
+    'Example flow mapping' => [
+        'Foo' => 'Bar',
+        'Foz' => 'Baz',
+        'Far' => 'Boo',
+    ],
     'End of file' => ':-)'
 ];
 

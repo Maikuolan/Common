@@ -132,12 +132,13 @@ Binary multi-line example: !!binary |
  TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCw
  gc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYW
  duYSBhbGlxdWEu
-Make an array a null set: !!set
+Make the array into a null set: !!set
  Foo: "Bar"
  Foz: "Baz"
  Far: "Boo"
-Make an array a sequential (numeric): !!seq
+Make the array sequential (numeric): !!seq
  Foo: "Bar"
  Foz: "Baz"
  Far: "Boo"
+Example flow mapping: {Foo: "Bar", Foz: "Baz", Far: "Boo"}
 End of file: ":-)"

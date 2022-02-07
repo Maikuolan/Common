@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.02.06).
+ * YAML handler (last modified: 2022.02.07).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -277,8 +277,21 @@ class YAML
                     $this->tryStringDataTraverseByRef($SendTo);
                     $Arr[$Key] = $SendTo;
                 }
+                $HasMerged = false;
                 if (isset($ThisBlockTag) && $ThisBlockTag !== '') {
-                    $Arr[$Key] = $this->coerce($Arr[$Key], false, $ThisBlockTag);
+                    if ($ThisBlockTag === '!merge' && is_array($Arr[$Key])) {
+                        $MergeData = $Arr[$Key];
+                        unset($Arr[$Key]);
+                        $Arr += $this->merge($MergeData);
+                        $HasMerged = true;
+                    } else {
+                        $Arr[$Key] = $this->coerce($Arr[$Key], false, $ThisBlockTag);
+                    }
+                }
+                if (!$HasMerged && $Key === '<<' && is_array($Arr[$Key])) {
+                    $MergeData = $Arr[$Key];
+                    unset($Arr[$Key]);
+                    $Arr += $this->merge($MergeData);
                 }
                 if (!$Success) {
                     return false;
@@ -301,8 +314,21 @@ class YAML
                 $this->tryStringDataTraverseByRef($SendTo);
                 $Arr[$Key] = $SendTo;
             }
+            $HasMerged = false;
             if (isset($ThisBlockTag) && $ThisBlockTag !== '') {
-                $Arr[$Key] = $this->coerce($Arr[$Key], false, $ThisBlockTag);
+                if ($ThisBlockTag === '!merge' && is_array($Arr[$Key])) {
+                    $MergeData = $Arr[$Key];
+                    unset($Arr[$Key]);
+                    $Arr += $this->merge($MergeData);
+                    $HasMerged = true;
+                } else {
+                    $Arr[$Key] = $this->coerce($Arr[$Key], false, $ThisBlockTag);
+                }
+            }
+            if (!$HasMerged && $Key === '<<' && is_array($Arr[$Key])) {
+                $MergeData = $Arr[$Key];
+                unset($Arr[$Key]);
+                $Arr += $this->merge($MergeData);
             }
         }
         return $Success;
@@ -555,7 +581,11 @@ class YAML
             $ValueLen = strlen($Value);
             $this->normaliseValue($Value);
             if ($ValueLen > 0) {
-                $Arr[] = $Value;
+                if ($this->LastResolvedTag === '!merge' && is_array($Value)) {
+                    $Arr += $this->merge($Value);
+                } else {
+                    $Arr[] = $Value;
+                }
             }
         } elseif (($DelPos = strpos($ThisLine, ': ')) !== false) {
             $Key = substr($ThisLine, $ThisTab, $DelPos - $ThisTab);
@@ -571,7 +601,11 @@ class YAML
             $ValueLen = strlen($Value);
             $this->normaliseValue($Value);
             if ($ValueLen > 0) {
-                $Arr[$Key] = $Value;
+                if (($this->LastResolvedTag === '!merge' || $Key === '<<') && is_array($Value)) {
+                    $Arr += $this->merge($Value);
+                } else {
+                    $Arr[$Key] = $Value;
+                }
             }
         } elseif (substr($ThisLine, -1) === '-') {
             $Arr[] = false;
@@ -923,5 +957,30 @@ class YAML
             return base64_decode(preg_replace('~\s~', '', $Value));
         }
         return $Value;
+    }
+
+    /**
+     * Prepares an array to be merged according to spec.
+     * @link https://yaml.org/type/merge.html
+     *
+     * @param array $Arr The array to be merged.
+     * @return array The prepared array.
+     */
+    private function merge(array $Arr): array
+    {
+        /** Reset last resolved tag. */
+        $this->LastResolvedTag = '';
+
+        $NewArr = [];
+        foreach ($Arr as $Key => $Value) {
+            if (is_int($Key)) {
+                if (is_array($Value)) {
+                    $NewArr += $this->merge($Value);
+                }
+                continue;
+            }
+            $NewArr[$Key] = $Value;
+        }
+        return $NewArr;
     }
 }

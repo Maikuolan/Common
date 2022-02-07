@@ -141,4 +141,24 @@ Make the array sequential (numeric): !!seq
  Foz: "Baz"
  Far: "Boo"
 Example flow mapping: {Foo: "Bar", Foz: "Baz", Far: "Boo"}
+Test ability to merge:
+ Foo: "Bar1"
+ Foz: "Baz1"
+ Far: "Boo1"
+ <<:
+  Foo: "Bar2"
+  Moz: "Baz2"
+  Mar: "Boo2"
+ <<:
+  Lorem: "Ipsum"
+  2: {Foo: "Bar3", Woo: "Bar3"}
+  3: "Should not appear"
+ World: !!merge {Hi there: "How are you", What are you doing: "Reading a YAML file"}
+Test ability to merge (block tag): !!merge
+ Blocky foo: "Bar1"
+ Blocky foz: "Baz1"
+ Blocky far: "Boo1"
+ <<:
+  Blocky lorem: "Blocky ipsum"
+ World: !!merge {Blocky hello: "How are you", What is happening: "Reading a YAML file"}
 End of file: ":-)"

@@ -42,6 +42,8 @@ found at:
   be used for both individual entries and entire blocks alike. Added support
   for flow mapping to the YAML handler.
 
+- [2022.02.07; Maikuolan]: Added support for merging to the YAML handler.
+
 === Version/Release 2.7.0 ===
 MINOR RELEASE.
 

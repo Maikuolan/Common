@@ -115,8 +115,25 @@ $ExpectedForSyntax = [
     'Example flow mapping' => [
         'Foo' => 'Bar',
         'Foz' => 'Baz',
-        'Far' => 'Boo',
+        'Far' => 'Boo'
     ],
+    'Test ability to merge' => [
+        'Foo' => 'Bar1',
+        'Foz' => 'Baz1',
+        'Far' => 'Boo1',
+        'Moz' => 'Baz2',
+        'Mar' => 'Boo2',
+        'Lorem' => 'Ipsum',
+        'Woo' => 'Bar3',
+        'Hi there' => 'How are you',
+        'What are you doing' => 'Reading a YAML file'
+    ],
+    'Blocky foo' => 'Bar1',
+    'Blocky foz' => 'Baz1',
+    'Blocky far' => 'Boo1',
+    'Blocky lorem' => 'Blocky ipsum',
+    'Blocky hello' => 'How are you',
+    'What is happening' => 'Reading a YAML file',
     'End of file' => ':-)'
 ];
 

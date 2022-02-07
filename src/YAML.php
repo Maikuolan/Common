@@ -526,22 +526,22 @@ class YAML
         }
 
         $ValueLow = strtolower($Value);
-        if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
+        if ($ValueLow === 'true' || $ValueLow === 'on' || $ValueLow === 'y' || $ValueLow === 'yes' || $Value === '+') {
             $Value = true;
-        } elseif ($ValueLow === 'false' || $ValueLow === 'n' || $Value === '-' || $ValueLen === 0) {
+        } elseif ($ValueLow === 'false' || $ValueLow === 'n' || $ValueLow === 'no' || $ValueLow === 'off' || $Value === '-' || $ValueLen === 0) {
             $Value = false;
         } elseif ($ValueLow === 'null' || $Value === '~') {
             $Value = null;
         } elseif (preg_match('~^0x[\dA-Fa-f]+$~', $Value)) {
-            $Value = hexdec(substr($Value, 2));
+            $Value = hexdec(str_replace('_', '', substr($Value, 2)));
         } elseif (preg_match('~^0o[0-8]+$~', $Value)) {
-            $Value = octdec(substr($Value, 2));
+            $Value = octdec(str_replace('_', '', substr($Value, 2)));
         } elseif (preg_match('~^0b[01]+$~', $Value)) {
-            $Value = bindec(substr($Value, 2));
+            $Value = bindec(str_replace('_', '', substr($Value, 2)));
         } elseif (preg_match('~^\d+$~', $Value)) {
-            $Value = (int)$Value;
+            $Value = (int)str_replace('_', '', $Value);
         } elseif (preg_match('~^(?:\d+\.\d+|\d+(?:\.\d+)?[Ee][-+]\d+)$~', $Value)) {
-            $Value = (float)$Value;
+            $Value = (float)str_replace('_', '', $Value);
         }
     }
 
@@ -562,15 +562,19 @@ class YAML
 
         if ($ThisLine === '---') {
             $Key = '---';
-            $Value = false;
+            $Value = null;
+            $Arr[$Key] = $Value;
+        } elseif ($ThisLine === '...') {
+            $Key = '...';
+            $Value = null;
             $Arr[$Key] = $Value;
         } elseif (substr($ThisLine, -1) === ':' && strpos($ThisLine, ': ') === false) {
             $Key = substr($ThisLine, $ThisTab, -1);
             $this->normaliseValue($Key, true);
             if (!isset($Arr[$Key])) {
-                $Arr[$Key] = false;
+                $Arr[$Key] = null;
             }
-            $Value = false;
+            $Value = null;
         } elseif (substr($ThisLine, $ThisTab, 2) === '? ') {
             $Key = substr($ThisLine, $ThisTab + 2);
             $this->normaliseValue($Key, true);
@@ -607,19 +611,13 @@ class YAML
                     $Arr[$Key] = $Value;
                 }
             }
-        } elseif (substr($ThisLine, -1) === '-') {
-            $Arr[] = false;
-            end($Arr);
-            $Key = key($Arr);
-            reset($Arr);
-            $Value = false;
         } elseif (strpos($ThisLine, ':') === false && strlen($ThisLine) > 1) {
             $Key = $ThisLine;
             $this->normaliseValue($Key, true);
             if (!isset($Arr[$Key])) {
-                $Arr[$Key] = false;
+                $Arr[$Key] = null;
             }
-            $Value = false;
+            $Value = null;
         }
         $this->MultiLine = ($Value === '|');
         $this->MultiLineFolded = ($Value === '>');
@@ -639,8 +637,12 @@ class YAML
         $Sequential = (array_keys($Arr) === range(0, count($Arr) - 1));
         $NullSet = $this->isNullSet($Arr);
         foreach ($Arr as $Key => $Value) {
-            if ($Key === '---' && $Value === false) {
+            if ($Key === '---' && $Value === null) {
                 $Out .= "---\n";
+                continue;
+            }
+            if ($Key === '...' && $Value === null) {
+                $Out .= "...\n";
                 continue;
             }
             $ThisDepth = str_repeat($this->Indent, $Depth);
@@ -832,10 +834,23 @@ class YAML
      */
     private function coerce($Value, bool $EnforceScalar, string $Tag)
     {
+        /**
+         * @link https://yaml.org/type/null.html
+         */
         if ($Tag === '!null') {
             return null;
         }
+
+        /** Not executed for keys. */
         if (!$EnforceScalar) {
+            /**
+             * A "map" in YAML <-> An "associative array" in PHP.
+             * Because PHP arrays always have an "order" (i.e., a key index), I
+             * see no effective difference between !!map and !!omap in the
+             * context of a YAML handler written for PHP.
+             * @link https://yaml.org/type/map.html
+             * @link https://yaml.org/type/omap.html
+             */
             if ($Tag === '!map' || $Tag === '!omap') {
                 if (!is_array($Value)) {
                     if (is_string($Value)) {
@@ -855,6 +870,11 @@ class YAML
                 }
                 return $Arr;
             }
+
+            /**
+             * A "sequence" in YAML <-> A "numeric array" in PHP.
+             * @link https://yaml.org/type/seq.html
+             */
             if ($Tag === '!seq') {
                 if (!is_array($Value)) {
                     if (is_string($Value)) {
@@ -871,6 +891,11 @@ class YAML
                 }
                 return $Arr;
             }
+
+            /**
+             * A "set" in YAML <-> Equivalent to an array with all null values.
+             * @link https://yaml.org/type/set.html
+             */
             if ($Tag === '!set') {
                 if (!is_array($Value)) {
                     return [$Value => null];
@@ -885,6 +910,7 @@ class YAML
                 return $Arr;
             }
         }
+
         if (is_string($Value)) {
             $ValueLen = strlen($Value);
             $ValueLow = strtolower($Value);
@@ -896,6 +922,10 @@ class YAML
             }
             $ValueLow = '';
         }
+
+        /**
+         * @link https://yaml.org/type/bool.html
+         */
         if ($Tag === '!bool') {
             if (is_bool($Value)) {
                 return $Value;
@@ -903,14 +933,18 @@ class YAML
             if (!is_scalar($Value)) {
                 return $ValueLen > 0;
             }
-            if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
+            if ($ValueLow === 'true' || $ValueLow === 'on' || $ValueLow === 'y' || $ValueLow === 'yes' || $Value === '+') {
                 return true;
             }
-            if ($ValueLow === 'false' || $ValueLow === 'n' || $Value === '-' || $ValueLen === 0 || $ValueLow === 'null' || $Value === '~') {
+            if ($ValueLow === 'false' || $ValueLow === 'n' || $ValueLow === 'no' || $ValueLow === 'off' || $Value === '-' || $ValueLen === 0 || $ValueLow === 'null' || $Value === '~') {
                 return false;
             }
             return (bool)$Value;
         }
+
+        /**
+         * @link https://yaml.org/type/float.html
+         */
         if ($Tag === '!float') {
             if (is_float($Value)) {
                 return $Value;
@@ -918,11 +952,15 @@ class YAML
             if (!is_scalar($Value)) {
                 return (float)$ValueLen;
             }
-            if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
+            if ($ValueLow === 'true' || $ValueLow === 'on' || $ValueLow === 'y' || $ValueLow === 'yes' || $Value === '+') {
                 return 1.0;
             }
-            return (float)$Value;
+            return (float)str_replace('_', '', $Value);
         }
+
+        /**
+         * @link https://yaml.org/type/int.html
+         */
         if ($Tag === '!int') {
             if (is_int($Value)) {
                 return $Value;
@@ -930,11 +968,15 @@ class YAML
             if (!is_scalar($Value)) {
                 return $ValueLen;
             }
-            if ($ValueLow === 'true' || $ValueLow === 'y' || $Value === '+') {
+            if ($ValueLow === 'true' || $ValueLow === 'on' || $ValueLow === 'y' || $ValueLow === 'yes' || $Value === '+') {
                 return 1;
             }
-            return (int)$Value;
+            return (int)str_replace('_', '', $Value);
         }
+
+        /**
+         * @link https://yaml.org/type/str.html
+         */
         if ($Tag === '!str') {
             if ($Value === null) {
                 return 'null';
@@ -950,12 +992,17 @@ class YAML
             }
             return is_scalar($Value) ? (string)$Value : '';
         }
+
+        /**
+         * @link https://yaml.org/type/binary.html
+         */
         if ($Tag === '!binary') {
             if ($Value === '' || !is_string($Value)) {
                 return '';
             }
             return base64_decode(preg_replace('~\s~', '', $Value));
         }
+
         return $Value;
     }
 

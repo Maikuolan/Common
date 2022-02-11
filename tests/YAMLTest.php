@@ -296,3 +296,12 @@ if ($ExpectedForUTF16 !== $Object->Data) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
+
+$RawJSON = file_get_contents($BaseDir . 'composer.json');
+$PHPDecoded = json_decode($RawJSON, true);
+$Object = new \Maikuolan\Common\YAML($RawJSON);
+$ExitCode++;
+if ($PHPDecoded !== $Object->Data) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
+}

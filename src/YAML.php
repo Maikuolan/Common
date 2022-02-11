@@ -1117,8 +1117,20 @@ class YAML
              */
             foreach ($Split as $Try) {
                 if ($SequenceDepth < 1 && $MappingDepth < 1) {
-                    /** Fail immediately if the mapping entry isn't valid. */
                     if (($CPos = strpos($Try, ':')) === false) {
+                        if (strlen($Key) && isset($Arr[$Key])) {
+                            $Trimmed = trim($Arr[$Key]);
+                            $First = substr($Trimmed, 0, 1);
+                            $Last = substr($Trimmed, -1);
+
+                            /** Might belong to the previous entry, in case the value contains commas. */
+                            if (($First === '"' && $Last !== '"') || ($First === "'" && $Last !== "'")) {
+                                $Arr[$Key] .= ',' . $Try;
+                                continue;
+                            }
+                        }
+
+                        /** Fail immediately if the mapping entry isn't valid. */
                         return false;
                     }
 

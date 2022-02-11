@@ -20,6 +20,9 @@ $TestsDir = __DIR__ . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR;
 // Classes directory.
 $ClassesDir = __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
 
+// Base directory.
+$BaseDir = __DIR__ . DIRECTORY_SEPARATOR;
+
 // Run tests.
 foreach (['ComplexStringHandler', 'DelayedIO', 'Demojibakefier', 'Events', 'L10N', 'NumberFormatter', 'Operation', 'Request', 'YAML'] as $Case) {
     if (!is_readable($ClassesDir . $Case . '.php') || !is_readable($TestsDir . $Case . 'Test.php')) {

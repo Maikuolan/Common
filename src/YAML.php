@@ -218,10 +218,18 @@ class YAML
             }
         }
 
-        $In = str_replace("\r", '', $In);
+        $In = str_replace("\r", '', $Depth === 0 ? trim($In) : $In);
         $Key = '';
         $Value = '';
         $SendTo = '';
+
+        /** In case of processing JSON data, or YAML data contained entirely by flow collections. */
+        foreach ([['[', ']'], ['{', '}']] as $Braces) {
+            if (substr($In, 0, 1) === $Braces[0] && substr($In, -1) === $Braces[1]) {
+                return $this->flowControl($In, $Arr, $Braces[0]);
+            }
+        }
+
         $TabLen = 0;
         $SoL = 0;
 
@@ -484,35 +492,17 @@ class YAML
             /** Check for inline variables. */
             $this->tryStringDataTraverseByRef($Value);
 
-            /** Check for flow sequence. */
-            if (substr($Value, 0, 1) === '[' && substr($Value, -1) === ']') {
-                $Value = explode(',', substr($Value, 1, -1));
-                foreach ($Value as &$ThisValue) {
-                    $ThisValue = trim($ThisValue);
-                    $this->normaliseValue($ThisValue);
-                }
-                if ($Tag !== '') {
-                    $Value = $this->coerce($Value, $EnforceScalar, $Tag);
-                }
-                return;
-            }
-
-            /** Check for flow mapping. */
-            if (substr($Value, 0, 1) === '{' && substr($Value, -1) === '}') {
-                $Value = explode(',', substr($Value, 1, -1));
-                $NewArr = [];
-                foreach ($Value as $Entry) {
-                    if (($CPos = strpos($Entry, ': ')) === false) {
-                        continue;
+            /** In case of processing JSON data or flow collections. */
+            foreach ([['[', ']'], ['{', '}']] as $Braces) {
+                if (substr($Value, 0, 1) === $Braces[0] && substr($Value, -1) === $Braces[1]) {
+                    $NewArr = [];
+                    $this->flowControl($Value, $NewArr, $Braces[0]);
+                    $Value = $NewArr;
+                    if ($Tag !== '') {
+                        $Value = $this->coerce($Value, $EnforceScalar, $Tag);
                     }
-                    $NewKey = trim(substr($Entry, 0, $CPos));
-                    $this->normaliseValue($NewKey, true);
-                    $NewValue = trim(substr($Entry, $CPos + 2));
-                    $this->normaliseValue($NewValue);
-                    $NewArr[$NewKey] = $NewValue;
+                    return;
                 }
-                $Value = $Tag !== '' ? $this->coerce($NewArr, $EnforceScalar, $Tag) : $NewArr;
-                return;
             }
         }
 
@@ -1063,5 +1053,153 @@ class YAML
             $NewArr[$Key] = $Value;
         }
         return $NewArr;
+    }
+
+    /**
+     * Attempts to process flow collections and JSON data.
+     * @link https://yaml.org/spec/1.2.2/#74-flow-collection-styles
+     *
+     * @param string $In The raw data to be processed.
+     * @param array $Arr Where to process that data.
+     * @param string $Brace The type of bracing used (determines whether the
+     *      data should be processed as a flow sequence or as flow mappings).
+     * @return bool True for process success. False for process failure.
+     */
+    private function flowControl(string $In, array &$Arr, string $Brace): bool
+    {
+        /** Reset the array where we're processing the data. */
+        $Arr = [];
+
+        /** Flow sequence. */
+        if ($Brace === '[') {
+            $Split = explode(',', substr($In, 1, -1));
+            $Segment = '';
+            $SequenceDepth = 0;
+            $MappingDepth = 0;
+
+            /**
+             * Iterate through each split. Merge segments together if recursive
+             * sequences or mappings are detected.
+             */
+            foreach ($Split as $Try) {
+                $Trimmed = trim($Try);
+                $Start = substr($Trimmed, 0, 1);
+                $End = substr($Trimmed, -1);
+                $Segment = ($SequenceDepth < 1 && $MappingDepth < 1) ? $Try : $Segment . ',' . $Try;
+                $this->flowControlDepth($Start, $End, $SequenceDepth, $MappingDepth);
+                if ($SequenceDepth < 1 && $MappingDepth < 1) {
+                    $Arr[] = $Segment;
+                }
+            }
+
+            /** Fail if braces aren't balanced. */
+            if ($SequenceDepth > 0 || $MappingDepth > 0) {
+                return false;
+            }
+
+            foreach ($Arr as &$Working) {
+                $Working = trim($Working);
+                $this->normaliseValue($Working);
+            }
+            return true;
+        }
+
+        /** Flow mappings. */
+        if ($Brace === '{') {
+            $Split = explode(',', substr($In, 1, -1));
+            $Segment = '';
+            $SequenceDepth = 0;
+            $MappingDepth = 0;
+
+            /**
+             * Iterate through each split. Merge segments together if recursive
+             * sequences or mappings are detected.
+             */
+            foreach ($Split as $Try) {
+                if ($SequenceDepth < 1 && $MappingDepth < 1) {
+                    /** Fail immediately if the mapping entry isn't valid. */
+                    if (($CPos = strpos($Try, ':')) === false) {
+                        return false;
+                    }
+
+                    $Key = trim(substr($Try, 0, $CPos));
+
+                    /** Fail immediately if the key is empty. */
+                    if (strlen($Key) < 1) {
+                        return false;
+                    }
+
+                    $Value = substr($Try, $CPos + 1);
+                } else {
+                    $Value = $Try;
+                }
+                $Trimmed = trim($Value);
+                $Start = substr($Trimmed, 0, 1);
+                $End = substr($Trimmed, -1);
+                $Segment = ($SequenceDepth < 1 && $MappingDepth < 1) ? $Value : $Segment . ',' . $Try;
+                $this->flowControlDepth($Start, $End, $SequenceDepth, $MappingDepth);
+                if ($SequenceDepth < 1 && $MappingDepth < 1) {
+                    $Arr[$Key] = $Segment;
+                }
+            }
+
+            /** Fail if braces aren't balanced. */
+            if ($SequenceDepth > 0 || $MappingDepth > 0) {
+                return false;
+            }
+
+            $NewArr = [];
+            foreach ($Arr as $Key => $Value) {
+                $this->normaliseValue($Key, true);
+                $Value = trim($Value);
+                $this->normaliseValue($Value);
+                $NewArr[$Key] = $Value;
+            }
+            $Arr = $NewArr;
+            return true;
+        }
+
+        /** Unknown brace type used. Report failure. */
+        return false;
+    }
+
+    /**
+     * Determine recursion depth within flow control operation.
+     *
+     * @param string $Start The start character.
+     * @param string $End The end character.
+     * @param int $SequenceDepth Current depth for flow sequences.
+     * @param int $MappingDepth Current depth for flow mappings.
+     * @return void
+     */
+    private function flowControlDepth(string $Start, string $End, int &$SequenceDepth, int &$MappingDepth): void
+    {
+        if ($SequenceDepth > 0) {
+            if ($Start === '[') {
+                $SequenceDepth++;
+            }
+            if ($End === ']') {
+                $SequenceDepth--;
+            }
+        } elseif ($MappingDepth > 0) {
+            if ($Start === '{') {
+                $MappingDepth++;
+            }
+            if ($End === '}') {
+                $MappingDepth--;
+            }
+        } elseif ($SequenceDepth < 1 && $MappingDepth < 1) {
+            if ($Start === '[') {
+                $SequenceDepth++;
+                if ($End === ']') {
+                    $SequenceDepth--;
+                }
+            } elseif ($Start === '{') {
+                $MappingDepth++;
+                if ($End === '}') {
+                    $MappingDepth--;
+                }
+            }
+        }
     }
 }

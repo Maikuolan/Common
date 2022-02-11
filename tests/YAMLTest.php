@@ -134,6 +134,24 @@ $ExpectedForSyntax = [
     'Blocky lorem' => 'Blocky ipsum',
     'Blocky hello' => 'How are you',
     'What is happening' => 'Reading a YAML file',
+    'Mixed flow style test 1' => ['Foo', 'Bar', [
+        'Hello World' => 'Hello to the world! :-)',
+        'Goodbye world' => 'Goodbye cruel world. :-(',
+        'Oh hi there' => 'Oh hi there! ;-)'
+    ], 'What\'s up buddy'],
+    'Mixed flow style test 2' => [
+        'Foo and bar' => ['Foo', 'Bar'],
+        'Hellos and goodbyes' => [
+            'Hello World' => 'Hello to the world! :-)',
+            'Goodbye world' => 'Goodbye cruel world. :-(',
+            'Oh hi there' => 'Oh hi there! ;-)'
+        ],
+        'Deeper' => [
+            'And deeper' => [
+                'And deepest' => ['What\'s up buddy', 'How\'re you']
+            ]
+        ],
+    ],
     'End of file' => ':-)'
 ];
 

@@ -145,8 +145,8 @@ class YAML
      */
     public function process($In, array &$Arr, $Depth = 0, $Refs = false)
     {
-        /** Guard for potentially invalid data. */
-        if (!is_string($In) || strpos($In, "\n") === false) {
+        /** Type guard. */
+        if (!is_string($In)) {
             return false;
         }
 

@@ -44,6 +44,9 @@ found at:
 
 - [2022.02.07; Maikuolan]: Added support for merging to the YAML handler.
 
+- [2022.02.11; Maikuolan]: Removed newline guard from the YAML handler (YAML is
+  allowed to exist on a single line, e.g., by using entirely inline syntax).
+
 === Version/Release 1.7.0 ===
 MINOR RELEASE.
 

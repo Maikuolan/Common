@@ -225,21 +225,6 @@ if ($ExpectedForBySpecEscaped !== $Object->Data) {
     exit($ExitCode);
 }
 
-$InvalidYAML = 1000;
-$NoNewLineYAML = "No new end of line";
-$Object = new \Maikuolan\Common\YAML();
-$ExitCode++;
-if ($Object->process($InvalidYAML, $Object->Data) !== false) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
-    exit($ExitCode);
-}
-
-$ExitCode++;
-if ($Object->process($NoNewLineYAML, $Object->Data) !== false) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
-    exit($ExitCode);
-}
-
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'reconstruct.yaml');
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);

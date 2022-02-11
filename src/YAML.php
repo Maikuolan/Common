@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.02.07).
+ * YAML handler (last modified: 2022.02.11).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -229,21 +229,39 @@ class YAML
         $SendTo = '';
         $TabLen = 0;
         $SoL = 0;
+
+        /** Continues until there aren't any new lines to process remaining. */
         while ($SoL !== false) {
-            $ThisLine = (
-                ($EoL = strpos($In, "\n", $SoL)) === false
-            ) ? substr($In, $SoL) : substr($In, $SoL, $EoL - $SoL);
+            /** @var int|false End position of the current line. */
+            $EoL = strpos($In, "\n", $SoL);
+
+            /** @var string The current line. */
+            $ThisLine = ($EoL === false) ? substr($In, $SoL) : substr($In, $SoL, $EoL - $SoL);
+
+            /** @var int|false Start position of the next line. */
             $SoL = ($EoL === false) ? false : $EoL + 1;
+
+            /** Strip comments, strip whitespace, skip ahead if line is empty. */
             if (!($ThisLine = preg_replace(['/(?<!\\\)#.*$/', '/\s+$/'], '', $ThisLine))) {
                 continue;
             }
+
             $ThisTab = 0;
+
+            /** Determine the indent of the current line. */
             while (($Chr = substr($ThisLine, $ThisTab, 1)) && ($Chr === ' ' || $Chr === "\t")) {
                 $ThisTab++;
             }
+
+            /** Used for reconstruction. */
             if ($this->LastIndent === '') {
                 $this->LastIndent = str_repeat(substr($ThisLine, 0, 1), $ThisTab);
             }
+
+            /**
+             * Data indented further than the current depth can be gathered to
+             * be processed recursively (e.g., sequences, multiline data, etc).
+             */
             if ($ThisTab > $Depth) {
                 if ($TabLen === 0) {
                     $TabLen = $ThisTab;
@@ -261,12 +279,24 @@ class YAML
                     $SendTo .= substr($ThisLine, $TabLen);
                 }
                 continue;
-            } elseif ($ThisTab < $Depth) {
+            }
+
+            /**
+             * Data indentation less than the current depth should be
+             * impossible. It could suggest bad data, or an error, so we'll
+             * exit here immediately.
+             */
+            if ($ThisTab < $Depth) {
                 return false;
-            } elseif ($SendTo) {
+            }
+
+            /** Process here any data gathered to be processed recursively. */
+            if ($SendTo) {
+                /** Guard. */
                 if (empty($Key)) {
                     return false;
                 }
+
                 $Success = true;
                 if (!$this->MultiLine && !$this->MultiLineFolded) {
                     if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
@@ -298,12 +328,19 @@ class YAML
                 }
                 $SendTo = '';
             }
+
+            /** Process the current line of the data at the current depth. */
             if (!$this->processLine($ThisLine, $ThisTab, $Key, $Value, $Arr)) {
                 return false;
             }
+
+            /** Needed for non-scalar coercion (sequences, merges, etc). */
             $ThisBlockTag = $this->LastResolvedTag;
         }
+
         $Success = true;
+
+        /** Needed for processing any remaining data. */
         if ($SendTo && !empty($Key)) {
             if (!$this->MultiLine && !$this->MultiLineFolded) {
                 if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
@@ -331,6 +368,8 @@ class YAML
                 $Arr += $this->merge($MergeData);
             }
         }
+
+        /** Exit. */
         return $Success;
     }
 

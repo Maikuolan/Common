@@ -145,11 +145,6 @@ class YAML
      */
     public function process(string $In, array &$Arr, int $Depth = 0, bool $Refs = false): bool
     {
-        /** Guard for potentially invalid data. */
-        if (strpos($In, "\n") === false) {
-            return false;
-        }
-
         /** Assign refs array for inline variables. */
         if ($Refs) {
             $this->Refs = &$Arr;

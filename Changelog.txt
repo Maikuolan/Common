@@ -47,7 +47,7 @@ found at:
 - [2022.02.11; Maikuolan]: Removed newline guard from the YAML handler (YAML is
   allowed to exist on a single line, e.g., by using entirely inline syntax).
   Implemented a flow control mechanism to the YAML handler, improving support
-  for flow sequences and flow mappings.
+  for flow sequences and flow mappings. Added support for flattening arrays.
 
 === Version/Release 2.7.0 ===
 MINOR RELEASE.

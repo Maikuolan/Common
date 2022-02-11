@@ -152,6 +152,27 @@ $ExpectedForSyntax = [
             ]
         ],
     ],
+    'Flattened array test 1' => [
+        0 => 'Foo',
+        1 => 'Bar',
+        'Hello World' => 'Hello to the world! :-)',
+        'Goodbye world' => 'Goodbye cruel world. :-(',
+        'Oh hi there' => 'Oh hi there! ;-)',
+        2 => 'What\'s up buddy',
+        3 => 'How\'re you'
+    ],
+    'Flattened array test 2' => [
+        'Somewhere to start' => 'Somewhere to go',
+        0 => 'Foo',
+        1 => 'Bar',
+        'Hello World' => 'Hello to the world! :-)',
+        'Goodbye world' => 'Goodbye cruel world. :-(',
+        'Oh hi there' => 'Oh hi there! ;-)',
+        2 => 'What\'s up buddy',
+        3 => 'How\'re you',
+        'Lorem ipsum' => 'Dolor sit amet, consectetur adipiscing elit.',
+        'Sed do eiusmod tempor' => 'Incididunt ut labore et dolore magna aliqua.'
+    ],
     'End of file' => ':-)'
 ];
 

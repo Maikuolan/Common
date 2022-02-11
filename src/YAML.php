@@ -933,6 +933,11 @@ class YAML
                 }
                 return $Arr;
             }
+
+            /** For extending with other non-scalar coercion. */
+            if (method_exists($this, $Tag . 'TagNonScalar')) {
+                return $this->{$Tag . 'TagNonScalar'}($Value);
+            }
         }
 
         if (is_string($Value)) {
@@ -1027,6 +1032,12 @@ class YAML
             return base64_decode(preg_replace('~\s~', '', $Value));
         }
 
+        /** For extending with other scalar coercion. */
+        if (method_exists($this, $Tag . 'Tag')) {
+            return $this->{$Tag . 'Tag'}($Value);
+        }
+
+        /** The specified tag isn't supported. Return the value verbatim. */
         return $Value;
     }
 
@@ -1213,5 +1224,29 @@ class YAML
                 }
             }
         }
+    }
+
+    /**
+     * Flattens an array.
+     *
+     * @param mixed $In The array
+     * @return mixed The flatten array (if it's an array).
+     */
+    private function flattenTagNonScalar($In)
+    {
+        /** Return the input verbatim if it isn't an array. */
+        if (!is_array($In)) {
+            return $In;
+        }
+
+        $NewArr = [];
+        foreach ($In as $Key => $Value) {
+            if (is_array($Value)) {
+                $NewArr = array_merge($NewArr, $this->flattenTagNonScalar($Value));
+                continue;
+            }
+            $NewArr[$Key] = $Value;
+        }
+        return $NewArr;
     }
 }

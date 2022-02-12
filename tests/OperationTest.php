@@ -4,7 +4,7 @@
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
- * Source: https://github.com/Maikuolan/Common
+ * @link https://github.com/Maikuolan/Common
  */
 
 require $ClassesDir . $Case . '.php';

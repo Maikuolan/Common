@@ -1,13 +1,39 @@
-### Documentation for the "YAML" class.
+### Documentation for the "YAML" class (a.k.a., the "YAML handler").
 
-*Used by CIDRAM and phpMussel to handle YAML data, the YAML class is a simple YAML handler intended to adequately serve the needs of the packages and projects where it is implemented. Note however, that it isn't a complete YAML solution, instead supporting the YAML specification only to the bare minimum required by those packages and projects known to implement it, and I therefore can't guarantee that it'll necessarily be an ideal solution for other packages and projects, whose exact requirements I mightn't be familiar with.*
+*Used by the CIDRAM and phpMussel projects to handle YAML data.*
 
 ---
 
 
-### How to use:
+### Content.
 
-The YAML class can process YAML data either during or after instantiation. Which of the two strategies is best to use will depend on the exact needs and purpose of your implementation.
+- [Introduction.](#introduction)
+- [How to use.](#how-to-use)
+- [Reconstruction.](#reconstruction)
+- [Public class members.](#public-class-members)
+- [Supported data types.](#supported-data-types)
+- [Comments and implicit typing.](#comments-and-implicit-typing)
+- [Anchors, aliases, and inline variables.](#anchors-aliases-and-inline-variables)
+- [Supported from the specification.](#supported-from-the-specification)
+- [Additionally supported.](#additionally-supported)
+
+---
+
+
+### Introduction
+
+Currently, the YAML handler follows the [version 1.2.2 of the YAML Ain't Markup Language specification](https://yaml.org/spec/1.2.2/). If this changes in the future (e.g., a new version of the specification is released and the YAML handler is subsequently updated in order to adhere to that new version), this documentation will be updated accordingly.
+
+A reasonable attempt has been made to adhere to the specification, which the YAML handler does correctly for the most part, although not in entirety (supported features, types, tags, syntax, etc will be detailed towards the end of this documentation).
+
+Information regarding the language-independent YAML tags recommended for implementation across applications (used as a guideline for the implementation of tags to the YAML handler) is sourced from [version 1.1 of the Language-Independent Types for YAML](https://yaml.org/type/) document.
+
+---
+
+
+### How to use.
+
+The YAML handler can process YAML data either during or after instantiation. It's up to you which strategy you'd prefer to use, and which is best to use will depend on the needs of your implementation.
 
 Using the following YAML data as an example:
 
@@ -178,7 +204,12 @@ The third parameter should never be populated by the implementation. The process
 
 The fourth parameter is an optional boolean, false by default. When set to true, the array referenced by the second parameter will be referenced to the `Refs` member, which can be used as a data source for inline variables (similar to what Ansible can do with YAML). The `Refs` member can also be populated manually, or not at all, if preferred.
 
-##### *Can the reverse be done, too? Can an array be converted into YAML data?*
+---
+
+
+### Reconstruction.
+
+__*Can the reverse be done, too? Can an array be converted into YAML data?*__
 
 Yes. To do this, use the reconstruct method. The reconstruct method supports three parameters:
 
@@ -329,64 +360,7 @@ The method returns a string (the reconstructed YAML data).
 ---
 
 
-### Supported data types:
-
-The YAML class supports arrays, integers, floats, booleans (`true`, `+`, `false`, `-`), null (`null`, `~`), strings, multi-line strings (`|`), folded multi-line strings (`>`), hexadecimal number notation (`0x`), binary number notation (`0b`), and octal number notation (`0o`).
-
-The YAML class does not support callables, closures, or objects. If objects, closures, or callables are supplied to reconstruct, a fatal error will occur. Don't ever do this.
-
-The YAML class allows YAML data to contain comments. The YAML class considers all data, beginning with a non-escaped hash (`#`), and ending at any valid line ending (e.g., `\n`, `\r`), to be a comment. Therefore, all hashes *not* intended to indicate the beginning of a comment should be properly escaped (i.e., `\#`), in order to ensure the YAML data is processed as intended.
-
-Within unprocessed YAML data, non-string data should never be quoted. Quoting for strings is optional, and it generally doesn't matter whether you choose to quote strings (i.e., quoting for strings is not strict). However, strings should always be quoted if the intended data type would otherwise be ambiguous. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all result in strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would result in a boolean, an integer, and a float respectively. Quoting for keys is treated in the same manner as quoting for values.
-
-Also, when reconstructing YAML data, string values are always quoted, whereas keys (regardless of data type) are never quoted. Therefore, if you ever need to reverse-process YAML data for any reason (i.e., process some YAML data, and then reconstruct the resulting array back into YAML data again; e.g., for testing purposes), you should also always quote string values (i.e., approach value quoting strictly), should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstruted YAML data).
-
-The YAML handler also supports anchors, and also inline variables (when correctly registered to the `Refs` member), which can be traversed via dot notation.
-
-Example anchor usage:
-
-```YAML
-Anchored text push: &TestAnchor "Lorem ipsum."
-Anchored text pull: *TestAnchor
-```
-
-Result:
-
-```
-array(2) {
-  ["Anchored text push"]=>
-  string(12) "Lorem ipsum."
-  ["Anchored text pull"]=>
-  string(12) "Lorem ipsum."
-}
-```
-
-Example inline variable usage:
-
-```YAML
-Foo:
- Bar: "Baz"
-Foz: "Hello there! My name is {{Foo.Bar}}! :-)"
-```
-
-Result:
-
-```
-array(2) {
-  ["Foo"]=>
-  array(1) {
-    ["Bar"]=>
-    string(3) "Baz"
-  }
-  ["Foz"]=>
-  string(32) "Hello there! My name is Baz! :-)"
-}
-```
-
----
-
-
-### Public class members:
+### Public class members.
 
 ```PHP
 public $Data = [];
@@ -449,6 +423,183 @@ public $Quotes = '"';
 ```
 
 The preferred style of quotes to use for strings (double `"`, or single `'`).
+
+```PHP
+public $AllowedStringTagsPattern =
+    '~^(?:addslashes|bin2hex|hex2bin|html(?:_entity_decode|entities|special' .
+    'chars(?:_decode)?)|lcfirst|nl2br|ord|quotemeta|str(?:_rot13|_shuffle|i' .
+    'p(?:_tags|c?slashes)|len|rev|tolower|toupper)|ucfirst|ucwords)$~';
+```
+
+The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a string function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is a string. The member is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so (e.g., allowing functions such as `eval` would likely introduce serious vulnerabilities to the implementation, so should never be allowed unless absolutely necessary).
+
+```PHP
+public $AllowedNumericTagsPattern =
+    '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cosh?|dec(?:bin|hex|oct)|deg2r' .
+    'ad|exp(?:m1)?|floor|log1[0p]|rad2deg|round|sinh?|tanh?|sqrt)$~';
+```
+
+The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a numeric function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is numeric (e.g., an integer, float, or number-like string). The member is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so.
+
+---
+
+
+### Supported data types.
+
+The YAML handler supports arrays (or using YAML terminology, collections, mappings, sequences, etc), integers, floats, booleans, null, strings (single-quoted, double-quoted, etc), literal-style strings (`|`), folded-style strings (`>`), hexadecimal number notation (`0x`), binary number notation (`0b`), and octal number notation (`0o`).
+
+The YAML handler does not (per PHP terminology) support callables, closures, or objects. If objects, closures, or callables are supplied to `reconstruct`, a fatal error will occur. Don't ever do this.
+
+---
+
+
+### Comments and implicit typing.
+
+The YAML handler allows YAML data to contain comments. The YAML handler considers all data, beginning with a non-escaped hash (`#`), and ending at any valid line ending (e.g., `\n`, `\r`), to be a comment. Therefore, all hashes *not* intended to indicate the beginning of a comment should be properly escaped (i.e., `\#`), in order to ensure the YAML data is processed as intended.
+
+The YAML handler implements implicit typing. Therefore, in order to avoid the "[Norway Problem](https://hitchdev.com/strictyaml/why/implicit-typing-removed/)", care should be taken to ensure that the appropriate quoting (or lack thereof) is used in order to obtain the appropriate data type.
+
+When implicit typing is insufficient for obtaining the appropriate data type, YAML tags can be used as a means of explicit typing. However, due to the risk of confusion, the risk of users misunderstanding the intentions of the tags used, and due to that the YAML handler's `reconstruct` method doesn't reconstruct tags, abuse of tags should be avoided, and they should be used only when needed.
+
+- When quoted (and assuming tags aren't used), the YAML handler will always resolve entries as strings.
+- The YAML handler will always resolve literals and folded entries as strings.
+- Within unprocessed YAML data, non-string data should never be quoted.
+- As long as it doesn't cause ambiguity within implicit typing, quotes for strings remains optional, and won't generally matter too much (i.e., quotes for strings aren't strictly enforced). However, whenever there's risk of ambiguity, strings should always be quoted. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all resolve to strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would resolve to a boolean (`false`), an integer, and a float respectively.
+- Quoting for keys is treated in the same manner as quoting for values.
+
+When reconstructing YAML data, the preferred quotes to use for string values (and for that matter, whether to use quotes at all) can be controlled via the `Quotes` public member. However, the YAML handler will never apply quotes to keys. Therefore, if you ever need to reverse some YAML data for any reason (i.e., process some YAML data, maybe make some modifications, and then reconstruct it back into YAML data again), you should always approach quoting strictly, should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstruted YAML data). Worth noting too, that PHP resolves both `null` and `false` to empty strings when used as array keys.
+
+---
+
+
+### Anchors, aliases, and inline variables.
+
+The YAML handler supports anchors and aliases.
+
+Example anchor and alias usage:
+
+```YAML
+Anchored text push: &TestAnchor "Lorem ipsum."
+Anchored text pull: *TestAnchor
+```
+
+Result:
+
+```
+array(2) {
+  ["Anchored text push"]=>
+  string(12) "Lorem ipsum."
+  ["Anchored text pull"]=>
+  string(12) "Lorem ipsum."
+}
+```
+
+The YAML handler also inline variables (when correctly registered to the `Refs` member), which can be traversed via dot notation.
+
+Example inline variable usage:
+
+```YAML
+Foo:
+ Bar: "Baz"
+Foz: "Hello there! My name is {{Foo.Bar}}! :-)"
+```
+
+Result:
+
+```
+array(2) {
+  ["Foo"]=>
+  array(1) {
+    ["Bar"]=>
+    string(3) "Baz"
+  }
+  ["Foz"]=>
+  string(32) "Hello there! My name is Baz! :-)"
+}
+```
+
+---
+
+
+### Supported from the specification.
+
+__Tags__ | __Supported__
+:--|:--
+[`!!map`](https://yaml.org/type/map.html)<br />[`!!omap`](https://yaml.org/type/omap.html) | Both are supported (resolves to an associative array). However, because PHP arrays always have an "order" (i.e., a key index), I see no effective difference between `!!map` and `!!omap` in the context of a YAML handler written for PHP. Therefore, both tags resolve at the same block of code within the YAML handler and have the same effect. Also worth noting that keys must come from somewhere: If these tags are applied to a non-array or a non-associative array (therefore meaning there aren't any keys to start with), the effect will be automatically assigned keys (i.e., a numeric array; equivalent to `!!seq`). Therefore, practical applications of this tag in the context of the YAML handler are likely to be limited.
+[`!!pairs`](https://yaml.org/type/pairs.html) | No. Because PHP doesn't allow arrays to have duplicate keys, and because any given singular scalar in PHP will have a singular value, using arrays or scalars to implement pairs in PHP doesn't make sense. True custom data types also aren't supported by PHP, so simply creating a new "pair" data type for PHP doesn't make sense either. The need for custom data types can be mostly abated, and the actual role and effect of custom data types fulfilled for the most part, by way of writing classes (or, if using the most recent versions of PHP, enums) to instantiate objects where applicable, so I'd briefly considered taking that approach (e.g., I could've created a simple class, which when instantiated, holds an arbitrary number of values, and utilises `__toString()` to invoke one of the held values whenever the object is used as a string, and an internal iterator or similar mechanism to shift the index for the held values to invoke a different value when the object is used as a string again at a later point). However, I felt that such an approach would diverge too much from other processors, would require users to have intimiate knowledge of the YAML handler to be able to use it properly, and would inevitably lock the affected documents down to the YAML handler quite closely, so I decided instead against trying to implement support for `!!pairs` at all.
+[`!!set`](https://yaml.org/type/set.html) | Yes. Resolves to an array with all null values.
+[`!!seq`](https://yaml.org/type/seq.html) | Yes. Resolves to a numeric array.
+[`!!binary`](https://yaml.org/type/binary.html) | Yes. Uses PHP's `base64_decode()` function internally.
+[`!!bool`](https://yaml.org/type/bool.html) | Yes.
+[`!!float`](https://yaml.org/type/float.html) | Yes.
+[`!!int`](https://yaml.org/type/int.html) | Yes.
+[`!!merge`](https://yaml.org/type/merge.html) and the `<<` merge key. | Both are supported.
+[`!!null`](https://yaml.org/type/null.html) | Yes.
+[`!!str`](https://yaml.org/type/str.html) | Yes.
+[`!!timestamp`](https://yaml.org/type/timestamp.html) | No. I'm not really sure what to do with this internally. Do I convert it to a unix timestamp (`int`)? Do I just leave it be as a string (in which case, it's redundant, because the expected input is already a string anyway)? Because I'm not sure, I'm ignoring it.
+[`!!value`](https://yaml.org/type/value.html) | No. I'm not really sure what to do with this internally, so I'm ignoring it.
+[`!!yaml`](https://yaml.org/type/yaml.html) | No. I'm not really sure what to do with this internally. Do I clone the YAML handler instance to the variable? Do I simply treat the data as YAML data (in which case, it's redundant, because the YAML handler is already doing that anyway)? Because I'm not sure, I'm ignoring it.
+
+
+---
+
+
+### Additionally supported.
+
+__Tags (using custom methods)__ | __Description__
+:--|:--
+`!flatten` | Flattens a multidimensional array down to a single depth (similar to merge, but rather than merging the array to the parent collection, it merges all the sub-arrays into the array being worked upon).
+__Tags (using PHP functions)__ | __Description__
+`!abs` | Uses PHP's `abs()` function to process the entry.
+`!acos` | Uses PHP's `acos()` function to process the entry.
+`!acosh` | Uses PHP's `acosh()` function to process the entry.
+`!addslashes` | Uses PHP's `addslashes()` function to process the entry.
+`!asin` | Uses PHP's `asin()` function to process the entry.
+`!asinh` | Uses PHP's `asinh()` function to process the entry.
+`!atan` | Uses PHP's `atan()` function to process the entry.
+`!atanh` | Uses PHP's `atanh()` function to process the entry.
+`!bin2hex` | Uses PHP's `bin2hex()` function to process the entry.
+`!ceil` | Uses PHP's `ceil()` function to process the entry.
+`!chr` | Uses PHP's `chr()` function to process the entry.
+`!cos` | Uses PHP's `cos()` function to process the entry.
+`!cosh` | Uses PHP's `cosh()` function to process the entry.
+`!decbin` | Uses PHP's `decbin()` function to process the entry.
+`!dechex` | Uses PHP's `dechex()` function to process the entry.
+`!decoct` | Uses PHP's `decoct()` function to process the entry.
+`!deg2rad` | Uses PHP's `deg2rad()` function to process the entry.
+`!exp` | Uses PHP's `exp()` function to process the entry.
+`!expm1` | Uses PHP's `expm1()` function to process the entry.
+`!floor` | Uses PHP's `floor()` function to process the entry.
+`!hex2bin` | Uses PHP's `hex2bin()` function to process the entry.
+`!html_entity_decode` | Uses PHP's `html_entity_decode()` function to process the entry.
+`!htmlentities` | Uses PHP's `htmlentities()` function to process the entry.
+`!htmlspecialchars_decode` | Uses PHP's `htmlspecialchars_decode()` function to process the entry.
+`!htmlspecialchars` | Uses PHP's `htmlspecialchars()` function to process the entry.
+`!lcfirst` | Uses PHP's `lcfirst()` function to process the entry.
+`!log10` | Uses PHP's `log10()` function to process the entry.
+`!log1p` | Uses PHP's `log1p()` function to process the entry.
+`!nl2br` | Uses PHP's `nl2br()` function to process the entry.
+`!ord` | Uses PHP's `ord()` function to process the entry.
+`!quotemeta` | Uses PHP's `quotemeta()` function to process the entry.
+`!rad2deg` | Uses PHP's `rad2deg()` function to process the entry.
+`!round` | Uses PHP's `round()` function to process the entry.
+`!sin` | Uses PHP's `sin()` function to process the entry.
+`!sinh` | Uses PHP's `sinh()` function to process the entry.
+`!sqrt` | Uses PHP's `sqrt()` function to process the entry.
+`!str_rot13` | Uses PHP's `str_rot13()` function to process the entry.
+`!str_shuffle` | Uses PHP's `str_shuffle()` function to process the entry.
+`!strip_tags` | Uses PHP's `strip_tags()` function to process the entry.
+`!stripcslashes` | Uses PHP's `stripcslashes()` function to process the entry.
+`!stripslashes` | Uses PHP's `stripslashes()` function to process the entry.
+`!strlen` | Uses PHP's `strlen()` function to process the entry.
+`!strrev` | Uses PHP's `strrev()` function to process the entry.
+`!strtolower` | Uses PHP's `strtolower()` function to process the entry.
+`!strtoupper` | Uses PHP's `strtoupper()` function to process the entry.
+`!tan` | Uses PHP's `tan()` function to process the entry.
+`!tanh` | Uses PHP's `tanh()` function to process the entry.
+`!ucfirst` | Uses PHP's `ucfirst()` function to process the entry.
+`!ucwords` | Uses PHP's `ucwords()` function to process the entry.
+
 
 ---
 

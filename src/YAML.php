@@ -68,6 +68,21 @@ class YAML
     public $Quotes = '"';
 
     /**
+     * @var string Which PHP string functions tag coercion can leverage.
+     */
+    public $AllowedStringTagsPattern =
+        '~^(?:addslashes|bin2hex|hex2bin|html(?:_entity_decode|entities|special' .
+        'chars(?:_decode)?)|lcfirst|nl2br|ord|quotemeta|str(?:_rot13|_shuffle|i' .
+        'p(?:_tags|c?slashes)|len|rev|tolower|toupper)|ucfirst|ucwords)$~';
+
+    /**
+     * @var string Which numeric PHP functions tag coercion can leverage.
+     */
+    public $AllowedNumericTagsPattern =
+        '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cosh?|dec(?:bin|hex|oct)|deg2r' .
+        'ad|exp(?:m1)?|floor|log1[0p]|rad2deg|round|sinh?|tanh?|sqrt)$~';
+
+    /**
      * @var bool Whether to render multi-line values.
      */
     private $MultiLine = false;
@@ -459,7 +474,7 @@ class YAML
     private function normaliseValue(string &$Value, bool $EnforceScalar = false): void
     {
         /** Resolve tags. */
-        if (preg_match('~^!([!\dA-Za-z]+)(?: (.*))?$~', $Value, $Resolved)) {
+        if (preg_match('~^!([!\dA-Za-z_]+)(?: (.*))?$~', $Value, $Resolved)) {
             $Tag = strtolower($Resolved[1]);
             if (!$EnforceScalar) {
                 $this->LastResolvedTag = $Tag;
@@ -506,9 +521,6 @@ class YAML
             }
         }
 
-        if (!$this->EscapeBySpec) {
-            $Value = str_replace(['\#', "\\\\"], ['#', "\\"], $Value);
-        }
         $ValueLen = strlen($Value);
 
         /** Check for string quotes. */
@@ -523,9 +535,7 @@ class YAML
         ] as $Wrapper) {
             if (substr($Value, 0, $Wrapper[2]) === $Wrapper[0] && substr($Value, $ValueLen - $Wrapper[2]) === $Wrapper[1]) {
                 $Value = substr($Value, $Wrapper[2], $ValueLen - ($Wrapper[2] * 2));
-                if ($this->EscapeBySpec) {
-                    $Value = $this->unescape($Value, $Wrapper[0]);
-                }
+                $Value = $this->unescape($Value, $Wrapper[0]);
                 if ($Tag !== '') {
                     $Value = $this->coerce($Value, $EnforceScalar, $Tag);
                 }
@@ -690,9 +700,8 @@ class YAML
                 $ToAdd = 'null';
             } elseif (strpos($Value, "\n") !== false) {
                 $ToAdd = "|\n" . $ThisDepth . $this->Indent;
-                $ToAdd .= str_replace("\n", "\n" . $ThisDepth . $this->Indent, $this->escape($Value, false));
+                $ToAdd .= str_replace("\n", "\n" . $ThisDepth . $this->Indent, $Value);
             } elseif (is_string($Value)) {
-                $Value = $this->escape($Value);
                 if ($this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
                     $ToAdd = ">\n" . $ThisDepth . $this->Indent . wordwrap(
                         $Value,
@@ -700,7 +709,7 @@ class YAML
                         "\n" . $ThisDepth . $this->Indent
                     );
                 } else {
-                    $ToAdd = $this->Quotes . $Value . $this->Quotes;
+                    $ToAdd = $this->Quotes . $this->escape($Value) . $this->Quotes;
                 }
             } else {
                 $ToAdd = $Value;
@@ -731,7 +740,7 @@ class YAML
      */
     private function escape(string $Value = '', bool $Newlines = true): string
     {
-        if ($this->Quotes === "'" && $this->EscapeBySpec) {
+        if ($this->Quotes === "'") {
             return str_replace("'", "''", $Value);
         }
         if ($this->Quotes !== '"') {
@@ -1035,6 +1044,16 @@ class YAML
         /** For extending with other scalar coercion. */
         if (method_exists($this, $Tag . 'Tag')) {
             return $this->{$Tag . 'Tag'}($Value);
+        }
+
+        /** Permitted PHP string functions. */
+        if (is_string($Value) && preg_match($this->AllowedStringTagsPattern, $Tag) && function_exists($Tag)) {
+            return $Tag($Value);
+        }
+
+        /** Permitted numeric PHP functions. */
+        if (is_numeric($Value) && preg_match($this->AllowedNumericTagsPattern, $Tag) && function_exists($Tag)) {
+            return $Tag($Value);
         }
 
         /** The specified tag isn't supported. Return the value verbatim. */

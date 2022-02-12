@@ -49,6 +49,9 @@ found at:
   Implemented a flow control mechanism to the YAML handler, improving support
   for flow sequences and flow mappings. Added support for flattening arrays.
 
+- [2022.02.12; Maikuolan]: Added support for calling a limited range of various
+  safe PHP functions as tags to the YAML handler.
+
 === Version/Release 2.7.0 ===
 MINOR RELEASE.
 

@@ -9,7 +9,7 @@
 
 require $ClassesDir . $Case . '.php';
 
-$ExpectedForSyntax = [
+$ExpectedForSyntax = serialize([
     'Deep outermost' => [
         'Deep outer' => [
             'Deep inner' => [
@@ -63,10 +63,10 @@ $ExpectedForSyntax = [
         'Anchored text pull' => 'Some placeholder text.'
     ],
     'Escaping test' => [
-        'They said, \"Our number is #123-456-789\".',
-        'こんにちは世界。 \xE3\x81\x93\xE3\x82\x93\xE3\x81\xAB\xE3\x81\xA1\xE3\x81\xAF\xE4\xB8\x96\xE7\x95\x8C\xE3\x80\x82 \u3053\u3093\u306B\u3061\u306F\u4E16\u754C\u3002 \U00003053\U00003093\U0000306B\U00003061\U0000306F\U00004E16\U0000754C\U00003002',
-        'مرحبا بالعالم. \xD9\x85\xD8\xB1\xD8\xAD\xD8\xA8\xD8\xA7 \xD8\xA8\xD8\xA7\xD9\x84\xD8\xB9\xD8\xA7\xD9\x84\xD9\x85.',
-        '你好世界。 \xE4\xBD\xA0\xE5\xA5\xBD\xE4\xB8\x96\xE7\x95\x8C\xE3\x80\x82 \u4F60\u597D\u4E16\u754C\u3002 \U00004F60\U0000597D\U00004E16\U0000754C\U00003002',
+        'They said, "Our number is #123-456-789".',
+        'こんにちは世界。 こんにちは世界。 こんにちは世界。 こんにちは世界。',
+        'مرحبا بالعالم. مرحبا بالعالم.',
+        '你好世界。 你好世界。 你好世界。 你好世界。'
     ],
     'Inserts test' => 'Hello world; Thus, from here, within this variable, a value is inserted; It should work, hopefully.',
     'Inline array example' => ['this', 'is', 'a', 'test.', 'Foo', 'Bar', true, false, 123],
@@ -173,10 +173,65 @@ $ExpectedForSyntax = [
         'Lorem ipsum' => 'Dolor sit amet, consectetur adipiscing elit.',
         'Sed do eiusmod tempor' => 'Incididunt ut labore et dolore magna aliqua.'
     ],
+    'Test support for PHP functions in YAML' => [
+        'String functions' => [
+            'Test addslashes' => '\\\'\\"<>&',
+            'Test bin2hex' => '48656c6c6f20776f726c642e',
+            'Test hex2bin' => 'Hello world.',
+            'Test html_entity_decode' => '\'"<>&',
+            'Test htmlentities' => '&#039;&quot;&lt;&gt;&amp;',
+            'Test htmlspecialchars' => '&#039;&quot;&lt;&gt;&amp;',
+            'Test htmlspecialchars_decode' => '\'"<>&',
+            'Test lcfirst' => 'hELLO WORLD.',
+            'Test nl2br' => "Hello<br />\nworld.",
+            'Test ord' => 72,
+            'Test quotemeta' => '\\.\\\\\\+\\*\\?\\[\\^\\]\\(\\$\\)',
+            'Test str_rot13' => 'Uryyb jbeyq.',
+            'Test strip_tags' => 'Hello world.',
+            'Test stripslashes' => 'Hello world.',
+            'Test stripcslashes' => 'Hello world.',
+            'Test strlen' => 12,
+            'Test strrev' => '.dlrow olleH',
+            'Test strtolower' => 'hello world.',
+            'Test strtoupper' => 'HELLO WORLD.',
+            'Test ucfirst' => 'Hello world.',
+            'Test ucwords' => 'Hello World.'
+        ],
+        'Numeric functions' => [
+            'Default number' => 123456789.87654321,
+            'Test abs' => 123456789.87654321,
+            'Test acos' => NAN,
+            'Test acosh' => 19.324548953827964,
+            'Test asin' => NAN,
+            'Test asinh' => 19.324548953827964,
+            'Test atan' => 1.5707963186948966,
+            'Test atanh' => NAN,
+            'Test ceil' => 123456790.0,
+            'Test chr' => "\x15",
+            'Test cos' => -0.6711948791807985,
+            'Test cosh' => INF,
+            'Test decbin' => '111010110111100110100010101',
+            'Test dechex' => '75bcd15',
+            'Test decoct' => '726746425',
+            'Test deg2rad' => 2154727.467288483,
+            'Test exp' => INF,
+            'Test expm1' => INF,
+            'Test floor' => 123456789.0,
+            'Test log10' => 8.09151498025276,
+            'Test log1p' => 18.63140178136802,
+            'Test rad2deg' => 7073553012.159353,
+            'Test round' => 123456790.0,
+            'Test sin' => 0.7412809414530185,
+            'Test sinh' => INF,
+            'Test tan' => -1.1044198405651737,
+            'Test tanh' => 1.0,
+            'Test sqrt' => 11111.1111
+        ]
+    ],
     'End of file' => ':-)'
-];
+]);
 
-$ExpectedForReconstruction = [
+$ExpectedForReconstruction = serialize([
     'String foo' => 'Bar',
     'Integer foo' => 1234,
     'Float foo' => 123.4,
@@ -217,12 +272,12 @@ $ExpectedForReconstruction = [
     ],
     'Escaping test' => 'Our number is #123-456-789.',
     'End of file' => ':-)'
-];
+]);
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'syntax.yaml');
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
-if ($ExpectedForSyntax !== $Object->Data) {
+if ($ExpectedForSyntax !== serialize($Object->Data)) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
@@ -237,29 +292,7 @@ if ($ProcessResult !== true) {
 }
 
 $ExitCode++;
-if ($ExpectedForSyntax !== $Object->Data) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
-    exit($ExitCode);
-}
-
-$Object->Data = [];
-$Object->EscapeBySpec = true;
-$ProcessResult = $Object->process($RawYAML, $Object->Data);
-$ExitCode++;
-if ($ProcessResult !== true) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
-    exit($ExitCode);
-}
-
-$ExpectedForBySpecEscaped = $ExpectedForSyntax;
-$ExpectedForBySpecEscaped['Escaping test'] = [
-    'They said, "Our number is #123-456-789".',
-    'こんにちは世界。 こんにちは世界。 こんにちは世界。 こんにちは世界。',
-    'مرحبا بالعالم. مرحبا بالعالم.',
-    '你好世界。 你好世界。 你好世界。 你好世界。'
-];
-$ExitCode++;
-if ($ExpectedForBySpecEscaped !== $Object->Data) {
+if ($ExpectedForSyntax !== serialize($Object->Data)) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
@@ -268,7 +301,7 @@ $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'rec
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 $ExitCode++;
-if ($ExpectedForReconstruction !== $Object->Data) {
+if ($ExpectedForReconstruction !== serialize($Object->Data)) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
@@ -280,7 +313,7 @@ if ($Reconstructed !== $RawYAML) {
     exit($ExitCode);
 }
 
-$ExpectedForUTF16 = [
+$ExpectedForUTF16 = serialize([
     'String foo' => 'Bar',
     'Integer foo' => 1234,
     'Float foo' => 123.4,
@@ -300,12 +333,12 @@ $ExpectedForUTF16 = [
         'Bar2' => null,
         'Bar3' => null
     ]
-];
+]);
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'utf16be.yaml');
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 $ExitCode++;
-if ($ExpectedForUTF16 !== $Object->Data) {
+if ($ExpectedForUTF16 !== serialize($Object->Data)) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
@@ -313,16 +346,16 @@ if ($ExpectedForUTF16 !== $Object->Data) {
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'utf16le.yaml');
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 $ExitCode++;
-if ($ExpectedForUTF16 !== $Object->Data) {
+if ($ExpectedForUTF16 !== serialize($Object->Data)) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
 
 $RawJSON = file_get_contents($BaseDir . 'composer.json');
-$PHPDecoded = json_decode($RawJSON, true);
+$PHPDecoded = serialize(json_decode($RawJSON, true));
 $Object = new \Maikuolan\Common\YAML($RawJSON);
 $ExitCode++;
-if ($PHPDecoded !== $Object->Data) {
+if ($PHPDecoded !== serialize($Object->Data)) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }

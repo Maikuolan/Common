@@ -170,4 +170,56 @@ Flattened array test 2: !flatten
  Multidimensional:
   Lorem ipsum: "Dolor sit amet, consectetur adipiscing elit."
   Sed do eiusmod tempor: "Incididunt ut labore et dolore magna aliqua."
+Test support for PHP functions in YAML:
+ String functions:
+  Test addslashes: !addslashes "'"<>&"
+  Test bin2hex: !bin2hex "Hello world."
+  Test hex2bin: !hex2bin "48656c6c6f20776f726c642e"
+  Test html_entity_decode: !html_entity_decode "&\#039;&quot;&lt;&gt;&amp;"
+  Test htmlentities: !htmlentities "'"<>&"
+  Test htmlspecialchars: !htmlspecialchars "'"<>&"
+  Test htmlspecialchars_decode: !htmlspecialchars_decode "&\#039;&quot;&lt;&gt;&amp;"
+  Test lcfirst: !lcfirst "HELLO WORLD."
+  Test nl2br: !nl2br "Hello\nworld."
+  Test ord: !ord "Hello world."
+  Test quotemeta: !quotemeta ".\+*?[^]($)"
+  Test str_rot13: !str_rot13 "Hello world."
+  Test strip_tags: !strip_tags "<p>Hello world.</p>"
+  Test stripslashes: !stripslashes "\He\l\l\o\ \w\or\l\d\."
+  Test stripcslashes: !stripcslashes "\He\l\l\o\ \w\or\l\d\."
+  Test strlen: !strlen "Hello world."
+  Test strrev: !strrev "Hello world."
+  Test strtolower: !strtolower "Hello world."
+  Test strtoupper: !strtoupper "Hello world."
+  Test ucfirst: !ucfirst "hello world."
+  Test ucwords: !ucwords "hello world."
+ Numeric functions:
+  Default number: &NumericDefault 123456789.87654321
+  Test abs: !abs *NumericDefault
+  Test acos: !acos *NumericDefault
+  Test acosh: !acosh *NumericDefault
+  Test asin: !asin *NumericDefault
+  Test asinh: !asinh *NumericDefault
+  Test atan: !atan *NumericDefault
+  Test atanh: !atanh *NumericDefault
+  Test ceil: !ceil *NumericDefault
+  Test chr: !chr *NumericDefault
+  Test cos: !cos *NumericDefault
+  Test cosh: !cosh *NumericDefault
+  Test decbin: !decbin *NumericDefault
+  Test dechex: !dechex *NumericDefault
+  Test decoct: !decoct *NumericDefault
+  Test deg2rad: !deg2rad *NumericDefault
+  Test exp: !exp *NumericDefault
+  Test expm1: !expm1 *NumericDefault
+  Test floor: !floor *NumericDefault
+  Test log10: !log10 *NumericDefault
+  Test log1p: !log1p *NumericDefault
+  Test rad2deg: !rad2deg *NumericDefault
+  Test round: !round *NumericDefault
+  Test sin: !sin *NumericDefault
+  Test sinh: !sinh *NumericDefault
+  Test tan: !tan *NumericDefault
+  Test tanh: !tanh *NumericDefault
+  Test sqrt: !sqrt *NumericDefault
 End of file: ":-)"

@@ -1,10 +1,10 @@
 <?php
 /**
- * Events orchestrator (last modified: 2021.08.25).
+ * Events orchestrator (last modified: 2022.02.12).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
- * Source: https://github.com/Maikuolan/Common
+ * @link https://github.com/Maikuolan/Common
  *
  * License: GNU/GPLv2
  * @see LICENSE.txt

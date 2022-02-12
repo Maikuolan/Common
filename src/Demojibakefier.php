@@ -1,6 +1,6 @@
 <?php
 /**
- * Demojibakefier (last modified: 2022.01.31).
+ * Demojibakefier (last modified: 2022.02.12).
  *
  * Intended to normalise the character encoding of a given string to a
  * preferred character encoding when the given string's byte sequences don't
@@ -14,7 +14,7 @@
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
- * Source: https://github.com/Maikuolan/Common
+ * @link https://github.com/Maikuolan/Common
  *
  * License: GNU/GPLv2
  * @see LICENSE.txt

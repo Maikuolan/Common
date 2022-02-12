@@ -4,7 +4,7 @@
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
- * Source: https://github.com/Maikuolan/Common
+ * @link https://github.com/Maikuolan/Common
  */
 
 // Prevent running tests outside of Composer (if the package is deployed

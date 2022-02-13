@@ -222,4 +222,11 @@ Test support for PHP functions in YAML:
   Test tan: !tan *NumericDefault
   Test tanh: !tanh *NumericDefault
   Test sqrt: !sqrt *NumericDefault
+ Hashes:
+  Test MD2: !hash:md2 "Hello world."
+  Test MD5: !hash:md5 "Hello world."
+  Test SHA1: !hash:sha1 "Hello world."
+  Test SHA256: !hash:sha256 "Hello world."
+  Test SHA512: !hash:sha512 "Hello world."
+  Test Whirlpool: !hash:whirlpool "Hello world."
 End of file: ":-)"

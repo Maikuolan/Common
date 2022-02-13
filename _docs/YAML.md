@@ -422,7 +422,7 @@ When `EscapeBySpec` is set to `true`, escaping is performed in accordance with t
 public $Quotes = '"';
 ```
 
-The preferred style of quotes to use for strings (double `"`, or single `'`).
+The preferred style of quotes to use for strings (double `"`, or single `'`) for when reconstructing YAML data.
 
 ```PHP
 public $AllowedStringTagsPattern =
@@ -546,10 +546,10 @@ __Tags__ | __Supported__
 
 ### Additionally supported.
 
-__Tags (using custom methods)__ | __Description__
+__Tags (specific methods implemented)__ | __Description__
 :--|:--
 `!flatten` | Flattens a multidimensional array down to a single depth (similar to merge, but rather than merging the array to the parent collection, it merges all the sub-arrays into the array being worked upon).
-__Tags (using PHP functions)__ | __Description__
+__Tags (directly invokes PHP functions at `coerce`)__ | __Description__
 `!abs` | Uses PHP's `abs()` function to process the entry.
 `!acos` | Uses PHP's `acos()` function to process the entry.
 `!acosh` | Uses PHP's `acosh()` function to process the entry.
@@ -571,6 +571,7 @@ __Tags (using PHP functions)__ | __Description__
 `!expm1` | Uses PHP's `expm1()` function to process the entry.
 `!floor` | Uses PHP's `floor()` function to process the entry.
 `!hex2bin` | Uses PHP's `hex2bin()` function to process the entry.
+`!hash:*` | Uses PHP's `hash()` function to process the entry. Replace `*` with the desired algorithm (e.g., `!hash:md5`, `!hash:sha256`, etc). Supported algorithms determined by the returned value of `hash_algos()` (exact results may vary between systems and PHP versions).
 `!html_entity_decode` | Uses PHP's `html_entity_decode()` function to process the entry.
 `!htmlentities` | Uses PHP's `htmlentities()` function to process the entry.
 `!htmlspecialchars_decode` | Uses PHP's `htmlspecialchars_decode()` function to process the entry.
@@ -604,4 +605,4 @@ __Tags (using PHP functions)__ | __Description__
 ---
 
 
-Last Updated: 12 February 2022 (2022.02.12).
+Last Updated: 13 February 2022 (2022.02.13).

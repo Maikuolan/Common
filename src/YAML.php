@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.02.12).
+ * YAML handler (last modified: 2022.02.13).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1053,6 +1053,12 @@ class YAML
 
         /** Permitted PHP string functions. */
         if (is_string($Value) && preg_match($this->AllowedStringTagsPattern, $Tag) && function_exists($Tag)) {
+            /** Needed to ensure that older PHP versions are consistent with PHP 8.1's behaviour. */
+            if (preg_match('~^(?:html(?:_entity_decode|entities|specialchars(?:_decode)?))$~', $Tag)) {
+                return $Tag($Value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
+            }
+
+            /** Default function invocation. */
             return $Tag($Value);
         }
 

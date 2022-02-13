@@ -9,7 +9,7 @@
 
 require $ClassesDir . $Case . '.php';
 
-$ExpectedForSyntax = serialize([
+$ExpectedForSyntax = [
     'Deep outermost' => [
         'Deep outer' => [
             'Deep inner' => [
@@ -229,9 +229,11 @@ $ExpectedForSyntax = serialize([
         ]
     ],
     'End of file' => ':-)'
-]);
+];
 
-$ExpectedForReconstruction = serialize([
+$ExpectedForSyntaxSerialised = serialize($ExpectedForSyntax);
+
+$ExpectedForReconstruction = [
     'String foo' => 'Bar',
     'Integer foo' => 1234,
     'Float foo' => 123.4,
@@ -272,13 +274,19 @@ $ExpectedForReconstruction = serialize([
     ],
     'Escaping test' => 'Our number is #123-456-789.',
     'End of file' => ':-)'
-]);
+];
+
+$ExpectedForReconstructionSerialised = serialize($ExpectedForReconstruction);
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'syntax.yaml');
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
-if ($ExpectedForSyntax !== serialize($Object->Data)) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+if ($ExpectedForSyntaxSerialised !== serialize($Object->Data)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($ExpectedForSyntax);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Object->Data);
+    echo PHP_EOL;
     exit($ExitCode);
 }
 
@@ -292,8 +300,12 @@ if ($ProcessResult !== true) {
 }
 
 $ExitCode++;
-if ($ExpectedForSyntax !== serialize($Object->Data)) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+if ($ExpectedForSyntaxSerialised !== serialize($Object->Data)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($ExpectedForSyntax);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Object->Data);
+    echo PHP_EOL;
     exit($ExitCode);
 }
 
@@ -301,19 +313,27 @@ $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'rec
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 $ExitCode++;
-if ($ExpectedForReconstruction !== serialize($Object->Data)) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+if ($ExpectedForReconstructionSerialised !== serialize($Object->Data)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($ExpectedForReconstruction);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Object->Data);
+    echo PHP_EOL;
     exit($ExitCode);
 }
 
 $Reconstructed = $Object->reconstruct($Object->Data, true, true);
 $ExitCode++;
-if ($Reconstructed !== $RawYAML) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+if ($RawYAML !== $Reconstructed) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($Reconstructed);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($RawYAML);
+    echo PHP_EOL;
     exit($ExitCode);
 }
 
-$ExpectedForUTF16 = serialize([
+$ExpectedForUTF16 = [
     'String foo' => 'Bar',
     'Integer foo' => 1234,
     'Float foo' => 123.4,
@@ -333,29 +353,44 @@ $ExpectedForUTF16 = serialize([
         'Bar2' => null,
         'Bar3' => null
     ]
-]);
+];
+
+$ExpectedForUTF16Serialised = serialize($ExpectedForUTF16);
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'utf16be.yaml');
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 $ExitCode++;
-if ($ExpectedForUTF16 !== serialize($Object->Data)) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+if ($ExpectedForUTF16Serialised !== serialize($Object->Data)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($ExpectedForUTF16);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Object->Data);
+    echo PHP_EOL;
     exit($ExitCode);
 }
 
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'utf16le.yaml');
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 $ExitCode++;
-if ($ExpectedForUTF16 !== serialize($Object->Data)) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+if ($ExpectedForUTF16Serialised !== serialize($Object->Data)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($ExpectedForUTF16);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Object->Data);
+    echo PHP_EOL;
     exit($ExitCode);
 }
 
 $RawJSON = file_get_contents($BaseDir . 'composer.json');
-$PHPDecoded = serialize(json_decode($RawJSON, true));
+$PHPDecoded = json_decode($RawJSON, true);
+$PHPDecodedSerialised = serialize($PHPDecoded);
 $Object = new \Maikuolan\Common\YAML($RawJSON);
 $ExitCode++;
-if ($PHPDecoded !== serialize($Object->Data)) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+if ($PHPDecodedSerialised !== serialize($Object->Data)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($PHPDecoded);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Object->Data);
+    echo PHP_EOL;
     exit($ExitCode);
 }

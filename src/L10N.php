@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2022.02.12).
+ * L10N handler (last modified: 2022.02.13).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1010,5 +1010,24 @@ class L10N
 
         /** Default rule. */
         return 'int1';
+    }
+
+    /**
+     * Assign rules automatically.
+     *
+     * @param string $Code An ISO 639-1/639-2 language code.
+     * @param string $FallbackCode An ISO 639-1/639-2 language code.
+     * @return void
+     */
+    public function autoAssignRules(string $Code, string $FallbackCode = ''): void
+    {
+        if ($Code) {
+            $this->IntegerRule = $this->getIntegerRule($Code);
+            $this->FractionRule = $this->getFractionRule($Code);
+        }
+        if ($FallbackCode) {
+            $this->FallbackIntegerRule = $this->getIntegerRule($FallbackCode);
+            $this->FallbackFractionRule = $this->getFractionRule($FallbackCode);
+        }
     }
 }

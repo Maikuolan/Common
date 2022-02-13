@@ -52,6 +52,9 @@ found at:
 - [2022.02.12; Maikuolan]: Added support for calling a limited range of various
   safe PHP functions as tags to the YAML handler.
 
+- [2022.02.13; Maikuolan]: Added the ability to assign language rules
+  automatically to the L10N handler.
+
 === Version/Release 2.7.0 ===
 MINOR RELEASE.
 

@@ -229,4 +229,45 @@ Test support for PHP functions in YAML:
   Test SHA256: !hash:sha256 "Hello world."
   Test SHA512: !hash:sha512 "Hello world."
   Test Whirlpool: !hash:whirlpool "Hello world."
+Specification examples:
+ 2.1. Collections:
+  2.1 Sequence of Scalars:
+   - Mark McGwire
+   - Sammy Sosa
+   - Ken Griffey
+  2.2 Mapping Scalars to Scalars:
+   hr:  65    # Home runs
+   avg: 0.278 # Batting average
+   rbi: 147   # Runs Batted In
+  2.3 Mapping Scalars to Sequences:
+   american:
+    - Boston Red Sox
+    - Detroit Tigers
+    - New York Yankees
+   national:
+    - New York Mets
+    - Chicago Cubs
+    - Atlanta Braves
+  2.4 Sequence of Mappings:
+   -
+     name: Mark McGwire
+     hr:   65
+     avg:  0.278
+   -
+     name: Sammy Sosa
+     hr:   63
+     avg:  0.288
+  2.5 Sequence of Sequences:
+   - [name        , hr, avg  ]
+   - [Mark McGwire, 65, 0.278]
+   - [Sammy Sosa  , 63, 0.288]
+ 2.3. Scalars:
+  2.16 Indentation determines scope:
+   name: Mark McGwire
+   accomplishment: >
+     Mark set a major league
+     home run record in 1998.
+   stats: |
+     65 Home Runs
+     0.278 Batting Average
 End of file: ":-)"

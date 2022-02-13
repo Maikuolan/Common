@@ -523,7 +523,7 @@ array(2) {
 
 ### Supported from the specification.
 
-__Tags__ | __Supported__
+__[Tags](https://yaml.org/type/)__ | __Supported__
 :--|:--
 [`!!map`](https://yaml.org/type/map.html)<br />[`!!omap`](https://yaml.org/type/omap.html) | Both are supported (resolves to an associative array). However, because PHP arrays always have an "order" (i.e., a key index), I see no effective difference between `!!map` and `!!omap` in the context of a YAML handler written for PHP. Therefore, both tags resolve at the same block of code within the YAML handler and have the same effect. Also worth noting that keys must come from somewhere: If these tags are applied to a non-array or a non-associative array (therefore meaning there aren't any keys to start with), the effect will be automatically assigned keys (i.e., a numeric array; equivalent to `!!seq`). Therefore, practical applications of this tag in the context of the YAML handler are likely to be limited.
 [`!!pairs`](https://yaml.org/type/pairs.html) | No. Because PHP doesn't allow arrays to have duplicate keys, and because any given singular scalar in PHP will have a singular value, using arrays or scalars to implement pairs in PHP doesn't make sense. True custom data types also aren't supported by PHP, so simply creating a new "pair" data type for PHP doesn't make sense either. The need for custom data types can be mostly abated, and the actual role and effect of custom data types fulfilled for the most part, by way of writing classes (or, if using the most recent versions of PHP, enums) to instantiate objects where applicable, so I'd briefly considered taking that approach (e.g., I could've created a simple class, which when instantiated, holds an arbitrary number of values, and utilises `__toString()` to invoke one of the held values whenever the object is used as a string, and an internal iterator or similar mechanism to shift the index for the held values to invoke a different value when the object is used as a string again at a later point). However, I felt that such an approach would diverge too much from other processors, would require users to have intimiate knowledge of the YAML handler to be able to use it properly, and would inevitably lock the affected documents down to the YAML handler quite closely, so I decided instead against trying to implement support for `!!pairs` at all.
@@ -547,17 +547,33 @@ __Examples from [2.1. Collections](https://yaml.org/spec/1.2.2/#21-collections)_
 2.5 Sequence of Sequences | Yes.
 2.6 Mapping of Mappings | The YAML handler doesn't yet support the particular flow context shown in that example, so no, not yet. But, I aim to fix that in the near future.
 __Examples from [2.2. Structures](https://yaml.org/spec/1.2.2/#22-structures)__ | __Will using the YAML handler to process it produce the desired results?__
-2.7 Two Documents in a Stream | *Kind of.* The YAML handler processes the YAML data supplied to it into to the specified PHP array. Because the YAML handler doesn't support "streams", it doesn't clearly distinguish between distinct documents. That PHP array will still be just a normal PHP array, no matter how many documents the supplied YAML data contains. So, in that sense, no; not supported. However, the YAML handler does recognise "start of document" (`---`) and "end of document" (`...`) markers, and will resolve those markers to the specified PHP array in such a way which, when reconstructing that array back into YAML data via the `reconstruct` method, will be correctly resolved back into those original "start of document" and "end of document" markers again, meaning that other processors subsequently working on that YAML data should still be able to distinguish between any/all distinct documents. So, in that sense, yes; supported.
+2.7 Two Documents in a Stream | *Kind of.* The YAML handler processes the YAML data supplied to it into to the specified PHP array. Because the YAML handler doesn't support "streams", it doesn't clearly distinguish between distinct documents. That PHP array will still be just a normal PHP array, no matter how many documents the supplied YAML data contains. So, in that sense, no; not supported. However, the YAML handler does recognise "start of document" (`---`) and "end of document" (`...`) markers, and will resolve those markers to the specified PHP array in such a way that, when reconstructing that array back into YAML data via the `reconstruct` method, it'll be correctly resolved back into those original "start of document" and "end of document" markers again, meaning that other processors subsequently working on that YAML data should still be able to distinguish between any/all distinct documents. So, in that sense, yes; supported.
 2.8 Play by Play Feed from a Game | Same as above.
 2.9 Single Document with Two Comments | Same as above.
 2.10 Node for “`Sammy Sosa`” appears twice in this document | Same as above.
 2.11 Mapping between Sequences | Nope. The YAML handler treats "complex mapping keys" as sequences of null values, so having key/value pairs immediately follow on from that, all within the same line, won't work as expected.
 2.12 Compact Nested Mapping | Nope. The specification expects this to be processed in a similar way as a sequence of mappings would be processed. However, as the example shows key/value pairs attached to what looks like sequence indicators, followed by key/value pairs on the subsequent line without any such indicators, but with greater indentation so as to line them up with their earlier counterparts, to the YAML handler, the whole block just looks like a sequence, and those key/value pairs with greater indentation, due to that greater indentation, will cause the YAML handler to implicitly coerce their earlier counterparts to arrays so that those key/value pairs can be processed to there, thus loosing the values of those earlier counterparts. I understand the problem, and I may fix it in the future, but it's low priority on the to-do list and might require a significant amount of refactoring once I start, so I'm not entirely sure if or when.
 __Examples from [2.3. Scalars](https://yaml.org/spec/1.2.2/#23-scalars)__ | __Will using the YAML handler to process it produce the desired results?__
-2.13 In literals, newlines are preserved | It *would*. Except that, the YAML handler doesn't understand "`--- |`" properly. To produce the desired results, "`---: |` would need to be used instead.
-2.14 In the folded scalars, newlines become spaces | It *would*. Except that, the YAML handler doesn't understand "`--- >`" properly. To produce the desired results, "`---: >` would need to be used instead.
+2.13 In literals, newlines are preserved | It *would*. Except that, the YAML handler doesn't understand "`--- \|`" properly.<br />To produce the desired results, "`---: \|` would need to be used instead.
+2.14 In the folded scalars, newlines become spaces | It *would*. Except that, the YAML handler doesn't understand "`--- >`" properly.<br />To produce the desired results, "`---: >` would need to be used instead.
 2.15 Folded newlines are preserved for “more indented” and blank lines | Not yet. But, I aim to fix that in the near future.
 2.16 Indentation determines scope | Yes.
+2.17 Quoted Scalars | For everything other than the "not a comment" line. The YAML handler requires that all hashes be escaped in order to not be recognised as comments, and the hash in the example isn't escaped.
+2.18 Multi-line Flow Scalars | Nope. Please use "`|`" to do that with the YAML handler.
+__[Character encodings](https://yaml.org/spec/1.2.2/#52-character-encodings)__ | __Supported__
+UTF-32BE (Explicit BOM) | Yes.
+UTF-32BE (ASCII first character) | Yes.
+UTF-32LE (Explicit BOM) | Yes.
+UTF-32LE (ASCII first character) | Yes.
+UTF-16BE (Explicit BOM) | Yes.
+UTF-16BE (ASCII first character) | Yes.
+UTF-16LE (Explicit BOM) | Yes.
+UTF-16LE (ASCII first character) | Yes.
+UTF-8 (Explicit BOM) | Yes.
+UTF-8 (Default) | Yes.
+"The recommended output encoding is UTF-8" | The YAML handler uses UTF-8 as its default for everything, such as when reconstructing YAML data.
+
+The overall specification is quite extensive, and writing this documentation takes a long time. I'll try to slowly document what I can, when I can, but it may take a while. If there's something missing from here that you particularly need listed ASAP, let me know, and I'll see what I can do.
 
 ---
 

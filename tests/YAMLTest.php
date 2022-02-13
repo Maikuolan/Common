@@ -150,7 +150,7 @@ $ExpectedForSyntax = [
             'And deeper' => [
                 'And deepest' => ['What\'s up buddy', 'How\'re you']
             ]
-        ],
+        ]
     ],
     'Flattened array test 1' => [
         0 => 'Foo',

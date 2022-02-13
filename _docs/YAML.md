@@ -559,7 +559,7 @@ __Examples from [2.3. Scalars](https://yaml.org/spec/1.2.2/#23-scalars)__ | __Wi
 2.15 Folded newlines are preserved for “more indented” and blank lines | Not yet. But, I aim to fix that in the near future.
 2.16 Indentation determines scope | Yes.
 2.17 Quoted Scalars | For everything other than the "not a comment" line. The YAML handler requires that all hashes be escaped in order to not be recognised as comments, and the hash in the example isn't escaped.
-2.18 Multi-line Flow Scalars | Nope. Please use "`|`" to do that with the YAML handler.
+2.18 Multi-line Flow Scalars | Nope. Please use "`\|`" to do that with the YAML handler.
 __[Character encodings](https://yaml.org/spec/1.2.2/#52-character-encodings)__ | __Supported__
 UTF-32BE (Explicit BOM) | Yes.
 UTF-32BE (ASCII first character) | Yes.
@@ -571,7 +571,7 @@ UTF-16LE (Explicit BOM) | Yes.
 UTF-16LE (ASCII first character) | Yes.
 UTF-8 (Explicit BOM) | Yes.
 UTF-8 (Default) | Yes.
-"The recommended output encoding is UTF-8" | The YAML handler uses UTF-8 as its default for everything, such as when reconstructing YAML data.
+*"The recommended output encoding is UTF-8"* | The YAML handler uses UTF-8 as its default for everything, such as when reconstructing YAML data.
 
 The overall specification is quite extensive, and writing this documentation takes a long time. I'll try to slowly document what I can, when I can, but it may take a while. If there's something missing from here that you particularly need listed ASAP, let me know, and I'll see what I can do.
 

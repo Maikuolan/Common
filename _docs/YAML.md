@@ -539,7 +539,25 @@ __Tags__ | __Supported__
 [`!!timestamp`](https://yaml.org/type/timestamp.html) | No. I'm not really sure what to do with this internally. Do I convert it to a unix timestamp (`int`)? Do I just leave it be as a string (in which case, it's redundant, because the expected input is already a string anyway)? Because I'm not sure, I'm ignoring it.
 [`!!value`](https://yaml.org/type/value.html) | No. I'm not really sure what to do with this internally, so I'm ignoring it.
 [`!!yaml`](https://yaml.org/type/yaml.html) | No. I'm not really sure what to do with this internally. Do I clone the YAML handler instance to the variable? Do I simply treat the data as YAML data (in which case, it's redundant, because the YAML handler is already doing that anyway)? Because I'm not sure, I'm ignoring it.
-
+__Examples from [2.1. Collections](https://yaml.org/spec/1.2.2/#21-collections)__ | __Will using the YAML handler to process it produce the desired results?__
+2.1 Sequence of Scalars | Yes.
+2.2 Mapping Scalars to Scalars | Yes.
+2.3 Mapping Scalars to Sequences | Yes.
+2.4 Sequence of Mappings | Yes.
+2.5 Sequence of Sequences | Yes.
+2.6 Mapping of Mappings | The YAML handler doesn't yet support the particular flow context shown in that example, so no, not yet. But, I aim to fix that in the near future.
+__Examples from [2.2. Structures](https://yaml.org/spec/1.2.2/#22-structures)__ | __Will using the YAML handler to process it produce the desired results?__
+2.7 Two Documents in a Stream | *Kind of.* The YAML handler processes the YAML data supplied to it into to the specified PHP array. Because the YAML handler doesn't support "streams", it doesn't clearly distinguish between distinct documents. That PHP array will still be just a normal PHP array, no matter how many documents the supplied YAML data contains. So, in that sense, no; not supported. However, the YAML handler does recognise "start of document" (`---`) and "end of document" (`...`) markers, and will resolve those markers to the specified PHP array in such a way which, when reconstructing that array back into YAML data via the `reconstruct` method, will be correctly resolved back into those original "start of document" and "end of document" markers again, meaning that other processors subsequently working on that YAML data should still be able to distinguish between any/all distinct documents. So, in that sense, yes; supported.
+2.8 Play by Play Feed from a Game | Same as above.
+2.9 Single Document with Two Comments | Same as above.
+2.10 Node for “`Sammy Sosa`” appears twice in this document | Same as above.
+2.11 Mapping between Sequences | Nope. The YAML handler treats "complex mapping keys" as sequences of null values, so having key/value pairs immediately follow on from that, all within the same line, won't work as expected.
+2.12 Compact Nested Mapping | Nope. The specification expects this to be processed in a similar way as a sequence of mappings would be processed. However, as the example shows key/value pairs attached to what looks like sequence indicators, followed by key/value pairs on the subsequent line without any such indicators, but with greater indentation so as to line them up with their earlier counterparts, to the YAML handler, the whole block just looks like a sequence, and those key/value pairs with greater indentation, due to that greater indentation, will cause the YAML handler to implicitly coerce their earlier counterparts to arrays so that those key/value pairs can be processed to there, thus loosing the values of those earlier counterparts. I understand the problem, and I may fix it in the future, but it's low priority on the to-do list and might require a significant amount of refactoring once I start, so I'm not entirely sure if or when.
+__Examples from [2.3. Scalars](https://yaml.org/spec/1.2.2/#23-scalars)__ | __Will using the YAML handler to process it produce the desired results?__
+2.13 In literals, newlines are preserved | It *would*. Except that, the YAML handler doesn't understand "`--- |`" properly. To produce the desired results, "`---: |` would need to be used instead.
+2.14 In the folded scalars, newlines become spaces | It *would*. Except that, the YAML handler doesn't understand "`--- >`" properly. To produce the desired results, "`---: >` would need to be used instead.
+2.15 Folded newlines are preserved for “more indented” and blank lines | Not yet. But, I aim to fix that in the near future.
+2.16 Indentation determines scope | Yes.
 
 ---
 

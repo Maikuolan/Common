@@ -311,7 +311,7 @@ class YAML
             /** Process here any data gathered to be processed recursively. */
             if ($SendTo) {
                 /** Guard. */
-                if (empty($Key)) {
+                if (!isset($Key) || ($Key !== 0 && $Key !== '' && empty($Key))) {
                     return false;
                 }
 
@@ -628,6 +628,11 @@ class YAML
                     $Arr[] = $Value;
                 }
             }
+            $Key = $this->arrayKeyLast($Arr);
+        } elseif (substr($ThisLine, $ThisTab) === '-') {
+            $Value = null;
+            $Arr[] = $Value;
+            $Key = $this->arrayKeyLast($Arr);
         } elseif (($DelPos = strpos($ThisLine, ': ')) !== false) {
             $Key = substr($ThisLine, $ThisTab, $DelPos - $ThisTab);
             $KeyLen = strlen($Key);
@@ -1264,9 +1269,27 @@ class YAML
     }
 
     /**
+     * Polyfill for array_key_last (we can ditch this at the next major
+     * version, when/if we increase the minimum required PHP version).
+     *
+     * @param array $Arr The array.
+     * @return mixed The last key of the array.
+     */
+    private function arrayKeyLast(array &$Arr)
+    {
+        if (function_exists('array_key_last')) {
+            return array_key_last($Arr);
+        }
+        end($Arr);
+        $Key = key($Arr);
+        reset($Arr);
+        return $Key;
+    }
+
+    /**
      * Flattens an array.
      *
-     * @param mixed $In The array
+     * @param mixed $In The array.
      * @return mixed The flatten array (if it's an array).
      */
     private function flattenTagNonScalar($In)

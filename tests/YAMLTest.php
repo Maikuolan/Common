@@ -236,6 +236,41 @@ $ExpectedForSyntax = [
             'Test Whirlpool' => 'b8b3eabbf098df12bd3430d4bd214d0cffafb2111e70da8e0315be9e81ecdfb2f64c61b5348ad46522a1094093982491e2f384a03fd4f9c18a055ddbe929f345'
         ]
     ],
+    'Specification examples' => [
+        '2.1. Collections' => [
+            '2.1 Sequence of Scalars' => ['Mark McGwire', 'Sammy Sosa', 'Ken Griffey'],
+            '2.2 Mapping Scalars to Scalars' => [
+                'hr' => 65,
+                'avg' => 0.278,
+                'rbi' => 147
+            ],
+            '2.3 Mapping Scalars to Sequences' => [
+                'american' => ['Boston Red Sox', 'Detroit Tigers', 'New York Yankees'],
+                'national' => ['New York Mets', 'Chicago Cubs', 'Atlanta Braves']
+            ],
+            '2.4 Sequence of Mappings' => [[
+                'name' => 'Mark McGwire',
+                'hr' => 65,
+                'avg' => 0.278
+            ], [
+                'name' => 'Sammy Sosa',
+                'hr' => 63,
+                'avg' => 0.288
+            ]],
+            '2.5 Sequence of Sequences' => [
+                ['name', 'hr', 'avg'],
+                ['Mark McGwire', 65, 0.278],
+                ['Sammy Sosa', 63, 0.288]
+            ]
+        ],
+        '2.3. Scalars' => [
+            '2.16 Indentation determines scope' => [
+                'name' => 'Mark McGwire',
+                'accomplishment' => 'Mark set a major league home run record in 1998.',
+                'stats' => "65 Home Runs\n0.278 Batting Average"
+            ]
+        ]
+    ],
     'End of file' => ':-)'
 ];
 

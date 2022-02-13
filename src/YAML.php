@@ -474,7 +474,7 @@ class YAML
     private function normaliseValue(string &$Value, bool $EnforceScalar = false): void
     {
         /** Resolve tags. */
-        if (preg_match('~^!([!\dA-Za-z_]+)(?: (.*))?$~', $Value, $Resolved)) {
+        if (preg_match('~^!([!\dA-Za-z_:,-]+)(?: (.*))?$~', $Value, $Resolved)) {
             $Tag = strtolower($Resolved[1]);
             if (!$EnforceScalar) {
                 $this->LastResolvedTag = $Tag;
@@ -1046,15 +1046,26 @@ class YAML
             return $this->{$Tag . 'Tag'}($Value);
         }
 
-        /** Permitted PHP string functions. */
-        if (is_string($Value) && preg_match($this->AllowedStringTagsPattern, $Tag) && function_exists($Tag)) {
-            /** Needed to ensure that older PHP versions are consistent with PHP 8.1's behaviour. */
-            if (preg_match('~^(?:html(?:_entity_decode|entities|specialchars(?:_decode)?))$~', $Tag)) {
-                return $Tag($Value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
+        /** Tags intended for working with strings only. */
+        if (is_string($Value)) {
+            /** Hash functions. */
+            if (substr($Tag, 0, 5) === 'hash:') {
+                $Algo = substr($Tag, 5);
+                if (in_array($Algo, hash_algos(), true)) {
+                    return hash($Algo, $Value);
+                }
             }
 
-            /** Default function invocation. */
-            return $Tag($Value);
+            /** Permitted PHP string functions. */
+            if (preg_match($this->AllowedStringTagsPattern, $Tag) && function_exists($Tag)) {
+                /** Needed to ensure that older PHP versions are consistent with PHP 8.1's behaviour. */
+                if (preg_match('~^(?:html(?:_entity_decode|entities|specialchars(?:_decode)?))$~', $Tag)) {
+                    return $Tag($Value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
+                }
+
+                /** Default function invocation. */
+                return $Tag($Value);
+            }
         }
 
         /** Permitted numeric PHP functions. */

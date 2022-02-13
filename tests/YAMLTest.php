@@ -233,7 +233,7 @@ $ExpectedForSyntax = [
             'Test SHA1' => 'e44f3364019d18a151cab7072b5a40bb5b3e274f',
             'Test SHA256' => 'aa3ec16e6acc809d8b2818662276256abfd2f1b441cb51574933f3d4bd115d11',
             'Test SHA512' => '70f460361a639767d665c14727b2f18bed18c8c6be6a6ad3950e976167ba57a8db214ac3ded3d7777e5eb20ea61a2f8a24d026d285cab4ba4d38dc1c410136f7',
-            'Test Whirlpool' => 'b8b3eabbf098df12bd3430d4bd214d0cffafb2111e70da8e0315be9e81ecdfb2f64c61b5348ad46522a1094093982491e2f384a03fd4f9c18a055ddbe929f345',
+            'Test Whirlpool' => 'b8b3eabbf098df12bd3430d4bd214d0cffafb2111e70da8e0315be9e81ecdfb2f64c61b5348ad46522a1094093982491e2f384a03fd4f9c18a055ddbe929f345'
         ]
     ],
     'End of file' => ':-)'

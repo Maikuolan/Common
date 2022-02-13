@@ -478,6 +478,9 @@ class YAML
      */
     private function normaliseValue(&$Value, $EnforceScalar = false)
     {
+        /** Avoid mistyping due to excess whitespace. */
+        $Value = trim($Value);
+
         /** Resolve tags. */
         if (preg_match('~^!([!\dA-Za-z_:,-]+)(?: (.*))?$~', $Value, $Resolved)) {
             $Tag = strtolower($Resolved[1]);
@@ -1150,7 +1153,6 @@ class YAML
             }
 
             foreach ($Arr as &$Working) {
-                $Working = trim($Working);
                 $this->normaliseValue($Working);
             }
             return true;
@@ -1215,7 +1217,6 @@ class YAML
             $NewArr = [];
             foreach ($Arr as $Key => $Value) {
                 $this->normaliseValue($Key, true);
-                $Value = trim($Value);
                 $this->normaliseValue($Value);
                 $NewArr[$Key] = $Value;
             }

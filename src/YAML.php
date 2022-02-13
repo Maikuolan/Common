@@ -70,17 +70,12 @@ class YAML
     /**
      * @var string Which PHP string functions tag coercion can leverage.
      */
-    public $AllowedStringTagsPattern =
-        '~^(?:addslashes|bin2hex|hex2bin|html(?:_entity_decode|entities|special' .
-        'chars(?:_decode)?)|lcfirst|nl2br|ord|quotemeta|str(?:_rot13|_shuffle|i' .
-        'p(?:_tags|c?slashes)|len|rev|tolower|toupper)|ucfirst|ucwords)$~';
+    public $AllowedStringTagsPattern = '~^(?:addslashes|bin2hex|hex2bin|html(?:_entity_decode|entities|specialchars(?:_decode)?)|lcfirst|nl2br|ord|quotemeta|str(?:_rot13|_shuffle|ip(?:_tags|c?slashes)|len|rev|tolower|toupper)|ucfirst|ucwords)$~';
 
     /**
      * @var string Which numeric PHP functions tag coercion can leverage.
      */
-    public $AllowedNumericTagsPattern =
-        '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cosh?|dec(?:bin|hex|oct)|deg2r' .
-        'ad|exp(?:m1)?|floor|log1[0p]|rad2deg|round|sinh?|tanh?|sqrt)$~';
+    public $AllowedNumericTagsPattern = '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cosh?|dec(?:bin|hex|oct)|deg2rad|exp(?:m1)?|floor|log1[0p]|rad2deg|round|sinh?|tanh?|sqrt)$~';
 
     /**
      * @var bool Whether to render multi-line values.

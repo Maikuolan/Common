@@ -425,18 +425,13 @@ public $Quotes = '"';
 The preferred style of quotes to use for strings (double `"`, or single `'`) for when reconstructing YAML data.
 
 ```PHP
-public $AllowedStringTagsPattern =
-    '~^(?:addslashes|bin2hex|hex2bin|html(?:_entity_decode|entities|special' .
-    'chars(?:_decode)?)|lcfirst|nl2br|ord|quotemeta|str(?:_rot13|_shuffle|i' .
-    'p(?:_tags|c?slashes)|len|rev|tolower|toupper)|ucfirst|ucwords)$~';
+public $AllowedStringTagsPattern = '~^(?:addslashes|bin2hex|hex2bin|html(?:_entity_decode|entities|specialchars(?:_decode)?)|lcfirst|nl2br|ord|quotemeta|str(?:_rot13|_shuffle|ip(?:_tags|c?slashes)|len|rev|tolower|toupper)|ucfirst|ucwords)$~';
 ```
 
 The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a string function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is a string. The member is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so (e.g., allowing functions such as `eval` would likely introduce serious vulnerabilities to the implementation, so should never be allowed unless absolutely necessary).
 
 ```PHP
-public $AllowedNumericTagsPattern =
-    '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cosh?|dec(?:bin|hex|oct)|deg2r' .
-    'ad|exp(?:m1)?|floor|log1[0p]|rad2deg|round|sinh?|tanh?|sqrt)$~';
+public $AllowedNumericTagsPattern = '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cosh?|dec(?:bin|hex|oct)|deg2rad|exp(?:m1)?|floor|log1[0p]|rad2deg|round|sinh?|tanh?|sqrt)$~';
 ```
 
 The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a numeric function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is numeric (e.g., an integer, float, or number-like string). The member is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so.

@@ -559,7 +559,7 @@ __Examples from [2.4. Tags](https://yaml.org/spec/1.2.2/#24-tags)__ | __Will usi
 Example 2.19 Integers | Yes.
 Example 2.20 Floating Point | Still working on the exponentials, but yes for the others.
 Example 2.21 Miscellaneous | It isn't possible to have `null` keys in PHP arrays (or collections, to use YAML terminology). When assigning `null` to a key, PHP silently casts it to an empty string. Aside from that though, yes; supported.
-Example 2.22 Timestamps | *Kind of*. The data will there as expected, but there's no native "timestamp" data type available to PHP, and the YAML handler treats timestamps as normal strings, so you'll get strings.
+Example 2.22 Timestamps | *Kind of*. The data will be there as expected, but there's no native "timestamp" data type available to PHP, and the YAML handler treats timestamps as normal strings, so you'll get strings.
 Example 2.23 Various Explicit Tags | Obviously, the YAML handler doesn't support any kind of `!something` tag. Aside from that though, yes; supported.
 Example 2.24 Global Tags | The YAML handler doesn't support, and ignores global tags, so no; not supported.
 Example 2.25 Unordered Sets | Yes.

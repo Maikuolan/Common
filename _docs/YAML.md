@@ -551,10 +551,18 @@ __Examples from [2.2. Structures](https://yaml.org/spec/1.2.2/#22-structures)__ 
 __Examples from [2.3. Scalars](https://yaml.org/spec/1.2.2/#23-scalars)__ | __Will using the YAML handler to process it produce the desired results?__
 2.13 In literals, newlines are preserved | It *would*. Except that, the YAML handler doesn't understand "`--- \|`" properly.<br />To produce the desired results, "`---: \|` would need to be used instead.
 2.14 In the folded scalars, newlines become spaces | It *would*. Except that, the YAML handler doesn't understand "`--- >`" properly.<br />To produce the desired results, "`---: >` would need to be used instead.
-2.15 Folded newlines are preserved for “more indented” and blank lines | Not yet. But, I aim to fix that in the near future.
+2.15 Folded newlines are preserved for “more indented” and blank lines | Same as above.
 2.16 Indentation determines scope | Yes.
 2.17 Quoted Scalars | For everything other than the "not a comment" line. The YAML handler requires that all hashes be escaped in order to not be recognised as comments, and the hash in the example isn't escaped.
 2.18 Multi-line Flow Scalars | Nope. Please use "`\|`" to do that with the YAML handler.
+__Examples from [2.4. Tags](https://yaml.org/spec/1.2.2/#24-tags)__ | __Will using the YAML handler to process it produce the desired results?__
+Example 2.19 Integers | Yes.
+Example 2.20 Floating Point | Still working on the exponentials, but yes for the others.
+Example 2.21 Miscellaneous | It isn't possible to have `null` keys in PHP arrays (or collections, to use YAML terminology). When assigning `null` to a key, PHP silently casts it to an empty string. Aside from that though, yes; supported.
+Example 2.22 Timestamps | *Kind of*. The data will there as expected, but there's no native "timestamp" data type available to PHP, and the YAML handler treats timestamps as normal strings, so you'll get strings.
+Example 2.23 Various Explicit Tags | Obviously, the YAML handler doesn't support any kind of `!something` tag. Aside from that though, yes; supported.
+Example 2.24 Global Tags | The YAML handler doesn't support, and ignores global tags, so no; not supported.
+Example 2.25 Unordered Sets | Yes.
 __[Character encodings](https://yaml.org/spec/1.2.2/#52-character-encodings)__ | __Supported__
 UTF-32BE (Explicit BOM) | Yes.
 UTF-32BE (ASCII first character) | Yes.
@@ -630,8 +638,7 @@ __Tags (directly invokes PHP functions at `coerce`)__ | __Description__
 `!ucfirst` | Uses PHP's `ucfirst()` function to process the entry.
 `!ucwords` | Uses PHP's `ucwords()` function to process the entry.
 
-
 ---
 
 
-Last Updated: 13 February 2022 (2022.02.13).
+Last Updated: 14 February 2022 (2022.02.14).

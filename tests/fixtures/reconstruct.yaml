@@ -44,6 +44,10 @@ Testing anchors:
  Anchored text push: &TestAnchor "Some placeholder text."
  Anchored text pull: *TestAnchor
 Escaping test: "Our number is \#123-456-789."
+Other kinds of floats:
+ Infinity: .inf
+ Negative infinity: -.inf
+ Not a number: .nan
 Folded chomping keep test: |+
  This is a test.
 

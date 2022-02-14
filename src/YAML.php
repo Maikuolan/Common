@@ -585,6 +585,12 @@ class YAML
             $Value = false;
         } elseif ($ValueLow === 'null' || $Value === '~') {
             $Value = null;
+        } elseif ($ValueLow === '.inf') {
+            $Value = INF;
+        } elseif ($ValueLow === '-.inf') {
+            $Value = -INF;
+        } elseif ($ValueLow === '.nan') {
+            $Value = NAN;
         } elseif (preg_match('~^0x[\dA-Fa-f]+$~', $Value)) {
             $Value = hexdec(str_replace('_', '', substr($Value, 2)));
         } elseif (preg_match('~^0o[0-8]+$~', $Value)) {
@@ -742,6 +748,12 @@ class YAML
                 $ToAdd = 'false';
             } elseif ($Value === null) {
                 $ToAdd = 'null';
+            } elseif ($Value === INF) {
+                $ToAdd = '.inf';
+            } elseif ($Value === -INF) {
+                $ToAdd = '-.inf';
+            } elseif (is_float($Value) && is_nan($Value)) {
+                $ToAdd = '.nan';
             } elseif (is_string($Value)) {
                 if (strpos($Value, "\n") !== false) {
                     if (preg_match('~\n{2,}$~m', $Value)) {
@@ -1018,9 +1030,6 @@ class YAML
             }
             if (!is_scalar($Value)) {
                 return $ValueLen > 0;
-            }
-            if ($ValueLow === 'true' || $ValueLow === 'on' || $ValueLow === 'y' || $ValueLow === 'yes' || $Value === '+') {
-                return true;
             }
             if ($ValueLow === 'false' || $ValueLow === 'n' || $ValueLow === 'no' || $ValueLow === 'off' || $Value === '-' || $ValueLen === 0 || $ValueLow === 'null' || $Value === '~') {
                 return false;

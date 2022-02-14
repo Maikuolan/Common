@@ -316,6 +316,8 @@ $ExpectedForReconstruction = [
         'Anchored text pull' => 'Some placeholder text.'
     ],
     'Escaping test' => 'Our number is #123-456-789.',
+    'Folded chomping keep test' => "This is a test.\n\nHello world.\n\n\n",
+    'Folded chomping clip test' => "This is a test.\n\nHello world.",
     'End of file' => ':-)'
 ];
 
@@ -369,9 +371,9 @@ $Reconstructed = $Object->reconstruct($Object->Data, true, true);
 $ExitCode++;
 if ($RawYAML !== $Reconstructed) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
-    var_dump($Reconstructed);
-    echo PHP_EOL . 'Actual: ';
     var_dump($RawYAML);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Reconstructed);
     echo PHP_EOL;
     exit($ExitCode);
 }

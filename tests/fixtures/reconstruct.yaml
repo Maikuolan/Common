@@ -44,4 +44,15 @@ Testing anchors:
  Anchored text push: &TestAnchor "Some placeholder text."
  Anchored text pull: *TestAnchor
 Escaping test: "Our number is \#123-456-789."
+Folded chomping keep test: |+
+ This is a test.
+
+ Hello world.
+
+
+
+Folded chomping clip test: |
+ This is a test.
+
+ Hello world.
 End of file: ":-)"

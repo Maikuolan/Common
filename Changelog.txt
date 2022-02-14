@@ -56,6 +56,7 @@ found at:
   automatically to the L10N handler.
 
 - [2022.02.14; Maikuolan]: Added support for chomping to the YAML handler.
+  Added support for infinity, negative infinity, and NAN to the YAML handler.
 
 === Version/Release 1.7.0 ===
 MINOR RELEASE.

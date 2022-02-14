@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.02.13).
+ * YAML handler (last modified: 2022.02.14).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -86,6 +86,11 @@ class YAML
      * @var bool Whether to render folded multi-line values.
      */
     private $MultiLineFolded = false;
+
+    /**
+     * @var string Whether to use chomping for the current multiline block.
+     */
+    private $Chomp = '';
 
     /**
      * @var array Used to determine which anchors have been reconstructed.
@@ -259,8 +264,14 @@ class YAML
             /** @var int|false Start position of the next line. */
             $SoL = ($EoL === false) ? false : $EoL + 1;
 
-            /** Strip comments, strip whitespace, skip ahead if line is empty. */
+            /** Strip comments and whitespace. */
             if (!($ThisLine = preg_replace(['/(?<!\\\)#.*$/', '/\s+$/'], '', $ThisLine))) {
+                /** Line preservation for multiline and folded blocks. .*/
+                if (($this->MultiLine || $this->MultiLineFolded) && strlen($SendTo)) {
+                    $SendTo .= "\n";
+                }
+
+                /** Skip ahead if line is empty. */
                 continue;
             }
 
@@ -320,9 +331,14 @@ class YAML
                     if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
                         $Arr[$Key] = [];
                     }
-                    $Success = $this->process($SendTo, $Arr[$Key], $TabLen);
+                    $Success = $this->process(preg_replace('~\n$~m', '', $SendTo), $Arr[$Key], $TabLen);
                 } else {
                     $this->tryStringDataTraverseByRef($SendTo);
+                    if ($this->Chomp === '-') {
+                        $SendTo = preg_replace('~[\r\n]+$~m', '', $SendTo);
+                    } elseif ($this->Chomp === '') {
+                        $SendTo = preg_replace('~([\r\n])[\r\n]+$~m', '\1', $SendTo);
+                    }
                     $Arr[$Key] = $SendTo;
                 }
                 $HasMerged = false;
@@ -364,9 +380,14 @@ class YAML
                 if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
                     $Arr[$Key] = [];
                 }
-                $Success = $this->process($SendTo, $Arr[$Key], $TabLen);
+                $Success = $this->process(preg_replace('~\n$~m', '', $SendTo), $Arr[$Key], $TabLen);
             } else {
                 $this->tryStringDataTraverseByRef($SendTo);
+                if ($this->Chomp === '-') {
+                    $SendTo = preg_replace('~[\r\n]+$~m', '', $SendTo);
+                } elseif ($this->Chomp === '') {
+                    $SendTo = preg_replace('~([\r\n])[\r\n]+$~m', '\1', $SendTo);
+                }
                 $Arr[$Key] = $SendTo;
             }
             $HasMerged = false;
@@ -661,6 +682,26 @@ class YAML
             }
             $Value = null;
         }
+
+        /**
+         * Chomping.
+         * @link https://yaml.org/spec/1.2.2/#8112-block-chomping-indicator
+         */
+        if (is_string($Value) && strlen($Value) === 2) {
+            $Chomp = substr($Value, -1);
+            if ($Chomp === '-') {
+                $this->Chomp = '-';
+                $Value = substr($Value, 0, 1);
+            } elseif ($Chomp === '+') {
+                $this->Chomp = '+';
+                $Value = substr($Value, 0, 1);
+            } else {
+                $this->Chomp = '';
+            }
+        } else {
+            $this->Chomp = '';
+        }
+
         $this->MultiLine = ($Value === '|');
         $this->MultiLineFolded = ($Value === '>');
         return true;
@@ -706,11 +747,15 @@ class YAML
                 $ToAdd = 'false';
             } elseif ($Value === null) {
                 $ToAdd = 'null';
-            } elseif (strpos($Value, "\n") !== false) {
-                $ToAdd = "|\n" . $ThisDepth . $this->Indent;
-                $ToAdd .= str_replace("\n", "\n" . $ThisDepth . $this->Indent, $Value);
             } elseif (is_string($Value)) {
-                if ($this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
+                if (strpos($Value, "\n") !== false) {
+                    if (preg_match('~\n{2,}$~m', $Value)) {
+                        $ToAdd = "|+\n" . $ThisDepth . $this->Indent;
+                    } else {
+                        $ToAdd = "|\n" . $ThisDepth . $this->Indent;
+                    }
+                    $ToAdd .= preg_replace('~\n(?=[^\n])~m', "\n" . $ThisDepth . $this->Indent, $Value);
+                } elseif ($this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
                     $ToAdd = ">\n" . $ThisDepth . $this->Indent . wordwrap(
                         $Value,
                         $this->FoldedAt,

@@ -55,6 +55,8 @@ found at:
 - [2022.02.13; Maikuolan]: Added the ability to assign language rules
   automatically to the L10N handler.
 
+- [2022.02.14; Maikuolan]: Added support for chomping to the YAML handler.
+
 === Version/Release 1.7.0 ===
 MINOR RELEASE.
 

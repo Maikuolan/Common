@@ -16,6 +16,7 @@
 - [Anchors, aliases, and inline variables.](#anchors-aliases-and-inline-variables)
 - [Supported from the specification.](#supported-from-the-specification)
 - [Additionally supported.](#additionally-supported)
+- [Extending the YAML handler.](#extending-the-yaml-handler)
 
 ---
 
@@ -462,7 +463,7 @@ When implicit typing is insufficient for obtaining the appropriate data type, YA
 - As long as it doesn't cause ambiguity within implicit typing, quotes for strings remains optional, and won't generally matter too much (i.e., quotes for strings aren't strictly enforced). However, whenever there's risk of ambiguity, strings should always be quoted. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all resolve to strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would resolve to a boolean (`false`), an integer, and a float respectively.
 - Quoting for keys is treated in the same manner as quoting for values.
 
-When reconstructing YAML data, the preferred quotes to use for string values (and for that matter, whether to use quotes at all) can be controlled via the `Quotes` public member. However, the YAML handler will never apply quotes to keys. Therefore, if you ever need to reverse some YAML data for any reason (i.e., process some YAML data, maybe make some modifications, and then reconstruct it back into YAML data again), you should always approach quoting strictly, should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstruted YAML data). Worth noting too, that PHP resolves both `null` and `false` to empty strings when used as array keys.
+When reconstructing YAML data, the preferred quotes to use for string values (and for that matter, whether to use quotes at all) can be controlled via the `Quotes` public member. However, the YAML handler will never apply quotes to keys. Therefore, if you ever need to reverse some YAML data for any reason (i.e., process some YAML data, maybe make some modifications, and then reconstruct it back into YAML data again), you should always approach quoting strictly, should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstructed YAML data). Worth noting too, that PHP resolves both `null` and `false` to empty strings when used as array keys.
 
 ---
 
@@ -641,4 +642,75 @@ __Tags (directly invokes PHP functions at `coerce`)__ | __Description__
 ---
 
 
-Last Updated: 14 February 2022 (2022.02.14).
+### Extending the YAML handler.
+
+If you'd like, you can extend the YAML handler to support additional tags of your own.
+
+Let's say, for example, your particular use-case for the YAML handler requires that it support the tag, "`!mycooltag`". In your use-case, you want any string where the tag is attached to have some random kaomoji attached to both ends of the string. However, the YAML handler doesn't provide any support for a `!mycooltag` tag, so you need to extend the YAML handler to add support for it yourself. You could do so like this:
+
+```PHP
+<?php
+class MyCoolYaml extends \Maikuolan\Common\YAML
+{
+    /**
+     * @var array Some random kaomoji for !mycooltag to use.
+     */
+    public const KAOMOJI = ['(￣ω￣●)', '(´-ω-)', '(^_^)', '(－ω－)', '૮₍ ˃ ⤙ ˂ ₎ა', '૮ ˶ᵔ ᵕ ᵔ˶ ა', '૮ • ﻌ - ა', '(╥﹏╥)', '(„ᵕᴗᵕ„)'];
+
+    /**
+     * Method for the !mycooltag tag.
+     */
+    public function mycooltagTag($In)
+    {
+        /** Return the input verbatim if it isn't a string. */
+        if (!is_string($In)) {
+            return $In;
+        }
+
+        $Max = count(self::KAOMOJI) - 1;
+        return self::KAOMOJI[rand(0, $Max)] . ' ' . $In . ' ' . self::KAOMOJI[rand(0, $Max)];
+    }
+}
+```
+
+Then, when we attempt to process some YAML data using the new class:
+
+```PHP
+<?php
+$YamlData = 'Test YAML:
+ Kao 1: !mycooltag Hello
+ Kao 2: !mycooltag World
+ Kao 3: !mycooltag Lorem
+ Kao 4: !mycooltag Ipsum
+';
+
+$Obj = new MyCoolYaml($YamlData);
+var_dump($Obj->Data);
+```
+
+The results:
+
+```
+array(1) {
+  ["Test YAML"]=>
+  array(4) {
+    ["Kao 1"]=>
+    string(32) "૮ • ﻌ - ა Hello (´-ω-)"
+    ["Kao 2"]=>
+    string(30) "(－ω－) World (￣ω￣●)"
+    ["Kao 3"]=>
+    string(35) "(„ᵕᴗᵕ„) Lorem (╥﹏╥)"
+    ["Kao 4"]=>
+    string(47) "૮ ˶ᵔ ᵕ ᵔ˶ ა Ipsum („ᵕᴗᵕ„)"
+  }
+}
+```
+
+In short, you'll want to create a public method in your new class, named like your tag, in all lowercase, and "Tag". The method will take the value that the tag is to be attached to as its parameter and return the updated value.
+
+If you want, you can also restrict tags to values only, to prevent those tags from being used with keys. This can be useful if your new tag is intended to work with arrays or other non-scalar values, which aren't allowed to be used as keys. To restrict a tag to values only, when you name the method associated with that tag, instead of appending "Tag" to the method name, append "TagNonScalar" instead. The YAML handler's `!flatten` tag does this (you can check the YAML handler's source code for the `flattenTagNonScalar` method to see how it works if you'd like).
+
+---
+
+
+Last Updated: 15 February 2022 (2022.02.15).

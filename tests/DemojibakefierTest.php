@@ -7,6 +7,16 @@
  * @link https://github.com/Maikuolan/Common
  */
 
+/**
+ * If this file remains intact after deploying the package to production,
+ * preventing it from running outside of Composer may be useful as a means of
+ * prevent potential attackers from hammering the file and needlessly wasting
+ * cycles at the server.
+ */
+if (!isset($_SERVER['COMPOSER_BINARY'])) {
+    die;
+}
+
 require $ClassesDir . $Case . '.php';
 
 /**

@@ -18,7 +18,7 @@ if (!isset($_SERVER['COMPOSER_BINARY'])) {
 }
 
 // Tests directory.
-$TestsDir = __DIR__ . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR;
+$TestsDir = __DIR__ . DIRECTORY_SEPARATOR . '.tests' . DIRECTORY_SEPARATOR;
 
 // Classes directory.
 $ClassesDir = __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;

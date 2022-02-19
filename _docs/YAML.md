@@ -437,6 +437,12 @@ public $AllowedNumericTagsPattern = '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cos
 
 The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a numeric function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is numeric (e.g., an integer, float, or number-like string). The member is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so.
 
+```PHP
+public $FlowRebuildDepth = 32;
+```
+
+The depth at which flows will be rebuilt. Set it to an appropriate desired level. You can have the YAML handler reconstruct JSON-like data by setting it to `0`.
+
 ---
 
 
@@ -713,4 +719,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 15 February 2022 (2022.02.15).
+Last Updated: 19 February 2022 (2022.02.19).

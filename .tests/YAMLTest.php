@@ -393,6 +393,66 @@ if ($RawYAML !== $Reconstructed) {
     exit($ExitCode);
 }
 
+$RawYAML = 'Depth 1:
+ Depth 2:
+  Depth 3:
+   Depth 4:
+    Depth 5:
+     Hello: "World"
+     Lorem: "Ipsum"
+     Depth 6:
+      Test for depth-based flow controls: "Does it work?"
+';
+
+$FlowedYAML = 'Depth 1:
+ Depth 2:
+  Depth 3:{Depth 4:{Depth 5:{Hello:"World",Lorem:"Ipsum",Depth 6:{Test for depth-based flow controls:"Does it work?"}}}}
+';
+
+$ExpectedForDepth = ['Depth 1' => ['Depth 2' => ['Depth 3' => ['Depth 4' => ['Depth 5' => [
+    'Hello' => 'World',
+    'Lorem' => 'Ipsum',
+    'Depth 6' => [
+        'Test for depth-based flow controls' => 'Does it work?'
+    ]
+]]]]]];
+
+$ExpectedForDepthSerialised = serialize($ExpectedForDepth);
+
+$Object = new \Maikuolan\Common\YAML($RawYAML);
+$ExitCode++;
+if ($ExpectedForDepthSerialised !== serialize($Object->Data)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($ExpectedForDepth);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Object->Data);
+    echo PHP_EOL;
+    exit($ExitCode);
+}
+
+$Reconstructed = $Object->reconstruct($Object->Data, true, true);
+$ExitCode++;
+if ($RawYAML !== $Reconstructed) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($RawYAML);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Reconstructed);
+    echo PHP_EOL;
+    exit($ExitCode);
+}
+
+$Object->FlowRebuildDepth = 3;
+$Reconstructed = $Object->reconstruct($Object->Data, true, true);
+$ExitCode++;
+if ($FlowedYAML !== $Reconstructed) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($FlowedYAML);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Reconstructed);
+    echo PHP_EOL;
+    exit($ExitCode);
+}
+
 $ExpectedForUTF16 = [
     'String foo' => 'Bar',
     'Integer foo' => 1234,
@@ -451,6 +511,30 @@ if ($PHPDecodedSerialised !== serialize($Object->Data)) {
     var_dump($PHPDecoded);
     echo PHP_EOL . 'Actual: ';
     var_dump($Object->Data);
+    echo PHP_EOL;
+    exit($ExitCode);
+}
+
+$Object->FlowRebuildDepth = 0;
+$Reconstructed = $Object->reconstruct($Object->Data);
+$Object = new \Maikuolan\Common\YAML($Reconstructed);
+$ExitCode++;
+if ($PHPDecodedSerialised !== serialize($Object->Data)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($PHPDecoded);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Object->Data);
+    echo PHP_EOL;
+    exit($ExitCode);
+}
+
+$JSONEncoded = json_encode($PHPDecoded);
+$ExitCode++;
+if ($JSONEncoded !== $Reconstructed) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($JSONEncoded);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Reconstructed);
     echo PHP_EOL;
     exit($ExitCode);
 }

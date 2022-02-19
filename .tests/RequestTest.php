@@ -21,7 +21,7 @@ require $ClassesDir . $Case . '.php';
 
 $Object = new \Maikuolan\Common\Request();
 
-$HelloWorld = $Object->request('https://raw.githubusercontent.com/Maikuolan/Common/v2/tests/fixtures/iotest.txt');
+$HelloWorld = $Object->request('https://raw.githubusercontent.com/Maikuolan/Common/v2/.tests/fixtures/iotest.txt');
 
 if ($HelloWorld !== "Hello World.\n") {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
@@ -34,7 +34,7 @@ if ($Object->MostRecentStatusCode !== 200) {
     exit($ExitCode);
 }
 
-$HelloWorld = $Object->request('https://raw.githubusercontent.com/Maikuolan/Common/v2/tests/fixtures/404test.txt');
+$HelloWorld = $Object->request('https://raw.githubusercontent.com/Maikuolan/Common/v2/.tests/fixtures/404test.txt');
 
 $ExitCode++;
 if ($Object->MostRecentStatusCode !== 404) {

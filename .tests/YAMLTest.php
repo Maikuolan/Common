@@ -516,7 +516,9 @@ if ($PHPDecodedSerialised !== serialize($Object->Data)) {
 }
 
 $Object->FlowRebuildDepth = 0;
-$Reconstructed = $Object->reconstruct($Object->Data);
+$Object->QuoteKeys = true;
+$Object->EscapeBySpec = true;
+$Reconstructed = trim($Object->reconstruct($Object->Data));
 $Object = new \Maikuolan\Common\YAML($Reconstructed);
 $ExitCode++;
 if ($PHPDecodedSerialised !== serialize($Object->Data)) {

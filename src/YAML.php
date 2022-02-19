@@ -83,6 +83,11 @@ class YAML
     public $FlowRebuildDepth = 32;
 
     /**
+     * @var bool Whether to quote keys.
+     */
+    public $QuoteKeys = false;
+
+    /**
      * @var bool Whether to render multi-line values.
      */
     private $MultiLine = false;
@@ -740,7 +745,7 @@ class YAML
                     $Out .= ',';
                 }
                 if (!$Sequential) {
-                    $Out .= $Key . ':';
+                    $Out .= ($this->QuoteKeys ? $this->scalarToString($Key) : $Key) . ':';
                 }
                 if (is_array($Value)) {
                     $this->processInner($Value, $Out, $Depth + 1);
@@ -781,7 +786,7 @@ class YAML
                     $Out .= $ThisDepth . '?';
                     $Value = $Key;
                 } else {
-                    $Out .= $ThisDepth . ($Sequential ? '-' : $Key . ':');
+                    $Out .= $ThisDepth . ($Sequential ? '-' : ($this->QuoteKeys ? $this->scalarToString($Key) : $Key) . ':');
                 }
                 if (is_array($Value)) {
                     if ($Depth < $this->FlowRebuildDepth - 1) {

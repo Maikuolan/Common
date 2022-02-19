@@ -13,7 +13,8 @@ found at:
 
 - [2022.02.19; Maikuolan]: Added the ability to the YAML handler to reconstruct
   flows at specified depths and to switch between JSON-style YAML-style
-  mappings/sequences based on depth.
+  mappings/sequences based on depth. Added the ability to apply quotes to keys
+  for the YAML handler.
 
 === Version/Release 1.8.0 ===
 MINOR RELEASE.

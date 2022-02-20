@@ -16,6 +16,8 @@ found at:
   mappings/sequences based on depth. Added the ability to apply quotes to keys
   for the YAML handler.
 
+- [2022.02.20; Maikuolan]: Added a new class to the repository, "IPHeader".
+
 === Version/Release 1.8.0 ===
 MINOR RELEASE.
 

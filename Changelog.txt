@@ -18,6 +18,9 @@ found at:
 
 - [2022.02.20; Maikuolan]: Added a new class to the repository, "IPHeader".
 
+- [2022.02.21; Maikuolan]: Added tests and documentation for the IP header
+  class.
+
 === Version/Release 1.8.0 ===
 MINOR RELEASE.
 

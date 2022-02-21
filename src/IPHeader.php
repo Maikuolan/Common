@@ -128,6 +128,7 @@ class IPHeader
         }
 
         $Try = $_SERVER[$Source];
+        $Matches = [];
 
         /** Ensure that we're working with a string. */
         if (is_array($Try)) {
@@ -135,32 +136,37 @@ class IPHeader
         }
 
         /**
-         * Check for "Forwarded"-like syntax (but we're only interested in the first origin).
+         * Check for "Forwarded"-like syntax.
          * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
          */
-        if (preg_match('~(?:;|^)for="?\[?([\da-f.:]+)(?:[\]";,]|$)~i', $Try, $Matches)) {
-            if ($this->isValidIpv4($Matches[1])) {
-                $this->Type = 4;
-                return $Matches[1];
-            }
-            if ($this->isValidIpv6($Matches[1])) {
-                $this->Type = 6;
-                return $Matches[1];
+        if (preg_match_all('~for="?\[?([\da-f.:]+)(?:[\]";,]|$)~i', $Try, $Matches) && isset($Matches[1])) {
+            foreach ($Matches[1] as $Match) {
+                if ($this->isValidIpv4($Match)) {
+                    $this->Type = 4;
+                    return $Match;
+                }
+                if ($this->isValidIpv6($Match)) {
+                    $this->Type = 6;
+                    return $Match;
+                }
             }
         }
+        $Matches = [];
 
         /**
-         * Check for "X-Forwarded-For"-like syntax (but we're only interested in the first origin).
+         * Check for "X-Forwarded-For"-like syntax.
          * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
          */
-        if (preg_match('~^([\da-f.:]+)(?:, *|$)~i', $Try, $Matches)) {
-            if ($this->isValidIpv4($Matches[1])) {
-                $this->Type = 4;
-                return $Matches[1];
-            }
-            if ($this->isValidIpv6($Matches[1])) {
-                $this->Type = 6;
-                return $Matches[1];
+        if (preg_match_all('~([\da-f.:]+)(?:,|$)~i', $Try, $Matches) && isset($Matches[1])) {
+            foreach ($Matches[1] as $Match) {
+                if ($this->isValidIpv4($Match)) {
+                    $this->Type = 4;
+                    return $Match;
+                }
+                if ($this->isValidIpv6($Match)) {
+                    $this->Type = 6;
+                    return $Match;
+                }
             }
         }
 

@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.9.0 ===
+MINOR RELEASE.
+
 - [2022.02.19; Maikuolan]: Added the ability to the YAML handler to reconstruct
   flows at specified depths and to switch between JSON-style YAML-style
   mappings/sequences based on depth. Added the ability to apply quotes to keys
@@ -20,6 +25,9 @@ found at:
 
 - [2022.02.21; Maikuolan]: Added tests and documentation for the IP header
   class.
+
+Caleb M (Maikuolan),
+February 21, 2022.
 
 === Version/Release 2.8.0 ===
 MINOR RELEASE.

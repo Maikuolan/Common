@@ -1,6 +1,6 @@
 <?php
 /**
- * IP header class (last modified: 2022.02.20).
+ * IP header class (last modified: 2022.02.21).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.

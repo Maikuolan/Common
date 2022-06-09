@@ -119,6 +119,9 @@ All public methods provided by Cache, along with relevant instructions, are list
 - [getEntry method.](#getentry-method)
 - [setEntry method.](#setentry-method)
 - [deleteEntry method.](#deleteentry-method)
+- [deleteAllEntriesWhere method.](#deleteallentrieswhere-method)
+- [incEntry method.](#incentry-method)
+- [decEntry method.](#decentry-method)
 - [clearCache method.](#clearcache-method)
 - [getAllEntries method.](#getallentries-method)
 - [clearExpired method.](#clearexpired-method)
@@ -172,7 +175,7 @@ public function getEntry(string $Entry);
 
 #### setEntry method.
 
-Writes an entry to the cache, returning true on success, or false on failure. `$Key` is the name to assign to the cache entry. `$Value` is the value of the cache entry. `$TTL` ("time to live") is the number of seconds that the cache entry should persist (after which, the cache entry should be deleted).
+Writes an entry to the cache, returning true on success, or false on failure. `$Key` is the name to assign to the cache entry. `$Value` is the value of the cache entry. `$TTL` ("time to live") is the number of seconds that the cache entry should persist (after which, the cache entry should be deleted). Specify `0` to have the entry continue to live indefinitely.
 
 ```PHP
 public function setEntry(string $Key, $Value, int $TTL = 3600): bool;
@@ -184,6 +187,30 @@ Deletes an entry from the cache, returning true on success, or false on failure 
 
 ```PHP
 public function deleteEntry(string $Entry): bool;
+```
+
+#### deleteAllEntriesWhere method.
+
+Deletes a limited subset of entries from the cache, based on regular expression pattern matching, returning true on success, or false on failure. `$Pattern` is the regular expression to match against the names of cache entries in order to delete the matching entries.
+
+```PHP
+public function deleteAllEntriesWhere(string $Pattern): bool;
+```
+
+#### incEntry method.
+
+Increments the numeric value of an existing cache entry, or creates it with the specified numeric value if the entry doesn't already exist, returning true on success, or false on failure. `$Key` is the name of the cache entry to increment. `$Value` is the amount by which the value of the cache entry should be incremented. `$TTL` ("time to live") is the number of seconds that the cache entry should persist (after which, the cache entry should be deleted). Specify `0` to have the entry continue to live indefinitely.
+
+```PHP
+public function incEntry(string $Key, int $Value = 1, int $TTL = 0): bool;
+```
+
+#### decEntry method.
+
+Decrements the numeric value of an existing cache entry, or creates it with the specified numeric value if the entry doesn't already exist, returning true on success, or false on failure. `$Key` is the name of the cache entry to decrement. `$Value` is the amount by which the value of the cache entry should be decremented. `$TTL` ("time to live") is the number of seconds that the cache entry should persist (after which, the cache entry should be deleted). Specify `0` to have the entry continue to live indefinitely.
+
+```PHP
+public function decEntry(string $Key, int $Value = 1, int $TTL = 0): bool;
 ```
 
 #### clearCache method.
@@ -264,4 +291,4 @@ public function exposeWorkingDataArray();
 ---
 
 
-Last Updated: 31 October 2021 (2021.10.31).
+Last Updated: 9 June 2022 (2022.06.09).

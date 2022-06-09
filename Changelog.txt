@@ -11,13 +11,15 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2022.06.09; Maikuolan]: Added three new methods to the cache handler:
+  "deleteAllEntriesWhere", "incEntry", and "decEntry" (see the documentation
+  for more details).
 
 === Version/Release 2.9.0 ===
 MINOR RELEASE.
 
 - [2022.02.19; Maikuolan]: Added the ability to the YAML handler to reconstruct
-  flows at specified depths and to switch between JSON-style YAML-style
+  flows at specified depths and to switch between JSON-style and YAML-style
   mappings/sequences based on depth. Added the ability to apply quotes to keys
   for the YAML handler.
 

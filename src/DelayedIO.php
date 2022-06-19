@@ -1,6 +1,6 @@
 <?php
 /**
- * Delayed file IO class (last modified: 2022.02.21).
+ * Delayed file IO class (last modified: 2022.06.19).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -98,15 +98,24 @@ class DelayedIO
         if (isset($this->NewData[$File])) {
             return $this->NewData[$File];
         }
-        if (!is_file($File) || !is_readable($File) || !filesize($File)) {
+        if (!is_file($File) || !is_readable($File)) {
             return '';
+        }
+        if (filesize($File) === 0) {
+            $this->Locked[$File] = 0;
+            return $this->NewData[$File] = $this->OldData[$File] = '';
+        }
+        if ($Lock === 0) {
+            $Data = file_get_contents($File);
+            $this->Locked[$File] = 0;
+            return $this->NewData[$File] = $this->OldData[$File] = is_string($Data) ? $Data : '';
         }
         $Handle = fopen($File, 'rb');
         if (!is_resource($Handle)) {
             return '';
         }
         $Locked = false;
-        if ($Lock) {
+        if ($Lock !== 0) {
             $Time = time();
             while (!$Locked) {
                 $Locked = flock($Handle, $Lock);

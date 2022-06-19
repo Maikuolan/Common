@@ -19,8 +19,9 @@ found at:
   iterateCallbackGeneratorInner method of the Matrix handler should not be
   optional; Fixed.
 
-- [2022.06.19; Maikuolan]: Have the delayed file IO class use a faster strategy
-  for reading files when not locking those files.
+- [2022.06.19; Maikuolan]: Updated the delayed file IO class to use a faster
+  strategy for reading files when not locking those files. Added to the L10N
+  handler's supported languages.
 
 === Version/Release 2.9.0 ===
 MINOR RELEASE.

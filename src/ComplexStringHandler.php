@@ -49,9 +49,9 @@ class ComplexStringHandler
      */
     public function __construct(string $Data = '', string $Pattern = '', ?callable $Closure = null)
     {
-        if (!empty($Data) && is_string($Data)) {
+        if ($Data !== '') {
             $this->Input = $Data;
-            if (!empty($Pattern) && is_string($Pattern)) {
+            if ($Pattern !== '') {
                 $this->generateMarkers($Pattern);
                 if (is_callable($Closure)) {
                     $this->iterateClosure($Closure);

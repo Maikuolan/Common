@@ -104,8 +104,7 @@ Base 32: a.g000 ~ 80.8000
 Base 33: a.gggg ~ 7p.8888
 Base 34: a.h000 ~ 7i.8h00
 Base 35: a.hhhh ~ 7b.8q8q
-Base 36: a.i000 ~ 74.9000
-';
+Base 36: a.i000 ~ 74.9000';
 
 $Obj = new \Maikuolan\Common\NumberFormatter();
 
@@ -113,7 +112,6 @@ $Actual = '';
 for ($Obj->Base = 2; $Obj->Base < 37; $Obj->Base++) {
     $Actual .= "\nBase " . $Obj->Base . ': ' . $Obj->format('10.5', 4) . ' ~ ' . $Obj->format('256.25', 4);
 }
-$Actual .= "\n";
 
 $ExitCode++;
 if ($Actual !== $Expected) {

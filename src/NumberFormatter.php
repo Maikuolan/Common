@@ -1109,13 +1109,48 @@ class NumberFormatter
             $this->DecimalSeparator = '·';
             return;
         }
-        if ($Format === 'China-1') {
-            $this->GroupSize = 4;
+        if ($Format === 'Arabic-2') {
+            $this->ConversionSet = 'Eastern';
+            $this->GroupSeparator = '٬';
+            $this->DecimalSeparator = '٫';
             return;
         }
-        if ($Format === 'India-1') {
+        if ($Format === 'Arabic-3' || $Format === 'Persian') {
+            $this->ConversionSet = 'Persian';
+            $this->GroupSeparator = '٬';
+            $this->DecimalSeparator = '٫';
+            return;
+        }
+        if ($Format === 'Arabic-4' || $Format === 'Urdu') {
+            $this->ConversionSet = 'Persian';
+            $this->GroupSeparator = '٬';
+            $this->DecimalSeparator = '٫';
             $this->GroupSize = 2;
             $this->GroupOffset = -1;
+            return;
+        }
+        if ($Format === 'Chinese-Simplified') {
+            $this->ConversionSet = 'ChineseSimplified';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '点';
+            return;
+        }
+        if ($Format === 'Chinese-Simplified-Financial') {
+            $this->ConversionSet = 'ChineseSimplifiedFinancial';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '点';
+            return;
+        }
+        if ($Format === 'Chinese-Traditional') {
+            $this->ConversionSet = 'ChineseTraditional';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '點';
+            return;
+        }
+        if ($Format === 'Chinese-Traditional-Financial') {
+            $this->ConversionSet = 'ChineseTraditionalFinancial';
+            $this->GroupSeparator = '';
+            $this->DecimalSeparator = '點';
             return;
         }
         if ($Format === 'India-2' || $Format === 'Devanagari') {
@@ -1148,129 +1183,92 @@ class NumberFormatter
             $this->GroupOffset = -1;
             return;
         }
-        if ($Format === 'Arabic-1') {
-            $this->ConversionSet = 'Eastern';
-            $this->GroupSeparator = '';
-            $this->DecimalSeparator = '٫';
-            return;
-        }
-        if ($Format === 'Arabic-2') {
-            $this->ConversionSet = 'Eastern';
-            $this->GroupSeparator = '٬';
-            $this->DecimalSeparator = '٫';
-            return;
-        }
-        if ($Format === 'Arabic-3' || $Format === 'Persian') {
-            $this->ConversionSet = 'Persian';
-            $this->GroupSeparator = '٬';
-            $this->DecimalSeparator = '٫';
-            return;
-        }
-        if ($Format === 'Arabic-4' || $Format === 'Urdu') {
-            $this->ConversionSet = 'Persian';
-            $this->GroupSeparator = '٬';
-            $this->DecimalSeparator = '٫';
-            $this->GroupSize = 2;
-            $this->GroupOffset = -1;
-            return;
-        }
-        if ($Format === 'Bengali-1' || $Format === 'Nagari') {
-            $this->ConversionSet = 'Nagari';
-            $this->GroupSize = 2;
-            $this->GroupOffset = -1;
-            return;
-        }
-        if ($Format === 'Burmese-1') {
-            $this->ConversionSet = 'Burmese';
-            $this->GroupSeparator = '';
-            return;
-        }
-        if ($Format === 'Khmer-1') {
-            $this->ConversionSet = 'Khmer';
-            $this->GroupSeparator = '.';
-            $this->DecimalSeparator = ',';
-            return;
-        }
-        if ($Format === 'Lao-1') {
-            $this->ConversionSet = 'Lao';
-            $this->GroupSeparator = '';
-            return;
-        }
-        if ($Format === 'Thai-1') {
-            $this->ConversionSet = 'Thai';
-            return;
-        }
         if ($Format === 'Thai-2') {
             $this->ConversionSet = 'Thai';
             $this->GroupSeparator = '';
             return;
         }
-        if ($Format === 'Base-12') {
+        $Format = explode('-', $Format);
+        if ($Format[0] === 'Arabic') {
+            $this->ConversionSet = 'Eastern';
             $this->GroupSeparator = '';
-            $this->Base = 12;
+            $this->DecimalSeparator = '٫';
             return;
         }
-        if ($Format === 'Base-16') {
+        if (
+            $Format[0] === 'Armenian' ||
+            $Format[0] === 'Hebrew' ||
+            $Format[0] === 'Roman' ||
+            $Format[0] === 'Tamil'
+        ) {
+            $this->ConversionSet = $Format[0];
             $this->GroupSeparator = '';
-            $this->Base = 16;
+            $this->DecimalSeparator = '';
             return;
         }
-        if ($Format === 'Mayan' || $Format === 'Kaktovik') {
-            $this->ConversionSet = $Format;
+        if ($Format[0] === 'Base') {
             $this->GroupSeparator = '';
-            $this->Base = 20;
+            $this->Base = (int)(isset($Format[1]) ? $Format[1] : 0);
             return;
         }
-        if ($Format === 'Japanese') {
+        if ($Format[0] === 'Bangla' || $Format[0] === 'Bengali' || $Format[0] === 'Nagari') {
+            $this->ConversionSet = 'Nagari';
+            $this->GroupSize = 2;
+            $this->GroupOffset = -1;
+            return;
+        }
+        if ($Format[0] === 'Burmese') {
+            $this->ConversionSet = 'Burmese';
+            $this->GroupSeparator = '';
+            return;
+        }
+        if ($Format[0] === 'China') {
+            $this->GroupSize = 4;
+            return;
+        }
+        if (
+            $Format[0] === 'Fullwidth' ||
+            $Format[0] === 'Javanese' ||
+            $Format[0] === 'Lao' ||
+            $Format[0] === 'Mongolian' ||
+            $Format[0] === 'Odia' ||
+            $Format[0] === 'Tibetan'
+        ) {
+            $this->ConversionSet = $Format[0];
+            $this->GroupSeparator = '';
+            return;
+        }
+        if ($Format[0] === 'India') {
+            $this->GroupSize = 2;
+            $this->GroupOffset = -1;
+            return;
+        }
+        if ($Format[0] === 'Japanese') {
             $this->ConversionSet = 'Japanese';
             $this->GroupSeparator = '';
             $this->DecimalSeparator = '・';
             return;
         }
-        if ($Format === 'Tamil' || $Format === 'Roman' || $Format === 'Hebrew' || $Format === 'Armenian') {
-            $this->ConversionSet = $Format;
+        if ($Format[0] === 'Kaktovik' || $Format[0] === 'Mayan') {
+            $this->ConversionSet = $Format[0];
             $this->GroupSeparator = '';
-            $this->DecimalSeparator = '';
+            $this->Base = 20;
             return;
         }
-        if ($Format === 'Javanese' || $Format === 'Odia' || $Format === 'Tibetan' || $Format === 'Mongolian') {
-            $this->ConversionSet = $Format;
-            $this->GroupSeparator = '';
+        if ($Format[0] === 'Khmer') {
+            $this->ConversionSet = 'Khmer';
+            $this->GroupSeparator = '.';
+            $this->DecimalSeparator = ',';
             return;
         }
-        if ($Format === 'Chinese-Simplified') {
-            $this->ConversionSet = 'ChineseSimplified';
-            $this->GroupSeparator = '';
-            $this->DecimalSeparator = '点';
-            return;
-        }
-        if ($Format === 'Chinese-Traditional') {
-            $this->ConversionSet = 'ChineseTraditional';
-            $this->GroupSeparator = '';
-            $this->DecimalSeparator = '點';
-            return;
-        }
-        if ($Format === 'Chinese-Simplified-Financial') {
-            $this->ConversionSet = 'ChineseSimplifiedFinancial';
-            $this->GroupSeparator = '';
-            $this->DecimalSeparator = '点';
-            return;
-        }
-        if ($Format === 'Chinese-Traditional-Financial') {
-            $this->ConversionSet = 'ChineseTraditionalFinancial';
-            $this->GroupSeparator = '';
-            $this->DecimalSeparator = '點';
-            return;
-        }
-        if ($Format === 'SDN-Dwiggins' || $Format === 'SDN-Pitman') {
-            $this->ConversionSet = substr($Format, 4);
+        if ($Format[0] === 'SDN' && isset($Format[1]) && property_exists($this, $Format[1])) {
+            $this->ConversionSet = $Format[1];
             $this->DecimalSeparator = ';';
             $this->Base = 12;
             return;
         }
-        if ($Format === 'Fullwidth') {
-            $this->ConversionSet = 'Fullwidth';
-            $this->GroupSeparator = '';
+        if ($Format[0] === 'Thai') {
+            $this->ConversionSet = 'Thai';
             return;
         }
     }

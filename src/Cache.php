@@ -426,7 +426,7 @@ class Cache
      *
      * @param string $Key The name of the cache entry to set.
      * @param mixed $Value The value of the cache entry to set.
-     * @param int $TTL The number of seconds that the cache entry should persist.
+     * @param int $TTL The number of seconds that the cache entry should live.
      * @return bool True on success; False on failure.
      */
     public function setEntry($Key, $Value, $TTL = 3600)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2022.02.21).
+ * Number formatter (last modified: 2022.07.07).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -980,6 +980,32 @@ class NumberFormatter
     ];
 
     /**
+     * @var array Conversion set for Kaktovik numerals.
+     */
+    private $Kaktovik = [
+        '0' => '𝋀',
+        '1' => '𝋁',
+        '2' => '𝋂',
+        '3' => '𝋃',
+        '4' => '𝋄',
+        '5' => '𝋅',
+        '6' => '𝋆',
+        '7' => '𝋇',
+        '8' => '𝋈',
+        '9' => '𝋉',
+        'a' => '𝋊',
+        'b' => '𝋋',
+        'c' => '𝋌',
+        'd' => '𝋍',
+        'e' => '𝋎',
+        'f' => '𝋏',
+        'g' => '𝋐',
+        'h' => '𝋑',
+        'i' => '𝋒',
+        'j' => '𝋓'
+    ];
+
+    /**
      * @var array Symbols quick lookup table.
      */
     private $Symbols = [
@@ -1189,8 +1215,8 @@ class NumberFormatter
             $this->Base = 16;
             return;
         }
-        if ($Format === 'Mayan') {
-            $this->ConversionSet = 'Mayan';
+        if ($Format === 'Mayan' || $Format === 'Kaktovik') {
+            $this->ConversionSet = $Format;
             $this->GroupSeparator = '';
             $this->Base = 20;
             return;

@@ -124,6 +124,7 @@ $Formats = [
     'India-6',
     'Japanese',
     'Javanese',
+    'Kaktovik',
     'Khmer-1',
     'Lao-1',
     'Latin-1',
@@ -181,6 +182,7 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `India-6` | `౧౨,౩౪,౫౬౭.౮౯` | `౧,౦౨,౦౩,౦౪౦.౫౦౬౦౭` | `౧౦౦.౭౫౦`
 `Japanese` | `百万二十万三万四千五百六十七・八九分` | `千万二十万三千四十・五六厘七糸` | `百・七五分`
 `Javanese` | `꧑꧒꧓꧔꧕꧖꧗.꧘꧙` | `꧑꧐꧒꧐꧓꧐꧔꧐.꧕꧐꧖꧐꧗` | `꧑꧐꧐.꧗꧕꧐`
+`Kaktovik` | `𝋇𝋎𝋆𝋈𝋇.𝋑𝋐` | `𝋃𝋃𝋏𝋇𝋌𝋀.𝋊𝋂𝋈𝋋𝋆` | `𝋅𝋀.𝋏𝋀𝋀`
 `Khmer-1` | `១.២៣៤.៥៦៧,៨៩` | `១០.២០៣.០៤០,៥០៦០៧` | `១០០,៧៥០`
 `Lao-1` | `໑໒໓໔໕໖໗.໘໙` | `໑໐໒໐໓໐໔໐.໕໐໖໐໗` | `໑໐໐.໗໕໐`
 `Latin-1` | `1,234,567.89` | `10,203,040.50607` | `100.750`
@@ -241,12 +243,13 @@ Value | Description
 `ChineseTraditional` | Standard traditional Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
 `Devanagari` | Devanagari numerals.
 `Eastern` | Eastern Arabic numerals.
+`Fullwidth` | Fullwidth numerals.
 `Gujarati` | Gujarati numerals.
 `Gurmukhi` | Gurmukhi numerals.
-`Fullwidth` | Fullwidth numerals.
 `Hebrew` | Hebrew numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^16</sup>-1).*
 `Japanese` | Japanese numerals. *(Range limit: 10<sup>^-11</sup>+1 ~ 10<sup>^24</sup>-1).*
 `Javanese` | Javanese numerals.
+`Kaktovik` | Kaktovik numerals.
 `Kannada` | Kannada numerals.
 `Khmer` | Khmer numerals.
 `Lao` | Lao numerals.
@@ -539,4 +542,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 2 February 2022 (2022.02.02).
+Last Updated: 7 July 2022 (2022.07.07).

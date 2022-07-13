@@ -21,6 +21,9 @@ found at:
 
 - [2022.07.07; Maikuolan]: Added Kaktovik support to the number formatter.
 
+- [2022.07.13; Maikuolan]: Added the optional ability for the cache handler to
+  attempt to enforce the permissions necessary for reading and writing files.
+
 === Version/Release 1.9.0 ===
 MINOR RELEASE.
 

@@ -11,7 +11,10 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2022.10.05; Bug-fix; Maikuolan]: Fix prevents YAML handler from using
+  multiline when reconstructing values containing hashes, because multiline
+  values are normally unquoted and unescaped, thus meaning that data which
+  occurs after the hash would be treated as a comment when reprocessed.
 
 === Version/Release 2.9.1 ===
 PATCH RELEASE.

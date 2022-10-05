@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2022.07.13).
+ * YAML handler (last modified: 2022.10.05).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -792,14 +792,15 @@ class YAML
                 }
                 $Out .= ' ';
                 if (is_string($Value)) {
-                    if (strpos($Value, "\n") !== false) {
+                    $HasHash = strpos($Value, '#') !== false;
+                    if (!$HasHash && strpos($Value, "\n") !== false) {
                         if (preg_match('~\n{2,}$~m', $Value)) {
                             $ToAdd = "|+\n" . $ThisDepth . $this->Indent;
                         } else {
                             $ToAdd = "|\n" . $ThisDepth . $this->Indent;
                         }
                         $ToAdd .= preg_replace('~\n(?=[^\n])~m', "\n" . $ThisDepth . $this->Indent, $Value);
-                    } elseif ($this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
+                    } elseif (!$HasHash && $this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
                         $ToAdd = ">\n" . $ThisDepth . $this->Indent . wordwrap(
                             $Value,
                             $this->FoldedAt,

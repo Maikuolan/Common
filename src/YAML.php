@@ -132,7 +132,7 @@ class YAML
      *      be needed by some implementations to ensure compatibility).
      * @link https://github.com/Maikuolan/Common/tags
      */
-    const VERSION = '1.9.1';
+    const VERSION = '1.9.2';
 
     /**
      * Can optionally begin processing data as soon as the object is

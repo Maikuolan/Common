@@ -456,7 +456,7 @@ Whether to quote keys. Normally, the YAML handler won't quote keys, but you can 
 
 The YAML handler supports arrays (or using YAML terminology, collections, mappings, sequences, etc), integers, floats, booleans, null, strings (single-quoted, double-quoted, etc), literal-style strings (`|`), folded-style strings (`>`), hexadecimal number notation (`0x`), binary number notation (`0b`), and octal number notation (`0o`).
 
-The YAML handler does not (per PHP terminology) support callables, closures, or objects. If objects, closures, or callables are supplied to `reconstruct`, a fatal error will occur. Don't ever do this.
+The YAML handler does not (per PHP terminology) support callables, closures, or non-stringable objects. If non-stringable objects, closures, or callables are supplied to `reconstruct`, a fatal error will occur. Don't ever do this.
 
 ---
 
@@ -725,4 +725,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 19 February 2022 (2022.02.19).
+Last Updated: 26 October 2022 (2022.10.26).

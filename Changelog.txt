@@ -11,7 +11,9 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2022.10.26; Maikuolan]: The YAML handler can now handle objects when
+  reconstructing YAML data, as long as those objects implement the __toString
+  method.
 
 === Version/Release 2.9.2 ===
 PATCH RELEASE.

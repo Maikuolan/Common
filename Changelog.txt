@@ -17,6 +17,9 @@ found at:
 
 - [2022.11.20; Maikuolan]: Avoid packaging unnecessary files into dist.
 
+- [2022.11.22; Maikuolan]: Some of the CLDR information provided by Unicode
+  recently changed. Updated the L10N handler accordingly.
+
 === Version/Release 1.9.2 ===
 PATCH RELEASE.
 

@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.9.3 ===
+PATCH RELEASE.
+
 - [2022.10.26; Maikuolan]: The YAML handler can now handle objects when
   reconstructing YAML data, as long as those objects implement the __toString
   method.
@@ -19,6 +24,9 @@ found at:
 
 - [2022.11.22; Maikuolan]: Some of the CLDR information provided by Unicode
   recently changed. Updated the L10N handler accordingly.
+
+Caleb M (Maikuolan),
+November 22, 2022.
 
 === Version/Release 2.9.2 ===
 PATCH RELEASE.

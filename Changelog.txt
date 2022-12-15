@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2022.12.15; Bug-fix; Maikuolan]: Redis shouldn't set EXPIRE for TTLs less
+  than 1; Fixed.
 
 === Version/Release 1.9.3 ===
 PATCH RELEASE.

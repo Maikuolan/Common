@@ -1,6 +1,6 @@
 <?php
 /**
- * A simple, unified cache handler (last modified: 2022.12.15).
+ * A simple, unified cache handler (last modified: 2022.12.17).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -729,9 +729,7 @@ class Cache
         }
         if ($this->Using === 'Memcached') {
             $Keys = $this->WorkingData->getAllKeys();
-            if ($Keys !== false && $this->WorkingData->getDelayed($Keys)) {
-                $Data = $this->WorkingData->fetchAll();
-            }
+            $Data = ($Keys !== false && $this->WorkingData->getDelayed($Keys)) ? $this->WorkingData->fetchAll() : [];
             if (!is_array($Data)) {
                 return [];
             }

@@ -502,7 +502,7 @@ array(2) {
 }
 ```
 
-The YAML handler also inline variables (when correctly registered to the `Refs` member), which can be traversed via dot notation.
+The YAML handler also supports inline variables (when correctly registered to the `Refs` member), which can be traversed via dot notation.
 
 Example inline variable usage:
 
@@ -562,8 +562,8 @@ __Examples from [2.2. Structures](https://yaml.org/spec/1.2.2/#22-structures)__ 
 2.11 Mapping between Sequences | Nope. The YAML handler treats "complex mapping keys" as sequences of null values, so having key/value pairs immediately follow on from that, all within the same line, won't work as expected.
 2.12 Compact Nested Mapping | Nope. The specification expects this to be processed in a similar way as a sequence of mappings would be processed. However, as the example shows key/value pairs attached to what looks like sequence indicators, followed by key/value pairs on the subsequent line without any such indicators, but with greater indentation so as to line them up with their earlier counterparts, to the YAML handler, the whole block just looks like a sequence, and those key/value pairs with greater indentation, due to that greater indentation, will cause the YAML handler to implicitly coerce their earlier counterparts to arrays so that those key/value pairs can be processed to there, thus loosing the values of those earlier counterparts. I understand the problem, and I may fix it in the future, but it's low priority on the to-do list and might require a significant amount of refactoring once I start, so I'm not entirely sure if or when.
 __Examples from [2.3. Scalars](https://yaml.org/spec/1.2.2/#23-scalars)__ | __Will using the YAML handler to process it produce the desired results?__
-2.13 In literals, newlines are preserved | It *would*. Except that, the YAML handler doesn't understand "`--- \|`" properly.<br />To produce the desired results, "`---: \|` would need to be used instead.
-2.14 In the folded scalars, newlines become spaces | It *would*. Except that, the YAML handler doesn't understand "`--- >`" properly.<br />To produce the desired results, "`---: >` would need to be used instead.
+2.13 In literals, newlines are preserved | It *would*. Except that, the YAML handler doesn't understand "`--- \|`" properly.<br />To produce the desired results, "`---: \|`" would need to be used instead.
+2.14 In the folded scalars, newlines become spaces | It *would*. Except that, the YAML handler doesn't understand "`--- >`" properly.<br />To produce the desired results, "`---: >`" would need to be used instead.
 2.15 Folded newlines are preserved for “more indented” and blank lines | Same as above.
 2.16 Indentation determines scope | Yes.
 2.17 Quoted Scalars | For everything other than the "not a comment" line. The YAML handler requires that all hashes be escaped in order to not be recognised as comments, and the hash in the example isn't escaped.
@@ -725,4 +725,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 26 October 2022 (2022.10.26).
+Last Updated: 30 December 2022 (2022.12.30).

@@ -14,6 +14,17 @@ found at:
 - [2022.12.15; Bug-fix; Maikuolan]: Redis shouldn't set EXPIRE for TTLs less
   than 1; Fixed.
 
+- [2023.01.14; Bug-fix; Maikuolan]: The code for fetching all entries from the
+  cache when using Memcached as the chosen caching mechanism relied on
+  Memcached methods which haven't worked properly since several major versions
+  back from the current latest Memcached bindings. Accordingly, the cache
+  handler wasn't capable of correctly fetching all entries when using
+  Memcached. To remedy this, the code which relied upon said methods has been
+  removed, and in its place, code has been added to manually index cache keys,
+  and when fetching all entries from the cache, this manual indexing will now
+  be relied upon when using Memcached (the code for other caching mechanisms,
+  unaffected by this problem, remains unchanged).
+
 === Version/Release 2.9.3 ===
 PATCH RELEASE.
 

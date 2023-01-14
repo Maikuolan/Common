@@ -799,8 +799,7 @@ class Cache
                 ) {
                     continue;
                 }
-                $DeFixed = substr($Key, $PrefixLen);
-                $Output[$DeFixed] = $this->unserializeEntry($this->WorkingData->get($Key));
+                $Output[substr($Key, $PrefixLen)] = $this->unserializeEntry($this->WorkingData->get($Key));
             }
             return $Output;
         }
@@ -905,7 +904,7 @@ class Cache
      */
     public function unserializeEntry($Entry)
     {
-        if (!$Entry || !is_string($Entry) || !preg_match('~^a\:\d+\:\{.*\}$~', $Entry)) {
+        if (!is_string($Entry) || !preg_match('~^a\:\d+\:\{.*\}$~', $Entry)) {
             return $Entry;
         }
         $Arr = unserialize($Entry);

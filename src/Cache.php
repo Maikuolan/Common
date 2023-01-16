@@ -1,6 +1,6 @@
 <?php
 /**
- * A simple, unified cache handler (last modified: 2023.01.14).
+ * A simple, unified cache handler (last modified: 2023.01.16).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -790,8 +790,12 @@ class Cache
             return $Output;
         }
         if ($this->Using === 'Redis') {
-            $Keys = $this->WorkingData->keys('*') ?: [];
             $Output = [];
+            if ($PrefixLen === 0 || preg_match('~[^\dA-Za-z_]~', $this->Prefix)) {
+                $Keys = $this->WorkingData->keys('*') ?: [];
+            } else {
+                $Keys = $this->WorkingData->keys($this->Prefix . '*') ?: [];
+            }
             foreach ($Keys as $Key) {
                 if (
                     strlen($Key) > self::KEY_SIZE_LIMIT ||

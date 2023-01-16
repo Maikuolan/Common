@@ -124,6 +124,7 @@ All public methods provided by Cache, along with relevant instructions, are list
 - [decEntry method.](#decentry-method)
 - [clearCache method.](#clearcache-method)
 - [getAllEntries method.](#getallentries-method)
+- [getAllEntriesWhere method.](#getallentrieswhere-method)
 - [clearExpired method.](#clearexpired-method)
 - [clearExpiredPDO method.](#clearexpiredpdo-method)
 - [unserializeEntry method.](#unserializeentry-method)
@@ -229,6 +230,20 @@ Returns an associative array containing all entries from the cache (the array wi
 public function getAllEntries(): array;
 ```
 
+#### getAllEntriesWhere method.
+
+Returns an associative array containing all entries from the cache, whereby the entry keys (the names of the cache entries) match the specified pattern (the array will be empty when no entries can be retrieved).
+
+```PHP
+public function getAllEntriesWhere(string $Pattern, string $Replacement = '', ?callable $Sort = null): array
+```
+
+The first parameter is the pattern to match the entry keys against (must be a valid regular expression).
+
+The second parameter is optional, and when specified, will replace the matched occurrences of the pattern within the entry keys according to regular expression rules.
+
+The third parameter is optional callable, and when specified, will be used to associatively sort the cache entries prior to returning them.
+
 #### clearExpired method.
 
 Deletes all expired cache entries from an array of cache entries, supplied by reference as the method's sole parameter. Returns true when one or more entries are deleted (meaning that the size of the referenced array should be reduced as a result of using the method), or false when nothing is deleted (meaning that the referenced array should remain unchanged as a result of using the method).
@@ -291,4 +306,4 @@ public function exposeWorkingDataArray();
 ---
 
 
-Last Updated: 9 June 2022 (2022.06.09).
+Last Updated: 16 January 2023 (2023.01.16).

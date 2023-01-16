@@ -25,6 +25,9 @@ found at:
   be relied upon when using Memcached (the code for other caching mechanisms,
   unaffected by this problem, remains unchanged).
 
+- [2023.01.16; Maikuolan]: Added a new method to the cache handler:
+  "getAllEntriesWhere" (see the documentation for more details).
+
 === Version/Release 1.9.3 ===
 PATCH RELEASE.
 

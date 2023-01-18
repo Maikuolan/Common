@@ -153,11 +153,6 @@ class Cache
     public const GET_ALL_QUERY = 'SELECT * FROM `Cache` WHERE 1';
 
     /**
-     * @var int Default blocksize for file reading operations.
-     */
-    public const BLOCKSIZE = 262144;
-
-    /**
      * @var int Number of seconds to try flocking a resource before giving up.
      */
     public const FLOCK_TIMEOUT = 10;

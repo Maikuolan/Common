@@ -1,6 +1,6 @@
 <?php
 /**
- * A simple, unified cache handler (last modified: 2023.01.16).
+ * A simple, unified cache handler (last modified: 2023.01.19).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -787,6 +787,7 @@ class Cache
             }
             return $Output;
         }
+        $Now = time();
         if ($this->Using === 'Redis') {
             $Output = [];
             if ($PrefixLen === 0 || preg_match('~[^\dA-Za-z_]~', $this->Prefix)) {
@@ -801,7 +802,9 @@ class Cache
                 ) {
                     continue;
                 }
-                $Output[substr($Key, $PrefixLen)] = $this->unserializeEntry($this->WorkingData->get($Key));
+                $TTL = $this->WorkingData->ttl($Key);
+                $Data = $this->unserializeEntry($this->WorkingData->get($Key));
+                $Output[substr($Key, $PrefixLen)] = (is_int($TTL) && $TTL > 0) ? ['Data' => $Data, 'Time' => $TTL + $Now] : $Data;
             }
             return $Output;
         }
@@ -821,10 +824,8 @@ class Cache
                         continue;
                     }
                     $Key = substr($Entry['Key'], $PrefixLen);
-                    $Output[$Key] = $Entry['Time'] > 0 ? [
-                        'Data' => $this->unserializeEntry($Entry['Data']),
-                        'Time' => $Entry['Time']
-                    ] : $this->unserializeEntry($Entry['Data']);
+                    $Entry['Data'] = $this->unserializeEntry($Entry['Data']);
+                    $Output[$Key] = $Entry['Time'] > 0 ? ['Data' => $Entry['Data'], 'Time' => $Entry['Time']] : $Entry['Data'];
                 }
                 return $Output;
             }
@@ -857,6 +858,7 @@ class Cache
     public function getAllEntriesWhere(string $Pattern, string $Replacement = '', ?callable $Sort = null): array
     {
         $Set = [];
+        $Now = time();
         if ($this->Using === 'Memcached') {
             $Indexes = $this->Indexes;
             foreach ($Indexes as $Index => $Unused) {
@@ -917,7 +919,9 @@ class Cache
                 if (!preg_match($Pattern, $Index)) {
                     continue;
                 }
-                $Set[$Index] = $this->unserializeEntry($this->WorkingData->get($Key));
+                $TTL = $this->WorkingData->ttl($Key);
+                $Data = $this->unserializeEntry($this->WorkingData->get($Key));
+                $Set[$Index] = = (is_int($TTL) && $TTL > 0) ? ['Data' => $Data, 'Time' => $TTL + $Now] : $Data;
             }
             unset($Keys);
         } elseif ($this->Using === 'PDO') {
@@ -938,10 +942,8 @@ class Cache
                     if (!preg_match($Pattern, $Key)) {
                         continue;
                     }
-                    $Set[$Key] = $Entry['Time'] > 0 ? [
-                        'Data' => $this->unserializeEntry($Entry['Data']),
-                        'Time' => $Entry['Time']
-                    ] : $this->unserializeEntry($Entry['Data']);
+                    $Entry['Data'] = $this->unserializeEntry($Entry['Data']);
+                    $Set[$Key] = $Entry['Time'] > 0 ? ['Data' => $Entry['Data'], 'Time' => $Entry['Time']] : $Entry['Data'];
                 }
             }
             unset($PDO);
@@ -960,7 +962,6 @@ class Cache
             }
         }
         $Out = [];
-        $Now = time();
         foreach ($Set as $EntryName => $EntryData) {
             if (isset($EntryData['Time']) && $EntryData['Time'] > 0 && $EntryData['Time'] < $Now) {
                 continue;

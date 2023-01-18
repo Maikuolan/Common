@@ -916,7 +916,7 @@ class Cache
                 }
                 $TTL = $this->WorkingData->ttl($Key);
                 $Data = $this->unserializeEntry($this->WorkingData->get($Key));
-                $Set[$Index] = = (is_int($TTL) && $TTL > 0) ? ['Data' => $Data, 'Time' => $TTL + $Now] : $Data;
+                $Set[$Index] = (is_int($TTL) && $TTL > 0) ? ['Data' => $Data, 'Time' => $TTL + $Now] : $Data;
             }
             unset($Keys);
         } elseif ($this->Using === 'PDO') {

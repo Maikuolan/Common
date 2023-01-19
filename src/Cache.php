@@ -808,6 +808,9 @@ class Cache
             $PDO = $this->WorkingData->prepare(self::GET_ALL_QUERY);
             if ($PDO !== false && $PDO->execute()) {
                 $Data = $PDO->fetchAll();
+                if (!is_array($Data)) {
+                    return [];
+                }
                 $Output = [];
                 foreach ($Data as $Entry) {
                     if (
@@ -924,6 +927,9 @@ class Cache
             $PDO = $this->WorkingData->prepare(self::GET_ALL_QUERY);
             if ($PDO !== false && $PDO->execute()) {
                 $Data = $PDO->fetchAll();
+                if (!is_array($Data)) {
+                    return [];
+                }
                 foreach ($Data as $Entry) {
                     if (
                         !is_array($Entry) ||
@@ -940,6 +946,7 @@ class Cache
                     $Entry['Data'] = $this->unserializeEntry($Entry['Data']);
                     $Set[$Key] = $Entry['Time'] > 0 ? ['Data' => $Entry['Data'], 'Time' => $Entry['Time']] : $Entry['Data'];
                 }
+                unset($Data);
             }
             unset($PDO);
         } elseif ($Arr = $this->exposeWorkingDataArray()) {

@@ -28,6 +28,8 @@ found at:
 - [2023.01.16; Maikuolan]: Added a new method to the cache handler:
   "getAllEntriesWhere" (see the documentation for more details).
 
+- [2023.01.22; Maikuolan]: Improved the defaulting used for missing plurals.
+
 === Version/Release 1.9.3 ===
 PATCH RELEASE.
 

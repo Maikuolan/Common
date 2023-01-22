@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 1.9.4 ===
+PATCH RELEASE.
+
 - [2022.12.15; Bug-fix; Maikuolan]: Redis shouldn't set EXPIRE for TTLs less
   than 1; Fixed.
 
@@ -29,6 +34,9 @@ found at:
   "getAllEntriesWhere" (see the documentation for more details).
 
 - [2023.01.22; Maikuolan]: Improved the defaulting used for missing plurals.
+
+Caleb M (Maikuolan),
+January 22, 2023.
 
 === Version/Release 1.9.3 ===
 PATCH RELEASE.

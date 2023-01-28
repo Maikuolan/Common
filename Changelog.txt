@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2023.01.28; Bug-fix; Maikuolan]: Cache handler potentially generating
+  unexpected exceptions in some situations; Fixed.
 
 === Version/Release 2.9.4 ===
 PATCH RELEASE.

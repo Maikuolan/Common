@@ -16,6 +16,11 @@ found at:
 
 - [2023.02.13; Maikuolan]: Slightly improved performance for when using PDO.
 
+- [2023.02.21; Maikuolan]: When using the cache handler with PDO, if the size
+  of a cache entry exceeds 64KB, in order to avoid exceeding the 64KB upper
+  limit of the TEXT data type, the cache handler will now attempt to compress
+  the data prior to executing the query.
+
 === Version/Release 2.9.4 ===
 PATCH RELEASE.
 

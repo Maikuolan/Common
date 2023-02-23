@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 1.9.5 ===
+PATCH RELEASE.
+
 - [2023.01.28; Bug-fix; Maikuolan]: Cache handler potentially generating
   unexpected exceptions in some situations; Fixed.
 
@@ -23,6 +28,9 @@ found at:
 
 - [2023.02.23; Maikuolan]: Optionally, the L10N handler can now automatically
   determine text directionality for use by the implementation.
+
+Caleb M (Maikuolan),
+February 23, 2023.
 
 === Version/Release 1.9.4 ===
 PATCH RELEASE.

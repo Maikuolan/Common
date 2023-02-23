@@ -21,6 +21,9 @@ found at:
   limit of the TEXT data type, the cache handler will now attempt to compress
   the data prior to executing the query.
 
+- [2023.02.23; Maikuolan]: Optionally, the L10N handler can now automatically
+  determine text directionality for use by the implementation.
+
 === Version/Release 2.9.4 ===
 PATCH RELEASE.
 

@@ -62,7 +62,7 @@ class L10N
      *      be needed by some implementations to ensure compatibility).
      * @link https://github.com/Maikuolan/Common/tags
      */
-    public const VERSION = '2.9.4';
+    public const VERSION = '2.9.5';
 
     /**
      * Constructor.

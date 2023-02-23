@@ -669,9 +669,8 @@ class L10N
     }
 
     /**
-     * Attempts to automatically determine an appropriate integer rule to use
-     * based upon the specified ISO 639-1/639-2 language code (the former
-     * preferred, the latter used if the former isn't available).
+     * Determine an appropriate integer rule to use based upon the specified
+     * ISO 639-1/639-2 language code.
      * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
      * @link https://cldr.unicode.org/index/cldr-spec/plural-rules
      * @link https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html
@@ -994,12 +993,8 @@ class L10N
     }
 
     /**
-     * Attempts to automatically determine an appropriate fraction rule to use
-     * based upon the specified ISO 639-1/639-2 language code (the former
-     * preferred, the latter used if the former isn't available).
-     * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
-     * @link https://cldr.unicode.org/index/cldr-spec/plural-rules
-     * @link https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html
+     * Determine an appropriate fraction rule to use based upon the specified
+     * ISO 639-1/639-2 language code.
      *
      * @param string $Code An ISO 639-1/639-2 language code.
      * @return string An appropriate fraction rule to use.
@@ -1029,12 +1024,7 @@ class L10N
     }
 
     /**
-     * Attempts to automatically determine the directionality of the specified
-     * ISO 639-1/639-2 language code (the former preferred, the latter used if
-     * the former isn't available).
-     * @link https://www.loc.gov/standards/iso639-2/php/code_list.php
-     * @link https://cldr.unicode.org/index/cldr-spec/plural-rules
-     * @link https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html
+     * Determine the directionality for the specified ISO 639-1/639-2 language code.
      *
      * @param string $Code An ISO 639-1/639-2 language code.
      * @return string The directionality (either ltr or rtl).

@@ -226,7 +226,7 @@ The last of those four examples is highly nonsensical, but it's useful nonethele
 public function dataTraverse(&$Data, $Path = [])
 ```
 
-`dataTraverse` accepts 2 parameters. The first parameter is the array to be traversed, passed by reference. The second parameter accepts an array or a string string, and is the path utilising dot notation (as aforementioned). `dataTraverse` is recursive, the initial call typically taking in a string, at which point it breaks it down into an array to be passed to its recursions (an empty array and an empty string should elicit the same return values).
+`dataTraverse` accepts 2 parameters. The first parameter is the array to be traversed, passed by reference. The second parameter accepts an array or a string, and is the path utilising dot notation (as aforementioned). `dataTraverse` is recursive, the initial call typically taking in a string, at which point it breaks it down into an array to be passed to its recursions (an empty array and an empty string should elicit the same return values).
 
 In addition, the PHP functions `trim()`, `strtolower()`, `strtoupper()`, and `strlen()` will be recognised and may optionally be used as the tail of the second parameter.
 
@@ -321,4 +321,4 @@ If more complex usage is needed in the future, the capabilities of this class ca
 ---
 
 
-Last Updated: 23 April 2021 (2021.04.23).
+Last Updated: 15 March 2023 (2023.03.15).

@@ -1,6 +1,6 @@
 <?php
 /**
- * Operation handler (last modified: 2023.02.23).
+ * Operation handler (last modified: 2023.03.15).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -229,6 +229,9 @@ class Operation
         $Segment = str_replace('\.', '.', $Segment);
         if (is_array($Data) && isset($Data[$Segment])) {
             return $this->dataTraverse($Data[$Segment], $Path);
+        }
+        if (is_object($Data) && property_exists($Data, $Segment)) {
+            return $this->dataTraverse($Data->$Segment, $Path);
         }
         if (is_string($Data)) {
             if (preg_match('~^(?:trim|str(?:tolower|toupper|len))\(\)~i', $Segment)) {

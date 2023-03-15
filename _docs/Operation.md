@@ -220,7 +220,7 @@ The last of those four examples is highly nonsensical, but it's useful nonethele
 
 #### dataTraverse method.
 
-`dataTraverse` provides a way to traverse an array, teasing out specific elements as needed, utilising a simplified imitation of dot notation.
+`dataTraverse` provides a way to traverse an array, teasing out specific elements or properties as needed, utilising a simplified imitation of dot notation.
 
 ```PHP
 public function dataTraverse(&$Data, $Path = [])

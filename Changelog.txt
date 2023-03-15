@@ -15,6 +15,9 @@ found at:
   methods weren't handling non-expiring values correctly when using flatfile
   caching; Fixed.
 
+- [2023.03.15; Maikuolan]: The operation handler's dataTraverse method can now
+  traverse object properties.
+
 === Version/Release 2.9.5 ===
 PATCH RELEASE.
 

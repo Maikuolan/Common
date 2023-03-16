@@ -19,7 +19,9 @@ found at:
   traverse object properties.
 
 - [2023.03.16; Maikuolan]: Support for more operators added to the operation
-  handler's ifCompare method.
+  handler's ifCompare method. Added a new parameter to the operation handler's
+  dataTraverse method to enable implementations to specify whether it should
+  allow or prohibit non-scalar return values.
 
 === Version/Release 1.9.5 ===
 PATCH RELEASE.

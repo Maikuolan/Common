@@ -18,6 +18,9 @@ found at:
 - [2023.03.15; Maikuolan]: The operation handler's dataTraverse method can now
   traverse object properties.
 
+- [2023.03.16; Maikuolan]: Support for more operators added to the operation
+  handler's ifCompare method.
+
 === Version/Release 1.9.5 ===
 PATCH RELEASE.
 

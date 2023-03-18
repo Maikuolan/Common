@@ -1,6 +1,6 @@
 <?php
 /**
- * Request handler (last modified: 2023.02.23).
+ * Request handler (last modified: 2023.03.18).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -38,7 +38,9 @@ class Request
     public $SendToOut = false;
 
     /**
-     * @var string The default user agent to cite.
+     * @var string The default user agent to cite (implementations *should* override
+     *  this with a user agent of their own, in order to properly inform servers of
+     *  the implementation's identity.
      */
     public $UserAgent = 'Request class (https://github.com/Maikuolan/Common)';
 

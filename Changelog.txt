@@ -23,6 +23,15 @@ found at:
   dataTraverse method to enable implementations to specify whether it should
   allow or prohibit non-scalar return values.
 
+- [2023.03.18; Maikuolan]: The YAML handler's dataTraverse method synchronised
+  with the operation handler's dataTraverse method to be the same, to be able
+  to likewise have it specified whether to allow or prohibit non-scalar return
+  values and etc (might consider utilising class extensibility in a future
+  major version to reduce code duplication, but as doing that would mean that
+  classes wouldn't be able to be implemented in isolation anymore, I would
+  consider it backwards-incompatible change, so it won't happen any time sooner
+  than the next major version, at least).
+
 === Version/Release 1.9.5 ===
 PATCH RELEASE.
 

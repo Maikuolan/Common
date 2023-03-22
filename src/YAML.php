@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2023.03.18).
+ * YAML handler (last modified: 2023.03.22).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -385,7 +385,7 @@ class YAML
         $Success = true;
 
         /** Needed for processing any remaining data. */
-        if ($SendTo && !empty($Key)) {
+        if ($SendTo) {
             if (!$this->MultiLine && !$this->MultiLineFolded) {
                 if (!isset($Arr[$Key]) || !is_array($Arr[$Key])) {
                     $Arr[$Key] = [];

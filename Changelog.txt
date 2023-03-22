@@ -32,6 +32,9 @@ found at:
   consider it backwards-incompatible change, so it won't happen any time sooner
   than the next major version, at least).
 
+- [2023.03.22; Bug-fix; Maikuolan]: The YAML handler wasn't correctly dealing
+  with sequences which terminate with folded scalars; Fixed.
+
 === Version/Release 1.9.5 ===
 PATCH RELEASE.
 

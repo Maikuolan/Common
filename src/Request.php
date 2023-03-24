@@ -38,9 +38,14 @@ class Request
     public $SendToOut = false;
 
     /**
-     * @var string Object store for the results of outbound requests.
+     * @var string Object-level logger for the results of outbound requests.
      */
-    public $ObjStore = '';
+    public $ObjLogger = '';
+
+    /**
+     * @var string Whether to dump the object-level logger to a file (and where to find it).
+     */
+    public $ObjLoggerFile = '';
 
     /**
      * @var string The default user agent to cite (implementations *should* override
@@ -69,6 +74,26 @@ class Request
     public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0)
     {
         return $this->request($URI, $Params, $Timeout, $Headers, $Depth);
+    }
+
+    /**
+     * Object destructor. Used to write the object-level logger to a file when necessary.
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
+        /** Guard. */
+        if ($this->ObjLogger === '' || $this->ObjLoggerFile === '' || !is_writable($this->ObjLoggerFile)) {
+            return;
+        }
+
+        $Handle = fopen($this->ObjLoggerFile, 'wb');
+        if (!is_resource($Handle)) {
+            continue;
+        }
+        fwrite($Handle, $this->ObjLogger);
+        fclose($Handle);
     }
 
     /**
@@ -229,7 +254,7 @@ class Request
      */
     public function sendMessage($Message)
     {
-        $this->ObjStore .= $Message;
+        $this->ObjLogger .= $Message;
         if ($this->SendToOut !== true) {
             return;
         }

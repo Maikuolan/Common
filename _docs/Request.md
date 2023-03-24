@@ -11,7 +11,7 @@
 - [Channels member.](#channels-member)
 - [Disabled member.](#disabled-member)
 - [SendToOut member.](#sendtoout-member)
-- [ObjStore member.](#objstore-member)
+- [ObjLogger member.](#ObjLogger-member)
 - [UserAgent member.](#useragent-member)
 - [MostRecentStatusCode member.](#mostrecentstatuscode-member)
 - [request method.](#request-method)
@@ -84,12 +84,20 @@ Whether to send the results of outbound requests to stdout (useful for debugging
 public $SendToOut = false;
 ```
 
-#### ObjStore member.
+#### ObjLogger member.
 
-Object store for the results of outbound requests (useful for debugging potential problems with outbound requests at the implementation).
+Object-level logger for the results of outbound requests (useful for debugging potential problems with outbound requests at the implementation).
 
 ```PHP
-public $ObjStore = '';
+public $ObjLogger = '';
+```
+
+#### ObjLoggerFile member.
+
+Whether to dump the object-level logger to a file (and where to find it).
+
+```PHP
+public $ObjLoggerFile = '';
 ```
 
 #### UserAgent member.

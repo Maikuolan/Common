@@ -11,6 +11,7 @@
 - [Channels member.](#channels-member)
 - [Disabled member.](#disabled-member)
 - [SendToOut member.](#sendtoout-member)
+- [ObjStore member.](#objstore-member)
 - [UserAgent member.](#useragent-member)
 - [MostRecentStatusCode member.](#mostrecentstatuscode-member)
 - [request method.](#request-method)
@@ -83,6 +84,14 @@ Whether to send the results of outbound requests to stdout (useful for debugging
 public $SendToOut = false;
 ```
 
+#### ObjStore member.
+
+Object store for the results of outbound requests (useful for debugging potential problems with outbound requests at the implementation).
+
+```PHP
+public $ObjStore = '';
+```
+
 #### UserAgent member.
 
 The default user agent to cite when sending requests (for the sake of good netiquette and politeness towards any endpoints you intend to communicate with, this should definitely be populated when implementing the class according to your implementation).
@@ -122,7 +131,7 @@ The method returns a string (either the returned resource, or an empty string on
 The class also implements the magic method `__invoke`, as a way to alias back to `request` when the instance is utilised as a callable or function.
 
 ```PHP
-public function __invoke(...$Params): string
+public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0);
 ```
 
 #### inCsv method.
@@ -144,4 +153,4 @@ public function sendMessage(string $Message);
 ---
 
 
-Last Updated: 10 January 2021 (2021.01.10).
+Last Updated: 24 March 2023 (2023.03.24).

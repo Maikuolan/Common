@@ -1,6 +1,6 @@
 <?php
 /**
- * Request handler (last modified: 2023.03.18).
+ * Request handler (last modified: 2023.03.24).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -36,6 +36,11 @@ class Request
      * @var bool Whether to send the results of outbound requests to stdout.
      */
     public $SendToOut = false;
+
+    /**
+     * @var string Object store for the results of outbound requests.
+     */
+    public $ObjStore = '';
 
     /**
      * @var string The default user agent to cite (implementations *should* override
@@ -224,6 +229,7 @@ class Request
      */
     public function sendMessage(string $Message): void
     {
+        $this->ObjStore .= $Message;
         if ($this->SendToOut !== true) {
             return;
         }

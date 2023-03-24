@@ -35,6 +35,9 @@ found at:
 - [2023.03.22; Bug-fix; Maikuolan]: The YAML handler wasn't correctly dealing
   with sequences which terminate with folded scalars; Fixed.
 
+- [2023.03.24; Maikuolan]: Added a new property to the request handler to act
+  as an object-level logger for the results of outbound requests.
+
 === Version/Release 1.9.5 ===
 PATCH RELEASE.
 

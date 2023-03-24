@@ -90,7 +90,7 @@ class Request
 
         $Handle = fopen($this->ObjLoggerFile, 'wb');
         if (!is_resource($Handle)) {
-            continue;
+            return;
         }
         fwrite($Handle, $this->ObjLogger);
         fclose($Handle);

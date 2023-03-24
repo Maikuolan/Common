@@ -121,7 +121,7 @@ public $MostRecentStatusCode = 0;
 The main request method (this is what you'll want to use to actually perform a request).
 
 ```PHP
-public function request(string $URI, $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0): string
+public function request(string $URI, $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0): string;
 ```
 
 The first parameter (`$URI`) is the URL, URI, resource, etc that you want to request.
@@ -139,7 +139,7 @@ The method returns a string (either the returned resource, or an empty string on
 The class also implements the magic method `__invoke`, as a way to alias back to `request` when the instance is utilised as a callable or function.
 
 ```PHP
-public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0);
+public function __invoke(...$Params): string;
 ```
 
 #### inCsv method.
@@ -147,7 +147,7 @@ public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [],
 Checks for a value within comma-separated values (CSV). Returns true when the value is found and false otherwise. This is used internally to process the `Disabled` member, and also made public for the benefit of use at the implementation elsewhere.
 
 ```PHP
-public function inCsv(string $Value, string $CSV): bool
+public function inCsv(string $Value, string $CSV): bool;
 ```
 
 #### sendMessage method.
@@ -155,7 +155,7 @@ public function inCsv(string $Value, string $CSV): bool
 When `SendToOut` is `true`, this method sends messages to `stdout` whenever a request is performed, in a manner similar to the entries seen within standard access logs (this can sometimes be useful for debugging).
 
 ```PHP
-public function sendMessage(string $Message);
+public function sendMessage(string $Message): void;
 ```
 
 ---

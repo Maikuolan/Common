@@ -84,11 +84,12 @@ class Request
     public function __destruct()
     {
         /** Guard. */
-        if ($this->ObjLogger === '' || $this->ObjLoggerFile === '' || !is_writable($this->ObjLoggerFile)) {
+        if ($this->ObjLogger === '' || $this->ObjLoggerFile === '') {
             return;
         }
 
-        $Handle = fopen($this->ObjLoggerFile, 'wb');
+        $WriteMode = file_exists($this->ObjLoggerFile) ? 'ab' : 'wb';
+        $Handle = fopen($this->ObjLoggerFile, $WriteMode);
         if (!is_resource($Handle)) {
             return;
         }
@@ -187,13 +188,7 @@ class Request
 
         /** Check for problems (e.g., resource not found, server errors, etc). */
         if (($Info = curl_getinfo($Request)) && is_array($Info) && isset($Info['http_code'])) {
-            $this->sendMessage(sprintf(
-                "\r%s - %s - %s - %s\n",
-                $Post ? 'POST' : 'GET',
-                $URI,
-                $Info['http_code'],
-                (floor($Time * 100) / 100) . 's'
-            ));
+            $this->sendMessage(sprintf('%s - %s - %s - %s', $Post ? 'POST' : 'GET', $URI, $Info['http_code'], (floor($Time * 100) / 100) . 's'));
 
             /** Most recent HTTP status code. */
             $this->MostRecentStatusCode = $Info['http_code'];
@@ -204,13 +199,7 @@ class Request
                 return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1);
             }
         } else {
-            $this->sendMessage(sprintf(
-                "\r%s - %s - %s - %s\n",
-                $Post ? 'POST' : 'GET',
-                $URI,
-                200,
-                (floor($Time * 100) / 100) . 's'
-            ));
+            $this->sendMessage(sprintf('%s - %s - %s - %s', $Post ? 'POST' : 'GET', $URI, 200, (floor($Time * 100) / 100) . 's'));
 
             /** Most recent HTTP status code. */
             $this->MostRecentStatusCode = 200;
@@ -254,12 +243,12 @@ class Request
      */
     public function sendMessage($Message)
     {
-        $this->ObjLogger .= $Message;
+        $this->ObjLogger .= '[' . date('Y-m-d\Th:i:sO',time()) . '] ' . $Message . "\n";
         if ($this->SendToOut !== true) {
             return;
         }
         $Handle = fopen('php://stdout', 'wb');
-        fwrite($Handle, $Message);
+        fwrite($Handle, "\r" . $Message . "\n");
         fclose($Handle);
     }
 }

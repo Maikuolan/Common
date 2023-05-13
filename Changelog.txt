@@ -11,7 +11,7 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2023.05.13; Maikuolan]: Fixed a link.
 
 === Version/Release 2.9.6 ===
 PATCH RELEASE.

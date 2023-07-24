@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2023.05.13).
+ * L10N handler (last modified: 2023.07.24).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1031,6 +1031,11 @@ class L10N
      */
     public function getDirectionality(string $Code): string
     {
+        /** Right-to-left per locale. */
+        if ($Code === 'pa-PK') {
+            return 'rtl';
+        }
+
         if (($Pos = strpos($Code, '-')) !== false) {
             $Code = substr($Code, 0, $Pos);
         }

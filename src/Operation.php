@@ -27,7 +27,7 @@ class Operation
      *      be needed by some implementations to ensure compatibility).
      * @link https://github.com/Maikuolan/Common/tags
      */
-    const VERSION = '1.9.6';
+    const VERSION = '1.9.7';
 
     /**
      * Operators for version numbers.

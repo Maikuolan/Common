@@ -11,10 +11,18 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 1.9.7 ===
+PATCH RELEASE.
+
 - [2023.05.13; Maikuolan]: Fixed a link.
 
 - [2023.08.16; Bug-fix; Maikuolan]: Typo in the code for handling "then"
   statements in the operation handler's ifCompare method; Fixed.
+
+Caleb M (Maikuolan),
+August 16, 2023.
 
 === Version/Release 1.9.6 ===
 PATCH RELEASE.

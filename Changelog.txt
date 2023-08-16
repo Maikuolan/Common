@@ -13,6 +13,9 @@ found at:
 
 - [2023.05.13; Maikuolan]: Fixed a link.
 
+- [2023.08.16; Bug-fix; Maikuolan]: Typo in the code for handling "then"
+  statements in the operation handler's ifCompare method; Fixed.
+
 === Version/Release 2.9.6 ===
 PATCH RELEASE.
 

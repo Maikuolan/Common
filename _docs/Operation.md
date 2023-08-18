@@ -244,8 +244,7 @@ $Arr = [
 
 var_dump($Object->dataTraverse($Arr, 'Foo.Bar.Hello'));
 var_dump($Object->dataTraverse($Arr, 'Foo.Bar.Goodbye'));
-var_dump($Object->dataTraverse($Arr, 'Foo.Bar.strlen()'));
-var_dump($Object->dataTraverse($Arr, 'Foo.Baz'));
+var_dump($Object->dataTraverse($Arr, 'Foo.Bar.Goodbye.strlen()'));
 var_dump($Object->dataTraverse($Arr, 'Foo.Baz'));
 var_dump($Object->dataTraverse($Arr, 'Foo.Baz.strtoupper()'));
 var_dump($Object->dataTraverse($Arr, 'Foo.Baz.strtolower()'));
@@ -321,4 +320,4 @@ If more complex usage is needed in the future, the capabilities of this class ca
 ---
 
 
-Last Updated: 16 March 2023 (2023.03.16).
+Last Updated: 18 August 2023 (2023.08.18).

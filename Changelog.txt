@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2023.08.18; Maikuolan]: Improved tests and documentation for the operation
+  handler.
 
 === Version/Release 2.9.7 ===
 PATCH RELEASE.

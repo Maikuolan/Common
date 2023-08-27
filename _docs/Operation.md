@@ -223,12 +223,14 @@ The last of those four examples is highly nonsensical, but it's useful nonethele
 `dataTraverse` provides a way to recursively traverse an array or an object, teasing out specific elements or properties as needed, utilising a simplified imitation of dot notation.
 
 ```PHP
-public function dataTraverse(&$Data, $Path = [], bool $AllowNonScalar = false)
+public function dataTraverse(&$Data, $Path = [], bool $AllowNonScalar = false, bool $AllowMethodCalls = false)
 ```
 
-`dataTraverse` accepts 3 parameters. The first parameter is the array or object to be traversed, passed by reference. The second parameter accepts an array or a string, and is the path to utilise dot notation (as aforementioned). The third parameter is an optional boolean to indicate whether to allow the method to return non-scalar values (`true` to allow non-scalar values; `false` to prohibit non-scalar values; `false` by default).
+`dataTraverse` accepts 4 parameters. The first parameter is the array or object to be traversed, passed by reference. The second parameter is an optional array or string, and provides the path which utilises dot notation (as aforementioned). The third parameter is an optional boolean to indicate whether to allow the method to return non-scalar values (`true` to allow non-scalar values; `false` to prohibit non-scalar values; `false` by default). The fourth parameter is an optional boolean to indicate whether to allow the method to perform method calls on traversed objects (`true` to allow method calls; `false` to prohibit method calls; `false` by default).
 
 In addition, the PHP functions `trim()`, `strtolower()`, `strtoupper()`, and `strlen()` will be recognised and may optionally be used as the tail of the second parameter.
+
+I would recommended to not traverse untrusted data, but if you must do so, then I would recommend to prohibit method calls (i.e., let the third parameter remain `false`).
 
 Some examples:
 
@@ -276,12 +278,14 @@ As shown by the final two examples, the array will be traversed only as far as t
 `ifCompare` provides a mechanism to perform some limited, basic, rudimentary if/then/else logic directly from strings. This can be useful in situations where writing if/then/else logic directly with PHP code, or with other kinds of code, mightn't be possible, or in situations where the full scope of what should be possible or permissible needs to be limited to just such limited, basic, rudimentary if/then/else logic only, or needs to be determined directly from a string.
 
 ```PHP
-public function ifCompare(&$Data, string $IfString): string
+public function ifCompare(&$Data, string $IfString, bool $AllowMethodCalls = false): string
 ```
 
-`ifCompare` accepts 3 parameters. The first parameter, passed by reference, would typically be an array, but may be any scalar data type. When `ifCompare` leverages `dataTraverse`, this first parameter is the data that it traverses over. The second parameter is a string, and contains the actual if/then/else logic to be processed. The return value is a string, the results of the operation.
+`ifCompare` accepts 3 parameters. The first parameter, passed by reference, would typically be an array, but may be any scalar data type. When `ifCompare` leverages `dataTraverse`, this first parameter is the data that it traverses over. The second parameter is a string, and contains the actual if/then/else logic to be processed. The third parameter is an optional boolean to indicate whether to allow the method to perform method calls on traversed objects (`true` to allow method calls; `false` to prohibit method calls; `false` by default). The return value is a string, the results of the operation.
 
 It should be noted that `eval()` and `exec()` *don't* exist anywhere in this class. Numerous security risks associated with using such PHP functions, along with using such PHP functions aside from when strictly necessary being widely regarded as bad practice, are more than enough reasons to not use them.
+
+I would recommended to not traverse untrusted data, but if you must do so, then I would recommend to prohibit method calls (i.e., let the third parameter remain `false`).
 
 `ifCompare` always processes logic directly from left-to-right (no BIMDAS/BODMAS support, bracketing/bracing, etc), and it utilises *curly brackets* `{}` as a means to indicate the need to use dot notation.
 
@@ -320,4 +324,4 @@ If more complex usage is needed in the future, the capabilities of this class ca
 ---
 
 
-Last Updated: 18 August 2023 (2023.08.18).
+Last Updated: 28 August 2023 (2023.08.28).

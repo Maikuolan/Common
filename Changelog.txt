@@ -14,6 +14,8 @@ found at:
 - [2023.08.18; Maikuolan]: Improved tests and documentation for the operation
   handler.
 
+- [2023.08.28; Maikuolan]: The operation handler can now serve method calls.
+
 === Version/Release 2.9.7 ===
 PATCH RELEASE.
 

@@ -279,7 +279,7 @@ As shown by the final two examples, the array will be traversed only as far as t
 public function ifCompare(&$Data, string $IfString): string
 ```
 
-`ifCompare` accepts 3 parameters. The first parameter, passed by reference, would typically be an array, but may be any scalar data type. When `ifCompare` leverages `dataTraverse`, this first parameter is the data that it traverses over. The second parameter is a string, and contains the actual if/then/else logic to be processed. The return value is a string, the results of the operation.
+`ifCompare` accepts 2 parameters. The first parameter, passed by reference, would typically be an array, but may be any scalar data type. When `ifCompare` leverages `dataTraverse`, this first parameter is the data that it traverses over. The second parameter is a string, and contains the actual if/then/else logic to be processed. The return value is a string, the results of the operation.
 
 It should be noted that `eval()` and `exec()` *don't* exist anywhere in this class. Numerous security risks associated with using such PHP functions, along with using such PHP functions aside from when strictly necessary being widely regarded as bad practice, are more than enough reasons to not use them.
 
@@ -320,4 +320,4 @@ If more complex usage is needed in the future, the capabilities of this class ca
 ---
 
 
-Last Updated: 18 August 2023 (2023.08.18).
+Last Updated: 28 August 2023 (2023.08.28).

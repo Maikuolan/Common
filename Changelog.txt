@@ -14,6 +14,9 @@ found at:
 - [2023.08.18; Maikuolan]: Improved tests and documentation for the operation
   handler.
 
+- [2023.08.28; Maikuolan]: Added guard to the events orchestrator to prevent
+  infinite looping via recursive event firing from within handlers.
+
 === Version/Release 1.9.7 ===
 PATCH RELEASE.
 

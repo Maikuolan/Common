@@ -1,6 +1,6 @@
 <?php
 /**
- * Operation handler (last modified: 2023.08.28).
+ * Operation handler (last modified: 2023.09.14).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -15,19 +15,12 @@
 
 namespace Maikuolan\Common;
 
-class Operation
+class Operation extends CommonAbstract
 {
     /**
      * @var array Caching to optimise operations.
      */
     private $Cache = [];
-
-    /**
-     * @var string The tag/release the version of this file belongs to (might
-     *      be needed by some implementations to ensure compatibility).
-     * @link https://github.com/Maikuolan/Common/tags
-     */
-    public const VERSION = '2.9.7';
 
     /**
      * Operators for version numbers.
@@ -208,46 +201,6 @@ class Operation
             $PartsPad--;
         }
         return $Parts;
-    }
-
-    /**
-     * Traverse data path.
-     *
-     * @param mixed $Data The data to traverse.
-     * @param string|array $Path The path to traverse.
-     * @param bool $AllowNonScalar Whether to allow non-scalar returns.
-     * @param bool $AllowMethodCalls Whether to allow method calls.
-     * @return mixed The traversed data, or an empty string on failure.
-     */
-    public function dataTraverse(&$Data, $Path = [], bool $AllowNonScalar = false, bool $AllowMethodCalls = false)
-    {
-        if (!is_array($Path)) {
-            $Path = preg_split('~(?<!\\\)\.~', $Path) ?: [];
-        }
-        $Segment = array_shift($Path);
-        if ($Segment === null || strlen($Segment) === 0) {
-            return $AllowNonScalar || is_scalar($Data) ? $Data : '';
-        }
-        $Segment = str_replace('\.', '.', $Segment);
-        if (is_array($Data) && isset($Data[$Segment])) {
-            return $this->dataTraverse($Data[$Segment], $Path, $AllowNonScalar, $AllowMethodCalls);
-        }
-        if (is_object($Data)) {
-            if (property_exists($Data, $Segment)) {
-                return $this->dataTraverse($Data->$Segment, $Path, $AllowNonScalar, $AllowMethodCalls);
-            }
-            if ($AllowMethodCalls && method_exists($Data, $Segment)) {
-                $Working = $Data->{$Segment}(...$Path);
-                return $this->dataTraverse($Working, [], $AllowNonScalar);
-            }
-        }
-        if (is_string($Data)) {
-            if (preg_match('~^(?:trim|str(?:tolower|toupper|len))\(\)~i', $Segment)) {
-                $Segment = substr($Segment, 0, -2);
-                $Data = $Segment($Data);
-            }
-        }
-        return $this->dataTraverse($Data, $Path, $AllowNonScalar, $AllowMethodCalls);
     }
 
     /**

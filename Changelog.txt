@@ -18,6 +18,11 @@ found at:
   Added guard to the events orchestrator to prevent infinite looping via
   recursive event firing from within handlers.
 
+- [2023.09.14; Maikuolan]: Moved the version constant and the dataTraverse
+  method to an abstract class, which the other classes can then extend from,
+  due to those being common to all/most classes in the package. Added support
+  for dot notation to the L10N handler.
+
 === Version/Release 2.9.7 ===
 PATCH RELEASE.
 

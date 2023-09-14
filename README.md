@@ -10,6 +10,7 @@ All classes in the common classes package use the namespace `Maikuolan\Common`.
 
 The common classes package currently contains the following classes:
 - **[Cache](https://github.com/Maikuolan/Common/blob/v2/_docs/Cache.md)**: A simple, unified cache handler used by the CIDRAM and phpMussel projects for their caching needs. Currently, it supports APCu, Memcached, Redis, PDO, and flatfile caching.
+- **[CommonAbstract](https://github.com/Maikuolan/Common/blob/v2/_docs/CommonAbstract.md)**: Common abstract for the common classes package. Not to be instantiated directly; To be extended by the other classes.
 - **[ComplexStringHandler](https://github.com/Maikuolan/Common/blob/v2/_docs/ComplexStringHandler.md)**: The complex string handler class provides an easy way to iterate over the parts of a given string, identified by a given pattern, in order to execute a given closure to those parts of the given string, or to the glue that separates those parts.
 - **[DelayedIO](https://github.com/Maikuolan/Common/blob/v2/_docs/DelayedIO.md)**: Provides an easy, simple solution for when needing to read and update a number of files, but delay rewriting the files for a while.
 - **[Demojibakefier](https://github.com/Maikuolan/Common/blob/v2/_docs/Demojibakefier.md)**: Intended to normalise the character encoding of a given string to a preferred character encoding when the given string's byte sequences don't match the expectations of the preferred character encoding. Useful in cases where a block of data might conceivably be composed of several different unspecified, unknown encodings.
@@ -52,4 +53,4 @@ Please use the issues page of this repository.
 ---
 
 
-Last Updated: 21 February 2022 (2022.02.21).
+Last Updated: 14 September 2023 (2023.09.14).

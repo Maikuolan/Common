@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.10.0 ===
+MINOR RELEASE.
+
 - [2023.08.18; Maikuolan]: Improved tests and documentation for the operation
   handler.
 
@@ -22,6 +27,9 @@ found at:
   method to an abstract class, which the other classes can then extend from,
   due to those being common to all/most classes in the package. Added support
   for dot notation to the L10N handler.
+
+Caleb M (Maikuolan),
+September 18, 2023.
 
 === Version/Release 2.9.7 ===
 PATCH RELEASE.

@@ -26,13 +26,20 @@ $ClassesDir = __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
 // Base directory.
 $BaseDir = __DIR__ . DIRECTORY_SEPARATOR;
 
+// Needed in order for tests to work properly.
+if (!is_readable($ClassesDir . 'CommonAbstract.php')) {
+    echo 'CommonAbstract.php is not readable.' . PHP_EOL;
+    exit(1);
+}
+require $ClassesDir . 'CommonAbstract.php';
+
 // Run tests.
 foreach (['ComplexStringHandler', 'DelayedIO', 'Demojibakefier', 'Events', 'IPHeader', 'L10N', 'Matrix', 'NumberFormatter', 'Operation', 'Request', 'YAML'] as $Case) {
     if (!is_readable($ClassesDir . $Case . '.php') || !is_readable($TestsDir . $Case . 'Test.php')) {
         echo $Case . '.php is not readable.' . PHP_EOL;
-        exit(1);
+        exit(2);
     }
-    $ExitCode = 2;
+    $ExitCode = 3;
     require $TestsDir . $Case . 'Test.php';
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * A simple, unified cache handler (last modified: 2023.09.14).
+ * A simple, unified cache handler (last modified: 2023.09.18).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -340,13 +340,13 @@ class Cache extends CommonAbstract
     public function checkTablesPDO(): bool
     {
         /** Try to determine which kind of query to build. */
-        if (preg_match('~^sqlite\:[^\:]~i', $this->PDOdsn)) {
+        if (preg_match('~^sqlite:[^:]~i', $this->PDOdsn)) {
             /** SQLite (excluding usage for in-memory and temporary tables). */
             $Check = 'SELECT count(*) FROM `sqlite_master` WHERE `type` = \'table\' AND `name` = \'Cache\'';
-        } elseif (preg_match('~^informix\:~i', $this->PDOdsn)) {
+        } elseif (preg_match('~^informix:~i', $this->PDOdsn)) {
             /** Informix. */
             $Check = 'SELECT count(*) FROM `systables` WHERE `tabname` = \'Cache\'';
-        } elseif (preg_match('~^firebird\:~i', $this->PDOdsn)) {
+        } elseif (preg_match('~^firebird:~i', $this->PDOdsn)) {
             /** Firebird/Interbase. */
             $Check = 'SELECT 1 FROM RDB$RELATIONS WHERE RDB$RELATION_NAME = \'Cache\'';
         } else {
@@ -1065,7 +1065,7 @@ class Cache extends CommonAbstract
      */
     public function unserializeEntry($Entry)
     {
-        if (!is_string($Entry) || !preg_match('~^a\:\d+\:\{.*\}$~', $Entry)) {
+        if (!is_string($Entry) || !preg_match('~^a:\d+:\{.*\}$~', $Entry)) {
             return $Entry;
         }
         $Arr = unserialize($Entry);

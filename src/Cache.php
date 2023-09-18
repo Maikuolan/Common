@@ -180,7 +180,7 @@ class Cache
      *      be needed by some implementations to ensure compatibility).
      * @link https://github.com/Maikuolan/Common/tags
      */
-    const VERSION = '1.9.7';
+    const VERSION = '1.9.8';
 
     /**
      * Construct object and set working data if needed.

@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2023.09.14).
+ * L10N handler (last modified: 2023.10.12).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -36,6 +36,11 @@ class L10N extends CommonAbstract
      * @var string The directionality for the language.
      */
     public $FallbackDirectionality = '';
+
+    /**
+     * @var string Useful in case a string might have variants available.
+     */
+    public $PreferredVariant = '';
 
     /**
      * @var string The pluralisation rule to use for integers.
@@ -140,7 +145,7 @@ class L10N extends CommonAbstract
                 return '';
             }
         }
-        if (!is_array($Choices)) {
+        if (is_string($Choices)) {
             return $Choices;
         }
         if (is_float($Number)) {
@@ -151,9 +156,14 @@ class L10N extends CommonAbstract
             $Choice = 0;
         }
         if (isset($Choices[$Choice])) {
-            return $Choices[$Choice];
+            $Out = $Choices[$Choice];
+        } else {
+            $Out = $Number > 1 ? array_pop($Choices) : array_shift($Choices);
         }
-        return $Number > 1 ? array_pop($Choices) : array_shift($Choices);
+        if (is_array($Out)) {
+            $Out = ($this->PreferredVariant !== '' && isset($Out[$this->PreferredVariant])) ? $Out[$this->PreferredVariant] : array_shift($Out);
+        }
+        return is_string($Out) ? $Out : '';
     }
 
     /**
@@ -165,29 +175,20 @@ class L10N extends CommonAbstract
     public function getString(string $String): string
     {
         if (strpos($String, '.') === false) {
-            if (isset($this->Data[$String]) && is_string($this->Data[$String])) {
-                return $this->Data[$String];
+            if (isset($this->Data[$String])) {
+                $Out = $this->Data[$String];
+            } elseif ($this->Fallback instanceof \Maikuolan\Common\L10N) {
+                $Out = $this->Fallback->getString($String);
+            } else {
+                $Out = isset($this->Fallback[$String]) ? $this->Fallback[$String] : '';
             }
-            if ($this->Fallback instanceof \Maikuolan\Common\L10N) {
-                return $this->Fallback->getString($String);
-            }
-            if (isset($this->Fallback[$String]) && is_string($this->Fallback[$String])) {
-                return $this->Fallback[$String];
-            }
-            return '';
+        } elseif (($Out = $this->dataTraverse($this->Data, $String, true)) === '') {
+            $Out = ($this->Fallback instanceof \Maikuolan\Common\L10N) ? $this->Fallback->getString($String) : $this->dataTraverse($this->Fallback, $String, true);
         }
-        $Try = $this->dataTraverse($this->Data, $String);
-        if ($Try !== '' && is_string($Try)) {
-            return $Try;
+        if (is_array($Out)) {
+            $Out = ($this->PreferredVariant !== '' && isset($Out[$this->PreferredVariant])) ? $Out[$this->PreferredVariant] : array_shift($Out);
         }
-        if ($this->Fallback instanceof \Maikuolan\Common\L10N) {
-            return $this->Fallback->getString($String);
-        }
-        $Try = $this->dataTraverse($this->Fallback, $String);
-        if ($Try !== '' && is_string($Try)) {
-            return $Try;
-        }
-        return '';
+        return is_string($Out) ? $Out : '';
     }
 
     /**

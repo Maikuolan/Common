@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2023.10.12; Maikuolan]: Preferred variants can now be specified to the L10N
+  handler.
 
 === Version/Release 2.10.0 ===
 MINOR RELEASE.

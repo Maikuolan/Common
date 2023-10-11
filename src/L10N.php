@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2023.09.18).
+ * L10N handler (last modified: 2023.10.12).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -36,6 +36,11 @@ class L10N
      * @var string The directionality for the language.
      */
     public $FallbackDirectionality = '';
+
+    /**
+     * @var string Useful in case a string might have variants available.
+     */
+    public $PreferredVariant = '';
 
     /**
      * @var string The pluralisation rule to use for integers.
@@ -131,7 +136,7 @@ class L10N
         } else {
             return '';
         }
-        if (!is_array($Choices)) {
+        if (is_string($Choices)) {
             return $Choices;
         }
         if (is_float($Number)) {
@@ -142,9 +147,14 @@ class L10N
             $Choice = 0;
         }
         if (isset($Choices[$Choice])) {
-            return $Choices[$Choice];
+            $Out = $Choices[$Choice];
+        } else {
+            $Out = $Number > 1 ? array_pop($Choices) : array_shift($Choices);
         }
-        return $Number > 1 ? array_pop($Choices) : array_shift($Choices);
+        if (is_array($Out)) {
+            $Out = ($this->PreferredVariant !== '' && isset($Out[$this->PreferredVariant])) ? $Out[$this->PreferredVariant] : array_shift($Out);
+        }
+        return is_string($Out) ? $Out : '';
     }
 
     /**
@@ -156,12 +166,16 @@ class L10N
     public function getString($String)
     {
         if (isset($this->Data[$String])) {
-            return $this->Data[$String];
+            $Out = $this->Data[$String];
+        } elseif ($this->Fallback instanceof \Maikuolan\Common\L10N) {
+            $Out = $this->Fallback->getString($String);
+        } else {
+            $Out = isset($this->Fallback[$String]) ? $this->Fallback[$String] : '';
         }
-        if ($this->Fallback instanceof \Maikuolan\Common\L10N) {
-            return $this->Fallback->getString($String);
+        if (is_array($Out)) {
+            $Out = ($this->PreferredVariant !== '' && isset($Out[$this->PreferredVariant])) ? $Out[$this->PreferredVariant] : array_shift($Out);
         }
-        return isset($this->Fallback[$String]) ? $this->Fallback[$String] : '';
+        return is_string($Out) ? $Out : '';
     }
 
     /**

@@ -192,6 +192,58 @@ class L10N extends CommonAbstract
     }
 
     /**
+     * Parses an array of L10N data references from L10N data to an array.
+     *
+     * @param string|array $References The L10N data references.
+     * @return array An array of L10N data.
+     */
+    public function arrayFromL10nToArray($References): array
+    {
+        if (!is_array($References)) {
+            $References = [$References];
+        }
+        $Out = [];
+        foreach ($References as $Reference) {
+            $Try = '';
+            if (isset($this->Data[$Reference])) {
+                $Try = $this->Data[$Reference];
+            } elseif (is_array($this->Fallback)) {
+                if (isset($this->Fallback[$Reference])) {
+                    $Try = $this->Fallback[$Reference];
+                }
+            } elseif ($this->Fallback instanceof \Maikuolan\Common\L10N) {
+                if (isset($this->Fallback->Data[$Reference])) {
+                    $Try = $this->Fallback->Data[$Reference];
+                } elseif (is_array($this->Fallback->Fallback) && isset($this->Fallback->Fallback[$Reference])) {
+                    $Try = $this->Fallback->Fallback[$Reference];
+                }
+            }
+            if ($Try === '') {
+                if (($SPos = strpos($Reference, ' ')) !== '') {
+                    $Try = (($TryFrom = $this->getString(substr($Reference, 0, $SPos))) !== '' && strpos($TryFrom, '%s') !== false) ? sprintf($TryFrom, substr($Reference, $SPos + 1)) : $Reference;
+                } else {
+                    $Try = $Reference;
+                }
+            }
+            $Reference = (!is_array($Try) || preg_match('~^[a-z]{2}(?:-[A-Z]{2})?$~', key($Try))) ? [$Try] : $Try;
+            foreach ($Reference as $Key => $Value) {
+                if (is_array($Value)) {
+                    $Value = $this->PreferredVariant !== '' && isset($Value[$this->PreferredVariant]) ? $Value[$this->PreferredVariant] : array_shift($Value);
+                    if (!is_string($Value)) {
+                        $Value = '';
+                    }
+                }
+                if (!is_string($Key)) {
+                    $Out[] = $Value;
+                    continue;
+                }
+                $Out[$Key] = $Value;
+            }
+        }
+        return $Out;
+    }
+
+    /**
      * For when there aren't multiple forms.
      *
      * @return int Always 0, since always the same.

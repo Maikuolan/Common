@@ -184,7 +184,7 @@ class L10N
      * @param string|array $References The L10N data references.
      * @return array An array of L10N data.
      */
-    public function arrayFromL10nToArray($References): array
+    public function arrayFromL10nToArray($References)
     {
         if (!is_array($References)) {
             $References = [$References];

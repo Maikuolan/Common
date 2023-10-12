@@ -12,7 +12,11 @@ found at:
 === Changes made since last versioned release ===
 
 - [2023.10.12; Maikuolan]: Preferred variants can now be specified to the L10N
-  handler.
+  handler. The arrayFromL10nToArray method, common to CIDRAM's and phpMussel's
+  codebases, as well as to the code for the DocGen scripts at both those
+  projects' documentation repositories, has been integrated to the L10N
+  handler, so that it can be removed from those codebases, and can instead be
+  called from the L10N handler, for cleaner/easier maintainability).
 
 === Version/Release 1.9.8 ===
 PATCH RELEASE.

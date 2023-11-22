@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.11.0 ===
+MINOR RELEASE.
+
 - [2023.10.12; Maikuolan]: Preferred variants can now be specified to the L10N
   handler. The arrayFromL10nToArray method, common to CIDRAM's and phpMussel's
   codebases, as well as to the code for the DocGen scripts at both those
@@ -21,6 +26,9 @@ found at:
 - [2023.11.21; Bug-fix; Maikuolan]: The YAML handler's unescape method wasn't
   unescaping correctly when escaped backslashes preceded other escapable
   symbols; Fixed (CIDRAM/CIDRAM#532).
+
+Caleb M (Maikuolan),
+November 22, 2023.
 
 === Version/Release 2.10.0 ===
 MINOR RELEASE.

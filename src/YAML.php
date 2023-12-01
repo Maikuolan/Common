@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2023.11.22).
+ * YAML handler (last modified: 2023.12.01).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -275,7 +275,7 @@ class YAML
             $SoL = ($EoL === false) ? false : $EoL + 1;
 
             /** Strip comments and whitespace. */
-            if (!($ThisLine = preg_replace(['/(?<!\\\)#.*$/', '/\s+$/'], '', $ThisLine))) {
+            if (!($ThisLine = preg_replace(['/(?<!\\\\)#.*$/', '/\s+$/'], '', $ThisLine))) {
                 /** Line preservation for multiline and folded blocks. .*/
                 if (($this->MultiLine || $this->MultiLineFolded) && strlen($SendTo)) {
                     $SendTo .= "\n";
@@ -459,7 +459,7 @@ class YAML
     public function dataTraverse(&$Data, $Path = [], $AllowNonScalar = false)
     {
         if (!is_array($Path)) {
-            $Path = preg_split('~(?<!\\\)\.~', $Path) ?: [];
+            $Path = preg_split('~(?<!\\\\)\\.~', $Path) ?: [];
         }
         $Segment = array_shift($Path);
         if ($Segment === null || strlen($Segment) === 0) {
@@ -473,7 +473,7 @@ class YAML
             return $this->dataTraverse($Data->$Segment, $Path, $AllowNonScalar);
         }
         if (is_string($Data)) {
-            if (preg_match('~^(?:trim|str(?:tolower|toupper|len))\(\)~i', $Segment)) {
+            if (preg_match('~^(?:trim|str(?:tolower|toupper|len))\\(\\)~i', $Segment)) {
                 $Segment = substr($Segment, 0, -2);
                 $Data = $Segment($Data);
             }
@@ -860,7 +860,7 @@ class YAML
         if ($this->Quotes !== '"') {
             return $Value;
         }
-        $Value = str_replace("\\", "\\\\", $Value);
+        $Value = str_replace('\\', '\\\\', $Value);
         if ($Newlines) {
             $Value = str_replace("\n", '\n', $Value);
         }

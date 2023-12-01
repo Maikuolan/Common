@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2023.11.22).
+ * YAML handler (last modified: 2023.12.01).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -263,7 +263,7 @@ class YAML extends CommonAbstract
             $SoL = ($EoL === false) ? false : $EoL + 1;
 
             /** Strip comments and whitespace. */
-            if (!($ThisLine = preg_replace(['/(?<!\\\)#.*$/', '/\s+$/'], '', $ThisLine))) {
+            if (!($ThisLine = preg_replace(['/(?<!\\\\)#.*$/', '/\s+$/'], '', $ThisLine))) {
                 /** Line preservation for multiline and folded blocks. .*/
                 if (($this->MultiLine || $this->MultiLineFolded) && strlen($SendTo)) {
                     $SendTo .= "\n";
@@ -815,7 +815,7 @@ class YAML extends CommonAbstract
         if ($this->Quotes !== '"') {
             return $Value;
         }
-        $Value = str_replace("\\", "\\\\", $Value);
+        $Value = str_replace('\\', '\\\\', $Value);
         if ($Newlines) {
             $Value = str_replace("\n", '\n', $Value);
         }

@@ -11,7 +11,7 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2023.12.01; Maikuolan]: Improve escaping.
 
 === Version/Release 2.11.0 ===
 MINOR RELEASE.

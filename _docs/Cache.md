@@ -7,40 +7,41 @@
 
 ### How to use:
 
-Let's start with an example. CIDRAM leverages the Cache class via the `InitialiseCache` closure in CIDRAM's main function file. *Excerpt:*
+Let's start with an example. CIDRAM leverages the Cache class via the `initialiseCache` method in CIDRAM's Core class file. *Excerpt:*
 
 ```PHP
-    /** Create new cache object. */
-    $CIDRAM['Cache'] = new \Maikuolan\Common\Cache();
-    $CIDRAM['Cache']->Prefix = $CIDRAM['Config']['supplementary_cache_options']['prefix'];
-    $CIDRAM['Cache']->EnableAPCu = $CIDRAM['Config']['supplementary_cache_options']['enable_apcu'];
-    $CIDRAM['Cache']->EnableMemcached = $CIDRAM['Config']['supplementary_cache_options']['enable_memcached'];
-    $CIDRAM['Cache']->EnableRedis = $CIDRAM['Config']['supplementary_cache_options']['enable_redis'];
-    $CIDRAM['Cache']->EnablePDO = $CIDRAM['Config']['supplementary_cache_options']['enable_pdo'];
-    $CIDRAM['Cache']->MemcachedHost = $CIDRAM['Config']['supplementary_cache_options']['memcached_host'];
-    $CIDRAM['Cache']->MemcachedPort = $CIDRAM['Config']['supplementary_cache_options']['memcached_port'];
-    $CIDRAM['Cache']->RedisHost = $CIDRAM['Config']['supplementary_cache_options']['redis_host'];
-    $CIDRAM['Cache']->RedisPort = $CIDRAM['Config']['supplementary_cache_options']['redis_port'];
-    $CIDRAM['Cache']->RedisTimeout = $CIDRAM['Config']['supplementary_cache_options']['redis_timeout'];
-    $CIDRAM['Cache']->PDOdsn = $CIDRAM['Config']['supplementary_cache_options']['pdo_dsn'];
-    $CIDRAM['Cache']->PDOusername = $CIDRAM['Config']['supplementary_cache_options']['pdo_username'];
-    $CIDRAM['Cache']->PDOpassword = $CIDRAM['Config']['supplementary_cache_options']['pdo_password'];
-    $CIDRAM['Cache']->FFDefault = $CIDRAM['Vault'] . 'cache.dat';
+        /** Create new cache object. */
+        $this->Cache = new \Maikuolan\Common\Cache();
+        $this->Cache->Prefix = $this->Configuration['supplementary_cache_options']['prefix'];
+        $this->Cache->EnableAPCu = $this->Configuration['supplementary_cache_options']['enable_apcu'];
+        $this->Cache->EnableMemcached = $this->Configuration['supplementary_cache_options']['enable_memcached'];
+        $this->Cache->EnableRedis = $this->Configuration['supplementary_cache_options']['enable_redis'];
+        $this->Cache->EnablePDO = $this->Configuration['supplementary_cache_options']['enable_pdo'];
+        $this->Cache->MemcachedHost = $this->Configuration['supplementary_cache_options']['memcached_host'];
+        $this->Cache->MemcachedPort = $this->Configuration['supplementary_cache_options']['memcached_port'];
+        $this->Cache->RedisHost = $this->Configuration['supplementary_cache_options']['redis_host'];
+        $this->Cache->RedisPort = $this->Configuration['supplementary_cache_options']['redis_port'];
+        $this->Cache->RedisTimeout = $this->Configuration['supplementary_cache_options']['redis_timeout'];
+        $this->Cache->RedisDatabaseNumber = $this->Configuration['supplementary_cache_options']['redis_database_number'];
+        $this->Cache->PDOdsn = $this->Configuration['supplementary_cache_options']['pdo_dsn'];
+        $this->Cache->PDOusername = $this->Configuration['supplementary_cache_options']['pdo_username'];
+        $this->Cache->PDOpassword = $this->Configuration['supplementary_cache_options']['pdo_password'];
+        $this->Cache->FFDefault = $this->CachePath;
 
-    if (!$CIDRAM['Cache']->connect()) {
-        $CIDRAM['Events']->fireEvent('final');
-        if ($CIDRAM['Cache']->Using === 'FF') {
-            header('Content-Type: text/plain');
-            die('[CIDRAM] ' . $CIDRAM['L10N']->getString('Error_WriteCache'));
-        } else {
-            $Status = $CIDRAM['GetStatusHTTP'](503);
-            header('HTTP/1.0 503 ' . $Status);
-            header('HTTP/1.1 503 ' . $Status);
-            header('Status: 503 ' . $Status);
-            header('Retry-After: 3600');
-            die;
+        if (!$this->Cache->connect()) {
+            $this->Events->fireEvent('final');
+            if ($this->Cache->Using === 'FF') {
+                header('Content-Type: text/plain');
+                die('[CIDRAM] ' . $this->L10N->getString('response.Unable to write to the cache'));
+            } else {
+                $Status = $this->getStatusHTTP(503);
+                header('HTTP/1.0 503 ' . $Status);
+                header('HTTP/1.1 503 ' . $Status);
+                header('Status: 503 ' . $Status);
+                header('Retry-After: 3600');
+                die;
+            }
         }
-    }
 ```
 
 The above example can be broken down into four main parts:
@@ -70,6 +71,7 @@ $Instance->MemcachedPort = 11211;  // Integer (the port for Memcached to try usi
 $Instance->RedisHost = 'localhost'; // String (the host for Redis to try using).
 $Instance->RedisPort = 6379;  // Integer (the port for Redis to try using).
 $Instance->RedisTimeout = 2.5; // Float or integer (the timeout for Redis to try using).
+$Instance->RedisDatabaseNumber = 0; // Integer (which database number Redis should select).
 $Instance->PDOdsn = ''; // String (the DSN to use for PDO connections).
 $Instance->PDOusername = ''; // String (the username to use for PDO connections).
 $Instance->PDOpassword = ''; // String (the password to use for PDO connections).
@@ -102,7 +104,7 @@ $Using = $Instance->Using(); // String.
 
 In most cases, if an implementation implements a caching solution, it does so because doing so is necessary for correct functionality of the implementation, and it therefore won't be desirable in most cases for the implementation to continue execution when its implemented caching solution fails. In the case of implementing this particular class, the need to handle failure arises when the `connect` method returns `false` (indicating failure).
 
-In the earlier above example, CIDRAM does this by printing the message to the end-user, "unable to write to the cache" (`$CIDRAM['L10N']->getString('Error_WriteCache')`), when flatfile caching is used, or by sending `503 Service Unavailable` headers when anything else is used, and then terminating the request.
+In the earlier above example, CIDRAM does this by printing the message to the end-user, "Unable to write to the cache", when flatfile caching is used, or by sending `503 Service Unavailable` headers when anything else is used, and then terminating the request.
 
 ### What next?
 
@@ -306,4 +308,4 @@ public function exposeWorkingDataArray();
 ---
 
 
-Last Updated: 16 January 2023 (2023.01.16).
+Last Updated: 1 December 2023 (2023.12.01).

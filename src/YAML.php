@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2023.12.01).
+ * YAML handler (last modified: 2023.12.08).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -710,7 +710,7 @@ class YAML extends CommonAbstract
                     $Out .= ',';
                 }
                 if (!$Sequential) {
-                    $Out .= ($this->QuoteKeys ? $this->scalarToString($Key) : $Key) . ':';
+                    $Out .= ($this->QuoteKeys ? $this->scalarToString($Key) : $this->escapeKey($Key)) . ':';
                 }
                 if (is_array($Value)) {
                     $this->processInner($Value, $Out, $Depth + 1);
@@ -750,9 +750,9 @@ class YAML extends CommonAbstract
             $ThisDepth = str_repeat($this->Indent, $Depth);
             if ($NullSet && !$Sequential) {
                 $Out .= $ThisDepth . '?';
-                $Value = $Key;
+                $Value = $this->escapeKey($Key);
             } else {
-                $Out .= $ThisDepth . ($Sequential ? '-' : ($this->QuoteKeys ? $this->scalarToString($Key) : $Key) . ':');
+                $Out .= $ThisDepth . ($Sequential ? '-' : ($this->QuoteKeys ? $this->scalarToString($Key) : $this->escapeKey($Key)) . ':');
             }
             if (is_array($Value)) {
                 if ($Depth < $this->FlowRebuildDepth - 1) {
@@ -810,10 +810,10 @@ class YAML extends CommonAbstract
     private function escape(string $Value = '', bool $Newlines = true): string
     {
         if ($this->Quotes === "'") {
-            return str_replace("'", "''", $Value);
+            return str_replace(['\\', '#', "'"], ['\\\\', '\#', "''"], $Value);
         }
         if ($this->Quotes !== '"') {
-            return $Value;
+            return str_replace(['\\', '#'], ['\\\\', '\#'], $Value);
         }
         $Value = str_replace('\\', '\\\\', $Value);
         if ($Newlines) {
@@ -844,6 +844,20 @@ class YAML extends CommonAbstract
             $Value = str_replace(['"', '/'], ['\"', '\/'], $Value);
         }
         return $Value;
+    }
+
+    /**
+     * Escape keys if necessary (or else there could be problems with hashes).
+     *
+     * @param string $Key The key to escape.
+     * @return string The escaped key.
+     */
+    private function escapeKey(string $Key = ''): string
+    {
+        if (strpos($Key, '#') === false && strpos($Key, '\\') === false) {
+            return $Key;
+        }
+        return '"' . str_replace(['\\', '#'], ['\\\\', '\#'], $Key) . '"';
     }
 
     /**
@@ -899,9 +913,9 @@ class YAML extends CommonAbstract
             return $Value;
         }
         if ($Style === "'" || $Style === "\xe2\x80\x98" || $Style === "\x93") {
-            return str_replace("''", "'", $Value);
+            return str_replace(["''", '\#', '\\\\'], ["'", '#', '\\'], $Value);
         }
-        return $Value;
+        return str_replace(['\#', '\\\\'], ['#', '\\'], $Value);
     }
 
     /**

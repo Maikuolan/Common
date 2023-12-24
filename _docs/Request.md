@@ -121,7 +121,7 @@ public $MostRecentStatusCode = 0;
 The main request method (this is what you'll want to use to actually perform a request).
 
 ```PHP
-public function request(string $URI, $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0): string;
+public function request(string $URI, $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0, string $Method = ''): string;
 ```
 
 The first parameter (`$URI`) is the URL, URI, resource, etc that you want to request.
@@ -132,14 +132,16 @@ The third parameter (`$Timeout`) is an optional timeout limit for the request. W
 
 The fourth parameter (`$Headers`) is an optional array of headers to send with the request.
 
-The fifth parameter (`$Depth`) represents the recursion depth of the current request instance, is populated automatically by `request`, and shouldn't ever be populated manually by the implementation.
+The fifth parameter (`$Depth`) represents the recursion depth of the current request instance, is populated automatically by `request`, and shouldn't be populated manually by the implementation (other than when needing access to the sixth parameter).
+
+The sixth parameter (`$Method`) can be used to specify the intended request method in the event that the method intended isn't GET or POST. When the intended request method is GET or POST, it shouldn't be populated manually by the implementation (the method will determine automatically whether GET or POST is needed, based on factors like request parameters). This can be useful when methods such as CONNECT or DELETE are needed.
 
 The method returns a string (either the returned resource, or an empty string on failure).
 
 The class also implements the magic method `__invoke`, as a way to alias back to `request` when the instance is utilised as a callable or function.
 
 ```PHP
-public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0);
+public function __invoke(...$Params): string;
 ```
 
 #### inCsv method.
@@ -161,4 +163,4 @@ public function sendMessage(string $Message): void;
 ---
 
 
-Last Updated: 24 March 2023 (2023.03.24).
+Last Updated: 24 December 2023 (2023.12.24).

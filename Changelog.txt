@@ -21,6 +21,8 @@ found at:
   keys is defined. Accordingly, that's been done, and a new method added for
   that purpose (CIDRAM/CIDRAM#547).
 
+- [2023.12.24; Maikuolan]: The request handler can now handle custom methods.
+
 === Version/Release 1.10.0 ===
 MINOR RELEASE.
 

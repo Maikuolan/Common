@@ -1,6 +1,6 @@
 <?php
 /**
- * Request handler (last modified: 2023.11.22).
+ * Request handler (last modified: 2023.12.24).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -71,7 +71,7 @@ class Request
      *
      * @return string
      */
-    public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0)
+    public function __invoke($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0, $Method = '')
     {
         return $this->request($URI, $Params, $Timeout, $Headers, $Depth);
     }
@@ -108,9 +108,10 @@ class Request
      * @param int $Timeout An optional timeout limit.
      * @param array $Headers An optional array of headers to send with the request.
      * @param int $Depth Recursion depth of the current closure instance.
+     * @param string $Method The request method to use (if not GET or POST).
      * @return string The results of the request, or an empty string upon failure.
      */
-    public function request($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0)
+    public function request($URI, $Params = [], $Timeout = -1, array $Headers = [], $Depth = 0, $Method = '')
     {
         /** Test channel triggers. */
         foreach ($this->Channels['Triggers'] as $TriggerName => $TriggerURI) {
@@ -138,7 +139,7 @@ class Request
             }
             if ($this->inCsv($TriggerName, $this->Disabled)) {
                 if (isset($AlternateURI)) {
-                    return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth);
+                    return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth, $Method);
                 }
                 return '';
             }
@@ -173,6 +174,9 @@ class Request
                 isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false
             ));
         }
+        if ($Method !== '') {
+            curl_setopt($Request, CURLOPT_CUSTOMREQUEST, $Method);
+        }
         curl_setopt($Request, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($Request, CURLOPT_MAXREDIRS, 1);
         curl_setopt($Request, CURLOPT_RETURNTRANSFER, true);
@@ -196,7 +200,7 @@ class Request
             /** Request failed. Try again using an alternative address. */
             if ($Info['http_code'] >= 400 && isset($AlternateURI) && $Depth < 3) {
                 curl_close($Request);
-                return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1);
+                return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
             }
         } else {
             $this->sendMessage(sprintf('%s - %s - %s - %s', $Post ? 'POST' : 'GET', $URI, 200, (floor($Time * 100) / 100) . 's'));

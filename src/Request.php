@@ -169,6 +169,9 @@ class Request extends CommonAbstract
         }
         if ($Method !== '') {
             curl_setopt($Request, CURLOPT_CUSTOMREQUEST, $Method);
+            $DebugMethod = $Method;
+        } else {
+            $DebugMethod = $Post ? 'POST' : 'GET';
         }
         curl_setopt($Request, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($Request, CURLOPT_MAXREDIRS, 1);
@@ -185,7 +188,7 @@ class Request extends CommonAbstract
 
         /** Check for problems (e.g., resource not found, server errors, etc). */
         if (($Info = curl_getinfo($Request)) && is_array($Info) && isset($Info['http_code'])) {
-            $this->sendMessage(sprintf('%s - %s - %s - %s', $Post ? 'POST' : 'GET', $URI, $Info['http_code'], (floor($Time * 100) / 100) . 's'));
+            $this->sendMessage(sprintf('%s - %s - %s - %s', $DebugMethod, $URI, $Info['http_code'], (floor($Time * 100) / 100) . 's'));
 
             /** Most recent HTTP status code. */
             $this->MostRecentStatusCode = $Info['http_code'];
@@ -196,7 +199,7 @@ class Request extends CommonAbstract
                 return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
             }
         } else {
-            $this->sendMessage(sprintf('%s - %s - %s - %s', $Post ? 'POST' : 'GET', $URI, 200, (floor($Time * 100) / 100) . 's'));
+            $this->sendMessage(sprintf('%s - %s - %s - %s', $DebugMethod, $URI, 200, (floor($Time * 100) / 100) . 's'));
 
             /** Most recent HTTP status code. */
             $this->MostRecentStatusCode = 200;

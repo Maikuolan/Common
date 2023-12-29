@@ -23,6 +23,9 @@ found at:
 
 - [2023.12.24; Maikuolan]: The request handler can now handle custom methods.
 
+- [2023.12.29; Maikuolan]: The number formatter's getSetCSV method removed and
+  replaced by a getSetJSON method.
+
 === Version/Release 1.10.0 ===
 MINOR RELEASE.
 

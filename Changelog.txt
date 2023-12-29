@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 1.11.0 ===
+MINOR RELEASE.
+
 - [2023.12.01; Maikuolan]: Improved escaping. Added support for specifying a
   Redis database number to the cache handler (CIDRAM/CIDRAM#540).
 
@@ -25,6 +30,9 @@ found at:
 
 - [2023.12.29; Maikuolan]: The number formatter's getSetCSV method removed and
   replaced by a getSetJSON method.
+
+Caleb M (Maikuolan),
+December 29, 2023.
 
 === Version/Release 1.10.0 ===
 MINOR RELEASE.

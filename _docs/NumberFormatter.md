@@ -9,7 +9,7 @@
 
 - [NumberFormatter constructor.](#numberformatter-constructor)
 - [format method.](#format-method)
-- [getSetCSV method.](#getsetcsv-method)
+- [getSetJSON method.](#getsetjson-method)
 - [ConversionSet member.](#conversionset-member)
 - [GroupSeparator member.](#groupseparator-member)
 - [GroupSize member.](#groupsize-member)
@@ -203,23 +203,23 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `Thai-2` | `๑๒๓๔๕๖๗.๘๙` | `๑๐๒๐๓๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐`
 `Tibetan` | `༡༢༣༤༥༦༧.༨༩` | `༡༠༢༠༣༠༤༠.༥༠༦༠༧` | `༡༠༠.༧༥༠`
 
-#### getSetCSV method.
+#### getSetJSON method.
 
-Gets the specified conversion set and returns it as a CSV string. Not normally needed by the implementation, but can sometimes be useful if the implementation needs further work done on numbers outside the scope of the number formatter itself.
+Gets the specified conversion set and returns it as a JSON string. Not normally needed by the implementation, but can sometimes be useful if the implementation needs further work done on numbers outside the scope of the number formatter itself.
 
 ```PHP
-$Obj = new \Maikuolan\Common\NumberFormatter('Javanese');
-echo $Obj->getSetCSV() . PHP_EOL;
-echo $Obj->getSetCSV('Roman') . PHP_EOL;
-echo $Obj->getSetCSV('Persian') . PHP_EOL;
+$Obj = new \Maikuolan\Common\NumberFormatter();
+echo $Obj->getSetJSON('Javanese') . PHP_EOL;
+echo $Obj->getSetJSON('Roman') . PHP_EOL;
+echo $Obj->getSetJSON('Persian') . PHP_EOL;
 ```
 
 Output:
 
 ```
-'꧐','꧑','꧒','꧓','꧔','꧕','꧖','꧗','꧘','꧙'
-'','','','','','','','','','','I','II','III','IV','V','VI','VII','VIII','IX','X','XX','XXX','XL','L','LX','LXX','LXXX','XC','C','CC','CCC','CD','D','DC','DCC','DCCC','CM','M','MM','MMM'
-'۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'
+["\ua9d0","\ua9d1","\ua9d2","\ua9d3","\ua9d4","\ua9d5","\ua9d6","\ua9d7","\ua9d8","\ua9d9"]
+{".":true,"0":"","1":"","2":"","3":"","4":"","5":"","6":"","7":"","8":"","9":"","^0+1":"I","^0+2":"II","^0+3":"III","^0+4":"IV","^0+5":"V","^0+6":"VI","^0+7":"VII","^0+8":"VIII","^0+9":"IX","^1+1":"X","^1+2":"XX","^1+3":"XXX","^1+4":"XL","^1+5":"L","^1+6":"LX","^1+7":"LXX","^1+8":"LXXX","^1+9":"XC","^2+1":"C","^2+2":"CC","^2+3":"CCC","^2+4":"CD","^2+5":"D","^2+6":"DC","^2+7":"DCC","^2+8":"DCCC","^2+9":"CM","^3+1":"M","^3+2":"MM","^3+3":"MMM","^3+4":"I\u0305V\u0305","^3+5":"V\u0305","^3+6":"V\u0305I\u0305","^3+7":"V\u0305I\u0305I\u0305","^3+8":"V\u0305I\u0305I\u0305I\u0305","^3+9":"I\u0305X\u0305","^4+1":"X\u0305","^4+2":"X\u0305X\u0305","^4+3":"X\u0305X\u0305X\u0305","^4+4":"X\u0305L\u0305","^4+5":"L\u0305","^4+6":"L\u0305X\u0305","^4+7":"L\u0305X\u0305X\u0305","^4+8":"L\u0305X\u0305X\u0305X\u0305","^4+9":"X\u0305C\u0305","^5+1":"C\u0305","^5+2":"C\u0305C\u0305","^5+3":"C\u0305C\u0305C\u0305","^5+4":"C\u0305D\u0305","^5+5":"D\u0305","^5+6":"D\u0305C\u0305","^5+7":"D\u0305C\u0305C\u0305","^5+8":"D\u0305C\u0305C\u0305C\u0305","^5+9":"C\u0305M\u0305","^6+1":"M\u0305","^6+2":"M\u0305M\u0305","^6+3":"M\u0305M\u0305M\u0305"}
+["\u06f0","\u06f1","\u06f2","\u06f3","\u06f4","\u06f5","\u06f6","\u06f7","\u06f8","\u06f9"]
 ```
 
 #### ConversionSet member.
@@ -542,4 +542,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 7 July 2022 (2022.07.07).
+Last Updated: 29 December 2023 (2023.12.29).

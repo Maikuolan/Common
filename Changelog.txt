@@ -19,6 +19,9 @@ found at:
 - [2024.06.26; Bug-fix; Maikuolan]: Number formatter showing some Armenian
   numerals incorrectly; Fixed.
 
+- [2024.06.26; Maikuolan]: Added Ge'ez/Ethiopic support to the number formatter
+  and performed some minor refactoring.
+
 === Version/Release 2.12.0 ===
 MINOR RELEASE.
 

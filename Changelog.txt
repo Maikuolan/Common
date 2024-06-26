@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.12.1 ===
+PATCH RELEASE.
+
 - [2024.03.21; Maikuolan]: Slightly improved guards for the IPHeader class
   trySource method.
 
@@ -21,6 +26,9 @@ found at:
 
 - [2024.06.26; Maikuolan]: Added Ge'ez/Ethiopic support to the number formatter
   and performed some minor refactoring.
+
+Caleb M (Maikuolan),
+June 26, 2024.
 
 === Version/Release 2.12.0 ===
 MINOR RELEASE.

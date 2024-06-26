@@ -1302,8 +1302,7 @@ class NumberFormatter extends CommonAbstract
         } else {
             $WholeLen = strlen($Number);
         }
-        $OddEven = 'o';
-        for ($Unit = 0, $Formatted = '', $ThouPos = $this->GroupOffset, $Pos = $WholeLen - 1; $Pos > -1; $Pos--, $Unit++, $OddEven = $OddEven === 'o' ? 'e' : 'o') {
+        for ($OddEven = 'o', $Unit = 0, $Formatted = '', $ThouPos = $this->GroupOffset, $Pos = $WholeLen - 1; $Pos > -1; $Pos--, $Unit++, $OddEven = $OddEven === 'o' ? 'e' : 'o') {
             if ($ThouPos >= $this->GroupSize) {
                 $ThouPos = 1;
                 $Formatted = $this->GroupSeparator . $Formatted;

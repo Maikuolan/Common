@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2024.07.02; Bug-fix; Maikuolan]: 3-digit and script-based codes not
+  recognised by arrayFromL10nToArray; Fixed.
 
 === Version/Release 2.12.1 ===
 PATCH RELEASE.

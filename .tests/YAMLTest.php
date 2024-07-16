@@ -281,6 +281,17 @@ $ExpectedForSyntax = [
             ]
         ]
     ],
+    'List support' => [
+        'aa' => 'All keys same value.',
+        'ab' => 'All keys same value.',
+        'ac' => 'All keys same value.',
+        'ad' => 'All keys same value.',
+        'ba' => 'ww',
+        'bb' => 'xx',
+        'bc' => 'yy',
+        'bd' => 'zz',
+        '[ca, cb, cc, cd]' => ['vv', 'ww', 'xx', 'yy', 'zz'],
+    ],
     'End of file' => ':-)'
 ];
 

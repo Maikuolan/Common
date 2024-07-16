@@ -270,4 +270,8 @@ Specification examples:
    stats: |
      65 Home Runs
      0.278 Batting Average
+List support:
+ [aa, ab, ac, ad]: "All keys same value."
+ [ba, bb, bc, bd]: ["ww", "xx", "yy", "zz"] # Key-value pairs balanced; Values assigned as flow map to parent using corresponding keys.
+ [ca, cb, cc, cd]: ["vv", "ww", "xx", "yy", "zz"] # Key-value pairs NOT balanced; Values assigned as flow sequence named as the literal key.
 End of file: ":-)"

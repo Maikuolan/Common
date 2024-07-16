@@ -14,6 +14,11 @@ found at:
 - [2024.07.02; Bug-fix; Maikuolan]: 3-digit and script-based codes not
   recognised by arrayFromL10nToArray; Fixed.
 
+- [2024.07.16; Maikuolan]: Added list functionality to the YAML handler (i.e.,
+  using flow sequences in keys to assign a singular value to all of those keys
+  at once, or to determine the keys to use to convert corresponding flow
+  sequences in values to flow maps).
+
 === Version/Release 2.12.1 ===
 PATCH RELEASE.
 

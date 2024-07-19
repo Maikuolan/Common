@@ -271,7 +271,7 @@ Specification examples:
      65 Home Runs
      0.278 Batting Average
 List support:
- [aa, ab, ac, ad]: "All keys same value."
- [ba, bb, bc, bd]: ["ww", "xx", "yy", "zz"] # Key-value pairs balanced; Values assigned as flow map to parent using corresponding keys.
- [ca, cb, cc, cd]: ["vv", "ww", "xx", "yy", "zz"] # Key-value pairs NOT balanced; Values assigned as flow sequence named as the literal key.
+ [aa, ab, ac, ad]: "All keys same value." # Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, all with the same value of "All keys same value."
+ [ba, bb, bc, bd]: ["ww", "xx", "yy", "zz"] # Key-value pairs balanced; Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, and the values of the flow sequence at the right operand as the values.
+ [ca, cb, cc, cd]: ["vv", "ww", "xx", "yy", "zz"] # Key-value pairs NOT balanced; Assigns 1 element to the parent array: A non-associative array (or "flow sequence") whose key is the literal left operand, and whose elements use the values of the flow sequence at the right operand.
 End of file: ":-)"

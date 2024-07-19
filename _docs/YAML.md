@@ -570,7 +570,7 @@ __Examples from [2.3. Scalars](https://yaml.org/spec/1.2.2/#23-scalars)__ | __Wi
 2.18 Multi-line Flow Scalars | Nope. Please use "`\|`" to do that with the YAML handler.
 __Examples from [2.4. Tags](https://yaml.org/spec/1.2.2/#24-tags)__ | __Will using the YAML handler to process it produce the desired results?__
 Example 2.19 Integers | Yes.
-Example 2.20 Floating Point | Still working on the exponentials, but yes for the others.
+Example 2.20 Floating Point | Yes.
 Example 2.21 Miscellaneous | It isn't possible to have `null` keys in PHP arrays (or collections, to use YAML terminology). When assigning `null` to a key, PHP silently casts it to an empty string. Aside from that though, yes; supported.
 Example 2.22 Timestamps | *Kind of*. The data will be there as expected, but there's no native "timestamp" data type available to PHP, and the YAML handler treats timestamps as normal strings, so you'll get strings.
 Example 2.23 Various Explicit Tags | Obviously, the YAML handler doesn't support any kind of `!something` tag. Aside from that though, yes; supported.
@@ -650,6 +650,10 @@ __Tags (directly invokes PHP functions at `coerce`)__ | __Description__
 `!tanh` | Uses PHP's `tanh()` function to process the entry.
 `!ucfirst` | Uses PHP's `ucfirst()` function to process the entry.
 `!ucwords` | Uses PHP's `ucwords()` function to process the entry.
+__List functionality__ | Flow sequences can be used in keys to assign elements to the parent array using those flow sequences as the array keys and the right operand as the array values, either the same value for all elements if the right operand is scalar, or with respective corresponding values if the right operand is also a flow sequence and has the same number of elements as the flow sequence at the left operand. If the number of elements isn't the same, list functionality isn't applied, with the left operand instead being treated as a literal string.
+`[aa, ab, ac, ad]: "All keys same value."` | *Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, all with the same value of "All keys same value."*
+`[ba, bb, bc, bd]: ["ww", "xx", "yy", "zz"]` | *Key-value pairs balanced; Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, and the values of the flow sequence at the right operand as the values.*
+`[ca, cb, cc, cd]: ["vv", "ww", "xx", "yy", "zz"]` | *Key-value pairs NOT balanced; Assigns 1 element to the parent array: A non-associative array (or "flow sequence") whose key is the literal left operand, and whose elements use the values of the flow sequence at the right operand.*
 
 ---
 
@@ -725,4 +729,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 30 December 2022 (2022.12.30).
+Last Updated: 19 July 2024 (2024.07.19).

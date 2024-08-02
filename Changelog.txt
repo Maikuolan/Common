@@ -19,6 +19,9 @@ found at:
   at once, or to determine the keys to use to convert corresponding flow
   sequences in values to flow maps).
 
+- [2024.08.02; Maikuolan]: Added a guard to the request handler's request
+  method to fail if curl_init doesn't exist.
+
 === Version/Release 2.12.1 ===
 PATCH RELEASE.
 

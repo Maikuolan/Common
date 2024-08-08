@@ -22,6 +22,8 @@ found at:
 - [2024.08.02; Maikuolan]: Added a guard to the request handler's request
   method to fail if curl_init doesn't exist.
 
+- [2024.08.08; Maikuolan]: Added ISO 15924 support to the L10N handler.
+
 === Version/Release 2.12.1 ===
 PATCH RELEASE.
 

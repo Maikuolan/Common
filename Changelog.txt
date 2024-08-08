@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.12.2 ===
+PATCH RELEASE.
+
 - [2024.07.02; Bug-fix; Maikuolan]: 3-digit and script-based codes not
   recognised by arrayFromL10nToArray; Fixed.
 
@@ -23,6 +28,9 @@ found at:
   method to fail if curl_init doesn't exist.
 
 - [2024.08.08; Maikuolan]: Added ISO 15924 support to the L10N handler.
+
+Caleb M (Maikuolan),
+August 8, 2024.
 
 === Version/Release 2.12.1 ===
 PATCH RELEASE.

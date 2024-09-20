@@ -11,7 +11,9 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2024.09.20; Bug-fix; Maikuolan]: The cache handler failed to unserialise
+  multiline data when fetching cache entries due to a missing regex flag;
+  Fixed.
 
 === Version/Release 2.12.2 ===
 PATCH RELEASE.

@@ -11,11 +11,19 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.12.3 ===
+PATCH RELEASE.
+
 - [2024.09.20; Bug-fix; Maikuolan]: The cache handler failed to unserialise
   multiline data when fetching cache entries due to a missing regex flag;
   Fixed.
 
 - [2024.11.06; Maikuolan]: Added PHP 8.4 to workflows.
+
+Caleb M (Maikuolan),
+November 6, 2024.
 
 === Version/Release 2.12.2 ===
 PATCH RELEASE.

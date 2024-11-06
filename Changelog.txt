@@ -15,6 +15,8 @@ found at:
   multiline data when fetching cache entries due to a missing regex flag;
   Fixed.
 
+- [2024.11.06; Maikuolan]: Added PHP 8.4 to workflows.
+
 === Version/Release 2.12.2 ===
 PATCH RELEASE.
 

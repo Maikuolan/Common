@@ -10,6 +10,7 @@
 - [NumberFormatter constructor.](#numberformatter-constructor)
 - [format method.](#format-method)
 - [getSetJSON method.](#getsetjson-method)
+- [unformat method.](#unformat-method)
 - [ConversionSet member.](#conversionset-member)
 - [GroupSeparator member.](#groupseparator-member)
 - [GroupSize member.](#groupsize-member)
@@ -224,6 +225,52 @@ Output:
 ["\ua9d0","\ua9d1","\ua9d2","\ua9d3","\ua9d4","\ua9d5","\ua9d6","\ua9d7","\ua9d8","\ua9d9"]
 {".":true,"0":"","1":"","2":"","3":"","4":"","5":"","6":"","7":"","8":"","9":"","^0+1":"I","^0+2":"II","^0+3":"III","^0+4":"IV","^0+5":"V","^0+6":"VI","^0+7":"VII","^0+8":"VIII","^0+9":"IX","^1+1":"X","^1+2":"XX","^1+3":"XXX","^1+4":"XL","^1+5":"L","^1+6":"LX","^1+7":"LXX","^1+8":"LXXX","^1+9":"XC","^2+1":"C","^2+2":"CC","^2+3":"CCC","^2+4":"CD","^2+5":"D","^2+6":"DC","^2+7":"DCC","^2+8":"DCCC","^2+9":"CM","^3+1":"M","^3+2":"MM","^3+3":"MMM","^3+4":"I\u0305V\u0305","^3+5":"V\u0305","^3+6":"V\u0305I\u0305","^3+7":"V\u0305I\u0305I\u0305","^3+8":"V\u0305I\u0305I\u0305I\u0305","^3+9":"I\u0305X\u0305","^4+1":"X\u0305","^4+2":"X\u0305X\u0305","^4+3":"X\u0305X\u0305X\u0305","^4+4":"X\u0305L\u0305","^4+5":"L\u0305","^4+6":"L\u0305X\u0305","^4+7":"L\u0305X\u0305X\u0305","^4+8":"L\u0305X\u0305X\u0305X\u0305","^4+9":"X\u0305C\u0305","^5+1":"C\u0305","^5+2":"C\u0305C\u0305","^5+3":"C\u0305C\u0305C\u0305","^5+4":"C\u0305D\u0305","^5+5":"D\u0305","^5+6":"D\u0305C\u0305","^5+7":"D\u0305C\u0305C\u0305","^5+8":"D\u0305C\u0305C\u0305C\u0305","^5+9":"C\u0305M\u0305","^6+1":"M\u0305","^6+2":"M\u0305M\u0305","^6+3":"M\u0305M\u0305M\u0305"}
 ["\u06f0","\u06f1","\u06f2","\u06f3","\u06f4","\u06f5","\u06f6","\u06f7","\u06f8","\u06f9"]
+```
+
+
+#### unformat method.
+
+Unformats the formatted number according to predefined patterns and lookup tables.
+
+*Warning: Doesn't work for ALL formats (..yet), won't work for fractions (only intended for whole numbers), and other data (e.g., decimal separators, thousands separators) will be disregarded entirely.*
+
+```PHP
+$Obj = new \Maikuolan\Common\NumberFormatter('Arabic-2');
+$Try = $Obj->format('12345678987654321');
+echo $Try . PHP_EOL;
+$Try = $Obj->unformat($Try);
+echo $Try . PHP_EOL;
+
+$Obj = new \Maikuolan\Common\NumberFormatter('India-2');
+$Try = $Obj->format('12345678987654321');
+echo $Try . PHP_EOL;
+$Try = $Obj->unformat($Try);
+echo $Try . PHP_EOL;
+
+$Obj = new \Maikuolan\Common\NumberFormatter('Geez');
+$Try = $Obj->format('12345678987654321');
+echo $Try . PHP_EOL;
+$Try = $Obj->unformat($Try);
+echo $Try . PHP_EOL;
+
+$Obj = new \Maikuolan\Common\NumberFormatter('Kaktovik');
+$Try = $Obj->format('12345678987654321');
+echo $Try . PHP_EOL;
+$Try = $Obj->unformat($Try);
+echo $Try . PHP_EOL;
+```
+
+Output:
+
+```
+١٢٬٣٤٥٬٦٧٨٬٩٨٧٬٦٥٤٬٣٢١
+12345678987654321
+१२,३४,५६,७८,९८,७६,५४,३२१
+12345678987654321
+፼፳፫፻፵፭፼፷፯፻፹፱፼፹፯፻፷፭፼፵፫፻፳፩
+12345678987654321
+�������������
+12345678987654321
 ```
 
 #### ConversionSet member.
@@ -547,4 +594,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 26 June 2024 (2024.06.26).
+Last Updated: 5 February 2025 (2025.02.05).

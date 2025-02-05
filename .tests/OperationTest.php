@@ -280,8 +280,6 @@ foreach ($Keys as $KeyA) {
     }
 }
 
-echo $Out;
-
 $ExitCode++;
 if ($Out !== $Expected) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;

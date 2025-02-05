@@ -227,3 +227,48 @@ if ($Actual !== $Expected) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
+
+$Formats = [
+    'Arabic-1',
+    'Arabic-2',
+    'Arabic-3',
+    'Arabic-4',
+    'Bengali-1',
+    'Burmese-1',
+    'Fullwidth',
+    'Geez',
+    'India-1',
+    'India-2',
+    'India-3',
+    'India-4',
+    'India-5',
+    'India-6',
+    'Javanese',
+    'Kaktovik',
+    'Khmer-1',
+    'Lao-1',
+    'Latin-1',
+    'Latin-2',
+    'Latin-3',
+    'Latin-4',
+    'Latin-5',
+    'Mayan',
+    'Mongolian',
+    'Odia',
+    'Thai-1',
+    'Thai-2',
+    'Tibetan'
+];
+
+$ExitCode++;
+foreach ($Formats as $Format) {
+    $Obj = new \Maikuolan\Common\NumberFormatter($Format);
+    foreach (['123456789', '987654321', '102030405060708090', '100', '1000', '10000'] as $Number) {
+        $Try = $Obj->format($Number);
+        $Compare = $Obj->unformat($Try);
+        if ($Compare !== $Number) {
+            echo 'Test failed: ' . $Case . ':L' . __LINE__ . '(). ' . $Compare . ' !== ' . $Number . ' (' . $Format . ')!' . PHP_EOL;
+            exit($ExitCode);
+        }
+    }
+}

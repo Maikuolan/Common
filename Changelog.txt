@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2025.05.02; Maikuolan]: Added some limited support to the number formatter
+  class for unformatting a formatted number.
 
 === Version/Release 2.12.3 ===
 PATCH RELEASE.

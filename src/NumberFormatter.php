@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2024.06.26).
+ * Number formatter (last modified: 2025.02.05).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1059,6 +1059,63 @@ class NumberFormatter extends CommonAbstract
     ];
 
     /**
+     * @var array Lookup table for unformatting a number.
+     */
+    private $UnformatTable = [
+        '0' => ['٠', '۰', '০', '०', '૦', '੦', '೦', '౦', '၀', '០', '๐', '໐', '꧐', '୦', '༠', '᠐', '０', '᱐', '〇', '零', 'Z', '௰'],
+        '1' => ['١', '۱', '১', '१', '૧', '੧', '೧', '౧', '၁', '១', '๑', '໑', '꧑', '୧', '༡', '᠑', '１', '᱑', '一', '壹', '፩', '፲', '௧'],
+        '2' => ['٢', '۲', '২', '२', '૨', '੨', '೨', '౨', '၂', '២', '๒', '໒', '꧒', '୨', '༢', '᠒', '２', '᱒', '二', '贰', '貳', '፪', '፳', '௨'],
+        '3' => ['٣', '۳', '৩', '३', '૩', '੩', '೩', '౩', '၃', '៣', '๓', '໓', '꧓', '୩', '༣', '᠓', '３', '᱓', '三', '叁', '叄', '፫', '፴', '௩'],
+        '4' => ['٤', '۴', '৪', '४', '૪', '੪', '೪', '౪', '၄', '៤', '๔', '໔', '꧔', '୪', '༤', '᠔', '４', '᱔', '四', '肆', '፬', '፵', '௪'],
+        '5' => ['٥', '۵', '৫', '५', '૫', '੫', '೫', '౫', '၅', '៥', '๕', '໕', '꧕', '୫', '༥', '᠕', '５', '᱕', '五', '伍', '፭', '፶', '௫'],
+        '6' => ['٦', '۶', '৬', '६', '૬', '੬', '೬', '౬', '၆', '៦', '๖', '໖', '꧖', '୬', '༦', '᠖', '６', '᱖', '六', '陆', '陸', '፮', '፷', '௬'],
+        '7' => ['٧', '۷', '৭', '७', '૭', '੭', '೭', '౭', '၇', '៧', '๗', '໗', '꧗', '୭', '༧', '᠗', '７', '᱗', '七', '柒', '፯', '፸', '௭'],
+        '8' => ['٨', '۸', '৮', '८', '૮', '੮', '೮', '౮', '၈', '៨', '๘', '໘', '꧘', '୮', '༨', '᠘', '８', '᱘', '八', '捌', '፰', '፹', '௮'],
+        '9' => ['٩', '۹', '৯', '९', '૯', '੯', '೯', '౯', '၉', '៩', '๙', '໙', '꧙', '୯', '༩', '᠙', '９', '᱙', '九', '玖', '፱', '፺', '௯']
+    ];
+
+    /**
+     * @var array Patterns for unformatting a number.
+     */
+    private $UnformatPattern = [
+        '~(?<!一|二|三|四|五|六|七|八|九|十|百|千)(十|百|千|拾|万|億|兆|京|垓)~' => '1\1',
+        '~^(፻|፼|十|百|千|拾|万|億|兆|京|垓|௰|௱|௲)~' => '1\1',
+        '~(፻|፼)(?!፲|፳|፴|፵|፶|፷|፸|፹|፺|\d)~' => '\1Z',
+        '~(፻[\dZ]|፼[\dZ])(?!፩|፪|፫|፬|፭|፮|፯|፰|፱|\d)~' => '\1Z',
+        '~(፲|፳|፴|፵|፶|፷|፸|፹|፺)(?!፩|፪|፫|፬|፭|፮|፯|፰|፱)~' => '\1Z',
+        '~(十|拾)$~' => '0',
+        '~(፻|百)$~' => '00',
+        '~千$~' => '000',
+        '~፼$~' => '0000'
+    ];
+
+    /**
+     * @var array Lookup table for unformatting a base-20 number.
+     */
+    private $UnformatTableKakMay = [
+        '0' => ['𝋀', '𝋠'],
+        '1' => ['𝋁', '𝋡'],
+        '2' => ['𝋂', '𝋢'],
+        '3' => ['𝋃', '𝋣'],
+        '4' => ['𝋄', '𝋤'],
+        '5' => ['𝋅', '𝋥'],
+        '6' => ['𝋆', '𝋦'],
+        '7' => ['𝋇', '𝋧'],
+        '8' => ['𝋈', '𝋨'],
+        '9' => ['𝋉', '𝋩'],
+        'a' => ['𝋊', '𝋪'],
+        'b' => ['𝋋', '𝋫'],
+        'c' => ['𝋌', '𝋬'],
+        'd' => ['𝋍', '𝋭'],
+        'e' => ['𝋎', '𝋮'],
+        'f' => ['𝋏', '𝋯'],
+        'g' => ['𝋐', '𝋰'],
+        'h' => ['𝋑', '𝋱'],
+        'i' => ['𝋒', '𝋲'],
+        'j' => ['𝋓', '𝋳'],
+    ];
+
+    /**
      * Constructor.
      *
      * @param string $Format Can use this to quickly set commonly used
@@ -1382,6 +1439,38 @@ class NumberFormatter extends CommonAbstract
     public function getSetJSON(string $Set = ''): string
     {
         return isset($this->{$Set}) ? json_encode($this->{$Set}) : '[]';
+    }
+
+    /**
+     * Unformats the formatted number according to predefined patterns and lookup
+     * tables. Warning: Doesn't work for all formats (..yet), won't work for
+     * fractions (only intended for whole numbers), and other data (e.g., decimal
+     * separators, thousands separators) will be disregarded entirely.
+     *
+     * @param string $Number The number to unformat.
+     * @return string The unformatted number (returned as string rather than as an
+     *      integer or a float in order to retain decimal precision).
+     */
+    public function unformat(string $Number): string
+    {
+        if (preg_match('~\D~', $Number)) {
+            foreach ($this->UnformatPattern as $Pattern => $Replacement) {
+                $Number = preg_replace($Pattern, $Replacement, $Number);
+            }
+            foreach ($this->UnformatTable as $Replacement => $Lookup) {
+                $Number = str_replace($Lookup, $Replacement, $Number);
+            }
+            $KakMay = $Number;
+            foreach ($this->UnformatTableKakMay as $Replacement => $Lookup) {
+                $KakMay = str_replace($Lookup, $Replacement, $KakMay);
+            }
+            if ($KakMay !== $Number) {
+                $Number = base_convert(preg_replace('~[^\da-j]~', '', $KakMay), 20, 10);
+            } else {
+                $Number = preg_replace('~\D~', '', $Number);
+            }
+        }
+        return preg_replace('~^0+~', '', $Number);
     }
 
     /**

@@ -1453,8 +1453,8 @@ class NumberFormatter extends CommonAbstract
      * @param string $Number The number to unformat.
      * @param ?string $DecSep The decimal separator to look for. When specified,
      *      will attempt to unformat fractions. When not specified, won't.
-     * @return string The unformatted number (returned as string rather than as an
-     *      integer or a float in order to retain decimal precision).
+     * @return string The unformatted number (returned as a string rather than as
+     *      an integer or a float in order to retain decimal precision).
      */
     public function unformat(string $Number, ?string $DecSep = null): string
     {
@@ -1477,9 +1477,7 @@ class NumberFormatter extends CommonAbstract
                     $KakMay = str_replace($Lookup, $Replacement, $KakMay);
                 }
                 if ($KakMay !== $Fraction) {
-                    var_dump($KakMay);
                     $Fraction = $this->convertFraction(preg_replace('~[^\da-j]~', '', $KakMay), 20, 10, 50);
-                    var_dump($Fraction);die;
                 }
                 $DuoDec = $Fraction;
                 foreach ($this->UnformatTableDuoDec as $Replacement => $Lookup) {

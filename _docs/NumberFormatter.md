@@ -54,6 +54,7 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `India-6` or `Telugu` | `Telugu` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `Japanese` *[†4]* | `Japanese` | (empty) | (n/a) | (n/a) | `・`<br />(katakana middle dot) | `10`
 `Javanese` | `Javanese` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Kaktovik` | `Kaktovik` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `20`
 `Khmer-1` | `Khmer` | `.`<br />(decimal) | `3` | `0` | `,`<br />(comma) | `10`
 `Lao-1` | `Lao` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Latin-2` | `Western` | ` `<br />(non-breaking space) | `3` | `0` | `.`<br />(decimal) | `10`
@@ -236,7 +237,7 @@ Unformats the formatted number according to predefined patterns and lookup table
 public function unformat(string $Number, ?string $DecSep = null): string;
 ```
 
-The first parameter is the number to be unformatted, and the second parameter is the decimal separator to look for (when specified, the method will attempt to unformat fractions, and when not specified, won't). Unformatted number returned as string rather than as an integer or a float in order to retain decimal precision.
+The first parameter is the number to be unformatted, and the second parameter is the decimal separator to look for (when specified, the method will attempt to unformat fractions, and when not specified, won't). Unformatted number returned as a string rather than as an integer or a float in order to retain decimal precision.
 
 *Warning: Doesn't work for ALL formats (..yet).*
 

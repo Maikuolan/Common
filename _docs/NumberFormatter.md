@@ -232,7 +232,13 @@ Output:
 
 Unformats the formatted number according to predefined patterns and lookup tables.
 
-*Warning: Doesn't work for ALL formats (..yet), won't work for fractions (only intended for whole numbers), and other data (e.g., decimal separators, thousands separators) will be disregarded entirely.*
+```PHP
+public function unformat(string $Number, ?string $DecSep = null): string;
+```
+
+The first parameter is the number to be unformatted, and the second parameter is the decimal separator to look for (when specified, the method will attempt to unformat fractions, and when not specified, won't). Unformatted number returned as string rather than as an integer or a float in order to retain decimal precision.
+
+*Warning: Doesn't work for ALL formats (..yet).*
 
 ```PHP
 $Obj = new \Maikuolan\Common\NumberFormatter('Arabic-2');
@@ -594,4 +600,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 5 February 2025 (2025.02.05).
+Last Updated: 27 February 2025 (2025.02.27).

@@ -228,6 +228,21 @@ if ($Actual !== $Expected) {
     exit($ExitCode);
 }
 
+$Formats = ['Geez', 'Kaktovik', 'Mayan'];
+
+$ExitCode++;
+foreach ($Formats as $Format) {
+    $Obj = new \Maikuolan\Common\NumberFormatter($Format);
+    foreach (['123456789', '987654321', '102030405060708090', '100', '1000', '10000', '0'] as $Number) {
+        $Try = $Obj->format($Number);
+        $Compare = $Obj->unformat($Try);
+        if ($Compare !== $Number) {
+            echo 'Test failed: ' . $Case . ':L' . __LINE__ . '(). ' . $Compare . ' !== ' . $Number . ' (' . $Format . ')!' . PHP_EOL;
+            exit($ExitCode);
+        }
+    }
+}
+
 $Formats = [
     'Arabic-1',
     'Arabic-2',
@@ -236,7 +251,6 @@ $Formats = [
     'Bengali-1',
     'Burmese-1',
     'Fullwidth',
-    'Geez',
     'India-1',
     'India-2',
     'India-3',
@@ -244,7 +258,6 @@ $Formats = [
     'India-5',
     'India-6',
     'Javanese',
-    'Kaktovik',
     'Khmer-1',
     'Lao-1',
     'Latin-1',
@@ -252,7 +265,6 @@ $Formats = [
     'Latin-3',
     'Latin-4',
     'Latin-5',
-    'Mayan',
     'Mongolian',
     'Odia',
     'Thai-1',
@@ -263,9 +275,9 @@ $Formats = [
 $ExitCode++;
 foreach ($Formats as $Format) {
     $Obj = new \Maikuolan\Common\NumberFormatter($Format);
-    foreach (['123456789', '987654321', '102030405060708090', '100', '1000', '10000'] as $Number) {
-        $Try = $Obj->format($Number);
-        $Compare = $Obj->unformat($Try);
+    foreach (['123456789', '987654321', '102030405060708090', '100', '1000', '10000', '0', '123456.789', '100.125'] as $Number) {
+        $Try = $Obj->format($Number, 50);
+        $Compare = $Obj->unformat($Try, $Obj->DecimalSeparator);
         if ($Compare !== $Number) {
             echo 'Test failed: ' . $Case . ':L' . __LINE__ . '(). ' . $Compare . ' !== ' . $Number . ' (' . $Format . ')!' . PHP_EOL;
             exit($ExitCode);

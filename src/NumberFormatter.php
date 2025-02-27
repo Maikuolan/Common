@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2025.02.05).
+ * Number formatter (last modified: 2025.02.27).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1112,8 +1112,13 @@ class NumberFormatter extends CommonAbstract
         'g' => ['𝋐', '𝋰'],
         'h' => ['𝋑', '𝋱'],
         'i' => ['𝋒', '𝋲'],
-        'j' => ['𝋓', '𝋳'],
+        'j' => ['𝋓', '𝋳']
     ];
+
+    /**
+     * @var array Lookup table for unformatting a base-12 number.
+     */
+    private $UnformatTableDuoDec = ['a' => '↊', 'b' => '↋'];
 
     /**
      * Constructor.
@@ -1443,16 +1448,54 @@ class NumberFormatter extends CommonAbstract
 
     /**
      * Unformats the formatted number according to predefined patterns and lookup
-     * tables. Warning: Doesn't work for all formats (..yet), won't work for
-     * fractions (only intended for whole numbers), and other data (e.g., decimal
-     * separators, thousands separators) will be disregarded entirely.
+     * tables. Warning: Doesn't work for ALL formats (..yet).
      *
      * @param string $Number The number to unformat.
+     * @param ?string $DecSep The decimal separator to look for. When specified,
+     *      will attempt to unformat fractions. When not specified, won't.
      * @return string The unformatted number (returned as string rather than as an
      *      integer or a float in order to retain decimal precision).
      */
-    public function unformat(string $Number): string
+    public function unformat(string $Number, ?string $DecSep = null): string
     {
+        /** Fractions. */
+        if (is_string($DecSep) && $DecSep !== '') {
+            if (($DSPos = strrpos($Number, $DecSep)) !== false) {
+                $Fraction = substr($Number, $DSPos + strlen($DecSep));
+                $Number = substr($Number, 0, $DSPos);
+            } else {
+                $Fraction = '';
+            }
+
+            /** Experimental and currently bugged. */
+            if (preg_match('~\D~', $Fraction)) {
+                foreach ($this->UnformatTable as $Replacement => $Lookup) {
+                    $Fraction = str_replace($Lookup, $Replacement, $Fraction);
+                }
+                $KakMay = $Fraction;
+                foreach ($this->UnformatTableKakMay as $Replacement => $Lookup) {
+                    $KakMay = str_replace($Lookup, $Replacement, $KakMay);
+                }
+                if ($KakMay !== $Fraction) {
+                    var_dump($KakMay);
+                    $Fraction = $this->convertFraction(preg_replace('~[^\da-j]~', '', $KakMay), 20, 10, 50);
+                    var_dump($Fraction);die;
+                }
+                $DuoDec = $Fraction;
+                foreach ($this->UnformatTableDuoDec as $Replacement => $Lookup) {
+                    $DuoDec = str_replace($Lookup, $Replacement, $DuoDec);
+                }
+                if ($DuoDec !== $Fraction) {
+                    $Fraction = $this->convertFraction(preg_replace('~[^\dab]~', '', $DuoDec), 12, 10, 50);
+                }
+            }
+
+            $Fraction = preg_replace(['~\D~', '~0+$~'], '', $Fraction);
+        } else {
+            $Fraction = '';
+        }
+
+        /** Whole numbers. */
         if (preg_match('~\D~', $Number)) {
             foreach ($this->UnformatPattern as $Pattern => $Replacement) {
                 $Number = preg_replace($Pattern, $Replacement, $Number);
@@ -1466,11 +1509,20 @@ class NumberFormatter extends CommonAbstract
             }
             if ($KakMay !== $Number) {
                 $Number = base_convert(preg_replace('~[^\da-j]~', '', $KakMay), 20, 10);
-            } else {
-                $Number = preg_replace('~\D~', '', $Number);
             }
+            $DuoDec = $Number;
+            foreach ($this->UnformatTableDuoDec as $Replacement => $Lookup) {
+                $DuoDec = str_replace($Lookup, $Replacement, $DuoDec);
+            }
+            if ($DuoDec !== $Number) {
+                $Number = base_convert(preg_replace('~[^\dab]~', '', $DuoDec), 12, 10);
+            }
+            $Number = preg_replace(['~\D~', '~^0+~'], '', $Number);
         }
-        return preg_replace('~^0+~', '', $Number);
+        if ($Fraction === '') {
+            return $Number === '' ? '0' : $Number;
+        }
+        return $Number === '' ? '0.' . $Fraction : $Number . '.' . $Fraction;
     }
 
     /**
@@ -1499,7 +1551,7 @@ class NumberFormatter extends CommonAbstract
                 if (isset($this->Symbols[$PreFloat[$Index]])) {
                     $PreFloat[$Index] = $this->Symbols[$PreFloat[$Index]];
                 }
-                $PreFloat[$Index] = ($PreFloat[$Index] / $From) * 10;
+                $PreFloat[$Index] = ((int)$PreFloat[$Index] / $From) * 10;
                 while ($PreFloat[$Index] >= 10) {
                     $Lookback = $Index;
                     while ($PreFloat[$Lookback] >= 10) {

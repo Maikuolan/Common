@@ -233,6 +233,8 @@ $Formats = [
     'Arabic-2',
     'Arabic-3',
     'Arabic-4',
+    'Base-12',
+    'Base-16',
     'Bengali-1',
     'Burmese-1',
     'Fullwidth',
@@ -255,6 +257,7 @@ $Formats = [
     'Mayan',
     'Mongolian',
     'Odia',
+    'SDN-Pitman',
     'Thai-1',
     'Thai-2',
     'Tibetan'
@@ -268,7 +271,7 @@ foreach ($Formats as $Format) {
             continue;
         }
         $Try = $Obj->format($Number, 50);
-        $Compare = $Obj->unformat($Try, $Obj->DecimalSeparator);
+        $Compare = $Obj->unformat($Try, $Obj->DecimalSeparator, $Obj->Base);
         if ($Compare !== $Number) {
             echo 'Test failed: ' . $Case . ':L' . __LINE__ . '(). ' . $Compare . ' !== ' . $Number . ' (' . $Format . ')!' . PHP_EOL;
             exit($ExitCode);

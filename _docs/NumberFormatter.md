@@ -234,10 +234,10 @@ Output:
 Unformats the formatted number according to predefined patterns and lookup tables.
 
 ```PHP
-public function unformat(string $Number, ?string $DecSep = null): string;
+public function unformat(string $Number, string $DecSep = '', int $MinBase = 10): string;
 ```
 
-The first parameter is the number to be unformatted, and the second parameter is the decimal separator to look for (when specified, the method will attempt to unformat fractions, and when not specified, won't). Unformatted number returned as a string rather than as an integer or a float in order to retain decimal precision.
+The first parameter is the number to be unformatted, the second parameter is the decimal separator to look for (when specified, the method will attempt to unformat fractions, and when not specified, won't), and the third parameter is the minimum number base to interpret from the source number. Unformatted number returned as a string rather than as an integer or a float in order to retain decimal precision.
 
 *Warning: Doesn't work for ALL formats (..yet).*
 
@@ -601,4 +601,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 27 February 2025 (2025.02.27).
+Last Updated: 19 March 2025 (2025.03.19).

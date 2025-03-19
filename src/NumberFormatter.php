@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2025.02.27).
+ * Number formatter (last modified: 2025.03.19).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1451,23 +1451,29 @@ class NumberFormatter extends CommonAbstract
      * tables. Warning: Doesn't work for ALL formats (..yet).
      *
      * @param string $Number The number to unformat.
-     * @param ?string $DecSep The decimal separator to look for. When specified,
+     * @param string $DecSep The decimal separator to look for. When specified,
      *      will attempt to unformat fractions. When not specified, won't.
+     * @param int $MinBase The minimum base to interpret from the source number.
      * @return string The unformatted number (returned as a string rather than as
      *      an integer or a float in order to retain decimal precision).
      */
-    public function unformat(string $Number, ?string $DecSep = null): string
+    public function unformat(string $Number, string $DecSep = '', int $MinBase = 10): string
     {
+        /** Guard. */
+        if ($MinBase < 2) {
+            $MinBase = 2;
+        } elseif ($MinBase > 35) {
+            $MinBase = 35;
+        }
+
         /** Fractions. */
-        if (is_string($DecSep) && $DecSep !== '') {
+        if ($DecSep !== '') {
             if (($DSPos = strrpos($Number, $DecSep)) !== false) {
                 $Fraction = substr($Number, $DSPos + strlen($DecSep));
                 $Number = substr($Number, 0, $DSPos);
             } else {
                 $Fraction = '';
             }
-
-            /** Experimental and currently bugged. */
             if (preg_match('~\D~', $Fraction)) {
                 foreach ($this->UnformatTable as $Replacement => $Lookup) {
                     $Fraction = str_replace($Lookup, $Replacement, $Fraction);
@@ -1477,18 +1483,28 @@ class NumberFormatter extends CommonAbstract
                     $KakMay = str_replace($Lookup, $Replacement, $KakMay);
                 }
                 if ($KakMay !== $Fraction) {
-                    $Fraction = $this->convertFraction(preg_replace('~[^\da-j]~', '', $KakMay), 20, 10, 50);
+                    if ($MinBase < 20) {
+                        $MinBase = 20;
+                    }
+                    $Fraction = $KakMay;
                 }
                 $DuoDec = $Fraction;
                 foreach ($this->UnformatTableDuoDec as $Replacement => $Lookup) {
                     $DuoDec = str_replace($Lookup, $Replacement, $DuoDec);
                 }
                 if ($DuoDec !== $Fraction) {
-                    $Fraction = $this->convertFraction(preg_replace('~[^\dab]~', '', $DuoDec), 12, 10, 50);
+                    if ($MinBase < 12) {
+                        $MinBase = 12;
+                    }
+                    $Fraction = $DuoDec;
+                }
+                for ($Base = $MinBase; $Base < 36; $Base++) {
+                    if (strpos($Fraction, $this->Symbols[$Base]) !== false) {
+                        $MinBase = $Base;
+                    }
                 }
             }
-
-            $Fraction = preg_replace(['~\D~', '~0+$~'], '', $Fraction);
+            $Fraction = preg_replace('~0+$~', '', $Fraction);
         } else {
             $Fraction = '';
         }
@@ -1506,17 +1522,54 @@ class NumberFormatter extends CommonAbstract
                 $KakMay = str_replace($Lookup, $Replacement, $KakMay);
             }
             if ($KakMay !== $Number) {
-                $Number = base_convert(preg_replace('~[^\da-j]~', '', $KakMay), 20, 10);
+                if ($MinBase < 20) {
+                    $MinBase = 20;
+                }
+                $Number = $KakMay;
             }
             $DuoDec = $Number;
             foreach ($this->UnformatTableDuoDec as $Replacement => $Lookup) {
                 $DuoDec = str_replace($Lookup, $Replacement, $DuoDec);
             }
             if ($DuoDec !== $Number) {
-                $Number = base_convert(preg_replace('~[^\dab]~', '', $DuoDec), 12, 10);
+                if ($MinBase < 12) {
+                    $MinBase = 12;
+                }
+                $Number = $DuoDec;
             }
-            $Number = preg_replace(['~\D~', '~^0+~'], '', $Number);
+            for ($Base = $MinBase; $Base < 36; $Base++) {
+                if (strpos($Number, $this->Symbols[$Base]) !== false) {
+                    $MinBase = $Base;
+                }
+            }
+            $Number = preg_replace('~^0+~', '', $Number);
         }
+
+        /** Strip unwanted bytes and convert base if necessary. */
+        if ($MinBase === 10) {
+            if ($Fraction !== '') {
+                $Fraction = preg_replace('~\D~', '', $Fraction);
+            }
+            if ($Number !== '') {
+                $Number = preg_replace('~\D~', '', $Number);
+            }
+        } elseif ($MinBase > 10) {
+            $Range = $MinBase === 11 ? 'a' : 'a-' . $this->Symbols[$MinBase];
+            if ($Fraction !== '') {
+                $Fraction = $this->convertFraction(preg_replace('~[^\d' . $Range . ']~', '', $Fraction), $MinBase, 10, 50);
+            }
+            if ($Number !== '') {
+                $Number = base_convert(preg_replace('~[^\d' . $Range . ']~', '', $Number), $MinBase, 10);
+            }
+        } elseif ($MinBase < 10) {
+            if ($Fraction !== '') {
+                $Fraction = $this->convertFraction($Fraction, $MinBase, 10, 50);
+            }
+            if ($Number !== '') {
+                $Number = base_convert($Number, $MinBase, 10);
+            }
+        }
+
         if ($Fraction === '') {
             return $Number === '' ? '0' : $Number;
         }

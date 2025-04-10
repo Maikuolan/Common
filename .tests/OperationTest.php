@@ -361,3 +361,43 @@ if ($Out !== $Expected) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
+
+// set examples from the documentation.
+$TestData = [
+    'Fruit' => ['An apple', 'An orange', 'A pear'],
+    'Story' => ['Apples' => ' a day keeps the doctor away.', 'Oranges' => ' for some juice.', 'Pears' => ' for the cider.'],
+    'Numbers' => ['a' => 100, 'b' => 200, 'c' => 5],
+    'Recursive' => [
+        'A' => ['AA' => 'BB', 'CC' => 'DD'],
+        'B' => ['EE' => 'FF', 'GG' => 'HH']
+    ]
+];
+
+$Expected = [
+    'Fruit' => 205,
+    'Story' => ['Apples' => 'An apple a day keeps the doctor away.', 'Oranges' => 'An orange for some juice.', 'Pears' => 'A pear for the cider.'],
+    'Numbers' => ['a' => 300, 'b' => 1000, 'c' => 4],
+    'Recursive' => [
+        'A' => ['AA' => 'BB', 'CC' => 'DD'],
+        'B' => ['AA' => 'BB', 'CC' => 'DD']
+    ]
+];
+
+$Object->set($TestData, 'Fruit.0.={Story.Apples}
+Fruit.1.={Story.Oranges}
+Fruit.2.={Story.Pears}
+Story.Apples={Fruit.0}
+Story.Oranges={Fruit.1}
+Story.Pears={Fruit.2}
+Fruit=200
+Fruit+={Numbers.c}
+Numbers.a*=3
+Numbers.b*={Numbers.c}
+Numbers.c-=1
+if {Numbers.a>1000} then Recursive.A={Recursive.B} else Recursive.B={Recursive.A}');
+var_dump($TestData);
+$ExitCode++;
+if ($TestData !== $Expected) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
+}

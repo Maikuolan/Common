@@ -14,6 +14,7 @@
 - [singleCompare method.](#singlecompare-method)
 - [splitVersionParts method.](#splitversionparts-method)
 - [ifCompare method.](#ifcompare-method)
+- [set method.](#set-method)
 
 #### Cache member.
 
@@ -265,7 +266,93 @@ If incorrect logic/syntax is used, or if the string isn't properly understood, a
 
 If more complex usage is needed in the future, the capabilities of this class can always be further built upon at that time, but since it's best to avoid needless overengineering, and since the class already satisfies the needs of the implementations it was originally intended for, building this class further isn't anticipated at this time.
 
+#### set method.
+
+`set` provides a way to define and populate variables within the given traversable data.
+
+```PHP
+public function set(&$Data, string $Instruction, bool $AllowMethodCalls = false): bool
+```
+
+`set` accepts 3 parameters. The first parameter, passed by reference, would typically be an array, but may be any scalar data type, and serves as the traversable data. The second parameter is a string, and provides the instructions for the operation handler (e.g., what to define, populate, etc). The third parameter is an optional boolean to indicate whether to allow the method to perform method calls on traversed objects (`true` to allow method calls; `false` to prohibit method calls; `false` by default). True is returned when no instructions were unable to be fulfilled (i.e., all instructions were successfully fulfilled, no instructions were given, or there wasn't anything that needed to be done). If any instructions were unable to be fulfilled, or if some kind of problem occurred (e.g., bad syntax), false is returned.
+
+`set` currently supports six operators: `=` (assign), `-=` (subtract), `+=` (add), `*=` (multiply), `/=` (divide), and `.=` (append/concatenate).
+
+An example:
+
+```PHP
+$TestData = [
+    'Fruit' => ['An apple', 'An orange', 'A pear'],
+    'Story' => ['Apples' => ' a day keeps the doctor away.', 'Oranges' => ' for some juice.', 'Pears' => ' for the cider.'],
+    'Numbers' => ['a' => 100, 'b' => 200, 'c' => 5],
+    'Recursive' => [
+        'A' => ['AA' => 'BB', 'CC' => 'DD'],
+        'B' => ['EE' => 'FF', 'GG' => 'HH']
+    ]
+];
+
+$Object->set($TestData, 'Fruit.0.={Story.Apples}
+Fruit.1.={Story.Oranges}
+Fruit.2.={Story.Pears}
+Story.Apples={Fruit.0}
+Story.Oranges={Fruit.1}
+Story.Pears={Fruit.2}
+Fruit=200
+Fruit+={Numbers.c}
+Numbers.a*=3
+Numbers.b*={Numbers.c}
+Numbers.c-=1
+if {Numbers.a>1000} then Recursive.A={Recursive.B} else Recursive.B={Recursive.A}');
+
+var_dump($TestData);
+```
+
+Results:
+
+```
+array(4) {
+  ["Fruit"]=>
+  int(205)
+  ["Story"]=>
+  array(3) {
+    ["Apples"]=>
+    string(37) "An apple a day keeps the doctor away."
+    ["Oranges"]=>
+    string(25) "An orange for some juice."
+    ["Pears"]=>
+    string(21) "A pear for the cider."
+  }
+  ["Numbers"]=>
+  array(3) {
+    ["a"]=>
+    int(300)
+    ["b"]=>
+    int(1000)
+    ["c"]=>
+    int(4)
+  }
+  ["Recursive"]=>
+  array(2) {
+    ["A"]=>
+    array(2) {
+      ["AA"]=>
+      string(2) "BB"
+      ["CC"]=>
+      string(2) "DD"
+    }
+    ["B"]=>
+    array(2) {
+      ["AA"]=>
+      string(2) "BB"
+      ["CC"]=>
+      string(2) "DD"
+    }
+  }
+}
+
+```
+
 ---
 
 
-Last Updated: 14 September 2023 (2023.09.14).
+Last Updated: 10 April 2025 (2025.04.10).

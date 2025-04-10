@@ -16,6 +16,9 @@ found at:
 
 - [2025.02.12; Maikuolan]: Updated the L10N handler's language rules.
 
+- [2025.04.10; Maikuolan]: The operation handler can now define and populate
+  variables within the given traversable data.
+
 === Version/Release 2.12.3 ===
 PATCH RELEASE.
 

@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.13.0 ===
+MINOR RELEASE.
+
 - [2025.02.05; Maikuolan]: Added some limited support to the number formatter
   class for unformatting a formatted number.
 
@@ -18,6 +23,9 @@ found at:
 
 - [2025.04.10; Maikuolan]: The operation handler can now define and populate
   variables within the given traversable data.
+
+Caleb M (Maikuolan),
+10 April, 2025.
 
 === Version/Release 2.12.3 ===
 PATCH RELEASE.

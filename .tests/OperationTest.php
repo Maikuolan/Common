@@ -395,7 +395,7 @@ Numbers.a*=3
 Numbers.b*={Numbers.c}
 Numbers.c-=1
 if {Numbers.a>1000} then Recursive.A={Recursive.B} else Recursive.B={Recursive.A}');
-var_dump($TestData);
+
 $ExitCode++;
 if ($TestData !== $Expected) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;

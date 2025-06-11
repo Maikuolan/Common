@@ -61,7 +61,7 @@ BitBucket:
 
 "Channels" is an array, containing at least one sub-array, "Trigger". Stored in that sub-array, each "pattern" matches against the beginning of the URL of the request, serving as a "trigger" for identifying alternative channels. Each "trigger" should have its own corresponding sub-array, containing any number of groups of potential sub-matches, each containing any potential alternative channels. The provided "alternative channels" will replace the part of the URL of the request which matches the corresponding sub-match, and a subsequent new request will be made using the amended URL.
 
-You can also just ignore this member entirely if you don't want to utilise alternative channels at your implementation. 
+You can also just ignore this member entirely if you don't want to utilise alternative channels at your implementation.
 
 #### Disabled member.
 

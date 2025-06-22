@@ -239,7 +239,7 @@ Unformats the formatted number according to predefined patterns and lookup table
 public function unformat(string $Number, string $DecSep = '', int $MinBase = 10): string;
 ```
 
-The first parameter is the number to be unformatted, the second parameter is the decimal separator to look for (when specified, the method will attempt to unformat fractions, and when not specified, won't), and the third parameter is the minimum number base to interpret from the source number. Unformatted number returned as a string rather than as an integer or a float in order to retain decimal precision.
+The first parameter is the number to be unformatted, the second parameter is the decimal separator to look for (when specified, the method will attempt to unformat fractions, and when not specified, won't, except under certain specific circumstances), and the third parameter is the minimum number base to interpret from the source number. Unformatted number returned as a string rather than as an integer or a float in order to retain decimal precision.
 
 *Warning: Doesn't work for ALL formats (..yet).*
 
@@ -284,7 +284,7 @@ Output:
 
 *A note regarding number vaguity.*
 
-In some cases, the exact numeric value represented by a provided number may, from the perspective of the number formatted, be vague.
+In some cases, the exact numeric value represented by a provided number may, from the perspective of the number formatter, be vague.
 
 Take "X", for example. "X" can represent "10" in Roman numerals and in duodecimal notation, and can represent "33" when using a number base greater than 33. So, if the unformat method encounters an "X", how does it know whether to interpret that as 10 or 33? It uses a little guesswork based on common sense. If the instance's "Base" property is set to 12 (meaning that numbers should be formatted using base-12), it's reasonable to assume the context of the instance would be expecting a duodecimal, and therefore, reasonable to interpret that X as 10. If the instance's "Base" property is set to 10 (meaning that numbers should be formatted using base-10), and the provided number doesn't contain any characters other than those used in Roman numerals (i.e., it may contain Vs, Xs, Ls, Cs, etc, but doesn't contain any 1s, 2s, 3s, 4s, etc), it's reasonable to assume the context of the instance would be expecting a Roman numeral, and therefore, reasonable to interpret that X as 10. In other cases (i.e., the instance hasn't been explicitly set to base-12 and the provided number contains non-Roman numeral characters), it's more reasonable to interpret that X as 33.
 

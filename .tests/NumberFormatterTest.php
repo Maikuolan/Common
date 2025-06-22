@@ -255,7 +255,7 @@ $Formats = [
     'India-4',
     'India-5',
     'India-6',
-    // 'Japanese',
+    'Japanese',
     'Javanese',
     'Kaktovik',
     'Khmer-1',

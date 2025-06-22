@@ -287,6 +287,7 @@ class NumberFormatter extends CommonAbstract
         'LowerLimit' => 1.0E-11,
         '+0' => '',
         '-+0' => '',
+        '-1' => '一',
         '1' => '',
         '2' => '二',
         '3' => '三',
@@ -1203,7 +1204,7 @@ class NumberFormatter extends CommonAbstract
     private $UnformatTableDuoDec = ['a' => '↊', 'b' => '↋'];
 
     /**
-     * @var array Lookup table for unformatting roman numerals.
+     * @var array Lookup table for unformatting Roman numerals and similar systems.
      */
     private $UnformatRoman = [
         'm' => 1000000,
@@ -1219,6 +1220,39 @@ class NumberFormatter extends CommonAbstract
         'X' => 10,
         'V' => 5,
         'I' => 1
+    ];
+
+    /**
+     * @var array Lookup table for unformatting Japanese numerals and similar systems.
+     */
+    private $UnformatJapanese = [
+        '一' => 1,
+        '二' => 2,
+        '三' => 3,
+        '四' => 4,
+        '五' => 5,
+        '六' => 6,
+        '七' => 7,
+        '八' => 8,
+        '九' => 9,
+        '十' => 10,
+        '百' => 100,
+        '千' => 1000,
+        '万' => 10000,
+        '億' => 100000000,
+        '兆' => 1000000000000,
+        '京' => 10000000000000000,
+        '垓' => 100000000000000000000,
+        '分' => 0.01,
+        '厘' => 0.001,
+        '毛' => 0.0001,
+        '糸' => 0.00001,
+        '忽' => 0.000001,
+        '微' => 0.0000001,
+        '繊' => 0.00000001,
+        '沙' => 0.000000001,
+        '塵' => 0.0000000001,
+        '埃' => 0.00000000001
     ];
 
     /**
@@ -1575,6 +1609,12 @@ class NumberFormatter extends CommonAbstract
             $MinBase = 35;
         }
 
+        /** Auto-populate SDN separator when format matches. */
+        if ($MinBase <= 12 && preg_match('~^((?:[\dEX]|↊|↋)+,)+(?:[\dEX]|↊|↋)+(;(?:[\dEX]|↊|↋)+)+$~', $Number)) {
+            $MinBase = 12;
+            $DecSep = ';';
+        }
+
         /** Dwiggins check. */
         if ($MinBase === 12) {
             $Number = str_replace(['X', 'E'], ['a', 'b'], $Number);
@@ -1588,16 +1628,40 @@ class NumberFormatter extends CommonAbstract
         }
 
         /** Roman check. */
-        if ($MinBase === 10 && preg_match('~[MDCLXVI]|̅~', $Number) && !preg_match('~[^MDCLXVI̅]|\xCC[^\x85]|[^\xCC]\x85~', $Number)) {
+        if ($MinBase === 10 && preg_match('~[MDCLXVImdclxvi]|̅~', $Number) && !preg_match('~[^MDCLXVImdclxvi̅]|\xCC(?:[^\x85]|$)|(?:^|[^\xCC])\x85~', $Number)) {
             $Number = str_replace(['M̅', 'D̅', 'C̅', 'L̅', 'X̅', 'V̅', 'I̅'], ['m', 'd', 'c', 'l', 'x', 'v', 'M'], $Number);
-            $Out = 0;
             $Len = strlen($Number);
+            $Out = 0;
             for ($Iter = 0; $Iter < $Len; $Iter++) {
                 $Unit = $this->UnformatRoman[substr($Number, $Iter, 1)] ?? 0;
                 $Next = $this->UnformatRoman[substr($Number, $Iter + 1, 1)] ?? 0;
                 $Out = $Next !== 0 && $Unit < $Next ? $Out - $Unit : $Out + $Unit;
             }
             return $Out;
+        }
+
+        /** Japanese check. */
+        if ($this->ConversionSet === 'Japanese') {
+            $Len = strlen($Number);
+            if ($Len % 3 === 0) {
+                $Out = 0;
+                $Queue = 1;
+                $Prev = null;
+                for ($Iter = 0; $Iter < $Len; $Iter += 3) {
+                    $Unit = $this->UnformatJapanese[substr($Number, $Iter, 3)] ?? 0;
+                    $Queue *= $Unit;
+                    if ($Prev === 0) {
+                        $Queue *= 0.1;
+                    }
+                    $Next = $this->UnformatJapanese[substr($Number, $Iter + 3, 3)] ?? 0;
+                    if (($Next >= 1 && $Next < 10) || $Next === 0 || $Queue < 1) {
+                        $Out += $Queue;
+                        $Queue = 1;
+                    }
+                    $Prev = $Unit;
+                }
+                return $Out;
+            }
         }
 
         /** Fractions. */

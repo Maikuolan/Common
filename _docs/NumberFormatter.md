@@ -282,6 +282,16 @@ Output:
 12345678987654321
 ```
 
+*A note regarding number vaguity.*
+
+In some cases, the exact numeric value represented by a provided number may, from the perspective of the number formatted, be vague.
+
+Take "X", for example. "X" can represent "10" in Roman numerals and in duodecimal notation, and can represent "33" when using a number base greater than 33. So, if the unformat method encounters an "X", how does it know whether to interpret that as 10 or 33? It uses a little guesswork based on common sense. If the instance's "Base" property is set to 12 (meaning that numbers should be formatted using base-12), it's reasonable to assume the context of the instance would be expecting a duodecimal, and therefore, reasonable to interpret that X as 10. If the instance's "Base" property is set to 10 (meaning that numbers should be formatted using base-10), and the provided number doesn't contain any characters other than those used in Roman numerals (i.e., it may contain Vs, Xs, Ls, Cs, etc, but doesn't contain any 1s, 2s, 3s, 4s, etc), it's reasonable to assume the context of the instance would be expecting a Roman numeral, and therefore, reasonable to interpret that X as 10. In other cases (i.e., the instance hasn't been explicitly set to base-12 and the provided number contains non-Roman numeral characters), it's more reasonable to interpret that X as 33.
+
+Take "E", as another example. "E" can represent "11" in duodecimal notation, and can represent "14" when using a number base greater than 14. Just as with the previous example, if the instance's "Base" property is set to 12, it's reasonable to assume the context of the instance would be expecting a duodecimal, and therefore, reasonable to interpret that E as 11, and in other cases, it's more reasonable to interpret that E as 14.
+
+Will those interpretations *always* be correct? No. But it *should* be correct *most* of the time.
+
 #### limits method.
 
 Guards for the upper and lower limits of the current conversion set.

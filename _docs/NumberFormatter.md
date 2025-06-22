@@ -11,6 +11,7 @@
 - [format method.](#format-method)
 - [getSetJSON method.](#getsetjson-method)
 - [unformat method.](#unformat-method)
+- [limits method.](#limits-method)
 - [ConversionSet member.](#conversionset-member)
 - [GroupSeparator member.](#groupseparator-member)
 - [GroupSize member.](#groupsize-member)
@@ -43,6 +44,7 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Chinese-Simplified` *[†4]* | `ChineseSimplified` | (empty) | (n/a) | (n/a) | `点`<br />(U+70B9) | `10`
 `Chinese-Traditional-Financial` *[†4]* | `ChineseTraditionalFinancial` | (empty) | (n/a) | (n/a) | `點`<br />(U+9EDE) | `10`
 `Chinese-Traditional` *[†4]* | `ChineseTraditional` | (empty) | (n/a) | (n/a) | `點`<br />(U+9EDE) | `10`
+`Etruscan` *[†3] [†4]* | `Etruscan` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Fullwidth` | `Fullwidth` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Geez` *[†3]* | `Geez` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Hebrew` *[†3] [†4]* | `Hebrew` | (empty) | (n/a) | (n/a) | (empty) | `10`
@@ -117,6 +119,7 @@ $Formats = [
     'Chinese-Simplified-Financial',
     'Chinese-Traditional',
     'Chinese-Traditional-Financial',
+    'Etruscan',
     'Fullwidth',
     'Geez',
     'Hebrew',
@@ -176,6 +179,7 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `Chinese-Simplified-Financial` | `壹佰贰拾叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟贰拾叁仟肆拾点伍零陆零柒` | `壹佰点柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
 `Chinese-Traditional` | `一百二十三萬四千五百六十七點八九` | `一千二十三千四十點五零六零七` | `一百點七五零` | `九千九百九十九萬九千九百九十九`
 `Chinese-Traditional-Financial` | `壹佰貳拾叄萬肆仟伍佰陸拾柒點捌玖` | `壹仟貳拾叄仟肆拾點伍零陸零柒` | `壹佰點柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
+`Etruscan` | `` | `` | `𐌟` | ``
 `Fullwidth` | `１２３４５６７.８９` | `１０２０３０４０.５０６０７` | `１００.７５０` | `９９９９９９９９`
 `Geez` | `፻፳፫፼፵፭፻፷፯` | `፲፻፳፼፴፻፵` | `፻` | `፺፱፻፺፱፼፺፱፻፺፱`
 `Hebrew` | `א׳׳ב׳קג׳יד׳ךסז` | `א׳י׳ב׳קג׳מ` | `ק` | `ט׳י׳ט׳׳ט׳קט׳יט׳ץצט`
@@ -200,14 +204,13 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `NoSep-1` | `1234567.89` | `10203040.50607` | `100.750` | `99999999`
 `NoSep-2` | `1234567,89` | `10203040,50607` | `100,750` | `99999999`
 `Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭` | `୧୦୦.୭୫୦` | `୯୯୯୯୯୯୯୯`
-`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `C̅C̅MMMXL` | `C` | `C̅M̅X̅C̅I̅X̅CMXCIX`
+`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `` | `C` | ``
 `SDN-Dwiggins` | `4E6,547;X8` | `3,500,654;60X5X` | `84;900` | `29,5X6,453`
 `SDN-Pitman` | `4↋6,547;↊8` | `3,500,654;60↊5↊` | `84;900` | `29,5↊6,453`
 `Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰` | `௱` | `௯௰௲௲௯௲௲௯௱௲௯௰௲௯௲௯௱௯௰௯`
 `Thai-1` | `๑,๒๓๔,๕๖๗.๘๙` | `๑๐,๒๐๓,๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐` | `๙๙,๙๙๙,๙๙๙`
 `Thai-2` | `๑๒๓๔๕๖๗.๘๙` | `๑๐๒๐๓๐๔๐.๕๐๖๐๗` | `๑๐๐.๗๕๐` | `๙๙๙๙๙๙๙๙`
 `Tibetan` | `༡༢༣༤༥༦༧.༨༩` | `༡༠༢༠༣༠༤༠.༥༠༦༠༧` | `༡༠༠.༧༥༠` | `༩༩༩༩༩༩༩༩`
-
 
 #### getSetJSON method.
 
@@ -227,7 +230,6 @@ Output:
 {".":true,"0":"","1":"","2":"","3":"","4":"","5":"","6":"","7":"","8":"","9":"","^0+1":"I","^0+2":"II","^0+3":"III","^0+4":"IV","^0+5":"V","^0+6":"VI","^0+7":"VII","^0+8":"VIII","^0+9":"IX","^1+1":"X","^1+2":"XX","^1+3":"XXX","^1+4":"XL","^1+5":"L","^1+6":"LX","^1+7":"LXX","^1+8":"LXXX","^1+9":"XC","^2+1":"C","^2+2":"CC","^2+3":"CCC","^2+4":"CD","^2+5":"D","^2+6":"DC","^2+7":"DCC","^2+8":"DCCC","^2+9":"CM","^3+1":"M","^3+2":"MM","^3+3":"MMM","^3+4":"I\u0305V\u0305","^3+5":"V\u0305","^3+6":"V\u0305I\u0305","^3+7":"V\u0305I\u0305I\u0305","^3+8":"V\u0305I\u0305I\u0305I\u0305","^3+9":"I\u0305X\u0305","^4+1":"X\u0305","^4+2":"X\u0305X\u0305","^4+3":"X\u0305X\u0305X\u0305","^4+4":"X\u0305L\u0305","^4+5":"L\u0305","^4+6":"L\u0305X\u0305","^4+7":"L\u0305X\u0305X\u0305","^4+8":"L\u0305X\u0305X\u0305X\u0305","^4+9":"X\u0305C\u0305","^5+1":"C\u0305","^5+2":"C\u0305C\u0305","^5+3":"C\u0305C\u0305C\u0305","^5+4":"C\u0305D\u0305","^5+5":"D\u0305","^5+6":"D\u0305C\u0305","^5+7":"D\u0305C\u0305C\u0305","^5+8":"D\u0305C\u0305C\u0305C\u0305","^5+9":"C\u0305M\u0305","^6+1":"M\u0305","^6+2":"M\u0305M\u0305","^6+3":"M\u0305M\u0305M\u0305"}
 ["\u06f0","\u06f1","\u06f2","\u06f3","\u06f4","\u06f5","\u06f6","\u06f7","\u06f8","\u06f9"]
 ```
-
 
 #### unformat method.
 
@@ -280,6 +282,16 @@ Output:
 12345678987654321
 ```
 
+#### limits method.
+
+Guards for the upper and lower limits of the current conversion set.
+
+```PHP
+public function limits($Number): bool;
+```
+
+Used internally by the format method and for tests (unlikely to be needed by the implementation). Returns true when the given number is outside the upper or lower limits.
+
 #### ConversionSet member.
 
 ```PHP
@@ -301,6 +313,7 @@ Value | Description
 `ChineseTraditional` | Standard traditional Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
 `Devanagari` | Devanagari numerals.
 `Eastern` | Eastern Arabic numerals.
+`Etruscan` | Etruscan numerals. *(Fractions not supported. Range limit: 1 ~ 499).*
 `Fullwidth` | Fullwidth numerals.
 `Geez` | Ge'ez/Ethiopic numerals. *(Fractions not supported. Range lower limit: 1).*
 `Gujarati` | Gujarati numerals.
@@ -601,4 +614,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 19 March 2025 (2025.03.19).
+Last Updated: 22 June 2025 (2025.06.22).

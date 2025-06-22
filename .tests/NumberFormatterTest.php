@@ -134,6 +134,7 @@ $Formats = [
     'Chinese-Simplified-Financial',
     'Chinese-Traditional',
     'Chinese-Traditional-Financial',
+    'Etruscan',
     'Fullwidth',
     'Geez',
     'Hebrew',
@@ -182,6 +183,7 @@ $Expected = '
 `Chinese-Simplified-Financial` | `壹佰贰拾叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟贰拾叁仟肆拾点伍零陆零柒` | `壹佰点柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
 `Chinese-Traditional` | `一百二十三萬四千五百六十七點八九` | `一千二十三千四十點五零六零七` | `一百點七五零` | `九千九百九十九萬九千九百九十九`
 `Chinese-Traditional-Financial` | `壹佰貳拾叄萬肆仟伍佰陸拾柒點捌玖` | `壹仟貳拾叄仟肆拾點伍零陸零柒` | `壹佰點柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
+`Etruscan` | `` | `` | `𐌟` | ``
 `Fullwidth` | `１２３４５６７.８９` | `１０２０３０４０.５０６０７` | `１００.７５０` | `９９９９９９９９`
 `Geez` | `፻፳፫፼፵፭፻፷፯` | `፲፻፳፼፴፻፵` | `፻` | `፺፱፻፺፱፼፺፱፻፺፱`
 `Hebrew` | `א׳׳ב׳קג׳יד׳ךסז` | `א׳י׳ב׳קג׳מ` | `ק` | `ט׳י׳ט׳׳ט׳קט׳יט׳ץצט`
@@ -206,7 +208,7 @@ $Expected = '
 `NoSep-1` | `1234567.89` | `10203040.50607` | `100.750` | `99999999`
 `NoSep-2` | `1234567,89` | `10203040,50607` | `100,750` | `99999999`
 `Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭` | `୧୦୦.୭୫୦` | `୯୯୯୯୯୯୯୯`
-`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `C̅C̅MMMXL` | `C` | `C̅M̅X̅C̅I̅X̅CMXCIX`
+`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `` | `C` | ``
 `SDN-Dwiggins` | `4E6,547;X8` | `3,500,654;60X5X` | `84;900` | `29,5X6,453`
 `SDN-Pitman` | `4↋6,547;↊8` | `3,500,654;60↊5↊` | `84;900` | `29,5↊6,453`
 `Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰` | `௱` | `௯௰௲௲௯௲௲௯௱௲௯௰௲௯௲௯௱௯௰௯`
@@ -233,18 +235,27 @@ $Formats = [
     'Arabic-2',
     'Arabic-3',
     'Arabic-4',
+    // 'Armenian',
     'Base-12',
     'Base-16',
     'Bengali-1',
     'Burmese-1',
+    'China-1',
+    // 'Chinese-Simplified',
+    // 'Chinese-Simplified-Financial',
+    // 'Chinese-Traditional',
+    // 'Chinese-Traditional-Financial',
+    'Etruscan',
     'Fullwidth',
     'Geez',
+    // 'Hebrew',
     'India-1',
     'India-2',
     'India-3',
     'India-4',
     'India-5',
     'India-6',
+    // 'Japanese',
     'Javanese',
     'Kaktovik',
     'Khmer-1',
@@ -256,8 +267,13 @@ $Formats = [
     'Latin-5',
     'Mayan',
     'Mongolian',
+    'NoSep-1',
+    'NoSep-2',
     'Odia',
+    'Roman',
+    'SDN-Dwiggins',
     'SDN-Pitman',
+    // 'Tamil',
     'Thai-1',
     'Thai-2',
     'Tibetan'
@@ -267,7 +283,7 @@ $ExitCode++;
 foreach ($Formats as $Format) {
     $Obj = new \Maikuolan\Common\NumberFormatter($Format);
     foreach (['123456789', '987654321', '102030405060708090', '100', '1000', '10000', '0', '123456.789', '100.125'] as $Number) {
-        if (strpos($Number, '.') !== false && ($Obj->DecimalSeparator === '' || $Obj->Base !== 10)) {
+        if ((strpos($Number, '.') !== false && ($Obj->DecimalSeparator === '' || $Obj->Base !== 10)) || $Obj->limits($Number)) {
             continue;
         }
         $Try = $Obj->format($Number, 50);

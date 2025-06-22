@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2025.03.19).
+ * Number formatter (last modified: 2025.06.22).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -283,6 +283,8 @@ class NumberFormatter extends CommonAbstract
      * @var array Conversion set for Japanese numerals.
      */
     private $Japanese = [
+        'UpperLimit' => 1.0E+24,
+        'LowerLimit' => 1.0E-11,
         '+0' => '',
         '-+0' => '',
         '1' => '',
@@ -335,6 +337,8 @@ class NumberFormatter extends CommonAbstract
      */
     private $Tamil = [
         '.' => true,
+        'UpperLimit' => 1.0E+24,
+        'LowerLimit' => 1,
         '+0' => '',
         '1' => '',
         '2' => '௨',
@@ -392,6 +396,8 @@ class NumberFormatter extends CommonAbstract
      */
     private $Roman = [
         '.' => true,
+        'UpperLimit' => 3999999,
+        'LowerLimit' => 1,
         '0' => '',
         '1' => '',
         '2' => '',
@@ -462,6 +468,47 @@ class NumberFormatter extends CommonAbstract
     ];
 
     /**
+     * @var array Conversion set for Etruscan numerals.
+     */
+    private $Etruscan = [
+        '.' => true,
+        'UpperLimit' => 499,
+        'LowerLimit' => 1,
+        '0' => '',
+        '1' => '',
+        '2' => '',
+        '3' => '',
+        '4' => '',
+        '5' => '',
+        '6' => '',
+        '7' => '',
+        '8' => '',
+        '9' => '',
+        '^0+1' => '𐌠',
+        '^0+2' => '𐌠𐌠',
+        '^0+3' => '𐌠𐌠𐌠',
+        '^0+4' => '𐌠𐌠𐌠𐌠',
+        '^0+5' => '𐌡',
+        '^0+6' => '𐌡𐌠',
+        '^0+7' => '𐌡𐌠𐌠',
+        '^0+8' => '𐌡𐌠𐌠𐌠',
+        '^0+9' => '𐌡𐌠𐌠𐌠𐌠',
+        '^1+1' => '𐌢',
+        '^1+2' => '𐌢𐌢',
+        '^1+3' => '𐌢𐌢𐌢',
+        '^1+4' => '𐌢𐌢𐌢𐌢',
+        '^1+5' => '𐌣',
+        '^1+6' => '𐌣𐌢',
+        '^1+7' => '𐌣𐌢𐌢',
+        '^1+8' => '𐌣𐌢𐌢𐌢',
+        '^1+9' => '𐌣𐌢𐌢𐌢𐌢',
+        '^2+1' => '𐌟',
+        '^2+2' => '𐌟𐌟',
+        '^2+3' => '𐌟𐌟𐌟',
+        '^2+4' => '𐌟𐌟𐌟𐌟'
+    ];
+
+    /**
      * @var array Conversion set for Odia numerals.
      */
     private $Odia = [
@@ -514,6 +561,8 @@ class NumberFormatter extends CommonAbstract
      */
     private $Hebrew = [
         '.' => true,
+        'UpperLimit' => 1.0E+16,
+        'LowerLimit' => 1,
         '+0' => '',
         '1' => 'א',
         '2' => 'ב',
@@ -572,6 +621,8 @@ class NumberFormatter extends CommonAbstract
      */
     private $Armenian = [
         '.' => true,
+        'UpperLimit' => 99999999,
+        'LowerLimit' => 1,
         '0' => '',
         '1' => '',
         '2' => '',
@@ -660,6 +711,7 @@ class NumberFormatter extends CommonAbstract
      * @var array Conversion set for standard simplified Chinese numerals.
      */
     private $ChineseSimplified = [
+        'UpperLimit' => 1.0E+48,
         '+0' => '',
         '-0' => '〇',
         '=0' => '〇',
@@ -715,6 +767,7 @@ class NumberFormatter extends CommonAbstract
      * @var array Conversion set for standard traditional Chinese numerals.
      */
     private $ChineseTraditional = [
+        'UpperLimit' => 1.0E+48,
         '+0' => '',
         '-0' => '零',
         '=0' => '零',
@@ -770,6 +823,7 @@ class NumberFormatter extends CommonAbstract
      * @var array Conversion set for financial simplified Chinese numerals.
      */
     private $ChineseSimplifiedFinancial = [
+        'UpperLimit' => 1.0E+48,
         '+0' => '',
         '-0' => '零',
         '=0' => '零',
@@ -825,6 +879,7 @@ class NumberFormatter extends CommonAbstract
      * @var array Conversion set for financial traditional Chinese numerals.
      */
     private $ChineseTraditionalFinancial = [
+        'UpperLimit' => 1.0E+48,
         '+0' => '',
         '-0' => '零',
         '=0' => '零',
@@ -975,6 +1030,7 @@ class NumberFormatter extends CommonAbstract
      */
     private $Geez = [
         '.' => true,
+        'LowerLimit' => 1,
         '0' => '',
         'o1' => '፩',
         'o2' => '፪',
@@ -1075,6 +1131,32 @@ class NumberFormatter extends CommonAbstract
     ];
 
     /**
+     * @var array Precheck lookup table for unformatting a number.
+     */
+    private $UnformatTablePre = [
+        'I' => ['Ⅰ', 'ⅰ', '𐌠'],
+        'II' => ['Ⅱ', 'ⅱ'],
+        'III' => ['Ⅲ', 'ⅲ'],
+        'IV' => ['Ⅳ', 'ⅳ'],
+        'V' => ['Ⅴ', 'ⅴ', '𐌡'],
+        'VI' => ['Ⅵ', 'ⅵ', 'ↅ'],
+        'VII' => ['Ⅶ', 'ⅶ'],
+        'VIII' => ['Ⅷ', 'ⅷ'],
+        'IX' => ['Ⅸ', 'ⅸ'],
+        'X' => ['Ⅹ', 'ⅹ', '𐌢'],
+        'XI' => ['Ⅺ', 'ⅺ'],
+        'XII' => ['Ⅻ', 'ⅻ'],
+        'L' => ['Ⅼ', 'ⅼ', 'ↆ', '𐌣'],
+        'C' => ['Ⅽ', 'ⅽ', 'Ↄ', 'ↄ', '𐌟'],
+        'D' => ['Ⅾ', 'ⅾ'],
+        'M' => ['Ⅿ', 'ⅿ', 'ↀ'],
+        'v' => ['ↁ'],
+        'x' => ['ↂ'],
+        'l' => ['ↇ'],
+        'c' => ['ↈ']
+    ];
+
+    /**
      * @var array Patterns for unformatting a number.
      */
     private $UnformatPattern = [
@@ -1119,6 +1201,25 @@ class NumberFormatter extends CommonAbstract
      * @var array Lookup table for unformatting a base-12 number.
      */
     private $UnformatTableDuoDec = ['a' => '↊', 'b' => '↋'];
+
+    /**
+     * @var array Lookup table for unformatting roman numerals.
+     */
+    private $UnformatRoman = [
+        'm' => 1000000,
+        'd' => 500000,
+        'c' => 100000,
+        'l' => 50000,
+        'x' => 10000,
+        'v' => 5000,
+        'M' => 1000,
+        'D' => 500,
+        'C' => 100,
+        'L' => 50,
+        'X' => 10,
+        'V' => 5,
+        'I' => 1
+    ];
 
     /**
      * Constructor.
@@ -1247,6 +1348,7 @@ class NumberFormatter extends CommonAbstract
         }
         if (
             $Format[0] === 'Armenian' ||
+            $Format[0] === 'Etruscan' ||
             $Format[0] === 'Geez' ||
             $Format[0] === 'Hebrew' ||
             $Format[0] === 'Roman' ||
@@ -1333,9 +1435,11 @@ class NumberFormatter extends CommonAbstract
      */
     public function format($Number, int $Decimals = 0): string
     {
-        if ($this->Base < 2 || $this->Base > 36) {
+        /** Guard. */
+        if ($this->Base < 2 || $this->Base > 36 || $this->limits($Number)) {
             return '';
         }
+
         $CSet = $this->{$this->ConversionSet};
         $DecPos = strpos($Number, '.');
         if ($DecPos !== false) {
@@ -1459,11 +1563,41 @@ class NumberFormatter extends CommonAbstract
      */
     public function unformat(string $Number, string $DecSep = '', int $MinBase = 10): string
     {
-        /** Guard. */
+        /** Return early if supplied an empty number. */
+        if ($Number === '') {
+            return '0';
+        }
+
+        /** Guard for base_convert's minimum and maximum range. */
         if ($MinBase < 2) {
             $MinBase = 2;
         } elseif ($MinBase > 35) {
             $MinBase = 35;
+        }
+
+        /** Dwiggins check. */
+        if ($MinBase === 12) {
+            $Number = str_replace(['X', 'E'], ['a', 'b'], $Number);
+        }
+
+        /** Other pre-checks. */
+        if (preg_match('~\D~', $Number)) {
+            foreach ($this->UnformatTablePre as $Replacement => $Lookup) {
+                $Number = str_replace($Lookup, $Replacement, $Number);
+            }
+        }
+
+        /** Roman check. */
+        if ($MinBase === 10 && preg_match('~[MDCLXVI]|̅~', $Number) && !preg_match('~[^MDCLXVI̅]|\xCC[^\x85]|[^\xCC]\x85~', $Number)) {
+            $Number = str_replace(['M̅', 'D̅', 'C̅', 'L̅', 'X̅', 'V̅', 'I̅'], ['m', 'd', 'c', 'l', 'x', 'v', 'M'], $Number);
+            $Out = 0;
+            $Len = strlen($Number);
+            for ($Iter = 0; $Iter < $Len; $Iter++) {
+                $Unit = $this->UnformatRoman[substr($Number, $Iter, 1)] ?? 0;
+                $Next = $this->UnformatRoman[substr($Number, $Iter + 1, 1)] ?? 0;
+                $Out = $Next !== 0 && $Unit < $Next ? $Out - $Unit : $Out + $Unit;
+            }
+            return $Out;
         }
 
         /** Fractions. */
@@ -1574,6 +1708,44 @@ class NumberFormatter extends CommonAbstract
             return $Number === '' ? '0' : $Number;
         }
         return $Number === '' ? '0.' . $Fraction : $Number . '.' . $Fraction;
+    }
+
+    /**
+     * Guards for the upper and lower limits of the current conversion set.
+     *
+     * @param mixed $Number The number to check.
+     * @return bool True when outside the upper or lower limits.
+     */
+    public function limits($Number): bool
+    {
+        /** Can't check non-numeric values; Assume as okay. */
+        if (!is_numeric($Number)) {
+            return false;
+        }
+
+        $CSet = $this->{$this->ConversionSet};
+
+        /** Upper limit guard. */
+        if (isset($CSet['UpperLimit'])) {
+            if (is_float($CSet['UpperLimit']) && PHP_INT_MAX > $CSet['UpperLimit']) {
+                $CSet['UpperLimit'] = (int)$CSet['UpperLimit'];
+            }
+            if ($Number > $CSet['UpperLimit']) {
+                return true;
+            }
+        }
+
+        /** Lower limit guard. */
+        if (isset($CSet['LowerLimit'])) {
+            if (is_float($CSet['LowerLimit']) && PHP_INT_MIN < $CSet['LowerLimit']) {
+                $CSet['LowerLimit'] = (int)$CSet['LowerLimit'];
+            }
+            if ($Number < $CSet['LowerLimit']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

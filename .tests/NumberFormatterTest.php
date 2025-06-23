@@ -235,7 +235,7 @@ $Formats = [
     'Arabic-2',
     'Arabic-3',
     'Arabic-4',
-    // 'Armenian',
+    'Armenian',
     'Base-12',
     'Base-16',
     'Bengali-1',
@@ -273,7 +273,7 @@ $Formats = [
     'Roman',
     'SDN-Dwiggins',
     'SDN-Pitman',
-    // 'Tamil',
+    'Tamil',
     'Thai-1',
     'Thai-2',
     'Tibetan'

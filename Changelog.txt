@@ -11,7 +11,7 @@ found at:
 
 === Changes made since last versioned release ===
 
-- [2024.06.26; Maikuolan]: Added Etruscan support to the number formatter,
+- [2024.06.22; Maikuolan]: Added Etruscan support to the number formatter,
   added guards for a conversion set's upper and lower limits (so that the
   formatter will now just fail with an empty string instead of returning
   incorrect values where the given number falls outside the conversion set's

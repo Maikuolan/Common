@@ -1,6 +1,6 @@
 <?php
 /**
- * Number formatter (last modified: 2025.06.22).
+ * Number formatter (last modified: 2025.06.23).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1119,7 +1119,7 @@ class NumberFormatter extends CommonAbstract
      * @var array Lookup table for unformatting a number.
      */
     private $UnformatTable = [
-        '0' => ['٠', '۰', '০', '०', '૦', '੦', '೦', '౦', '၀', '០', '๐', '໐', '꧐', '୦', '༠', '᠐', '０', '᱐', '〇', '零', 'Z', '௰'],
+        '0' => ['٠', '۰', '০', '०', '૦', '੦', '೦', '౦', '၀', '០', '๐', '໐', '꧐', '୦', '༠', '᠐', '０', '᱐', '〇', '零', 'Z'],
         '1' => ['١', '۱', '১', '१', '૧', '੧', '೧', '౧', '၁', '១', '๑', '໑', '꧑', '୧', '༡', '᠑', '１', '᱑', '一', '壹', '፩', '፲', '௧'],
         '2' => ['٢', '۲', '২', '२', '૨', '੨', '೨', '౨', '၂', '២', '๒', '໒', '꧒', '୨', '༢', '᠒', '２', '᱒', '二', '贰', '貳', '፪', '፳', '௨'],
         '3' => ['٣', '۳', '৩', '३', '૩', '੩', '೩', '౩', '၃', '៣', '๓', '໓', '꧓', '୩', '༣', '᠓', '３', '᱓', '三', '叁', '叄', '፫', '፴', '௩'],
@@ -1161,14 +1161,11 @@ class NumberFormatter extends CommonAbstract
      * @var array Patterns for unformatting a number.
      */
     private $UnformatPattern = [
-        '~(?<!一|二|三|四|五|六|七|八|九|十|百|千)(十|百|千|拾|万|億|兆|京|垓)~' => '1\1',
-        '~^(፻|፼|十|百|千|拾|万|億|兆|京|垓|௰|௱|௲)~' => '1\1',
+        '~^(፻|፼)~' => '1\1',
         '~(፻|፼)(?!፲|፳|፴|፵|፶|፷|፸|፹|፺|\d)~' => '\1Z',
         '~(፻[\dZ]|፼[\dZ])(?!፩|፪|፫|፬|፭|፮|፯|፰|፱|\d)~' => '\1Z',
         '~(፲|፳|፴|፵|፶|፷|፸|፹|፺)(?!፩|፪|፫|፬|፭|፮|፯|፰|፱)~' => '\1Z',
-        '~(十|拾)$~' => '0',
-        '~(፻|百)$~' => '00',
-        '~千$~' => '000',
+        '~፻$~' => '00',
         '~፼$~' => '0000'
     ];
 
@@ -1253,6 +1250,66 @@ class NumberFormatter extends CommonAbstract
         '沙' => 0.000000001,
         '塵' => 0.0000000001,
         '埃' => 0.00000000001
+    ];
+
+    /**
+     * @var array Lookup table for unformatting Tamil numerals.
+     */
+    private $UnformatTamil = [
+        '௧' => 1,
+        '௨' => 2,
+        '௩' => 3,
+        '௪' => 4,
+        '௫' => 5,
+        '௬' => 6,
+        '௭' => 7,
+        '௮' => 8,
+        '௯' => 9,
+        '௰' => 10,
+        '௱' => 100,
+        '௲' => 1000
+    ];
+
+    /**
+     * @var array Lookup table for unformatting Armenian numerals and similar systems.
+     */
+    private $UnformatArmenian = [
+        'Ա' => 1,
+        'Բ' => 2,
+        'Գ' => 3,
+        'Դ' => 4,
+        'Ե' => 5,
+        'Զ' => 6,
+        'Է' => 7,
+        'Ը' => 8,
+        'Թ' => 9,
+        'Ժ' => 10,
+        'Ի' => 20,
+        'Լ' => 30,
+        'Խ' => 40,
+        'Ծ' => 50,
+        'Կ' => 60,
+        'Հ' => 70,
+        'Ձ' => 80,
+        'Ղ' => 90,
+        'Ճ' => 100,
+        'Մ' => 200,
+        'Յ' => 300,
+        'Ն' => 400,
+        'Շ' => 500,
+        'Ո' => 600,
+        'Չ' => 700,
+        'Պ' => 800,
+        'Ջ' => 900,
+        'Ռ' => 1000,
+        'Ս' => 2000,
+        'Վ' => 3000,
+        'Տ' => 4000,
+        'Ր' => 5000,
+        'Ց' => 6000,
+        'Ւ' => 7000,
+        'Փ' => 8000,
+        'Ք' => 9000
     ];
 
     /**
@@ -1637,11 +1694,11 @@ class NumberFormatter extends CommonAbstract
                 $Next = $this->UnformatRoman[substr($Number, $Iter + 1, 1)] ?? 0;
                 $Out = $Next !== 0 && $Unit < $Next ? $Out - $Unit : $Out + $Unit;
             }
-            return $Out;
+            return (string)$Out;
         }
 
         /** Japanese check. */
-        if ($this->ConversionSet === 'Japanese') {
+        if (preg_match('~^(一|二|三|四|五|六|七|八|九|十|百|千|万|億|兆|京|垓|分|厘|毛|糸|忽|微|繊|沙|塵|埃)~', $Number)) {
             $Len = strlen($Number);
             if ($Len % 3 === 0) {
                 $Out = 0;
@@ -1660,7 +1717,49 @@ class NumberFormatter extends CommonAbstract
                     }
                     $Prev = $Unit;
                 }
-                return $Out;
+                return (string)$Out;
+            }
+        }
+
+        /** Tamil check. */
+        if (preg_match('~^(௧|௨|௩|௪|௫|௬|௭|௮|௯|௰|௱|௲)~', $Number)) {
+            $Len = strlen($Number);
+            if ($Len % 3 === 0) {
+                $Out = 0;
+                $Queue = 1;
+                for ($Iter = 0; $Iter < $Len; $Iter += 3) {
+                    $Unit = $this->UnformatTamil[substr($Number, $Iter, 3)] ?? 0;
+                    $Queue *= $Unit;
+                    $Next = $this->UnformatTamil[substr($Number, $Iter + 3, 3)] ?? 0;
+                    if ($Next >= 0 && $Next < 10) {
+                        $Out += $Queue;
+                        $Queue = 1;
+                        if ($Next === 0) {
+                            break;
+                        }
+                    }
+                }
+                return (string)$Out;
+            }
+        }
+
+        /** Armenian check. */
+        if (preg_match('~^(Ա|Բ|Գ|Դ|Ե|Զ|Է|Ը|Թ|Ժ|Ի|Լ|Խ|Ծ|Կ|Հ|Ձ|Ղ|Ճ|Մ|Յ|Ն|Շ|Ո|Չ|Պ|Ջ|Ռ|Ս|Վ|Տ|Ր|Ց|Ւ|Փ|Ք)~', $Number)) {
+            $Len = strlen($Number);
+            if ($Len % 2 === 0) {
+                $Out = 0;
+                for ($Iter = 0; $Iter < $Len; $Iter += 2) {
+                    $Unit = $this->UnformatArmenian[substr($Number, $Iter, 2)] ?? 0;
+                    if ($Unit === 0) {
+                        continue;
+                    }
+                    $Next = substr($Number, $Iter + 2, 2);
+                    if ($Next === '̅') {
+                        $Unit *= 10000;
+                    }
+                    $Out += $Unit;
+                }
+                return (string)$Out;
             }
         }
 

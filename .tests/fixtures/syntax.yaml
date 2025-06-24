@@ -275,4 +275,13 @@ List support:
  [aa, ab, ac, ad]: "All keys same value." # Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, all with the same value of "All keys same value."
  [ba, bb, bc, bd]: ["ww", "xx", "yy", "zz"] # Key-value pairs balanced; Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, and the values of the flow sequence at the right operand as the values.
  [ca, cb, cc, cd]: ["vv", "ww", "xx", "yy", "zz"] # Key-value pairs NOT balanced; Assigns 1 element to the parent array: A non-associative array (or "flow sequence") whose key is the literal left operand, and whose elements use the values of the flow sequence at the right operand.
+Support for entities(
+ Hello World: "Hello World"
+ I am a number: 123
+ Does it work: "It works"
+ Recursive entity(
+  Can it recurse: "Yes it can!"
+ )
+)
+Support for inline entities(Hello World: "Hello World", I am a number: 123, Does it work: "It works")
 End of file: ":-)"

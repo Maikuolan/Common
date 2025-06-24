@@ -23,6 +23,7 @@ found at:
 
 - [2025.06.24; Maikuolan]: Improved type-guarding for the YAML handler's
   scalarToString method. Added phpDoc comments for thrown errors/exceptions.
+  Added support for Nette/NEON-style entities to the YAML handler.
 
 === Version/Release 2.13.0 ===
 MINOR RELEASE.

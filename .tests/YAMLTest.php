@@ -293,6 +293,19 @@ $ExpectedForSyntax = [
         'bd' => 'zz',
         '[ca, cb, cc, cd]' => ['vv', 'ww', 'xx', 'yy', 'zz'],
     ],
+    'Support for entities' => (object)[
+        'Hello World' => 'Hello World',
+        'I am a number' => 123,
+        'Does it work' => 'It works',
+        'Recursive entity' => (object)[
+            'Can it recurse' => 'Yes it can!'
+        ]
+    ],
+    'Support for inline entities' => (object)[
+        'Hello World' => 'Hello World',
+        'I am a number' => 123,
+        'Does it work' => 'It works'
+    ],
     'End of file' => ':-)'
 ];
 
@@ -346,6 +359,14 @@ $ExpectedForReconstruction = [
     'Folded chomping keep test' => "This is a test.\n\nHello world.\n\n\n",
     'Folded chomping clip test' => "This is a test.\n\nHello world.",
     'A sequence with a folded scalar' => ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0'],
+    'Support for entities' => (object)[
+        'Hello World' => 'Hello World',
+        'I am a number' => 123,
+        'Does it work' => 'It works',
+        'Recursive entity' => (object)[
+            'Can it recurse' => 'Yes it can!'
+        ]
+    ],
     'End of file' => ':-)'
 ];
 

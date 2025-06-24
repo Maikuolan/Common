@@ -43,15 +43,20 @@ String foo: "Bar"
 Integer foo: 1234
 Float foo: 123.4
 Example implicit numeric array:
+ - "Bar0"
  - "Bar1"
  - "Bar2"
  - "Bar3"
- - "Bar4"
 Example associative array:
  Foo1: "Bar1"
  Foo2: "Bar2"
  Foo3: "Bar3"
  Foo4: "Bar4"
+Example null set:
+ ? "Bar0"
+ ? "Bar1"
+ ? "Bar2"
+ ? "Bar3"
 Example mixed multi-dimensional array:
  0: "Bar0"
  1: "Bar1"
@@ -72,6 +77,33 @@ Testing anchors:
  Anchored text push: &TestAnchor "Some placeholder text."
  Anchored text pull: *TestAnchor
 Escaping test: "Our number is \#123-456-789."
+Other kinds of floats:
+ Infinity: .inf
+ Negative infinity: -.inf
+ Not a number: .nan
+Folded chomping keep test: |+
+ This is a test.
+
+ Hello world.
+
+
+
+Folded chomping clip test: |
+ This is a test.
+
+ Hello world.
+A sequence with a folded scalar:
+ - >
+  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4
+  facebookexternalhit/1.1 Facebot Twitterbot/1.0
+Support for entities(
+ Hello World: "Hello World"
+ I am a number: 123
+ Does it work: "It works"
+ Recursive entity(
+  Can it recurse: "Yes it can!"
+ )
+)
 End of file: ":-)"
 ```
 
@@ -109,7 +141,7 @@ var_dump($Object->Data);
 In both cases, the expected output (which should be the same):
 
 ```
-array(14) {
+array(17) {
   ["String foo"]=>
   string(3) "Bar"
   ["Integer foo"]=>
@@ -119,13 +151,13 @@ array(14) {
   ["Example implicit numeric array"]=>
   array(4) {
     [0]=>
-    string(4) "Bar1"
+    string(4) "Bar0"
     [1]=>
-    string(4) "Bar2"
+    string(4) "Bar1"
     [2]=>
-    string(4) "Bar3"
+    string(4) "Bar2"
     [3]=>
-    string(4) "Bar4"
+    string(4) "Bar3"
   }
   ["Example associative array"]=>
   array(4) {
@@ -137,6 +169,17 @@ array(14) {
     string(4) "Bar3"
     ["Foo4"]=>
     string(4) "Bar4"
+  }
+  ["Example null set"]=>
+  array(4) {
+    ["Bar0"]=>
+    NULL
+    ["Bar1"]=>
+    NULL
+    ["Bar2"]=>
+    NULL
+    ["Bar3"]=>
+    NULL
   }
   ["Example mixed multi-dimensional array"]=>
   array(5) {
@@ -180,12 +223,45 @@ hello-world"
   }
   ["Escaping test"]=>
   string(27) "Our number is #123-456-789."
-  ["Hexadecimal number notation"]=>
-  int(65536)
-  ["Binary number notation"]=>
-  int(16)
-  ["Octal number notation"]=>
-  int(4096)
+  ["Other kinds of floats"]=>
+  array(3) {
+    ["Infinity"]=>
+    float(INF)
+    ["Negative infinity"]=>
+    float(-INF)
+    ["Not a number"]=>
+    float(NAN)
+  }
+  ["Folded chomping keep test"]=>
+  string(32) "This is a test.
+
+Hello world.
+
+
+"
+  ["Folded chomping clip test"]=>
+  string(29) "This is a test.
+
+Hello world."
+  ["A sequence with a folded scalar"]=>
+  array(1) {
+    [0]=>
+    string(163) "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0"
+  }
+  ["Support for entities"]=>
+  object(stdClass)#3 (4) {
+    ["Hello World"]=>
+    string(11) "Hello World"
+    ["I am a number"]=>
+    int(123)
+    ["Does it work"]=>
+    string(8) "It works"
+    ["Recursive entity"]=>
+    object(stdClass)#2 (1) {
+      ["Can it recurse"]=>
+      string(11) "Yes it can!"
+    }
+  }
   ["End of file"]=>
   string(3) ":-)"
 }
@@ -456,7 +532,7 @@ Whether to quote keys. Normally, the YAML handler won't quote keys, but you can 
 
 The YAML handler supports arrays (or using YAML terminology, collections, mappings, sequences, etc), integers, floats, booleans, null, strings (single-quoted, double-quoted, etc), literal-style strings (`|`), folded-style strings (`>`), hexadecimal number notation (`0x`), binary number notation (`0b`), and octal number notation (`0o`).
 
-The YAML handler does not (per PHP terminology) support callables, closures, or non-stringable objects. If non-stringable objects, closures, or callables are supplied to `reconstruct`, a fatal error will occur. Don't ever do this.
+The YAML handler does not (per PHP terminology) support callables, closures, or non-stringable, non-stdClass objects. If non-stringable, non-stdClass objects, closures, or callables are supplied to `reconstruct`, a fatal error will occur. Don't ever do this.
 
 ---
 
@@ -654,6 +730,9 @@ __List functionality__ | Flow sequences can be used in keys to assign elements t
 `[aa, ab, ac, ad]: "All keys same value."` | *Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, all with the same value of "All keys same value."*
 `[ba, bb, bc, bd]: ["ww", "xx", "yy", "zz"]` | *Key-value pairs balanced; Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, and the values of the flow sequence at the right operand as the values.*
 `[ca, cb, cc, cd]: ["vv", "ww", "xx", "yy", "zz"]` | *Key-value pairs NOT balanced; Assigns 1 element to the parent array: A non-associative array (or "flow sequence") whose key is the literal left operand, and whose elements use the values of the flow sequence at the right operand.*
+__Ansible/Jinja2-style inline variables.__<br />E.g., `Foz: "Hello there! My name is {{Foo.Bar}}! :-)"` | As per referenced under *"[Anchors, aliases, and inline variables](#anchors-aliases-and-inline-variables)"*, should produce *"Hello there! My name is Baz! :-)"* when `"Foo" => { "Bar" => "Baz" }`.
+__Nette/NEON-style entities.__ | Limited support for Nette/NEON-style entities (inline and multiline notation are both supported, but chaining isn't supported; doesn't implement NEON directly, so the results, while similar, won't be identical). Generated as stdClass objects.
+`Support for inline entities(Hello World: "Hello World", I am a number: 123)` | Generates an stdClass object containing two properties ("Hello world" and "I am a number").
 
 ---
 
@@ -729,4 +808,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 19 July 2024 (2024.07.19).
+Last Updated: 24 June 2025 (2025.06.24).

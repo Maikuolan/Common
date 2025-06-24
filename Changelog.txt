@@ -21,6 +21,9 @@ found at:
   float-string to int loses precision deprecation notice caused by the tests
   for the YAML handler.
 
+- [2025.06.24; Maikuolan]: Improved type-guarding for the YAML handler's
+  scalarToString method.
+
 === Version/Release 2.13.0 ===
 MINOR RELEASE.
 

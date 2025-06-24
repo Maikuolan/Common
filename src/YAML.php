@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2024.07.16).
+ * YAML handler (last modified: 2025.06.24).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1423,8 +1423,14 @@ class YAML extends CommonAbstract
         if ($In === -INF) {
             return '-.inf';
         }
-        if (is_float($In) && is_nan($In)) {
-            return '.nan';
+        if (is_float($In)) {
+            if (is_nan($In)) {
+                return '.nan';
+            }
+            return $In;
+        }
+        if (is_int($In)) {
+            return $In;
         }
         if (is_string($In)) {
             return $this->Quotes . $this->escape($In) . $this->Quotes;
@@ -1435,6 +1441,6 @@ class YAML extends CommonAbstract
             }
             throw new \Error('Non-stringable object detected while attempting to reconstruct YAML data');
         }
-        return $In;
+        throw new \Error('Unsupported data type provided to scalarToString while attempting to reconstruct YAML data');
     }
 }

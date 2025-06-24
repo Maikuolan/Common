@@ -195,6 +195,7 @@ Test support for PHP functions in YAML:
   Test ucwords: !ucwords "hello world."
  Numeric functions:
   Default number: &NumericDefault 123456789.87654321
+  Default number int: &NumericDefaultInt 123456789
   Test abs: !abs *NumericDefault
   Test acos: !acos *NumericDefault
   Test acosh: !acosh *NumericDefault
@@ -203,12 +204,12 @@ Test support for PHP functions in YAML:
   Test atan: !atan *NumericDefault
   Test atanh: !atanh *NumericDefault
   Test ceil: !ceil *NumericDefault
-  Test chr: !chr *NumericDefault
+  Test chr: !chr *NumericDefaultInt
   Test cos: !cos *NumericDefault
   Test cosh: !cosh *NumericDefault
-  Test decbin: !decbin *NumericDefault
-  Test dechex: !dechex *NumericDefault
-  Test decoct: !decoct *NumericDefault
+  Test decbin: !decbin *NumericDefaultInt
+  Test dechex: !dechex *NumericDefaultInt
+  Test decoct: !decoct *NumericDefaultInt
   Test deg2rad: !deg2rad *NumericDefault
   Test exp: !exp *NumericDefault
   Test expm1: !expm1 *NumericDefault

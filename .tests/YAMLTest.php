@@ -209,6 +209,7 @@ $ExpectedForSyntax = [
         ],
         'Numeric functions' => [
             'Default number' => 123456789.87654321,
+            'Default number int' => 123456789,
             'Test abs' => 123456789.87654321,
             'Test acos' => NAN,
             'Test acosh' => 19.324548953827964,

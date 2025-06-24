@@ -11,11 +11,15 @@ found at:
 
 === Changes made since last versioned release ===
 
-- [2024.06.22; Maikuolan]: Added Etruscan support to the number formatter,
+- [2025.06.22; Maikuolan]: Added Etruscan support to the number formatter,
   added guards for a conversion set's upper and lower limits (so that the
   formatter will now just fail with an empty string instead of returning
   incorrect values where the given number falls outside the conversion set's
   upper and lower limits), improved the unformatter, and improved tests.
+
+- [2025.06.24; Bug-fix; Maikuolan]: Fixed an implicit conversion from
+  float-string to int loses precision deprecation notice caused by the tests
+  for the YAML handler.
 
 === Version/Release 2.13.0 ===
 MINOR RELEASE.

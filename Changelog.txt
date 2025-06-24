@@ -22,7 +22,7 @@ found at:
   for the YAML handler.
 
 - [2025.06.24; Maikuolan]: Improved type-guarding for the YAML handler's
-  scalarToString method.
+  scalarToString method. Added phpDoc comments for thrown errors/exceptions.
 
 === Version/Release 2.13.0 ===
 MINOR RELEASE.

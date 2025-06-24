@@ -1404,6 +1404,7 @@ class YAML extends CommonAbstract
      * Convert various scalars to strings.
      *
      * @param mixed $In The scalar.
+     * @throws Error if provided a non-stringable, non-stdObject object or an unsupported data type.
      * @return string The string.
      */
     private function scalarToString($In): string

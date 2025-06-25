@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2025.06.24).
+ * YAML handler (last modified: 2025.06.25).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -101,6 +101,11 @@ class YAML extends CommonAbstract
      * @var bool Whether to render as an entity.
      */
     private $Entity = false;
+
+    /**
+     * @var bool Whether to switch in flow has occurred.
+     */
+    private $FlowSwitchTo = '';
 
     /**
      * @var string Whether to use chomping for the current multi-line block.
@@ -313,9 +318,18 @@ class YAML extends CommonAbstract
                 continue;
             }
 
+            /** Final byte in current line. */
+            $FinalByte = substr($ThisLine, -1, 1);
+
             /** Detect entities. */
-            $IsEntityEnd = $this->Entity && $SendTo !== '' && strlen($ThisLine) === $TabLen && substr($ThisLine, -1, 1) === ')';
+            $IsEntityEnd = $this->Entity && $SendTo !== '' && strlen($ThisLine) === $TabLen && $FinalByte === ')';
             $this->Entity = false;
+
+            /** Detect flow switch. */
+            if ($IsFlowSwitchEnd = $FinalByte === $this->FlowSwitchTo && $SendTo !== '' && strlen($ThisLine) === $TabLen && is_string($Arr[$Key]) && strlen($Arr[$Key]) === 1) {
+                $SendTo = $Arr[$Key] . $SendTo . $ThisLine;
+            }
+            $this->FlowSwitchTo = '';
 
             /**
              * Data indentation less than the current depth should be
@@ -378,7 +392,7 @@ class YAML extends CommonAbstract
             }
 
             /** Process the current line of the data at the current depth. */
-            if (!$IsEntityEnd && !$this->processLine($ThisLine, $ThisTab, $Key, $Value, $Arr)) {
+            if (!$IsEntityEnd && !$IsFlowSwitchEnd && !$this->processLine($ThisLine, $ThisTab, $Key, $Value, $Arr)) {
                 return false;
             }
 
@@ -700,6 +714,11 @@ class YAML extends CommonAbstract
                     }
                 } else {
                     $Arr[$Key] = $Value;
+                    if ($Value === '[') {
+                        $this->FlowSwitchTo = ']';
+                    } elseif ($Value === '{') {
+                        $this->FlowSwitchTo = '}';
+                    }
                 }
             }
         } elseif (strpos($ThisLine, ':') === false && strlen($ThisLine) > 1) {

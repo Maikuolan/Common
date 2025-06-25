@@ -25,6 +25,9 @@ found at:
   scalarToString method. Added phpDoc comments for thrown errors/exceptions.
   Added support for Nette/NEON-style entities to the YAML handler.
 
+- [2025.06.25; Maikuolan]: Improved the support for embedding JSON within YAML
+  to the YAML handler so that switching syntax mid-parse is less messy.
+
 === Version/Release 2.13.0 ===
 MINOR RELEASE.
 

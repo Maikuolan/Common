@@ -71,4 +71,9 @@ Support for entities(
   Can it recurse: "Yes it can!"
  )
 )
+Compact Nested Mapping:
+ - Hello: "World"
+   Goodbye: "Planet Earth"
+ - Compact nested mapping example 1: "Compact nested mapping example 1"
+   Compact nested mapping example 2: "Compact nested mapping example 2"
 End of file: ":-)"

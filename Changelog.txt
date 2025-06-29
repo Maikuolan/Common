@@ -28,6 +28,9 @@ found at:
 - [2025.06.25; Maikuolan]: Improved the support for embedding JSON within YAML
   to the YAML handler so that switching syntax mid-parse is less messy.
 
+- [2025.06.29; Maikuolan]: Added support for compact nested mapping to the YAML
+  handler.
+
 === Version/Release 2.13.0 ===
 MINOR RELEASE.
 

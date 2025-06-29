@@ -272,6 +272,15 @@ $ExpectedForSyntax = [
                 ['name', 'hr', 'avg'],
                 ['Mark McGwire', 65, 0.278],
                 ['Sammy Sosa', 63, 0.288]
+            ],
+            '2.6 Mapping of Mappings' => [
+                'Mark McGwire' => ['hr' => 65, 'avg' => 0.278],
+                'Sammy Sosa' => ['hr' => 63, 'avg' => 0.288]
+            ],
+            '2.12 Compact Nested Mapping' => [
+                ['item' => 'Super Hoop', 'quantity' => 1],
+                ['item' => 'Basketball', 'quantity' => 4],
+                ['item' => 'Big Shoes', 'quantity' => 1]
             ]
         ],
         '2.3. Scalars' => [
@@ -366,6 +375,10 @@ $ExpectedForReconstruction = [
         'Recursive entity' => (object)[
             'Can it recurse' => 'Yes it can!'
         ]
+    ],
+    'Compact Nested Mapping' => [
+        ['Hello' => 'World', 'Goodbye' => 'Planet Earth'],
+        ['Compact nested mapping example 1' => 'Compact nested mapping example 1', 'Compact nested mapping example 2' => 'Compact nested mapping example 2']
     ],
     'End of file' => ':-)'
 ];

@@ -262,6 +262,19 @@ Specification examples:
    - [name        , hr, avg  ]
    - [Mark McGwire, 65, 0.278]
    - [Sammy Sosa  , 63, 0.288]
+  2.6 Mapping of Mappings:
+   Mark McGwire: {hr: 65, avg: 0.278}
+   Sammy Sosa: {
+    hr: 63,
+    avg: 0.288,
+   }
+  2.12 Compact Nested Mapping:
+   - item    : Super Hoop
+     quantity: 1
+   - item    : Basketball
+     quantity: 4
+   - item    : Big Shoes
+     quantity: 1
  2.3. Scalars:
   2.16 Indentation determines scope:
    name: Mark McGwire

@@ -104,6 +104,11 @@ Support for entities(
   Can it recurse: "Yes it can!"
  )
 )
+Compact Nested Mapping:
+ - Hello: "World"
+   Goodbye: "Planet Earth"
+ - Compact nested mapping example 1: "Compact nested mapping example 1"
+   Compact nested mapping example 2: "Compact nested mapping example 2"
 End of file: ":-)"
 ```
 
@@ -141,7 +146,7 @@ var_dump($Object->Data);
 In both cases, the expected output (which should be the same):
 
 ```
-array(17) {
+array(18) {
   ["String foo"]=>
   string(3) "Bar"
   ["Integer foo"]=>
@@ -249,7 +254,7 @@ Hello world."
     string(163) "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0"
   }
   ["Support for entities"]=>
-  object(stdClass)#3 (4) {
+  object(stdClass)#15 (4) {
     ["Hello World"]=>
     string(11) "Hello World"
     ["I am a number"]=>
@@ -257,9 +262,26 @@ Hello world."
     ["Does it work"]=>
     string(8) "It works"
     ["Recursive entity"]=>
-    object(stdClass)#2 (1) {
+    object(stdClass)#14 (1) {
       ["Can it recurse"]=>
       string(11) "Yes it can!"
+    }
+  }
+  ["Compact Nested Mapping"]=>
+  array(2) {
+    [0]=>
+    array(2) {
+      ["Hello"]=>
+      string(5) "World"
+      ["Goodbye"]=>
+      string(12) "Planet Earth"
+    }
+    [1]=>
+    array(2) {
+      ["Compact nested mapping example 1"]=>
+      string(32) "Compact nested mapping example 1"
+      ["Compact nested mapping example 2"]=>
+      string(32) "Compact nested mapping example 2"
     }
   }
   ["End of file"]=>
@@ -629,14 +651,14 @@ __Examples from [2.1. Collections](https://yaml.org/spec/1.2.2/#21-collections)_
 2.3 Mapping Scalars to Sequences | Yes.
 2.4 Sequence of Mappings | Yes.
 2.5 Sequence of Sequences | Yes.
-2.6 Mapping of Mappings | The YAML handler doesn't yet support the particular flow context shown in that example, so no, not yet. But, I aim to fix that in the near future.
+2.6 Mapping of Mappings | Yes, but it's currently very fussy about indenting (i.e., doesn't render properly when the lines for the initial and terminal brackets don't have the same indentation or when the indentation for each entry isn't consistent with the rest of the document).
 __Examples from [2.2. Structures](https://yaml.org/spec/1.2.2/#22-structures)__ | __Will using the YAML handler to process it produce the desired results?__
 2.7 Two Documents in a Stream | *Kind of.* The YAML handler processes the YAML data supplied to it into to the specified PHP array. Because the YAML handler doesn't support "streams", it doesn't clearly distinguish between distinct documents. That PHP array will still be just a normal PHP array, no matter how many documents the supplied YAML data contains. So, in that sense, no; not supported. However, the YAML handler does recognise "start of document" (`---`) and "end of document" (`...`) markers, and will resolve those markers to the specified PHP array in such a way that, when reconstructing that array back into YAML data via the `reconstruct` method, it'll be correctly resolved back into those original "start of document" and "end of document" markers again, meaning that other processors subsequently working on that YAML data should still be able to distinguish between any/all distinct documents. So, in that sense, yes; supported.
 2.8 Play by Play Feed from a Game | Same as above.
 2.9 Single Document with Two Comments | Same as above.
 2.10 Node for “`Sammy Sosa`” appears twice in this document | Same as above.
 2.11 Mapping between Sequences | Nope. The YAML handler treats "complex mapping keys" as sequences of null values, so having key/value pairs immediately follow on from that, all within the same line, won't work as expected.
-2.12 Compact Nested Mapping | Nope. The specification expects this to be processed in a similar way as a sequence of mappings would be processed. However, as the example shows key/value pairs attached to what looks like sequence indicators, followed by key/value pairs on the subsequent line without any such indicators, but with greater indentation so as to line them up with their earlier counterparts, to the YAML handler, the whole block just looks like a sequence, and those key/value pairs with greater indentation, due to that greater indentation, will cause the YAML handler to implicitly coerce their earlier counterparts to arrays so that those key/value pairs can be processed to there, thus losing the values of those earlier counterparts. I understand the problem, and I may fix it in the future, but it's low priority on the to-do list and might require a significant amount of refactoring once I start, so I'm not entirely sure if or when.
+2.12 Compact Nested Mapping | Yes, but the allowance for one less space as per noted under "8.21 Block Scalar Nodes" isn't yet supported by the YAML handler (I'll fix that at some point in the future if/when I figure out how).
 __Examples from [2.3. Scalars](https://yaml.org/spec/1.2.2/#23-scalars)__ | __Will using the YAML handler to process it produce the desired results?__
 2.13 In literals, newlines are preserved | It *would*. Except that, the YAML handler doesn't understand "`--- \|`" properly.<br />To produce the desired results, "`---: \|`" would need to be used instead.
 2.14 In the folded scalars, newlines become spaces | It *would*. Except that, the YAML handler doesn't understand "`--- >`" properly.<br />To produce the desired results, "`---: >`" would need to be used instead.
@@ -808,4 +830,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 24 June 2025 (2025.06.24).
+Last Updated: 29 June 2025 (2025.06.29).

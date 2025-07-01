@@ -26,7 +26,7 @@ Some suggested sources to use: | Normally used for:
 `Forwarded` | *[Forwarded - HTTP \| MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded).*
 `REMOTE_ADDR` | Used in about ~99% of cases normally (and the class also falls back to this source anyway if the preferred source specified isn't available).
 
-After instantiating the class, the object will provide three public members (or properties).
+After instantiating the class, the object will provide three public properties.
 
 ```PHP
 public $Resolution = '';
@@ -67,4 +67,4 @@ The `Type` property is an integer describing the type of IP address resolved: `4
 ---
 
 
-Last Updated: 21 February 2022 (2022.02.21).
+Last Updated: 1 July 2025 (2025.07.01).

@@ -58,7 +58,7 @@ Note: If you want the instance to store and fetch cache items internally, within
 
 #### 2. Configuration.
 
-After creating an instance of Cache, before leveraging any of its methods, we should configure it. The excerpt below is provided as an example (the actual values used in the excerpt are the default values for the instance members the values are being assigned to, and therefore have no effect in this particular example; they're optional too, and so, any that aren't likely to ever be needed by the implementation can effectively be omitted and ignored).
+After creating an instance of Cache, before leveraging any of its methods, we should configure it. The excerpt below is provided as an example (the actual values used in the excerpt are the default values for the instance properties the values are being assigned to, and therefore have no effect in this particular example; they're optional too, and so, any that aren't likely to ever be needed by the implementation can effectively be omitted and ignored).
 
 ```PHP
 $Instance->Prefix = ''; // String (optional; when populated, prepends this value to the keys for all entries).
@@ -80,11 +80,11 @@ $Instance->FFDefault = ''; // String (the path to a flatfile to use for caching)
 
 The correct values to use, and the best way to configure the instance, depends on which caching mechanisms you want to use, whether those caching mechanisms are available in your environment, and how those caching mechanisms themselves are configured (e.g., the correct host and port number to use might be different than the default for your particular environment, and if so, you'll need to determine that information for yourself).
 
-I would, in most cases, recommend defining `FFDefault`, regardless of your chosen caching mechanism, as a fallback, in case your chosen caching mechanism isn't available, either temporarily or permanently, at some point in the future, for whatever reason. When defining `FFDefault`, you should make sure that the path is actually writable (setting an unwritable path means that nothing gets written, and is thus pointless).
+I would, in most cases, recommend populating `FFDefault`, regardless of your chosen caching mechanism, as a fallback, in case your chosen caching mechanism isn't available, either temporarily or permanently, at some point in the future, for whatever reason. When populating `FFDefault`, you should make sure that the path is actually writable (setting an unwritable path means that nothing gets written, and is thus pointless).
 
-Beyond that, I would recommend defining values only for the members that relate to caching mechanisms that you already know are available, and that you could foreseeably utilise for your implementation, omitting definitions for the members that relate to anything that you know to be unavailable or otherwise unsuitable for your implementation.
+Beyond that, I would recommend populating values only for the properties that relate to caching mechanisms that you already know are available, and that you could foreseeably utilise for your implementation, omitting those that relate to anything that you know to be unavailable or otherwise unsuitable for your implementation.
 
-If all of the supported caching mechanisms are available in your environment, and you're having difficulty deciding which to use, I would generally recommend APCu above the others, due to its simplicity: The only member you would need to define is `EnableAPCu` (no need to mess around with hosts, ports, etc), and in most cases, it should immediately start working. Conversely, utilising PDO is likely to be slightly more complicated than the other available choices, due to the need to set up an external database somewhere for it to interface with, the need to define a DSN (so that the instance can instruct PDO how to interface with your external database), etc.
+If all of the supported caching mechanisms are available in your environment, and you're having difficulty deciding which to use, I would generally recommend APCu above the others, due to its simplicity: The only property you would need to define is `EnableAPCu` (no need to mess around with hosts, ports, etc), and in most cases, it should immediately start working. Conversely, utilising PDO is likely to be slightly more complicated than the other available choices, due to the need to set up an external database somewhere for it to interface with, the need to define a DSN (so that the instance can instruct PDO how to interface with your external database), etc.
 
 #### 3. Connection.
 
@@ -94,7 +94,7 @@ After creating an instance of Cache and configuring it, before leveraging any of
 $Connected = $Instance->connect(); // Boolean.
 ```
 
-The `Using` member is populated by the `connect` method, and describes which caching mechanism `connect` was able to successfully connect to (i.e., which caching mechanism the instance should be "using" for any subsequent calls to any instance methods, e.g., to get or set cache items). The `Using` member is exposed as public, in case it could be useful to the implementation, but shouldn't be tampered with, because it's needed by most class methods to function correctly. *Possible values: "APCu", "Memcached", "Redis", "PDO", "FF" for flatfile caching, or an empty string when not using any supported caching mechanism, using just an internal array of cache items instead.*
+The `Using` property is populated by the `connect` method, and describes which caching mechanism `connect` was able to successfully connect to (i.e., which caching mechanism the instance should be "using" for any subsequent calls to any instance methods, e.g., to get or set cache items). The `Using` property is exposed as public, in case it could be useful to the implementation, but shouldn't be tampered with, because it's needed by most class methods to function correctly. *Possible values: "APCu", "Memcached", "Redis", "PDO", "FF" for flatfile caching, or an empty string when not using any supported caching mechanism, using just an internal array of cache items instead.*
 
 ```PHP
 $Using = $Instance->Using(); // String.
@@ -308,4 +308,4 @@ public function exposeWorkingDataArray();
 ---
 
 
-Last Updated: 1 December 2023 (2023.12.01).
+Last Updated: 1 July 2025 (2025.07.01).

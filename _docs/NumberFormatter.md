@@ -12,12 +12,12 @@
 - [getSetJSON method.](#getsetjson-method)
 - [unformat method.](#unformat-method)
 - [limits method.](#limits-method)
-- [ConversionSet member.](#conversionset-member)
-- [GroupSeparator member.](#groupseparator-member)
-- [GroupSize member.](#groupsize-member)
-- [GroupOffset member.](#groupoffset-member)
-- [DecimalSeparator member.](#decimalseparator-member)
-- [Base member.](#base-member)
+- [ConversionSet property.](#conversionset-property)
+- [GroupSeparator property.](#groupseparator-property)
+- [GroupSize property.](#groupsize-property)
+- [GroupOffset property.](#groupoffset-property)
+- [DecimalSeparator property.](#decimalseparator-property)
+- [Base property.](#base-property)
 
 #### NumberFormatter constructor.
 
@@ -25,7 +25,7 @@
 public function __construct(string $Format = '');
 ```
 
-To use the number formatter, you'll firstly need to instantiate it. You don't need to parse any parameters to the constructor, but it optionally accepts one parameter, `$Format`. The `$Format` parameter can be used to immediately set various commonly used values to the object's members during object instantiation (so that you won't need to set each definition manually). You can set these later though. More information about these members will be explained later in this document. The currently supported values for `$Format` are listed in the table below.
+To use the number formatter, you'll firstly need to instantiate it. You don't need to parse any parameters to the constructor, but it optionally accepts one parameter, `$Format`. The `$Format` parameter can be used to immediately set various commonly used values to the object's properties during object instantiation (so that you won't need to set each definition manually). You can set these later though. More information about these properties will be explained later in this document. The currently supported values for `$Format` are listed in the table below.
 
 Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `DecimalSeparator` | `Base`
 ---|---|---|---|---|---|---
@@ -88,7 +88,7 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 
 #### format method.
 
-After instantiating the number formatter, after setting any necessary values for the instance's members, the format method is used to format numbers.
+After instantiating the number formatter, after setting any necessary values for the instance's properties, the format method is used to format numbers.
 
 ```PHP
 public function format($Number, int $Decimals = 0): string;
@@ -302,13 +302,13 @@ public function limits($Number): bool;
 
 Used internally by the format method and for tests (unlikely to be needed by the implementation). Returns true when the given number is outside the upper or lower limits.
 
-#### ConversionSet member.
+#### ConversionSet property.
 
 ```PHP
 public $ConversionSet = 'Western';
 ```
 
-The ConversionSet member tells the number formatter which characters it should to use to represent which numbers.
+The ConversionSet property tells the number formatter which characters it should to use to represent which numbers.
 
 Currently supported values:
 
@@ -372,13 +372,13 @@ Output:
 123.45
 ```
 
-#### GroupSeparator member.
+#### GroupSeparator property.
 
 ```PHP
 public $GroupSeparator = ',';
 ```
 
-The GroupSeparator member tells the number formatter which character to use to separate groups of numbers (e.g., the comma in `1,234.56`).
+The GroupSeparator property tells the number formatter which character to use to separate groups of numbers (e.g., the comma in `1,234.56`).
 
 Example usage:
 
@@ -404,13 +404,13 @@ Output:
 1.234.567,89
 ```
 
-#### GroupSize member.
+#### GroupSize property.
 
 ```PHP
 public $GroupSize = 3;
 ```
 
-The GroupSize member tells the number formatter how many numbers should from a number group (typically this is three, but sometimes other sizes may be needed).
+The GroupSize property tells the number formatter how many numbers should from a number group (typically this is three, but sometimes other sizes may be needed).
 
 Example usage:
 
@@ -435,13 +435,13 @@ Output:
 1,23,45,67.89
 ```
 
-#### GroupOffset member.
+#### GroupOffset property.
 
 ```PHP
 public $GroupOffset = 0;
 ```
 
-The GroupOffset member provides a mechanism by which the first number group in a number can be a different size to any subsequent number groups in the number. This can be particularly important when expressing numbers that deal with [lakhs](https://en.wikipedia.org/wiki/Lakh) and [crores](https://en.wikipedia.org/wiki/Crore), typically requiring that the first number group contain three numbers, with any subsequent number groups containing two numbers.
+The GroupOffset property provides a mechanism by which the first number group in a number can be a different size to any subsequent number groups in the number. This can be particularly important when expressing numbers that deal with [lakhs](https://en.wikipedia.org/wiki/Lakh) and [crores](https://en.wikipedia.org/wiki/Crore), typically requiring that the first number group contain three numbers, with any subsequent number groups containing two numbers.
 
 Example usage:
 
@@ -479,13 +479,13 @@ Output:
 1,00,00,00,00,00,00,000
 ```
 
-#### DecimalSeparator member.
+#### DecimalSeparator property.
 
 ```PHP
 public $DecimalSeparator = '.';
 ```
 
-The DecimalSeparator member tells the number formatter which character to use to separate whole numbers from fractions (e.g., the period in `1,234.56`).
+The DecimalSeparator property tells the number formatter which character to use to separate whole numbers from fractions (e.g., the period in `1,234.56`).
 
 Example usage:
 
@@ -511,13 +511,13 @@ Output:
 1.234.567,89
 ```
 
-#### Base member.
+#### Base property.
 
 ```PHP
 public $Base = 10;
 ```
 
-The Base member tells the number formatter which base to use to express numbers. This will typically be 10, but sometimes other bases may be needed. The mechanism for switching between bases relies upon PHP's internal `base_convert()` function, which requires that bases be between 2 and 36 inclusive. The Base member must therefore be set to a value between 2 and 36 inclusive (otherwise it won't work properly).
+The Base property tells the number formatter which base to use to express numbers. This will typically be 10, but sometimes other bases may be needed. The mechanism for switching between bases relies upon PHP's internal `base_convert()` function, which requires that bases be between 2 and 36 inclusive. The Base property must therefore be set to a value between 2 and 36 inclusive (otherwise it won't work properly).
 
 An example that uses `1e+9` (`1,000,000,000`):
 
@@ -624,4 +624,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 22 June 2025 (2025.06.22).
+Last Updated: 1 July 2025 (2025.07.01).

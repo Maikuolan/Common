@@ -10,7 +10,7 @@
 - [Introduction.](#introduction)
 - [How to use.](#how-to-use)
 - [Reconstruction.](#reconstruction)
-- [Public class members.](#public-class-members)
+- [Public class properties.](#public-class-properties)
 - [Supported data types.](#supported-data-types)
 - [Comments and implicit typing.](#comments-and-implicit-typing)
 - [Anchors, aliases, and inline variables.](#anchors-aliases-and-inline-variables)
@@ -122,7 +122,7 @@ $RawYAML = file_get_contents(__DIR__ . '/reconstruct.yaml');
 // Then, we'll instantiate the new YAML object.
 $Object = new \Maikuolan\Common\YAML($RawYAML);
 
-// The actual processed data will be contained by the public member "Data". We'll use var_dump to show its contents.
+// The actual processed data will be contained by the public property "Data". We'll use var_dump to show its contents.
 var_dump($Object->Data);
 ```
 
@@ -139,7 +139,7 @@ $Object = new \Maikuolan\Common\YAML();
 // Now, to process the raw YAML data.
 $Object->process($RawYAML, $Object->Data);
 
-// The actual processed data will be contained by the public member "Data". We'll use var_dump to show its contents.
+// The actual processed data will be contained by the public property "Data". We'll use var_dump to show its contents.
 var_dump($Object->Data);
 ```
 
@@ -297,11 +297,11 @@ The `process` method supports four parameters:
 public function process(string $In, array &$Arr, int $Depth = 0, bool $Refs = false): bool;
 ```
 
-The second parameter, generally, should always point to the `Data` member of the same object. The `Data` member is an array intended specifically for holding the processed YAML data. It's possible to point it elsewhere without causing problems, and pointing it elsewhere could be necessary for some implementations, but keeping all the object's own data self-contained is generally a cleaner, more recommended approach.
+The second parameter, generally, should always point to the `Data` property of the same object. The `Data` property is an array intended specifically for holding the processed YAML data. It's possible to point it elsewhere without causing problems, and pointing it elsewhere could be necessary for some implementations, but keeping all the object's own data self-contained is generally a cleaner, more recommended approach.
 
 The third parameter should never be populated by the implementation. The process method can call itself recursively, and the third parameter is populated during such recursive calls by the method itself.
 
-The fourth parameter is an optional boolean, false by default. When set to true, the array referenced by the second parameter will be referenced to the `Refs` member, which can be used as a data source for inline variables (similar to what Ansible can do with YAML). The `Refs` member can also be populated manually, or not at all, if preferred.
+The fourth parameter is an optional boolean, false by default. When set to true, the array referenced by the second parameter will be referenced to the `Refs` property, which can be used as a data source for inline variables (similar to what Ansible can do with YAML). The `Refs` property can also be populated manually, or not at all, if preferred.
 
 ---
 
@@ -316,7 +316,7 @@ Yes. To do this, use the reconstruct method. The reconstruct method supports thr
 public function reconstruct(array $Arr, bool $UseCaptured = false, bool $DoWithAnchors = false): string
 ```
 
-The first parameter is the array that you want converted into YAML data. If you want to convert the object's own self-contained, already processed YAML data, just use the object's `Data` member as the reconstruct method's parameter.
+The first parameter is the array that you want converted into YAML data. If you want to convert the object's own self-contained, already processed YAML data, just use the object's `Data` property as the reconstruct method's parameter.
 
 As an example:
 
@@ -459,7 +459,7 @@ The method returns a string (the reconstructed YAML data).
 ---
 
 
-### Public class members.
+### Public class properties.
 
 ```PHP
 public $Data = [];
@@ -527,13 +527,13 @@ The preferred style of quotes to use for strings (double `"`, or single `'`) for
 public $AllowedStringTagsPattern = '~^(?:addslashes|bin2hex|hex2bin|html(?:_entity_decode|entities|specialchars(?:_decode)?)|lcfirst|nl2br|ord|quotemeta|str(?:_rot13|_shuffle|ip(?:_tags|c?slashes)|len|rev|tolower|toupper)|ucfirst|ucwords)$~';
 ```
 
-The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a string function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is a string. The member is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so (e.g., allowing functions such as `eval` would likely introduce serious vulnerabilities to the implementation, so should never be allowed unless absolutely necessary).
+The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a string function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is a string. The property is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so (e.g., allowing functions such as `eval` would likely introduce serious vulnerabilities to the implementation, so should never be allowed unless absolutely necessary).
 
 ```PHP
 public $AllowedNumericTagsPattern = '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cosh?|dec(?:bin|hex|oct)|deg2rad|exp(?:m1)?|floor|log1[0p]|rad2deg|round|sinh?|tanh?|sqrt)$~';
 ```
 
-The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a numeric function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is numeric (e.g., an integer, float, or number-like string). The member is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so.
+The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a numeric function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is numeric (e.g., an integer, float, or number-like string). The property is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so.
 
 ```PHP
 public $FlowRebuildDepth = 32;
@@ -573,7 +573,7 @@ When implicit typing is insufficient for obtaining the appropriate data type, YA
 - As long as it doesn't cause ambiguity within implicit typing, quotes for strings remains optional, and won't generally matter too much (i.e., quotes for strings aren't strictly enforced). However, whenever there's risk of ambiguity, strings should always be quoted. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all resolve to strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would resolve to a boolean (`false`), an integer, and a float respectively.
 - Quoting for keys is treated in the same manner as quoting for values.
 
-When reconstructing YAML data, the preferred quotes to use for string values (and for that matter, whether to use quotes at all) can be controlled via the `Quotes` public member. However, the YAML handler won't normally apply quotes to keys (you can change that behaviour by setting `QuoteKeys` to `true` if you want). Therefore, if you ever need to reverse some YAML data for any reason (i.e., process some YAML data, maybe make some modifications, and then reconstruct it back into YAML data again), you should always approach quoting strictly, should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstructed YAML data). Worth noting too, that PHP resolves both `null` and `false` to empty strings when used as array keys.
+When reconstructing YAML data, the preferred quotes to use for string values (and for that matter, whether to use quotes at all) can be controlled via the `Quotes` public property. However, the YAML handler won't normally apply quotes to keys (you can change that behaviour by setting `QuoteKeys` to `true` if you want). Therefore, if you ever need to reverse some YAML data for any reason (i.e., process some YAML data, maybe make some modifications, and then reconstruct it back into YAML data again), you should always approach quoting strictly, should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstructed YAML data). Worth noting too, that PHP resolves both `null` and `false` to empty strings when used as array keys.
 
 ---
 
@@ -600,7 +600,7 @@ array(2) {
 }
 ```
 
-The YAML handler also supports inline variables (when correctly registered to the `Refs` member), which can be traversed via dot notation.
+The YAML handler also supports inline variables (when correctly registered to the `Refs` property), which can be traversed via dot notation.
 
 Example inline variable usage:
 
@@ -674,6 +674,7 @@ Example 2.22 Timestamps | *Kind of*. The data will be there as expected, but the
 Example 2.23 Various Explicit Tags | Obviously, the YAML handler doesn't support any kind of `!something` tag. Aside from that though, yes; supported.
 Example 2.24 Global Tags | The YAML handler doesn't support, and ignores global tags, so no; not supported.
 Example 2.25 Unordered Sets | Yes.
+Example 2.26 Ordered Mappings | Yes.
 __[Character encodings](https://yaml.org/spec/1.2.2/#52-character-encodings)__ | __Supported__
 UTF-32BE (Explicit BOM) | Yes.
 UTF-32BE (ASCII first character) | Yes.
@@ -830,4 +831,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 29 June 2025 (2025.06.29).
+Last Updated: 1 July 2025 (2025.07.01).

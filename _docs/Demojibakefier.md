@@ -109,9 +109,9 @@ This time, it should produce something like this (note that the output of guard 
 - [shannonEntropy method.](#shannonentropy-method)
 - [normalise method.](#normalise-method)
 - [guard method.](#guard-method)
-- [Last member.](#last-member)
-- [Len member.](#len-member)
-- [Segments member.](#segments-member)
+- [Last property.](#last-property)
+- [Len property.](#len-property)
+- [Segments property.](#segments-property)
 
 #### Demojibakefier's constructor.
 
@@ -239,7 +239,7 @@ Attempts to normalise a string (the sole accepted parameter), returning the stri
 public function normalise(string $String): string;
 ```
 
-When `normalise` is called, it immediately resets the `Last` member and immediately populates the `Len` member. The `Last` member is then populated as soon as the Demojibakefier decides which character encoding it thinks the provided string uses (assuming it's able to come to a decision).
+When `normalise` is called, it immediately resets the `Last` property and immediately populates the `Len` property. The `Last` property is then populated as soon as the Demojibakefier decides which character encoding it thinks the provided string uses (assuming it's able to come to a decision).
 
 #### guard method.
 
@@ -249,9 +249,9 @@ The Demojibakefier heavily relies upon PHP's `iconv()` functionality in order to
 public function guard(string $String): string;
 ```
 
-#### Last member.
+#### Last property.
 
-The `Last` member is a string populated by the `normalise` method, and can be used after calling `normalise` or `guard`, to determine the most recent character encoding that the Demojibakefier converted a string from.
+The `Last` property is a string populated by the `normalise` method, and can be used after calling `normalise` or `guard`, to determine the most recent character encoding that the Demojibakefier converted a string from.
 
 ```PHP
 public $Last = '';
@@ -282,15 +282,15 @@ foreach ($Array as $Element) {
 
 CIDRAM and phpMussel do something similar on the front-end logs page, to inform users when log entry fields have been transformed by the Demojibakefier.
 
-#### Len member.
+#### Len property.
 
-The `Len` member is an integer populated by the `normalise` method, representing the total length of the provided string (it uses `strlen()` internally to do this).
+The `Len` property is an integer populated by the `normalise` method, representing the total length of the provided string (it uses `strlen()` internally to do this).
 
 ```PHP
 public $Len = -1;
 ```
 
-#### Segments member.
+#### Segments property.
 
 Within a string being normalised, defines the maximum number of segments it can be split into to be normalised separately.
 
@@ -301,4 +301,4 @@ public $Segments = 65536;
 ---
 
 
-Last Updated: 30 September 2020 (2020.09.30).
+Last Updated: 1 July 2025 (2025.07.01).

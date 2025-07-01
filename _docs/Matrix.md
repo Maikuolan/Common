@@ -1,16 +1,16 @@
 ### Documentation for the "Matrix" class.
 
-*Facilitates the generation of multidimensional arrays to an arbitrarily specified depth and number of elements, and facilitates iteration through those multidimensional arrays in any direction (whether up and down a particular a array, across different depths, etc) via arbitrary callables and closures.*
+*Facilitates the generation of multidimensional arrays to an arbitrarily specified depth and number of elements, and facilitates iteration through those multidimensional arrays in any direction (whether up and down a particular array, across different depths, etc) via arbitrary callables and closures.*
 
 ---
 
 
 ### How to use:
 
-- [Matrix member.](#matrix-member)
-- [Dimensions member.](#dimensions-member)
-- [Magnitude member.](#magnitude-member)
-- [Data member.](#data-member)
+- [Matrix property.](#matrix-property)
+- [Dimensions property.](#dimensions-property)
+- [Magnitude property.](#magnitude-property)
+- [Data property.](#data-property)
 - [createMatrix method.](#creatematrix-method)
 - [populateVector method.](#populatevector-method)
 - [iterateCallback method.](#iteratecallback-method)
@@ -19,33 +19,33 @@
 - [Callback functions.](#callback-functions)
 - [Examples.](#examples)
 
-#### Matrix member.
+#### Matrix property.
 
-The Matrix member will be populated with a multidimensional array (the "matrix") when createMatrix is called, and could be fairly described as the instance's main concern. Various methods are provided for accessing and manipulating this multidimensional array, and in case one would prefer to access or manipulate this data directly at the implementation, the member is defined as public.
+The Matrix property will be populated with a multidimensional array (the "matrix") when createMatrix is called, and could be fairly described as the instance's main concern. Various methods are provided for accessing and manipulating this multidimensional array, and in case one would prefer to access or manipulate this data directly at the implementation, the property is defined as public.
 
 ```PHP
 public $Matrix = [];
 ```
 
-#### Dimensions member.
+#### Dimensions property.
 
-The Dimensions member is an integer which describes the number of dimensions the matrix has. It is populated when createMatrix is called, and is defined as public.
+The Dimensions property is an integer which describes the number of dimensions the matrix has. It is populated when createMatrix is called, and is defined as public.
 
 ```PHP
 public $Dimensions = 1;
 ```
 
-#### Magnitude member.
+#### Magnitude property.
 
-The Magnitude member is an integer, or an array of integers, which describes the magnitude of each dimension of the matrix. It is populated when createMatrix is called, and is defined as public. When populated with an integer, that integer determines the magnitude of all dimensions. When populated with an array of integers, each element of the array corresponds to each dimension of the matrix respectively (i.e., the first element determines the magnitude of the first dimension, the second element of the second dimension and so on).
+The Magnitude property is an integer, or an array of integers, which describes the magnitude of each dimension of the matrix. It is populated when createMatrix is called, and is defined as public. When populated with an integer, that integer determines the magnitude of all dimensions. When populated with an array of integers, each element of the array corresponds to each dimension of the matrix respectively (i.e., the first element determines the magnitude of the first dimension, the second element of the second dimension and so on).
 
 ```PHP
 public $Magnitude = 1;
 ```
 
-#### Data member.
+#### Data property.
 
-The Data member can be any type of data supported by PHP, is populated when createMatrix is called, and is defined as public. It will be used to populate each coordinate of the matrix (i.e., when populating the Matrix member, the contents of the Data member will be used to populate each element of the deepest vector of the matrix).
+The Data property can be any type of data supported by PHP, is populated when createMatrix is called, and is defined as public. It will be used to populate each coordinate of the matrix (i.e., when populating the Matrix property, the contents of the Data property will be used to populate each element of the deepest vector of the matrix).
 
 ```PHP
 public $Data = [];
@@ -53,7 +53,7 @@ public $Data = [];
 
 #### createMatrix method.
 
-The createMatrix method is used to create a new matrix for the instance. It accepts three parameters. The first parameter, `$Dimensions`, describes the number of dimensions the matrix should have, and must be an integer (refer to the Dimensions member). The second parameter, `$Magnitude`, describes the magnitude that each dimension of the matrix should have, and must be either an integer or an array of integers (refer to the Magnitude member). The third parameter, `$Data`, describes the default data that each coordinate should be populated with (refer to the Data member). It has no return value.
+The createMatrix method is used to create a new matrix for the instance. It accepts three parameters. The first parameter, `$Dimensions`, describes the number of dimensions the matrix should have, and must be an integer (refer to the Dimensions property). The second parameter, `$Magnitude`, describes the magnitude that each dimension of the matrix should have, and must be either an integer or an array of integers (refer to the Magnitude property). The third parameter, `$Data`, describes the default data that each coordinate should be populated with (refer to the Data property). It has no return value.
 
 ```PHP
 public function createMatrix(int $Dimensions, $Magnitude, $Data);
@@ -187,4 +187,4 @@ You may also notice that, despite having a magnitude of three, for the coordinat
 ---
 
 
-Last Updated: 16 June 2022 (2022.06.16).
+Last Updated: 1 July 2025 (2025.07.01).

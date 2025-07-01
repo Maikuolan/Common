@@ -7,18 +7,21 @@
 
 ### How to use:
 
-- [DefaultTimeout member.](#defaulttimeout-member)
-- [Channels member.](#channels-member)
-- [Disabled member.](#disabled-member)
-- [SendToOut member.](#sendtoout-member)
-- [ObjLogger member.](#ObjLogger-member)
-- [UserAgent member.](#useragent-member)
-- [MostRecentStatusCode member.](#mostrecentstatuscode-member)
+- [DefaultTimeout property.](#defaulttimeout-property)
+- [Channels property.](#channels-property)
+- [Disabled property.](#disabled-property)
+- [SendToOut property.](#sendtoout-property)
+- [ObjLogger property.](#objlogger-property)
+- [ObjLoggerFile property.](#objloggerfile-property)
+- [Proxy property.](#proxy-property)
+- [ProxyAuth property.](#proxyauth-property)
+- [UserAgent property.](#useragent-property)
+- [MostRecentStatusCode property.](#mostrecentstatuscode-property)
 - [request method.](#request-method)
 - [inCsv method.](#incsv-method)
 - [sendMessage method.](#sendmessage-method)
 
-#### DefaultTimeout member.
+#### DefaultTimeout property.
 
 Sets the default timeout to use for any requests which don't specify their own timeout.
 
@@ -26,7 +29,7 @@ Sets the default timeout to use for any requests which don't specify their own t
 public $DefaultTimeout = 12;
 ```
 
-#### Channels member.
+#### Channels property.
 
 Can be used to specify alternative channels to use for requests matching specific patterns.
 
@@ -61,9 +64,9 @@ BitBucket:
 
 "Channels" is an array, containing at least one sub-array, "Trigger". Stored in that sub-array, each "pattern" matches against the beginning of the URL of the request, serving as a "trigger" for identifying alternative channels. Each "trigger" should have its own corresponding sub-array, containing any number of groups of potential sub-matches, each containing any potential alternative channels. The provided "alternative channels" will replace the part of the URL of the request which matches the corresponding sub-match, and a subsequent new request will be made using the amended URL.
 
-You can also just ignore this member entirely if you don't want to utilise alternative channels at your implementation.
+You can also just ignore this property entirely if you don't want to utilise alternative channels at your implementation.
 
-#### Disabled member.
+#### Disabled property.
 
 A CSV listing any alternative channels that should be disabled for the request (useful, for example, if you have a static list of alternative channels for your implementation, but provide the ability for end-users to optionally disable channels of their choice).
 
@@ -76,7 +79,7 @@ public $Disabled = '';
 X example,Y example,Hello world,Lorem ipsum
 ```
 
-#### SendToOut member.
+#### SendToOut property.
 
 Whether to send the results of outbound requests to stdout (useful for debugging, but most likely won't ever be needed in production).
 
@@ -84,7 +87,7 @@ Whether to send the results of outbound requests to stdout (useful for debugging
 public $SendToOut = false;
 ```
 
-#### ObjLogger member.
+#### ObjLogger property.
 
 Object-level logger for the results of outbound requests (useful for debugging potential problems with outbound requests at the implementation).
 
@@ -92,7 +95,7 @@ Object-level logger for the results of outbound requests (useful for debugging p
 public $ObjLogger = '';
 ```
 
-#### ObjLoggerFile member.
+#### ObjLoggerFile property.
 
 Whether to dump the object-level logger to a file (and where to find it).
 
@@ -100,7 +103,23 @@ Whether to dump the object-level logger to a file (and where to find it).
 public $ObjLoggerFile = '';
 ```
 
-#### UserAgent member.
+#### Proxy property.
+
+The URL of a proxy to use if required by the instance.
+
+```PHP
+public $Proxy = '';
+```
+
+#### ProxyAuth property.
+
+The username and password to use if required by the specified proxy URL.
+
+```PHP
+public $ProxyAuth = '';
+```
+
+#### UserAgent property.
 
 The default user agent to cite when sending requests (for the sake of good netiquette and politeness towards any endpoints you intend to communicate with, this should definitely be populated when implementing the class according to your implementation).
 
@@ -108,9 +127,9 @@ The default user agent to cite when sending requests (for the sake of good netiq
 public $UserAgent = 'Request class (https://github.com/Maikuolan/Common)';
 ```
 
-#### MostRecentStatusCode member.
+#### MostRecentStatusCode property.
 
-Whenever a request is performed, the status code returned by that request will be populated to this member (e.g., 200, 403, 404, etc).
+Whenever a request is performed, the status code returned by that request will be populated to this property (e.g., 200, 403, 404, etc).
 
 ```PHP
 public $MostRecentStatusCode = 0;
@@ -146,7 +165,7 @@ public function __invoke(...$Params): string;
 
 #### inCsv method.
 
-Checks for a value within comma-separated values (CSV). Returns true when the value is found and false otherwise. This is used internally to process the `Disabled` member, and also made public for the benefit of use at the implementation elsewhere.
+Checks for a value within comma-separated values (CSV). Returns true when the value is found and false otherwise. This is used internally to process the `Disabled` property, and also made public for the benefit of use at the implementation elsewhere.
 
 ```PHP
 public function inCsv(string $Value, string $CSV): bool;
@@ -163,4 +182,4 @@ public function sendMessage(string $Message): void;
 ---
 
 
-Last Updated: 24 December 2023 (2023.12.24).
+Last Updated: 1 July 2025 (2025.07.01).

@@ -7,7 +7,7 @@
 
 ### How to use:
 
-- [Cache member.](#cache-member)
+- [Cache property.](#cache-property)
 - [opVersions method.](#opversions-method)
 - [opEqualTo method.](#opequalto-method)
 - [multiCompare method.](#multicompare-method)
@@ -16,9 +16,9 @@
 - [ifCompare method.](#ifcompare-method)
 - [set method.](#set-method)
 
-#### Cache member.
+#### Cache property.
 
-This private member is an array, where the results returned by `singleCompare` are cached. When `singleCompare` executes, it'll first check whether an identical execution has already occurred for the instance, returning the cached results instead of calculating new results. This may marginally improve performance in cases where the same compare operation occurs multiple times for the instance.
+This private property is an array, where the results returned by `singleCompare` are cached. When `singleCompare` executes, it'll first check whether an identical execution has already occurred for the instance, returning the cached results instead of calculating new results. This may marginally improve performance in cases where the same compare operation occurs multiple times for the instance.
 
 ```PHP
 private $Cache = [];
@@ -355,4 +355,4 @@ array(4) {
 ---
 
 
-Last Updated: 10 April 2025 (2025.04.10).
+Last Updated: 1 July 2025 (2025.07.01).

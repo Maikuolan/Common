@@ -31,6 +31,9 @@ found at:
 - [2025.06.29; Maikuolan]: Added support for compact nested mapping to the YAML
   handler.
 
+- [2025.07.01; Maikuolan]: Added support for proxies to the request handler
+  (#10).
+
 === Version/Release 2.13.0 ===
 MINOR RELEASE.
 

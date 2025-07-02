@@ -80,13 +80,13 @@ abstract class CommonAbstract
             $Reflection = new \ReflectionProperty($this, $Property);
             $Attributes = $Reflection->getAttributes();
             foreach ($Attributes as $Attribute) {
-               $Name = $Attribute->getName();
-               if ($Name === 'Maikuolan\Common\Context') {
-                   $Arguments = $Attribute->getArguments();
-                   if (!empty($Arguments['Sensitive'])) {
-                       $Value = $Attribute->newInstance();
-                   }
-               }
+                $Name = $Attribute->getName();
+                if ($Name === 'Maikuolan\Common\Context') {
+                    $Arguments = $Attribute->getArguments();
+                    if (!empty($Arguments['Sensitive'])) {
+                        $Value = $Attribute->newInstance();
+                    }
+                }
             }
         }
         return $Properties;

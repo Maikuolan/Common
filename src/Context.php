@@ -18,7 +18,8 @@ namespace Maikuolan\Common;
 #[\Attribute, \AllowDynamicProperties]
 class Context
 {
-    public function __construct(...$Arguments) {
+    public function __construct(...$Arguments)
+    {
         foreach ($Arguments as $Key => $Value) {
             $this->{$Key} = $Value;
         }

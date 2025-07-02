@@ -39,7 +39,11 @@ found at:
   var_dump of any instances of the applicable classes in production (though, as
   attributes were introduced with PHP 8.0, this change won't have any effect
   when running on older PHP versions; affected code is also guarded to prevent
-  backwards-compatibilty problems).
+  backwards-compatibilty problems). Improved the number formatter's
+  unformatter.
+
+- [2025.07.02; Bug-fix; Maikuolan]: The number formatter formatting some
+  specific chinese numerals incorrectly in some cases; Fixed.
 
 === Version/Release 2.13.0 ===
 MINOR RELEASE.

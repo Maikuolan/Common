@@ -179,10 +179,10 @@ $Expected = '
 `Bengali-1` | `১২,৩৪,৫৬৭.৮৯` | `১,০২,০৩,০৪০.৫০৬০৭` | `১০০.৭৫০` | `৯,৯৯,৯৯,৯৯৯`
 `Burmese-1` | `၁၂၃၄၅၆၇.၈၉` | `၁၀၂၀၃၀၄၀.၅၀၆၀၇` | `၁၀၀.၇၅၀` | `၉၉၉၉၉၉၉၉`
 `China-1` | `123,4567.89` | `1020,3040.50607` | `100.750` | `9999,9999`
-`Chinese-Simplified` | `一百二十三万四千五百六十七点八九` | `一千二十三千四十点五〇六〇七` | `一百点七五〇` | `九千九百九十九万九千九百九十九`
-`Chinese-Simplified-Financial` | `壹佰贰拾叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟贰拾叁仟肆拾点伍零陆零柒` | `壹佰点柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
-`Chinese-Traditional` | `一百二十三萬四千五百六十七點八九` | `一千二十三千四十點五零六零七` | `一百點七五零` | `九千九百九十九萬九千九百九十九`
-`Chinese-Traditional-Financial` | `壹佰貳拾叄萬肆仟伍佰陸拾柒點捌玖` | `壹仟貳拾叄仟肆拾點伍零陸零柒` | `壹佰點柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
+`Chinese-Simplified` | `一百二十三万四千五百六十七点八九` | `一千二十万三千四十点五〇六〇七` | `一百点七五〇` | `九千九百九十九万九千九百九十九`
+`Chinese-Simplified-Financial` | `壹佰贰拾叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟贰拾萬叁仟肆拾点伍零陆零柒` | `壹佰点柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
+`Chinese-Traditional` | `一百二十三萬四千五百六十七點八九` | `一千二十萬三千四十點五零六零七` | `一百點七五零` | `九千九百九十九萬九千九百九十九`
+`Chinese-Traditional-Financial` | `壹佰貳拾叄萬肆仟伍佰陸拾柒點捌玖` | `壹仟貳拾萬叄仟肆拾點伍零陸零柒` | `壹佰點柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
 `Etruscan` | `` | `` | `𐌟` | ``
 `Fullwidth` | `１２３４５６７.８９` | `１０２０３０４０.５０６０７` | `１００.７５０` | `９９９９９９９９`
 `Geez` | `፻፳፫፼፵፭፻፷፯` | `፲፻፳፼፴፻፵` | `፻` | `፺፱፻፺፱፼፺፱፻፺፱`
@@ -241,10 +241,10 @@ $Formats = [
     'Bengali-1',
     'Burmese-1',
     'China-1',
-    // 'Chinese-Simplified',
-    // 'Chinese-Simplified-Financial',
-    // 'Chinese-Traditional',
-    // 'Chinese-Traditional-Financial',
+    'Chinese-Simplified',
+    'Chinese-Simplified-Financial',
+    'Chinese-Traditional',
+    'Chinese-Traditional-Financial',
     'Etruscan',
     'Fullwidth',
     'Geez',

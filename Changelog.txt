@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.14.0 ===
+MINOR RELEASE.
+
 - [2025.06.22; Maikuolan]: Added Etruscan support to the number formatter,
   added guards for a conversion set's upper and lower limits (so that the
   formatter will now just fail with an empty string instead of returning
@@ -44,6 +49,9 @@ found at:
 
 - [2025.07.02; Bug-fix; Maikuolan]: The number formatter formatting some
   specific chinese numerals incorrectly in some cases; Fixed.
+
+Caleb M (Maikuolan),
+2 July, 2025.
 
 === Version/Release 2.13.0 ===
 MINOR RELEASE.

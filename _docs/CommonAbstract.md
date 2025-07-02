@@ -8,13 +8,14 @@
 ### Contents:
 
 - [dataTraverse method.](#datatraverse-method)
+- [__debugInfo method.](#__debuginfo-method)
 
 #### dataTraverse method.
 
 `dataTraverse` provides a way to recursively traverse an array or an object, teasing out specific elements or properties as needed, utilising a simplified imitation of dot notation.
 
 ```PHP
-public function dataTraverse(&$Data, $Path = [], bool $AllowNonScalar = false, bool $AllowMethodCalls = false)
+public function dataTraverse(&$Data, $Path = [], bool $AllowNonScalar = false, bool $AllowMethodCalls = false);
 ```
 
 `dataTraverse` accepts 4 parameters. The first parameter is the array or object to be traversed, passed by reference. The second parameter is an optional array or string, and provides the path which utilises dot notation (as aforementioned). The third parameter is an optional boolean to indicate whether to allow the method to return non-scalar values (`true` to allow non-scalar values; `false` to prohibit non-scalar values; `false` by default). The fourth parameter is an optional boolean to indicate whether to allow the method to perform method calls on traversed objects (`true` to allow method calls; `false` to prohibit method calls; `false` by default).
@@ -64,7 +65,15 @@ string(5) "World"
 
 As shown by the final two examples, the array will be traversed only as far as the path allows. If an instruction of the path points to a non-existent index, the instruction will be ignored, continuing the instructions until none are left. At that time, if the current index provides a scalar value, that scalar value will be returned. If a scalar value isn't available, or if the path goes nowhere, an empty string will be returned. An erroneous path may return a value other than expected, but shouldn't produce any overt errors.
 
+#### __debugInfo method.
+
+`__debugInfo` is a PHP magic method, used here by the class to redact sensitive properties from an object's dump.
+
+```PHP
+public function __debugInfo(): array;
+```
+
 ---
 
 
-Last Updated: 14 September 2023 (2023.09.14).
+Last Updated: 2 July 2025 (2025.07.02).

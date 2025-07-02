@@ -237,7 +237,7 @@ public function getAllEntries(): array;
 Returns an associative array containing all entries from the cache, whereby the entry keys (the names of the cache entries) match the specified pattern (the array will be empty when no entries can be retrieved).
 
 ```PHP
-public function getAllEntriesWhere(string $Pattern, string $Replacement = '', ?callable $Sort = null): array
+public function getAllEntriesWhere(string $Pattern, string $Replacement = '', ?callable $Sort = null): array;
 ```
 
 The first parameter is the pattern to match the entry keys against (must be a valid regular expression).
@@ -308,4 +308,4 @@ public function exposeWorkingDataArray();
 ---
 
 
-Last Updated: 1 July 2025 (2025.07.01).
+Last Updated: 2 July 2025 (2025.07.02).

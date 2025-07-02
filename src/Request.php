@@ -1,6 +1,6 @@
 <?php
 /**
- * Request handler (last modified: 2025.07.01).
+ * Request handler (last modified: 2025.07.02).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -55,6 +55,7 @@ class Request extends CommonAbstract
     /**
      * @var string The username and password to use if required by the specified proxy URL.
      */
+    #[Context(Sensitive: true)]
     public $ProxyAuth = '';
 
     /**

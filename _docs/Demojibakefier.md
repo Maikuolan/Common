@@ -204,7 +204,7 @@ Note that the reliability of the Demojibakefier's ability to normalise strings, 
 Checks for byte sequences that shouldn't normally appear in a specified character encoding (the second parameter) as a means of roughly guessing whether the string (the first parameter) likely conforms to the specified character encoding. The second parameter is optional, defaulting to instance's default character encoding when omitted (the character encoding provided to the constructor at instantiation, or UTF-8 when none was provided). Returns true when the string conforms (per specs), or false otherwise.
 
 ```PHP
-public function checkConformity(string $String, string $Encoding = ''): bool
+public function checkConformity(string $String, string $Encoding = ''): bool;
 ```
 
 #### weigh method.
@@ -301,4 +301,4 @@ public $Segments = 65536;
 ---
 
 
-Last Updated: 1 July 2025 (2025.07.01).
+Last Updated: 2 July 2025 (2025.07.02).

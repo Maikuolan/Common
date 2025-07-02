@@ -80,7 +80,7 @@ public function iterateCallback($Description, callable $Callback = null, ...$Dat
 The iterateCallbackGenerator method is a generator invoked by the iterateCallback method, and serves as a simple wrapper for the recursively invoked iterateCallbackGeneratorInner method. It accepts three parameters. The first parameter, `$Indexes`, is an array describing the coordinates to iterate over. The second parameter, `$Callback`, is the callback function to apply when iterating over the specified coordinates. The third parameter, `$Data`, is an array containing any optional, variadic supplied by iterateCallback.
 
 ```PHP
-private function iterateCallbackGenerator(array $Indexes, callable $Callback, array $Data): \Generator
+private function iterateCallbackGenerator(array $Indexes, callable $Callback, array $Data): \Generator;
 ```
 
 #### iterateCallbackGeneratorInner method.
@@ -88,7 +88,7 @@ private function iterateCallbackGenerator(array $Indexes, callable $Callback, ar
 The iterateCallbackGeneratorInner method is a generator invoked by the iterateCallbackGenerator method, and recursively by itself, and is the main mechanism by which the iterateCallback method is able to apply a callback function to some specified coordinates, and the main mechanism by which return values can be firstly yielded from the callback function, and then subsequently returned by the iterateCallback method to the implementation. It accepts six parameters. The first parameter, `$Matrix`, is the matrix or particular vector from where the current iteration is occurring, passed by reference. The second parameter, `$Indexes`, is an array describing the particular coordinates where the iteration is occurring, passed by reference. The third parameter, `$Depth`, is an integer describing the current depth of the recursion, necessary for determing which specific coordinates within the vector are to be iterated over. The fourth parameter, `$KeyRoot`, is a string used to aid in supplying the correct keys for any return values yielded from the callback function. The fifth parameter, `$Callback`, is the callback function. The sixth parameter, `$Data`, is an array containing any optional, variadic supplied by iterateCallback.
 
 ```PHP
-private function iterateCallbackGeneratorInner(array &$Matrix, array &$Indexes, int $Depth, string $KeyRoot, callable $Callback, array $Data): \Generator
+private function iterateCallbackGeneratorInner(array &$Matrix, array &$Indexes, int $Depth, string $KeyRoot, callable $Callback, array $Data): \Generator;
 ```
 
 #### Callback functions.
@@ -187,4 +187,4 @@ You may also notice that, despite having a magnitude of three, for the coordinat
 ---
 
 
-Last Updated: 1 July 2025 (2025.07.01).
+Last Updated: 2 July 2025 (2025.07.02).

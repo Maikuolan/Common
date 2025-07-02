@@ -156,7 +156,7 @@ If we were to duplicate that `foreach()` some several times, to perform several 
 The readFile method is used to read files.
 
 ```PHP
-public function readFile(string $File = '', int $Lock = 0): string
+public function readFile(string $File = '', int $Lock = 0): string;
 ```
 
 It accepts two parameters. The first parameter is the path to the file to be read, and the second parameter (optional) should be treated in the same manner as the second parameter for PHP's `flock()` function, providing the ability to indicate whether the operation should attempt to lock the file when reading it.
@@ -176,7 +176,7 @@ The method returns the contents of the file, or an empty string on failure. If i
 The writeFile method is used to queue file rewrite operations.
 
 ```PHP
-public function writeFile(string $File = '', string $Data = '', int $Lock = 0): bool
+public function writeFile(string $File = '', string $Data = '', int $Lock = 0): bool;
 ```
 
 It accepts three parameters. The first parameter is the path to the file to be written, the second parameter (optional) is the data to be written to the file in question, and the third parameter (optional) should be treated in the same manner as the second parameter for PHP's `flock()` function, providing the ability to indicate whether the operation should attempt to lock the file when later rewriting it.
@@ -196,4 +196,4 @@ In order to be able to compare the file's original data with the data associated
 ---
 
 
-Last Updated: 26 August 2019 (2019.08.26).
+Last Updated: 2 July 2025 (2025.07.02).

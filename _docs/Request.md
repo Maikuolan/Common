@@ -116,6 +116,7 @@ public $Proxy = '';
 The username and password to use if required by the specified proxy URL.
 
 ```PHP
+#[Context(Sensitive: true)]
 public $ProxyAuth = '';
 ```
 
@@ -182,4 +183,4 @@ public function sendMessage(string $Message): void;
 ---
 
 
-Last Updated: 1 July 2025 (2025.07.01).
+Last Updated: 2 July 2025 (2025.07.02).

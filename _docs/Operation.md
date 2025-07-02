@@ -31,7 +31,7 @@ This method is public in case the need to call it directly arises, but you shoul
 After `singleCompare` has determined which kind of operation is needed, `opVersions` and `opEqualTo` are used internally to perform the operation in question. In particular, `opVersions` is responsible for handling any operations involving *greater* or *less than* comparisons.
 
 ```PHP
-public function opVersions(string $Actual, string $Constraint, bool $NextMajor, bool $GreaterThan, bool $OrEqualTo): bool
+public function opVersions(string $Actual, string $Constraint, bool $NextMajor, bool $GreaterThan, bool $OrEqualTo): bool;
 ```
 
 `opVersions` accepts 5 parameters. The first parameter is a string, the actual value being compared. The second parameter is a string, the constraint the actual value being compared must match against. The third parameter is a boolean, true if the constraint must not exceed the most significant part of the actual value, and false otherwise. The fourth parameter is a boolean, true if the operation is *greater than*, and false if *less than*. The fifth parameter is a boolean, true if the operation is *equal to*, and false otherwise (e.g., if the operation is *greater than or equal to*, both the fourth and fifth parameters would be true).
@@ -45,7 +45,7 @@ This method is public in case the need to call it directly arises, but you shoul
 After `singleCompare` has determined which kind of operation is needed, `opVersions` and `opEqualTo` are used internally to perform the operation in question. In particular, `opEqualTo` is responsible for handling any *exactly equal to* operations.
 
 ```PHP
-public function opEqualTo(string $Actual, string $Constraint): bool
+public function opEqualTo(string $Actual, string $Constraint): bool;
 ```
 
 `opEqualTo` accepts 2 parameters. The first parameter is a string, the actual value being compared. The second parameter is a string, the constraint the actual value being compared must match against.
@@ -57,7 +57,7 @@ The return value is a boolean, true if the constraint is met, and false if not.
 `multiCompare` provides a convenient way to match multiple values against multiple constraints with a single method call. Depending on the nature of your implementation, it may be easier to simply call `singleCompare` multiple times, or you may prefer to be able to perform all operations together, relying on a combined return value. Its two accepted parameters are both arrays, with elements corresponding to the accepted parameters for `singleCompare`.
 
 ```PHP
-public function multiCompare(array $Operand, array $Prefix): bool
+public function multiCompare(array $Operand, array $Prefix): bool;
 ```
 
 As an example, the following arbitrary code:
@@ -83,7 +83,7 @@ if ($Object->multiCompare(['1.2.3', '2.3.4', '3.4.5'], ['^1', '>=2.3 <4', '^1|^3
 A comparison operation performed by `singleCompare` can generally be thought of as a mathematical comparison operation, whereby the first parameter is one's *left operand*, and the second parameter, the *prefix*, is one's *operator* and *right operand* combined together, or may be a combination of any number of *operators* and *right operands* combined together, which'll always be operated against the singular defined *left operand* of the first parameter. The *prefix* forms a *constraint* by which the *operand* must match, in order for the method to return true, returning false when the operand fails to match the specified constraint.
 
 ```PHP
-public function singleCompare(string $Operand, string $Prefix): bool
+public function singleCompare(string $Operand, string $Prefix): bool;
 ```
 
 Operands may be composed of integers (whole numbers), of "PHP-standardised" version numbers (including with identifiers such as "alpha", "beta", "dev", "rc", etc), of "semver" (semantic versioning) version numbers, or some variant of integers delimited by decimals/periods. Since each operand is split by its decimals/periods, each part treated as a whole number in its own right, it should be noted, e.g., that `1.02` would be regarded as equal to `1.2`, and greater than `1.1`. To compare according to each unit position (i.e., what one would typically expect for when comparing fractions, floats, etc), it may be necessary to break each such unit by additional decimals/periods (e.g., `1.0.2` instead of `1.02`).
@@ -138,7 +138,7 @@ This method is public in case the need to call it directly arises, but it should
 `splitVersionParts` is used internally by `opVersions` and `opEqualTo` to split a version into its constituent parts.
 
 ```PHP
-public function splitVersionParts(string $Version = ''): array
+public function splitVersionParts(string $Version = ''): array;
 ```
 
 Some examples:
@@ -223,7 +223,7 @@ The last of those four examples is highly nonsensical, but it's useful nonethele
 `ifCompare` provides a mechanism to perform some limited, basic, rudimentary if/then/else logic directly from strings. This can be useful in situations where writing if/then/else logic directly with PHP code, or with other kinds of code, mightn't be possible, or in situations where the full scope of what should be possible or permissible needs to be limited to just such limited, basic, rudimentary if/then/else logic only, or needs to be determined directly from a string.
 
 ```PHP
-public function ifCompare(&$Data, string $IfString, bool $AllowMethodCalls = false): string
+public function ifCompare(&$Data, string $IfString, bool $AllowMethodCalls = false): string;
 ```
 
 `ifCompare` accepts 3 parameters. The first parameter, passed by reference, would typically be an array, but may be any scalar data type. When `ifCompare` leverages `dataTraverse`, this first parameter is the data that it traverses over. The second parameter is a string, and contains the actual if/then/else logic to be processed. The third parameter is an optional boolean to indicate whether to allow the method to perform method calls on traversed objects (`true` to allow method calls; `false` to prohibit method calls; `false` by default). The return value is a string, the results of the operation.
@@ -271,7 +271,7 @@ If more complex usage is needed in the future, the capabilities of this class ca
 `set` provides a way to define and populate variables within the given traversable data.
 
 ```PHP
-public function set(&$Data, string $Instruction, bool $AllowMethodCalls = false): bool
+public function set(&$Data, string $Instruction, bool $AllowMethodCalls = false): bool;
 ```
 
 `set` accepts 3 parameters. The first parameter, passed by reference, would typically be an array, but may be any scalar data type, and serves as the traversable data. The second parameter is a string, and provides the instructions for the operation handler (e.g., what to define, populate, etc). The third parameter is an optional boolean to indicate whether to allow the method to perform method calls on traversed objects (`true` to allow method calls; `false` to prohibit method calls; `false` by default). True is returned when no instructions were unable to be fulfilled (i.e., all instructions were successfully fulfilled, no instructions were given, or there wasn't anything that needed to be done). If any instructions were unable to be fulfilled, or if some kind of problem occurred (e.g., bad syntax), false is returned.
@@ -355,4 +355,4 @@ array(4) {
 ---
 
 
-Last Updated: 1 July 2025 (2025.07.01).
+Last Updated: 2 July 2025 (2025.07.02).

@@ -27,7 +27,7 @@ The class is utilised by CIDRAM and phpMussel to provide a means by which users 
 The addHandler method provides a way to add a handler to a method. It accepts three parameters.
 
 ```PHP
-public function addHandler(string $Event, callable $Handler, bool $Replace = false): bool
+public function addHandler(string $Event, callable $Handler, bool $Replace = false): bool;
 ```
 
 The first parameter is the name of the event that the handler should be added to. The second parameter is the handler itself (an anonymous function or closure is generally the best approach to take). The third parameter is a boolean flag to indicate whether the handler should simply be appended onto the existing stack, or whether it should replace the stack entirely (specify true to replace, or false to append; because false is its default value, the parameter can also be omitted entirely when appending).
@@ -41,7 +41,7 @@ The fireEvent method enables a handler to accept any number of optional paramete
 The addHandlerFinal method is identical to the addHandler method is every way, except that unlike the addHandler method, the addHandlerFinal method will protect the event against any subsequent handlers being added to its existing stack.
 
 ```PHP
-public function addHandlerFinal(string $Event, callable $Handler, bool $Replace = false): bool
+public function addHandlerFinal(string $Event, callable $Handler, bool $Replace = false): bool;
 ```
 
 This can be useful when you need to ensure that a particular handler will be the final handler in the stack to be invoked. Note, however, that it only protects the existing stack, and that it therefore won't protect against new handlers being added by calls to addHandler or addHandlerFinal in cases where the new handler is to replace the existing stack entirely. It also won't protect against calls to destroyEvent.
@@ -51,7 +51,7 @@ This can be useful when you need to ensure that a particular handler will be the
 The destroyEvent method destroys the event and its entire handler stack from the object instance. It accepts one parameter: The name of the event to destroy. It returns true when the event is successfully destroyed, or false otherwise (e.g., if the event already doesn't exist).
 
 ```PHP
-public function destroyEvent(string $Event): bool
+public function destroyEvent(string $Event): bool;
 ```
 
 #### fireEvent method.
@@ -59,7 +59,7 @@ public function destroyEvent(string $Event): bool
 The fireEvent method is used to iteratively execute all the handlers in the event's handler stack. It accepts one mandatory parameter, and may accept any number of optional parameters.
 
 ```PHP
-public function fireEvent(string $Event, string $Data = '', &...$Misc): bool
+public function fireEvent(string $Event, string $Data = '', &...$Misc): bool;
 ```
 
 The first parameter is the name of the event to fire. The second parameter is an optional string to supply to each handler in the stack when executed.
@@ -71,7 +71,7 @@ The fireEvent method returns true when the event has successfully fired (i.e., e
 The assigned method provides a way to check whether an event has had any handlers assigned to it. It accepts one parameter: The name of the event to check. It returns true when the event is known to the object instance (i.e., has handlers assigned to it), or false otherwise (i.e., doesn't exist or isn't known to the object instance).
 
 ```PHP
-public function assigned(string $Event): bool
+public function assigned(string $Event): bool;
 ```
 
 This can be useful in cases where data needs to be processed prior to calling fireEvent.
@@ -108,4 +108,4 @@ $Events->fireEvent('aHypotheticalEvent');
 ---
 
 
-Last Updated: 15 June 2020 (2020.06.15).
+Last Updated: 2 July 2025 (2025.07.02).

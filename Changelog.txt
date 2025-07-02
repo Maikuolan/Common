@@ -34,6 +34,13 @@ found at:
 - [2025.07.01; Maikuolan]: Added support for proxies to the request handler
   (#10).
 
+- [2025.07.02; Maikuolan]: Added a context attribute to mark certain properties
+  as sensitive for the purpose of reducing the risk of exposure via accidental
+  var_dump of any instances of the applicable classes in production (though, as
+  attributes were introduced with PHP 8.0, this change won't have any effect
+  when running on older PHP versions; affected code is also guarded to prevent
+  backwards-compatibilty problems).
+
 === Version/Release 2.13.0 ===
 MINOR RELEASE.
 

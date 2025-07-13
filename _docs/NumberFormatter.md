@@ -30,6 +30,8 @@ To use the number formatter, you'll firstly need to instantiate it. You don't ne
 Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `DecimalSeparator` | `Base`
 ---|---|---|---|---|---|---
 *Default values (e.g., when the parameter is omitted) and*  `Latin-1`. | `Western` | `,`<br />(comma) | `3` | `0` | `.`<br />(decimal) | `10`
+`Adlam` | `Adlam` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Aegean` *[†1] [†3] [†4]* | `Aegean` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Arabic-1` | `Eastern` | (empty) | (n/a) | (n/a) | `٬`<br />(arabic decimal separator) | `10`
 `Arabic-2` | `Eastern` | `٬`<br />(arabic thousands separator) | `3` | `0` | `٬`<br />(arabic decimal separator) | `10`
 `Arabic-3` or `Persian` | `Persian` | `٬`<br />(arabic thousands separator) | `3` | `0` | `٬`<br />(arabic decimal separator) | `10`
@@ -48,10 +50,11 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Fullwidth` | `Fullwidth` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Geez` *[†3]* | `Geez` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Hebrew` *[†3] [†4]* | `Hebrew` | (empty) | (n/a) | (n/a) | (empty) | `10`
+`Hmong` | `Hmong` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `India-1` | `Western` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-2` or `Devanagari` | `Devanagari` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-3` or `Gujarati` | `Gujarati` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
-`India-4` or `Gurmukhi` | `Gurmukhi` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
+`India-4` or `Gurmukhi` or `Punjabi` | `Gurmukhi` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-5` or `Kannada` | `Kannada` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `India-6` or `Telugu` | `Telugu` | `,`<br />(comma) | `2` | `-1` | `.`<br />(decimal) | `10`
 `Japanese` *[†4]* | `Japanese` | (empty) | (n/a) | (n/a) | `・`<br />(katakana middle dot) | `10`
@@ -64,10 +67,14 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Latin-4` | `Western` | ` `<br />(non-breaking space) | `3` | `0` | `,`<br />(comma) | `10`
 `Latin-5` | `Western` | `,`<br />(comma) | `3` | `0` | `·`<br />(middle dot) | `10`
 `Mayan` *[†1] [†2]* | `Mayan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `20`
+`Malayalam` | `Malayalam` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`MalayalamOld` *[†3] [†4]* | `MalayalamOld` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `Mongolian` | `Mongolian` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`NKo` | `NKo` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `NoSep-1` | `Western` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `NoSep-2` | `Western` | (empty) | (n/a) | (n/a) | `,`<br />(comma) | `10`
 `Odia` | `Odia` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
+`Osmanya` | `Osmanya` | ` `<br />(space) | `3` | `0` | `.`<br />(decimal) | `10`
 `Roman` *[†3] [†4]* | `Roman` | (empty) | (n/a) | (n/a) | (empty) | `10`
 `SDN-Dwiggins` | `Dwiggins` | `,`<br />(comma) | `3` | `0` | `;`<br />(semicolon) | `12`
 `SDN-Pitman` | `Pitman` | `,`<br />(comma) | `3` | `0` | `;`<br />(semicolon) | `12`
@@ -76,7 +83,7 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Thai-2` | `Thai` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Tibetan` | `Tibetan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 
-*[†1]: Not actually "commonly used" at all, seeing as it [hasn't actually been actively used since the 17th century](https://en.wikipedia.org/wiki/Maya_script), so, unlikely to be practical, but included anyway as a means of demonstratrating some of what the class can do (think of it as an "easter egg").*
+*[†1]: Not actually "commonly used" at all, seeing as it hasn't been actively used for several centuries now (or in some cases, for several millenia now), so unlikely to be practical, but serves as a nice easter egg for the class.*
 
 *[†2]: The class fully supports fractions, including the ability to convert between arbitrary bases for both decimals and fractions alike, and including for numeral systems, that the class supports, that mightn't necessarily themselves support fractions natively, or in the contexts where those numeral systems would normally be used. It's not my intention to imply that they should. However, the support already exists, removing it for specific numeral systems would require additional code complexity, and doing so would be generally pointless, I think. Alternatively, any users concerned about this can easily just omit the `$Decimals` parameter when calling `format()` to avoid fractions.*
 
@@ -105,6 +112,8 @@ Example:
 ```PHP
 <?php
 $Formats = [
+    'Adlam',
+    'Aegean',
     'Arabic-1',
     'Arabic-2',
     'Arabic-3',
@@ -123,6 +132,7 @@ $Formats = [
     'Fullwidth',
     'Geez',
     'Hebrew',
+    'Hmong',
     'India-1',
     'India-2',
     'India-3',
@@ -140,7 +150,10 @@ $Formats = [
     'Latin-4',
     'Latin-5',
     'Mayan',
+    'Malayalam',
+    'MalayalamOld',
     'Mongolian',
+    'NKo',
     'NoSep-1',
     'NoSep-2',
     'Odia',
@@ -165,6 +178,8 @@ Output:
 
 Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)` | `$Obj->format('100.75', 3)` | `$Obj->format('99999999', 0)`
 :--|--:|--:|--:|--:
+`Adlam` | `𞥑𞥒𞥓𞥔𞥕𞥖𞥗.𞥘𞥙` | `𞥑𞥐𞥒𞥐𞥓𞥐𞥔𞥐.𞥕𞥐𞥖𞥐𞥗` | `𞥑𞥐𞥐.𞥗𞥕𞥐` | `𞥙𞥙𞥙𞥙𞥙𞥙𞥙𞥙`
+`Aegean` | `` | `` | `𐄙` | ``
 `Arabic-1` | `١٢٣٤٥٦٧٫٨٩` | `١٠٢٠٣٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠` | `٩٩٩٩٩٩٩٩`
 `Arabic-2` | `١٬٢٣٤٬٥٦٧٫٨٩` | `١٠٬٢٠٣٬٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠` | `٩٩٬٩٩٩٬٩٩٩`
 `Arabic-3` | `۱٬۲۳۴٬۵۶۷٫۸۹` | `۱۰٬۲۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰` | `۹۹٬۹۹۹٬۹۹۹`
@@ -183,6 +198,7 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `Fullwidth` | `１２３４５６７.８９` | `１０２０３０４０.５０６０７` | `１００.７５０` | `９９９９９９９９`
 `Geez` | `፻፳፫፼፵፭፻፷፯` | `፲፻፳፼፴፻፵` | `፻` | `፺፱፻፺፱፼፺፱፻፺፱`
 `Hebrew` | `א׳׳ב׳קג׳יד׳ךסז` | `א׳י׳ב׳קג׳מ` | `ק` | `ט׳י׳ט׳׳ט׳קט׳יט׳ץצט`
+`Hmong` | `𖭑𖭒𖭓𖭔𖭕𖭖𖭗.𖭘𖭙` | `𖭑𖭐𖭒𖭐𖭓𖭐𖭔𖭐.𖭕𖭐𖭖𖭐𖭗` | `𖭑𖭐𖭐.𖭗𖭕𖭐` | `𖭙𖭙𖭙𖭙𖭙𖭙𖭙𖭙`
 `India-1` | `12,34,567.89` | `1,02,03,040.50607` | `100.750` | `9,99,99,999`
 `India-2` | `१२,३४,५६७.८९` | `१,०२,०३,०४०.५०६०७` | `१००.७५०` | `९,९९,९९,९९९`
 `India-3` | `૧૨,૩૪,૫૬૭.૮૯` | `૧,૦૨,૦૩,૦૪૦.૫૦૬૦૭` | `૧૦૦.૭૫૦` | `૯,૯૯,૯૯,૯૯૯`
@@ -200,10 +216,14 @@ Format | `$Obj->format('1234567.89', 2)` | `$Obj->format('10203040.50607080', 5)
 `Latin-4` | `1 234 567,89` | `10 203 040,50607` | `100,750` | `99 999 999`
 `Latin-5` | `1,234,567·89` | `10,203,040·50607` | `100·750` | `99,999,999`
 `Mayan` | `𝋧𝋮𝋦𝋨𝋧.𝋱𝋰` | `𝋣𝋣𝋯𝋧𝋬𝋠.𝋪𝋢𝋨𝋫𝋦` | `𝋥𝋠.𝋯𝋠𝋠` | `𝋡𝋫𝋤𝋳𝋳𝋳𝋳`
+`Malayalam` | `൧൨൩൪൫൬൭.൮൯` | `൧൦൨൦൩൦൪൦.൫൦൬൦൭` | `൧൦൦.൭൫൦` | `൯൯൯൯൯൯൯൯`
+`MalayalamOld` | `൲൲൨൱൲൩൰൲൪൲൫൱൬൰൭` | `൰൲൲൨൱൲൩൲൪൰` | `൱` | `൯൰൲൲൯൲൲൯൱൲൯൰൲൯൲൯൱൯൰൯`
 `Mongolian` | `᠑᠒᠓᠔᠕᠖᠗.᠘᠙` | `᠑᠐᠒᠐᠓᠐᠔᠐.᠕᠐᠖᠐᠗` | `᠑᠐᠐.᠗᠕᠐` | `᠙᠙᠙᠙᠙᠙᠙᠙`
+`NKo` | `߁߂߃߄߅߆߇.߈߉` | `߁߀߂߀߃߀߄߀.߅߀߆߀߇` | `߁߀߀.߇߅߀` | `߉߉߉߉߉߉߉߉`
 `NoSep-1` | `1234567.89` | `10203040.50607` | `100.750` | `99999999`
 `NoSep-2` | `1234567,89` | `10203040,50607` | `100,750` | `99999999`
 `Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭` | `୧୦୦.୭୫୦` | `୯୯୯୯୯୯୯୯`
+`Osmanya` | `𐒡 𐒢𐒣𐒤 𐒥𐒦𐒧.𐒨𐒩` | `𐒡𐒠 𐒢𐒠𐒣 𐒠𐒤𐒠.𐒥𐒠𐒦𐒠𐒧` | `𐒡𐒠𐒠.𐒧𐒥𐒠` | `𐒩𐒩 𐒩𐒩𐒩 𐒩𐒩𐒩`
 `Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `` | `C` | ``
 `SDN-Dwiggins` | `4E6,547;X8` | `3,500,654;60X5X` | `84;900` | `29,5X6,453`
 `SDN-Pitman` | `4↋6,547;↊8` | `3,500,654;60↊5↊` | `84;900` | `29,5↊6,453`
@@ -315,6 +335,8 @@ Currently supported values:
 Value | Description
 ---|---
 `Western` | Standard numerals (0-9), alternatively known as Western Arabic numerals, Arabic numerals, Hindu-Arabic numerals, etc.
+`Adlam` | Adlam numerals.
+`Aegean` | Aegean numerals. *(Fractions not supported. Range limit: 1 ~ 99,999).*
 `Armenian` | Armenian numerals. *(Fractions not supported. Range limit: 1 ~ 99,999,999).*
 `Burmese` | Burmese numerals.
 `ChineseSimplifiedFinancial` | Financial simplified Chinese numerals. *(Range upper limit: 10<sup>^48</sup>-1).*
@@ -329,6 +351,7 @@ Value | Description
 `Gujarati` | Gujarati numerals.
 `Gurmukhi` | Gurmukhi numerals.
 `Hebrew` | Hebrew numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^16</sup>-1).*
+`Hmong` | Hmong numerals.
 `Japanese` | Japanese numerals. *(Range limit: 10<sup>^-11</sup>+1 ~ 10<sup>^24</sup>-1).*
 `Javanese` | Javanese numerals.
 `Kaktovik` | Kaktovik numerals.
@@ -336,10 +359,14 @@ Value | Description
 `Khmer` | Khmer numerals.
 `Lao` | Lao numerals.
 `Mayan` | Mayan numerals.
+`Malayalam` | Malayalam numerals (modern/reformed).
+`MalayalamOld` | Malayalam numerals (old/pre-reformation).
 `Mongolian` | Mongolian numerals.
+`NKo` | N'Ko numerals.
 `Nagari` | Nagari/Bengali/Bangla numerals.
 `Odia` | Odia numerals.
 `OlChiki` | Ol Chiki numerals.
+`Osmanya` | Osmanya numerals.
 `Persian` | Persian/Urdu numerals (Eastern Arabic variant).
 `Roman` | Roman numerals. *(Fractions not supported. Range limit: 1 ~ 3,999,999).*
 `Tamil` | Tamil numerals. *(Fractions not supported. Range limit: 1 ~ 10<sup>^24</sup>-1).*
@@ -624,4 +651,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 2 July 2025 (2025.07.02).
+Last Updated: 13 July 2025 (2025.07.13).

@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2025.07.13]: Added Aegean, Osmanya, Hmong, Adlam, N'Ko, and Malayalam
+  support to the number formatter.
 
 === Version/Release 2.14.0 ===
 MINOR RELEASE.
@@ -48,7 +49,7 @@ MINOR RELEASE.
   unformatter.
 
 - [2025.07.02; Bug-fix; Maikuolan]: The number formatter formatting some
-  specific chinese numerals incorrectly in some cases; Fixed.
+  specific Chinese numerals incorrectly in some cases; Fixed.
 
 Caleb M (Maikuolan),
 2 July, 2025.

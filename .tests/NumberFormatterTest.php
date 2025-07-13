@@ -240,7 +240,6 @@ $Actual .= "\n";
 
 $ExitCode++;
 if ($Actual !== $Expected) {
-    echo $Actual;die;
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }

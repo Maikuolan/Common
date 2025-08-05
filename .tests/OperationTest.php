@@ -366,7 +366,7 @@ if ($Out !== $Expected) {
 $TestData = [
     'Fruit' => ['An apple', 'An orange', 'A pear'],
     'Story' => ['Apples' => ' a day keeps the doctor away.', 'Oranges' => ' for some juice.', 'Pears' => ' for the cider.'],
-    'Numbers' => ['a' => 100, 'b' => 200, 'c' => 5],
+    'Numbers' => ['a' => 100, 'b' => 200, 'c' => 5, 'd' => 5, 'e' => 50],
     'Recursive' => [
         'A' => ['AA' => 'BB', 'CC' => 'DD'],
         'B' => ['EE' => 'FF', 'GG' => 'HH']
@@ -376,11 +376,12 @@ $TestData = [
 $Expected = [
     'Fruit' => 205,
     'Story' => ['Apples' => 'An apple a day keeps the doctor away.', 'Oranges' => 'An orange for some juice.', 'Pears' => 'A pear for the cider.'],
-    'Numbers' => ['a' => 300, 'b' => 1000, 'c' => 4],
+    'Numbers' => ['a' => 300, 'b' => 1000, 'c' => 4, 'd' => 1, 'e' => 25],
     'Recursive' => [
         'A' => ['AA' => 'BB', 'CC' => 'DD'],
         'B' => ['AA' => 'BB', 'CC' => 'DD']
-    ]
+    ],
+    'NewNumbers' => ['A' => 600, 'B' => 700, 'C' => 256, 'D' => -125, 'E' => -625]
 ];
 
 $Object->set($TestData, 'Fruit.0.={Story.Apples}
@@ -394,6 +395,13 @@ Fruit+={Numbers.c}
 Numbers.a*=3
 Numbers.b*={Numbers.c}
 Numbers.c-=1
+Numbers.d%=2
+Numbers.e/=2
+NewNumbers.A={Numbers.a}*2
+NewNumbers.B={Numbers.b}-{Numbers.a}
+NewNumbers.C={Numbers.c}**{Numbers.c}
+NewNumbers.D=-5**3
+NewNumbers.E=100+(-5**3)*{Numbers.e}
 if {Numbers.a>1000} then Recursive.A={Recursive.B} else Recursive.B={Recursive.A}');
 
 $ExitCode++;

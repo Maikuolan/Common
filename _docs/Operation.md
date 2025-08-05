@@ -15,6 +15,8 @@
 - [splitVersionParts method.](#splitversionparts-method)
 - [ifCompare method.](#ifcompare-method)
 - [set method.](#set-method)
+- [operate method.](#operate-method)
+- [operateInner method.](#operateinner-method)
 
 #### Cache property.
 
@@ -276,7 +278,9 @@ public function set(&$Data, string $Instruction, bool $AllowMethodCalls = false)
 
 `set` accepts 3 parameters. The first parameter, passed by reference, would typically be an array, but may be any scalar data type, and serves as the traversable data. The second parameter is a string, and provides the instructions for the operation handler (e.g., what to define, populate, etc). The third parameter is an optional boolean to indicate whether to allow the method to perform method calls on traversed objects (`true` to allow method calls; `false` to prohibit method calls; `false` by default). True is returned when no instructions were unable to be fulfilled (i.e., all instructions were successfully fulfilled, no instructions were given, or there wasn't anything that needed to be done). If any instructions were unable to be fulfilled, or if some kind of problem occurred (e.g., bad syntax), false is returned.
 
-`set` currently supports six operators: `=` (assign), `-=` (subtract), `+=` (add), `*=` (multiply), `/=` (divide), and `.=` (append/concatenate).
+`set` currently supports eight assignment operators: `=` (basic assignment), `+=` (addition), `-=` (subtraction), `*=` (multiplication), `/=` (division), `%=` (modulus), `**=` (exponentiation), and `.=` (appendment/concatenation).
+
+Arithmetic operators supported via the `operateInner` method as described further on in this document.
 
 An example:
 
@@ -284,7 +288,7 @@ An example:
 $TestData = [
     'Fruit' => ['An apple', 'An orange', 'A pear'],
     'Story' => ['Apples' => ' a day keeps the doctor away.', 'Oranges' => ' for some juice.', 'Pears' => ' for the cider.'],
-    'Numbers' => ['a' => 100, 'b' => 200, 'c' => 5],
+    'Numbers' => ['a' => 100, 'b' => 200, 'c' => 5, 'd' => 5, 'e' => 50],
     'Recursive' => [
         'A' => ['AA' => 'BB', 'CC' => 'DD'],
         'B' => ['EE' => 'FF', 'GG' => 'HH']
@@ -302,6 +306,13 @@ Fruit+={Numbers.c}
 Numbers.a*=3
 Numbers.b*={Numbers.c}
 Numbers.c-=1
+Numbers.d%=2
+Numbers.e/=2
+NewNumbers.A={Numbers.a}*2
+NewNumbers.B={Numbers.b}-{Numbers.a}
+NewNumbers.C={Numbers.c}**{Numbers.c}
+NewNumbers.D=-5**3
+NewNumbers.E=100+(-5**3)*{Numbers.e}
 if {Numbers.a>1000} then Recursive.A={Recursive.B} else Recursive.B={Recursive.A}');
 
 var_dump($TestData);
@@ -310,7 +321,7 @@ var_dump($TestData);
 Results:
 
 ```
-array(4) {
+array(5) {
   ["Fruit"]=>
   int(205)
   ["Story"]=>
@@ -323,13 +334,17 @@ array(4) {
     string(21) "A pear for the cider."
   }
   ["Numbers"]=>
-  array(3) {
+  array(5) {
     ["a"]=>
     int(300)
     ["b"]=>
     int(1000)
     ["c"]=>
     int(4)
+    ["d"]=>
+    int(1)
+    ["e"]=>
+    int(25)
   }
   ["Recursive"]=>
   array(2) {
@@ -348,11 +363,47 @@ array(4) {
       string(2) "DD"
     }
   }
+  ["NewNumbers"]=>
+  array(5) {
+    ["A"]=>
+    int(600)
+    ["B"]=>
+    int(700)
+    ["C"]=>
+    int(256)
+    ["D"]=>
+    int(-125)
+    ["E"]=>
+    int(-625)
+  }
 }
-
 ```
+
+#### operate method.
+
+`operate`, although public, is primarily intended to be used by `set` to resolve anchors, parentheses/bracketing, and operations within the value to be set by `set`.
+
+```PHP
+public function operate(&$Source, $Data, bool $AllowMethodCalls = false);
+```
+
+`operate` accepts 3 parameters. The first parameter, passed by reference, serves as the traversable data to be used for resolving any anchors embedded in the data being operated on. The second parameter is the data being operated on, typically a string, but may be provided with other types of data (doing so will cause an early return). The third parameter is an optional boolean to indicate whether to allow the method to perform method calls on traversed objects (`true` to allow method calls; `false` to prohibit method calls; `false` by default). Except when returned early, the returned data is the resolved operation.
+
+Arithmetic operators supported via the `operateInner` method as described further on in this document. Parentheses/Bracketing is supported for controlling the order of operations, but the method otherwise always resolves operations in left-to-right order.
+
+#### operateInner method.
+
+`operateInner`, although public, is primarily intended to be used by `operate` to resolve a singular part of the greater whole of an operation.
+
+```PHP
+public function operateInner(string $Part);
+```
+
+`operateInner` accepts 1 parameter: The part of the operation being resolved. The returned data is the resolution of that part of the operation.
+
+`operateInner` currently supports six arithmetic operators: `+` (addition), `-` (subtraction), `=` (multiplication), `/` (division), `%` (modulus), and `**` (exponentiation).
 
 ---
 
 
-Last Updated: 2 July 2025 (2025.07.02).
+Last Updated: 5 August 2025 (2025.08.05).

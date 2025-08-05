@@ -83,7 +83,7 @@ Value | `ConversionSet` | `GroupSeparator` | `GroupSize` | `GroupOffset` | `Deci
 `Thai-2` | `Thai` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 `Tibetan` | `Tibetan` | (empty) | (n/a) | (n/a) | `.`<br />(decimal) | `10`
 
-*[†1]: Not actually "commonly used" at all, seeing as it hasn't been actively used for several centuries now (or in some cases, for several millenia now), so unlikely to be practical, but serves as a nice easter egg for the class.*
+*[†1]: Not actually "commonly used" at all, seeing as it hasn't been actively used for several centuries now (or in some cases, for several millennia now), so unlikely to be practical, but serves as a nice easter egg for the class.*
 
 *[†2]: The class fully supports fractions, including the ability to convert between arbitrary bases for both decimals and fractions alike, and including for numeral systems, that the class supports, that mightn't necessarily themselves support fractions natively, or in the contexts where those numeral systems would normally be used. It's not my intention to imply that they should. However, the support already exists, removing it for specific numeral systems would require additional code complexity, and doing so would be generally pointless, I think. Alternatively, any users concerned about this can easily just omit the `$Decimals` parameter when calling `format()` to avoid fractions.*
 
@@ -651,4 +651,4 @@ Base 36: a.i000 ~ 74.9000
 ---
 
 
-Last Updated: 13 July 2025 (2025.07.13).
+Last Updated: 5 August 2025 (2025.08.05).

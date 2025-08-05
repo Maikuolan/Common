@@ -14,7 +14,7 @@ found at:
 - [2025.07.13]: Added Aegean, Osmanya, Hmong, Adlam, N'Ko, and Malayalam
   support to the number formatter.
 
-- [2025.08.05; Maikuolan]: Added basic math support to the operation handler.
+- [2025.08.05]: Added basic math support to the operation handler.
 
 === Version/Release 2.14.0 ===
 MINOR RELEASE.

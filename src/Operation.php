@@ -341,9 +341,9 @@ class Operation extends CommonAbstract
         }
         if (substr($Parts[2], 0, 1) === '{' && substr($Parts[2], -1) === '}' && substr_count($Parts[2], '{') === 1 && substr_count($Parts[2], '}') === 1) {
             $Parts[2] = $this->dataTraverse($Data, substr($Parts[2], 1, -1), true, $AllowMethodCalls);
-        } elseif (preg_match_all('~\{[^{}\r\n]+\}~', $Parts[2], $VarMatches)) {
+        } elseif (preg_match_all('~\\{[^{}\r\n]+\\}~', $Parts[2], $VarMatches)) {
             foreach ($VarMatches[0] as $VarMatch) {
-                $Parts[2] = str_replace($VarMatch, $this->dataTraverse($Data, substr($VarMatch, 1, -1)), $Parts[2]);
+                $Parts[2] = str_replace($VarMatch, $this->dataTraverse($Data, substr($VarMatch, 1, -1), false, $AllowMethodCalls), $Parts[2]);
             }
         }
         unset($VarMatch, $VarMatches);

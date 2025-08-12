@@ -11,10 +11,18 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.14.1 ===
+PATCH RELEASE.
+
 - [2025.07.13]: Added Aegean, Osmanya, Hmong, Adlam, N'Ko, and Malayalam
   support to the number formatter.
 
 - [2025.08.05]: Added basic math support to the operation handler.
+
+Caleb M (Maikuolan),
+12 August, 2025.
 
 === Version/Release 2.14.0 ===
 MINOR RELEASE.

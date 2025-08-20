@@ -11,7 +11,8 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2025.08.20]: dataTraverse can now use array_keys(), array_flip(),
+  array_pop(), and array_shift() on arrays.
 
 === Version/Release 2.14.1 ===
 PATCH RELEASE.

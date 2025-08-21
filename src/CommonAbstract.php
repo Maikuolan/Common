@@ -1,6 +1,6 @@
 <?php
 /**
- * Common abstract for the common classes package (last modified: 2025.08.20).
+ * Common abstract for the common classes package (last modified: 2025.08.21).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -44,8 +44,8 @@ abstract class CommonAbstract
         if (is_array($Data)) {
             if (preg_match('~^(?:keys|flip|pop|shift)\\(\\)$~i', $Segment)) {
                 $Segment = 'array_' . substr($Segment, 0, -2);
-                $Data = $Segment($Data);
-                return $this->dataTraverse($Data, $Path, $AllowNonScalar, $AllowMethodCalls);
+                $Working = $Segment($Data);
+                return $this->dataTraverse($Working, $Path, $AllowNonScalar, $AllowMethodCalls);
             }
             return isset($Data[$Segment]) ? $this->dataTraverse($Data[$Segment], $Path, $AllowNonScalar, $AllowMethodCalls) : '';
         }
@@ -61,7 +61,8 @@ abstract class CommonAbstract
         if (is_string($Data)) {
             if (preg_match('~^(?:trim|str(?:tolower|toupper|len))\\(\\)$~i', $Segment)) {
                 $Segment = substr($Segment, 0, -2);
-                $Data = $Segment($Data);
+                $Working = $Segment($Data);
+                return $this->dataTraverse($Working, $Path, $AllowNonScalar, $AllowMethodCalls);
             }
         }
         return $this->dataTraverse($Data, $Path, $AllowNonScalar, $AllowMethodCalls);

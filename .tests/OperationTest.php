@@ -314,10 +314,11 @@ $TestData = [
         'Baz' => 'Hello World!'
     ],
     'Far' => ['Boo' => 'To You'],
-    'Plenty of space' => '   ...yep.'
+    'Plenty of space' => '   ...yep.',
+    'A number' => 123.456
 ];
 
-$Expected = ['World', 'Cruel World', 11, 'Hello World!', 'HELLO WORLD!', 'hello world!', '   ...yep.', '...yep.', '', 'World'];
+$Expected = ['World', 'Cruel World', 11, 'Hello World!', 'HELLO WORLD!', 'hello world!', '   ...yep.', '...yep.', '', 'World', 123.456, 123.0, 124.0];
 
 $Out = [
     $Object->dataTraverse($TestData, 'Foo.Bar.Hello'),
@@ -329,7 +330,10 @@ $Out = [
     $Object->dataTraverse($TestData, 'Plenty of space'),
     $Object->dataTraverse($TestData, 'Plenty of space.trim()'),
     $Object->dataTraverse($TestData, 'This element does not exist'),
-    $Object->dataTraverse($TestData, 'Foo.Bar.Hello.Element is not an array')
+    $Object->dataTraverse($TestData, 'Foo.Bar.Hello.Element is not an array'),
+    $Object->dataTraverse($TestData, 'A number'),
+    $Object->dataTraverse($TestData, 'A number.floor()'),
+    $Object->dataTraverse($TestData, 'A number.ceil()')
 ];
 
 $ExitCode++;

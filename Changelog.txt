@@ -18,6 +18,9 @@ found at:
   disabled channels properly when supplied as a normal, non-CSV list;
   Fixed.
 
+- [2025.10.07]: dataTraverse can now use floor() and ceil() on numeric
+  values.
+
 === Version/Release 2.14.1 ===
 PATCH RELEASE.
 

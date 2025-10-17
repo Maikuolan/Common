@@ -21,6 +21,8 @@ found at:
 - [2025.10.07]: dataTraverse can now use floor() and ceil() on numeric
   values.
 
+- [2025.10.17]: Slightly improved ISO 15924 support.
+
 === Version/Release 2.14.1 ===
 PATCH RELEASE.
 

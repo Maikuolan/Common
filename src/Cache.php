@@ -1156,7 +1156,7 @@ class Cache extends CommonAbstract implements \ArrayAccess
      */
     public function offsetExists($Offset): bool
     {
-        $Entry = $this->Prefix . $Entry;
+        $Entry = $this->Prefix . $Offset;
         $this->enforceKeyLimit($Entry);
         if ($this->Using === 'APCu') {
             return apcu_exists($Entry);

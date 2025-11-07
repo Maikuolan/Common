@@ -15,6 +15,8 @@ found at:
   deprecated as of PHP 8.5; Accordingly, where used, it has been guarded by the
   PHP version ID.
 
+- [2025.11.07]: Added ArrayAccess support to the cache handler.
+
 === Version/Release 2.14.2 ===
 PATCH RELEASE.
 

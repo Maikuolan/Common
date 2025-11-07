@@ -133,6 +133,10 @@ All public methods provided by Cache, along with relevant instructions, are list
 - [serializeEntry method.](#serializeentry-method)
 - [stripObjects method.](#stripobjects-method)
 - [exposeWorkingDataArray method.](#exposeworkingdataarray-method)
+- [offsetExists method.](#offsetexists-method)
+- [offsetGet method.](#offsetget-method)
+- [offsetSet method.](#offsetset-method)
+- [offsetUnset method.](#offsetunset-method)
 
 #### __construct method.
 
@@ -304,8 +308,40 @@ Used to expose the instance's working data array. This can be useful when integr
 public function exposeWorkingDataArray();
 ```
 
+#### offsetExists method.
+
+Invoked by using `isset()` and `empty()` for cache entries via `\ArrayAccess` interface implementation (doesn't need to be called directly).
+
+```PHP
+public function offsetExists($Offset): bool;
+```
+
+#### offsetGet method.
+
+Invoked by attempting to fetch cache entries by using the Cache object instance as an array via `\ArrayAccess` interface implementation (doesn't need to be called directly).
+
+```PHP
+public function offsetGet($Offset);
+```
+
+#### offsetSet method.
+
+Invoked by attempting to set cache entries by using the Cache object instance as an array via `\ArrayAccess` interface implementation (doesn't need to be called directly).
+
+```PHP
+public function offsetSet($Offset, $Value): void;
+```
+
+#### offsetUnset method.
+
+Invoked by attempting to unset cache entries by using the Cache object instance as an array via `\ArrayAccess` interface implementation (doesn't need to be called directly).
+
+```PHP
+public function offsetUnset($Offset): void;
+```
+
 
 ---
 
 
-Last Updated: 2 July 2025 (2025.07.02).
+Last Updated: 7 November 2025 (2025.11.07).

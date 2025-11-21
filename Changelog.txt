@@ -17,6 +17,8 @@ found at:
 
 - [2025.11.07]: Added ArrayAccess support to the cache handler.
 
+- [2025.11.21]: Added PHP 8.5 to workflows.
+
 === Version/Release 2.14.2 ===
 PATCH RELEASE.
 

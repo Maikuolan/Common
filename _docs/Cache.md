@@ -137,6 +137,7 @@ All public methods provided by Cache, along with relevant instructions, are list
 - [offsetGet method.](#offsetget-method)
 - [offsetSet method.](#offsetset-method)
 - [offsetUnset method.](#offsetunset-method)
+- [count method.](#count-method)
 
 #### __construct method.
 
@@ -340,8 +341,18 @@ Invoked by attempting to unset cache entries by using the Cache object instance 
 public function offsetUnset($Offset): void;
 ```
 
+#### count method.
+
+Invoked via the `\Countable` interface implementation by calling the PHP count function with the object instance supplied to the call's parameter.
+
+```PHP
+public function count(): int;
+```
+
+Returns the number of cache entries attached to the current instance.
+
 
 ---
 
 
-Last Updated: 7 November 2025 (2025.11.07).
+Last Updated: 24 December 2025 (2025.12.24).

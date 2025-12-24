@@ -150,6 +150,7 @@ If we were to duplicate that `foreach()` some several times, to perform several 
 
 - [readFile method.](#generatemarkers-method)
 - [writeFile method.](#iterateclosure-method)
+- [count method.](#count-method)
 
 #### readFile method.
 
@@ -193,7 +194,17 @@ The method returns true when the target file is writable, or false otherwise. Wh
 
 In order to be able to compare the file's original data with the data associated with the queued rewrite operation, `readFile()` must've been called for the file in question prior to calling `writeFile()` for the file in question. When that has been satisfied, the rewrite operation for the file in question won't occur when its original data and its new data is the same. When that hasn't been satisfied, the rewrite operation will always occur regardless, as long as the new data isn't empty (if not satisfied, and the new data is also empty, the rewrite operation won't occur).
 
+#### count method.
+
+Invoked via the `\Countable` interface implementation by calling the PHP count function with the object instance supplied to the call's parameter.
+
+```PHP
+public function count(): int;
+```
+
+Returns the number of files read already.
+
 ---
 
 
-Last Updated: 2 July 2025 (2025.07.02).
+Last Updated: 24 December 2025 (2025.12.24).

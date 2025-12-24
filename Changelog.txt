@@ -19,6 +19,9 @@ found at:
 
 - [2025.11.21]: Added PHP 8.5 to workflows.
 
+- [2025.12.24]: Added Countable support to the cache handler, the delayed file
+  IO class, the events orchestrator, the YAML handler, and the L10N handler.
+
 === Version/Release 2.14.2 ===
 PATCH RELEASE.
 

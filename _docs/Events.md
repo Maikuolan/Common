@@ -21,6 +21,7 @@ The class is utilised by CIDRAM and phpMussel to provide a means by which users 
 - [destroyEvent method.](#destroyevent-method)
 - [fireEvent method.](#fireevent-method)
 - [assigned method.](#assigned-method)
+- [count method.](#count-method)
 
 #### addHandler method.
 
@@ -76,6 +77,16 @@ public function assigned(string $Event): bool;
 
 This can be useful in cases where data needs to be processed prior to calling fireEvent.
 
+#### count method.
+
+Invoked via the `\Countable` interface implementation by calling the PHP count function with the object instance supplied to the call's parameter.
+
+```PHP
+public function count(): int;
+```
+
+Returns the number of unique events registered.
+
 ---
 
 
@@ -108,4 +119,4 @@ $Events->fireEvent('aHypotheticalEvent');
 ---
 
 
-Last Updated: 2 July 2025 (2025.07.02).
+Last Updated: 24 December 2025 (2025.12.24).

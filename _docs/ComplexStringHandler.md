@@ -12,6 +12,9 @@
 - [iterateClosure method.](#iterateclosure-method)
 - [recompile method.](#recompile-method)
 - [__toString magic method.](#__tostring-magic-method)
+- [ArrayAccess support.](#arrayaccess-support)
+- [Countable support.](#countable-support)
+- [IteratorAggregate support.](#iteratoraggregate-support)
 
 #### ComplexStringHandler constructor.
 
@@ -95,7 +98,55 @@ Attempting to use the object as a string should have the same effect as calling 
 public function __toString(): string;
 ```
 
+#### ArrayAccess support.
+
+When appropriate input has been supplied at instantiation, specific segments of the generated working data can be accessed and manipulated by treating the object as an array.
+
+```PHP
+<?php
+$String = 'AAA BBB CCC DDD';
+$Pattern = '~ ~';
+
+$Object = new \Maikuolan\Common\ComplexStringHandler($String, $Pattern);
+$Object[1] .= 'X';
+echo $Object[1];
+
+// Prints 'BBBX';
+```
+
+#### Countable support.
+
+When appropriate input has been supplied at instantiation, attempting to count the object will reveal the number of segments in the generated working data.
+
+```PHP
+<?php
+$String = 'AAA BBB CCC DDD';
+$Pattern = '~ ~';
+
+$Object = new \Maikuolan\Common\ComplexStringHandler($String, $Pattern);
+echo count($Object);
+
+// Prints 4;
+```
+
+#### IteratorAggregate support.
+
+When appropriate input has been supplied at instantiation, supplying the object to a foreach call will iterate the working data.
+
+```PHP
+<?php
+$String = 'AAA BBB CCC DDD';
+$Pattern = '~ ~';
+
+$Object = new \Maikuolan\Common\ComplexStringHandler($String, $Pattern);
+foreach ($Object as $Value) {
+    echo $Value . ', ';
+}
+
+// Prints 'AAA, BBB, CCC, DDD';
+```
+
 ---
 
 
-Last Updated: 10 December 2019 (2019.12.10).
+Last Updated: 30 December 2025 (2025.12.30).

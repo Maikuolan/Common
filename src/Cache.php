@@ -1,6 +1,6 @@
 <?php
 /**
- * A simple, unified cache handler (last modified: 2025.12.24).
+ * A simple, unified cache handler (last modified: 2025.12.30).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1191,6 +1191,9 @@ class Cache extends CommonAbstract implements \ArrayAccess, \Countable
      */
     public function offsetExists($Offset): bool
     {
+        if (!is_scalar($Offset)) {
+            return false;
+        }
         $Entry = $this->Prefix . $Offset;
         $this->enforceKeyLimit($Entry);
         if ($this->Using === 'APCu') {

@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.14.3 ===
+PATCH RELEASE.
+
 - [2025.11.03]: Since PHP8, curl_close() has had no effect, and has been
   deprecated as of PHP 8.5; Accordingly, where used, it has been guarded by the
   PHP version ID.
@@ -24,6 +29,9 @@ found at:
 
 - [2025.12.30]: Added ArrayAccess, Countable, and IteratorAggregate support to
   the complex string handler.
+
+Caleb M (Maikuolan),
+30 December, 2025.
 
 === Version/Release 2.14.2 ===
 PATCH RELEASE.

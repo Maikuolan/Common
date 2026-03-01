@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2025.12.24).
+ * YAML handler (last modified: 2026.03.01).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -674,7 +674,7 @@ class YAML extends CommonAbstract implements \Countable
             $Arr[$Key] = null;
         } elseif (substr($ThisLine, $ThisTab, 2) === '- ') {
             $Value = substr($ThisLine, $ThisTab + 2);
-            if (strpos($Value, ': ') !== false && substr($Value, 0, 1) !== '{' && substr($Value, -1) !== '}') {
+            if (strpos($Value, ': ') !== false && substr($Value, 0, 1) !== '{' && substr($Value, -1) !== '}' && !(substr($Value, 0, 1) === '"' && substr($Value, -1) === '"' && strpos($Value, '": "') === false)) {
                 $Value = '{' . $Value . '}';
             }
             $ValueLen = strlen($Value);

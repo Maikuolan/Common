@@ -11,7 +11,9 @@ found at:
 
 === Changes made since last versioned release ===
 
-(none)
+- [2026.03.01; Bug-fix]: The YAML handler, in the context of a sequence,
+  sometimes wouldn't distinguish between compact nested mapping and normal
+  double-quoted strings; Fixed.
 
 === Version/Release 2.14.3 ===
 PATCH RELEASE.

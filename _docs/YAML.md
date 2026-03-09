@@ -310,15 +310,13 @@ The fourth parameter is an optional boolean, false by default. When set to true,
 
 __*Can the reverse be done, too? Can an array be converted into YAML data?*__
 
-Yes. To do this, use the reconstruct method. The reconstruct method supports three parameters:
+Yes. To do this, use the `reconstruct` method. The `reconstruct` method supports three parameters:
 
 ```PHP
 public function reconstruct(array $Arr, bool $UseCaptured = false, bool $DoWithAnchors = false): string
 ```
 
-The first parameter is the array that you want converted into YAML data. If you want to convert the object's own self-contained, already processed YAML data, just use the object's `Data` property as the reconstruct method's parameter.
-
-As an example:
+The first parameter is the array that you want converted into YAML data. As an example:
 
 ```PHP
 <?php
@@ -372,7 +370,7 @@ multidimensional array:
 hello3: "world3"
 ```
 
-We can attempt to reverse this data, to demonstrate consistency between how the class processes YAML data into a usable array, and how the class reconstructs YAML data from an array.
+We can attempt to reverse this data, to demonstrate consistency between how the class processes YAML data into a usable array, and how the class reconstructs YAML data from an array. In the following example, because the data is processed at instantiation, that processed data will be stored in the object's `Data` property, and so, we'll point the `reconstruct` method's first parameter to the object's `Data` property accordingly (but of course, you can have the processed data be stored wherever you want, and reconstruct from wherever you want).
 
 ```PHP
 <?php
@@ -527,7 +525,7 @@ The preferred style of quotes to use for strings (double `"`, or single `'`) for
 public $AllowedStringTagsPattern = '~^(?:addslashes|bin2hex|hex2bin|html(?:_entity_decode|entities|specialchars(?:_decode)?)|lcfirst|nl2br|ord|quotemeta|str(?:_rot13|_shuffle|ip(?:_tags|c?slashes)|len|rev|tolower|toupper)|ucfirst|ucwords)$~';
 ```
 
-The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a string function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is a string. The property is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so (e.g., allowing functions such as `eval` would likely introduce serious vulnerabilities to the implementation, so should never be allowed unless absolutely necessary).
+The `coerce` method uses this regular expression to determine whether the tag specified matches the name of a string function that the YAML handler considers safe to use for manipulating the data in question. Tags matching the pattern will leverage the corresponding PHP function only if the applicable value is a string. The property is made public in order to allow the pattern to be modified when necessary, though care is recommended when doing so (e.g., allowing functions such as `eval` would likely introduce *severe* vulnerabilities to the implementation, so should never be allowed unless absolutely necessary).
 
 ```PHP
 public $AllowedNumericTagsPattern = '~^(?:a(?:bs|cosh?|sinh?|tanh?)|ceil|chr|cosh?|dec(?:bin|hex|oct)|deg2rad|exp(?:m1)?|floor|log1[0p]|rad2deg|round|sinh?|tanh?|sqrt)$~';
@@ -547,6 +545,18 @@ public $QuoteKeys = false;
 
 Whether to quote keys. Normally, the YAML handler won't quote keys, but you can enable that behaviour by setting this to true.
 
+```PHP
+public $AllowObjectUnserialize = false;
+```
+
+Whether to allow object unserialisation. True will allow the instance to use PHP's [`unserialize()`](https://www.php.net/unserialize) function to process data tagged with `!php/object`. False will disallow it. For security reasons, allowing it should be avoided except where absolutely necessary, and where allowed, untrusted user input should *never* be processed.
+
+```PHP
+public $AllowObjectSerialize = false;
+```
+
+Whether to allow object serialisation. True will allow the `reconstruct` method to use PHP's [`serialize()`](https://www.php.net/serialize) function to derive strings from objects when reconstructing data, tagging them with `!php/object`.
+
 ---
 
 
@@ -554,26 +564,26 @@ Whether to quote keys. Normally, the YAML handler won't quote keys, but you can 
 
 The YAML handler supports arrays (or using YAML terminology, collections, mappings, sequences, etc), integers, floats, booleans, null, strings (single-quoted, double-quoted, etc), literal-style strings (`|`), folded-style strings (`>`), hexadecimal number notation (`0x`), binary number notation (`0b`), and octal number notation (`0o`).
 
-The YAML handler does not (per PHP terminology) support callables, closures, or non-stringable, non-stdClass objects. If non-stringable, non-stdClass objects, closures, or callables are supplied to `reconstruct`, a fatal error will occur. Don't ever do this.
+The YAML handler does not (per PHP terminology) support callables, closures, enums, or non-stringable, non-stdClass objects (except when `AllowObjectUnserialize` is set to `true`, which should be generally avoided except when absolutely necessary). If unsupported data types are supplied to `reconstruct`, a fatal error will occur. Don't ever do this.
 
 ---
 
 
 ### Comments and implicit typing.
 
-The YAML handler allows YAML data to contain comments. The YAML handler considers all data, beginning with a non-escaped hash (`#`), and ending at any valid line ending (e.g., `\n`, `\r`), to be a comment. Therefore, all hashes *not* intended to indicate the beginning of a comment should be properly escaped (i.e., `\#`), in order to ensure the YAML data is processed as intended.
+The YAML handler allows YAML data to contain comments. The YAML handler considers all data, beginning with a non-escaped hash (`#`), and ending at any valid line ending (e.g., `\n`, `\r`), to be a comment. Therefore, all hashes *not* intended to indicate the beginning of a comment should be properly escaped (i.e., like `\#`), in order to ensure the YAML data is processed as intended.
 
 The YAML handler implements implicit typing. Therefore, in order to avoid the "[Norway Problem](https://hitchdev.com/strictyaml/why/implicit-typing-removed/)", care should be taken to ensure that the appropriate quoting (or lack thereof) is used in order to obtain the appropriate data type.
 
-When implicit typing is insufficient for obtaining the appropriate data type, YAML tags can be used as a means of explicit typing. However, due to the risk of confusion, the risk of users misunderstanding the intentions of the tags used, and due to that the YAML handler's `reconstruct` method doesn't reconstruct tags, abuse of tags should be avoided, and they should be used only when needed.
+When implicit typing is insufficient for obtaining the appropriate data type, YAML tags can be used as a means of explicit typing. However, due to the risk of confusion, the risk of users misunderstanding the intentions of the tags used, and due to that the YAML handler's `reconstruct` method doesn't generally reconstruct tags except under specific circumstances, abuse of tags should be avoided, and should be used only when necessary.
 
 - When quoted (and assuming tags aren't used), the YAML handler will always resolve entries as strings.
 - The YAML handler will always resolve literals and folded entries as strings.
-- Within unprocessed YAML data, non-string data should never be quoted.
+- Within unprocessed YAML data, non-string data should never be quoted (except where tagged, and where that tagging is appropriate).
 - As long as it doesn't cause ambiguity within implicit typing, quotes for strings remains optional, and won't generally matter too much (i.e., quotes for strings aren't strictly enforced). However, whenever there's risk of ambiguity, strings should always be quoted. For example, `Foo: "false"`, `Foo: "123"`, and `Foo: "12.3"` would all resolve to strings, whereas `Foo: false`, `Foo: 123`, and `Foo: 12.3` would resolve to a boolean (`false`), an integer, and a float respectively.
 - Quoting for keys is treated in the same manner as quoting for values.
 
-When reconstructing YAML data, the preferred quotes to use for string values (and for that matter, whether to use quotes at all) can be controlled via the `Quotes` public property. However, the YAML handler won't normally apply quotes to keys (you can change that behaviour by setting `QuoteKeys` to `true` if you want). Therefore, if you ever need to reverse some YAML data for any reason (i.e., process some YAML data, maybe make some modifications, and then reconstruct it back into YAML data again), you should always approach quoting strictly, should never quote keys, and should never use `true`, `false`, or `null` as names for keys (because unquoted, they'll look like booleans or null, and neither booleans nor null can be used as the names of array keys in PHP, meaning that you'll need to quote them to forcefully identify them as strings, but the reconstruct method would unquote them when reconstructing the data, causing an inconsistency between the original YAML data and the reconstructed YAML data). Worth noting too, that PHP resolves both `null` and `false` to empty strings when used as array keys.
+When reconstructing YAML data, the preferred quotes to use for string values (and for that matter, whether to use quotes at all) can be controlled via the `Quotes` public property. However, the YAML handler won't normally apply quotes to keys (you can change that behaviour by setting `QuoteKeys` to `true` if you want). Using `true`, `false`, or `null` as names for keys in your data should be avoided, as they risk looking like booleans or null, and neither booleans nor null can be used as the names of keys in PHP. Worth noting too, that PHP resolves both `null` and `false` to empty strings when used as array keys.
 
 ---
 
@@ -698,6 +708,7 @@ The overall specification is quite extensive, and writing this documentation tak
 __Tags (specific methods implemented)__ | __Description__
 :--|:--
 `!flatten` | Flattens a multidimensional array down to a single depth (similar to merge, but rather than merging the array to the parent collection, it merges all the sub-arrays into the array being worked upon).
+`!php/object` | Allows unserialisation of PHP serialised data (when `AllowObjectUnserialize` is set to `true`; is set to `false` by default).
 __Tags (directly invokes PHP functions at `coerce`)__ | __Description__
 `!abs` | Uses PHP's `abs()` function to process the entry.
 `!acos` | Uses PHP's `acos()` function to process the entry.
@@ -831,4 +842,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 1 July 2025 (2025.07.01).
+Last Updated: 10 March 2026 (2026.03.10).

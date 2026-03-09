@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2026.03.01).
+ * YAML handler (last modified: 2026.03.10).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -86,6 +86,23 @@ class YAML extends CommonAbstract implements \Countable
      * @var bool Whether to quote keys.
      */
     public $QuoteKeys = false;
+
+    /**
+     * @var bool Whether to allow object unserialisation. True will allow the
+     *      instance to use PHP's unserialize() function to process data tagged
+     *      with !php/object. False will disallow it. For security reasons,
+     *      allowing it should be avoided except where absolutely necessary,
+     *      and where allowed, untrusted user input should never be processed.
+     */
+    public $AllowObjectUnserialize = false;
+
+    /**
+     * @var bool Whether to allow object serialisation. True will allow the
+     *      reconstruct method to use PHP's serialize() function to derive
+     *      strings from objects when reconstructing data, tagging them with
+     *      !php/object.
+     */
+    public $AllowObjectSerialize = false;
 
     /**
      * @var bool Whether to render multi-line values.
@@ -1050,6 +1067,7 @@ class YAML extends CommonAbstract implements \Countable
      * @param mixed $Value The value to be coerced.
      * @param bool $EnforceScalar Whether to enforce using scalar data.
      * @param string $Tag The resolved tag.
+     * @throws If unserialisation is allowed and malformed data is encountered.
      * @return mixed The coerced value.
      */
     private function coerce($Value, bool $EnforceScalar, string $Tag)
@@ -1128,6 +1146,13 @@ class YAML extends CommonAbstract implements \Countable
                     $Arr[$ThisValue] = null;
                 }
                 return $Arr;
+            }
+
+            /**
+             * Unserialising a PHP object.
+             */
+            if ($Tag === 'php/object' && $this->AllowObjectUnserialize && is_string($Value) && $Value !== '') {
+                return unserialize($Value);
             }
 
             /** For extending with other non-scalar coercion. */
@@ -1500,7 +1525,8 @@ class YAML extends CommonAbstract implements \Countable
      * Convert various scalars to strings.
      *
      * @param mixed $In The scalar.
-     * @throws Error if provided a non-stringable object or an unsupported data type.
+     * @throws Error if provided an unsupported data type.
+     * @link https://github.com/Maikuolan/Common/blob/v2/_docs/YAML.md#supported-data-types
      * @return string The string.
      */
     private function scalarToString($In): string
@@ -1533,7 +1559,9 @@ class YAML extends CommonAbstract implements \Countable
             return $this->Quotes . $this->escape($In) . $this->Quotes;
         }
         if (is_object($In)) {
-            if (method_exists($In, '__toString')) {
+            if ($this->AllowObjectSerialize) {
+                return '!php/object ' . $this->Quotes . $this->escape(serialize($In)) . $this->Quotes;
+            } elseif (method_exists($In, '__toString')) {
                 return $this->Quotes . $this->escape((string)$In) . $this->Quotes;
             }
             throw new \Error('Non-stringable object detected while attempting to reconstruct YAML data');

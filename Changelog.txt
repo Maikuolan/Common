@@ -15,6 +15,10 @@ found at:
   sometimes wouldn't distinguish between compact nested mapping and normal
   double-quoted strings; Fixed.
 
+- [2026.03.10]: Added optional support for !php/object tags to the YAML
+  handler, allowing for serialisation/unserialisation of arbitrary PHP data
+  when enabled via the appropriate properties of the instance.
+
 === Version/Release 2.14.3 ===
 PATCH RELEASE.
 

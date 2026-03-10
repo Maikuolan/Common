@@ -1153,11 +1153,9 @@ class YAML extends CommonAbstract implements \Countable
                 return $Arr;
             }
 
-            /**
-             * Unserialising a PHP object.
-             */
-            if ($Tag === 'php/object' && $this->AllowObjectUnserialize && is_string($Value) && $Value !== '') {
-                return unserialize($Value);
+            /** Unserialising a PHP object. */
+            if ($Tag === 'php/object') {
+                return $this->AllowObjectUnserialize && is_string($Value) && $Value !== '' ? unserialize($Value) : $Value;
             }
 
             /** For extending with other non-scalar coercion. */
@@ -1249,10 +1247,12 @@ class YAML extends CommonAbstract implements \Countable
          * @link https://yaml.org/type/binary.html
          */
         if ($Tag === '!binary') {
-            if ($Value === '' || !is_string($Value)) {
-                return '';
-            }
-            return base64_decode(preg_replace('~\s~', '', $Value));
+            return is_string($Value) && $Value !== '' ? base64_decode(preg_replace('~\s~', '', $Value)) : '';
+        }
+
+        /** PHP constants. */
+        if ($Tag === 'php/const') {
+            return is_string($Value) && $Value !== '' && defined($Value) ? constant($Value) : $Value;
         }
 
         /** For extending with other scalar coercion. */

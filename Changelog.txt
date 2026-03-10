@@ -20,7 +20,7 @@ found at:
   when enabled via the appropriate properties of the instance. When
   reconstructing strings, if a string isn't UTF-8 (e.g., binary sourced from
   images, archives, etc), it'll be rendered as base-64 with the !!binary tag
-  attached.
+  attached. Added support for !php/const tags to the YAML handler.
 
 === Version/Release 2.14.3 ===
 PATCH RELEASE.

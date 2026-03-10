@@ -708,6 +708,7 @@ The overall specification is quite extensive, and writing this documentation tak
 __Tags (specific methods implemented)__ | __Description__
 :--|:--
 `!flatten` | Flattens a multidimensional array down to a single depth (similar to merge, but rather than merging the array to the parent collection, it merges all the sub-arrays into the array being worked upon).
+`!php/const` | Returns a PHP constant (e.g., `!php/const PHP_INT_MAX`).
 `!php/object` | Allows unserialisation of PHP serialised data (when `AllowObjectUnserialize` is set to `true`; is set to `false` by default).
 __Tags (directly invokes PHP functions at `coerce`)__ | __Description__
 `!abs` | Uses PHP's `abs()` function to process the entry.

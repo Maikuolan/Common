@@ -540,7 +540,7 @@ class YAML extends CommonAbstract implements \Countable
         $Value = trim($Value);
 
         /** Resolve tags. */
-        if (preg_match('~^!([!\dA-Za-z_:,-]+)(?: (.*))?$~', $Value, $Resolved)) {
+        if (preg_match('~^!([!/\dA-Za-z_:,-]+)(?: (.+))?$~', $Value, $Resolved)) {
             $Tag = strtolower($Resolved[1]);
             if (!$EnforceScalar) {
                 $this->LastResolvedTag = $Tag;

@@ -605,3 +605,29 @@ if ($Expected !== $Reconstructed) {
     echo PHP_EOL;
     exit($ExitCode);
 }
+
+$Object->AllowObjectUnserialize = true;
+$Object->AllowObjectSerialize = true;
+require_once $ClassesDir . 'Context.php';
+$Actual = new \Maikuolan\Common\Context();
+$Actual->TestData = 'Foobar';
+$Expected = 'Serialisation test: !php/object "O:24:"Maikuolan\\\\Common\\\\Context":1:{s:8:"TestData";s:6:"Foobar";}"
+';
+
+$Reconstructed = $Object->reconstruct(['Serialisation test' => $Actual]);
+$ExitCode++;
+if ($Expected !== $Reconstructed) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($Expected);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Reconstructed);
+    echo PHP_EOL;
+    exit($ExitCode);
+}
+
+$ProcessResult = $Object->process($Reconstructed, $Object->Data);
+$ExitCode++;
+if ($ProcessResult !== true || !isset($Object->Data['Serialisation test']) || !($Object->Data['Serialisation test'] instanceof \Maikuolan\Common\Context)) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
+    exit($ExitCode);
+}

@@ -17,7 +17,10 @@ found at:
 
 - [2026.03.10]: Added optional support for !php/object tags to the YAML
   handler, allowing for serialisation/unserialisation of arbitrary PHP data
-  when enabled via the appropriate properties of the instance.
+  when enabled via the appropriate properties of the instance. When
+  reconstructing strings, if a string isn't UTF-8 (e.g., binary sourced from
+  images, archives, etc), it'll be rendered as base-64 with the !!binary tag
+  attached.
 
 === Version/Release 2.14.3 ===
 PATCH RELEASE.

@@ -169,6 +169,9 @@ class YAML extends CommonAbstract implements \Countable
      */
     public function __construct(string $In = '')
     {
+        if ($this->Demojibakefier === null && class_exists('\Maikuolan\Common\Demojibakefier')) {
+            $this->Demojibakefier = new \Maikuolan\Common\Demojibakefier();
+        }
         if ($In !== '') {
             $this->process($In, $this->Data, 0, true);
         }
@@ -209,9 +212,7 @@ class YAML extends CommonAbstract implements \Countable
             $Captured = [];
 
             /** Support various encodings. */
-            if (class_exists('\Maikuolan\Common\Demojibakefier')) {
-                $this->Demojibakefier = new \Maikuolan\Common\Demojibakefier();
-
+            if ($this->Demojibakefier !== null) {
                 /**
                  * Attempt to determine input encoding.
                  * @link https://yaml.org/spec/1.2.2/#52-character-encodings
@@ -890,22 +891,26 @@ class YAML extends CommonAbstract implements \Countable
             }
             $Out .= ' ';
             if (is_string($Value)) {
-                $HasHash = strpos($Value, '#') !== false;
-                if (!$HasHash && strpos($Value, "\n") !== false) {
-                    if (preg_match('~\n{2,}$~m', $Value)) {
-                        $ToAdd = "|+\n" . $ThisDepth . $this->Indent;
-                    } else {
-                        $ToAdd = "|\n" . $ThisDepth . $this->Indent;
-                    }
-                    $ToAdd .= preg_replace('~\n(?=[^\n])~m', "\n" . $ThisDepth . $this->Indent, $Value);
-                } elseif (!$HasHash && $this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
-                    $ToAdd = ">\n" . $ThisDepth . $this->Indent . wordwrap(
-                        $Value,
-                        $this->FoldedAt,
-                        "\n" . $ThisDepth . $this->Indent
-                    );
+                if ($this->Demojibakefier !== null && !$this->Demojibakefier->checkConformity($Value, 'UTF-8')) {
+                    $ToAdd = '!!binary ' . $this->Quotes . base64_encode($Value) . $this->Quotes;
                 } else {
-                    $ToAdd = $this->Quotes . $this->escape($Value) . $this->Quotes;
+                    $HasHash = strpos($Value, '#') !== false;
+                    if (!$HasHash && strpos($Value, "\n") !== false) {
+                        if (preg_match('~\n{2,}$~m', $Value)) {
+                            $ToAdd = "|+\n" . $ThisDepth . $this->Indent;
+                        } else {
+                            $ToAdd = "|\n" . $ThisDepth . $this->Indent;
+                        }
+                        $ToAdd .= preg_replace('~\n(?=[^\n])~m', "\n" . $ThisDepth . $this->Indent, $Value);
+                    } elseif (!$HasHash && $this->FoldedAt > 0 && strpos($Value, ' ') !== false && strlen($Value) >= $this->FoldedAt) {
+                        $ToAdd = ">\n" . $ThisDepth . $this->Indent . wordwrap(
+                            $Value,
+                            $this->FoldedAt,
+                            "\n" . $ThisDepth . $this->Indent
+                        );
+                    } else {
+                        $ToAdd = $this->Quotes . $this->escape($Value) . $this->Quotes;
+                    }
                 }
             } else {
                 $ToAdd = $this->scalarToString($Value);
@@ -1556,6 +1561,9 @@ class YAML extends CommonAbstract implements \Countable
             return $In;
         }
         if (is_string($In)) {
+            if ($this->Demojibakefier !== null && !$this->Demojibakefier->checkConformity($In, 'UTF-8')) {
+                return '!!binary ' . $this->Quotes . base64_encode($In) . $this->Quotes;
+            }
             return $this->Quotes . $this->escape($In) . $this->Quotes;
         }
         if (is_object($In)) {

@@ -587,3 +587,21 @@ if ($JSONEncoded !== $Reconstructed) {
     echo PHP_EOL;
     exit($ExitCode);
 }
+
+$Object = new \Maikuolan\Common\YAML();
+
+$TestArr = ['foo' => 'bar', 'baz' => hex2bin('0123456789abcdef00cafebabedeadbeef00fedcba9876543210')];
+$Expected = 'foo: "bar"
+baz: !!binary "ASNFZ4mrze8Ayv66vt6tvu8A/ty6mHZUMhA="
+';
+
+$Reconstructed = $Object->reconstruct($TestArr);
+$ExitCode++;
+if ($Expected !== $Reconstructed) {
+    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+    var_dump($Expected);
+    echo PHP_EOL . 'Actual: ';
+    var_dump($Reconstructed);
+    echo PHP_EOL;
+    exit($ExitCode);
+}

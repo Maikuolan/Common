@@ -169,7 +169,7 @@ class YAML extends CommonAbstract implements \Countable
      */
     public function __construct(string $In = '')
     {
-        if ($this->Demojibakefier === null && class_exists('\Maikuolan\Common\Demojibakefier')) {
+        if (class_exists('\Maikuolan\Common\Demojibakefier')) {
             $this->Demojibakefier = new \Maikuolan\Common\Demojibakefier();
         }
         if ($In !== '') {

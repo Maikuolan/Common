@@ -22,6 +22,9 @@ found at:
   images, archives, etc), it'll be rendered as base-64 with the !!binary tag
   attached. Added support for !php/const tags to the YAML handler.
 
+- [2026.03.12]: Added a new public method, setEntries, to the cache handler,
+  allowing multiple cache entries to be set at the same time.
+
 === Version/Release 2.14.3 ===
 PATCH RELEASE.
 

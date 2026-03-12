@@ -120,6 +120,7 @@ All public methods provided by Cache, along with relevant instructions, are list
 - [checkTablesPDO method.](#checktablespdo-method)
 - [getEntry method.](#getentry-method)
 - [setEntry method.](#setentry-method)
+- [setEntries method.](#setentries-method)
 - [deleteEntry method.](#deleteentry-method)
 - [deleteAllEntriesWhere method.](#deleteallentrieswhere-method)
 - [incEntry method.](#incentry-method)
@@ -187,6 +188,14 @@ Writes an entry to the cache, returning true on success, or false on failure. `$
 
 ```PHP
 public function setEntry(string $Key, $Value, int $TTL = 3600): bool;
+```
+
+#### setEntries method.
+
+Writes multiple entries to the cache, returning true on success, or false on failure. The method's sole parameter expects an associative array of all cache entries to be added, for each of the array's elements, the element key as the cache entry key, and the element value, if there's no TTL for the cache entry, as the cache entry value, or if there is a TTL for the cache entry, as an array with two elements, the first being the cache entry value, and the second being the cache entry TTL.
+
+```PHP
+public function setEntries(array $Entries): bool;
 ```
 
 #### deleteEntry method.
@@ -355,4 +364,4 @@ Returns the number of cache entries attached to the current instance.
 ---
 
 
-Last Updated: 24 December 2025 (2025.12.24).
+Last Updated: 12 March 2026 (2026.03.12).

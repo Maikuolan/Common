@@ -11,6 +11,11 @@ found at:
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 2.15.0 ===
+MINOR RELEASE.
+
 - [2026.03.01; Bug-fix]: The YAML handler, in the context of a sequence,
   sometimes wouldn't distinguish between compact nested mapping and normal
   double-quoted strings; Fixed.
@@ -24,6 +29,9 @@ found at:
 
 - [2026.03.12]: Added a new public method, setEntries, to the cache handler,
   allowing multiple cache entries to be set at the same time.
+
+Caleb M (Maikuolan),
+13 March, 2026.
 
 === Version/Release 2.14.3 ===
 PATCH RELEASE.

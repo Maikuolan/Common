@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2026.03.10).
+ * YAML handler (last modified: 2026.03.16).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -18,7 +18,7 @@
 
 namespace Maikuolan\Common;
 
-class YAML extends CommonAbstract implements \Countable
+class YAML extends CommonAbstract implements \Countable, \Stringable
 {
     /**
      * @var array An array to contain all the data processed by the handler.

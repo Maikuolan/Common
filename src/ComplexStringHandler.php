@@ -1,6 +1,6 @@
 <?php
 /**
- * Complex string handler (last modified: 2025.12.30).
+ * Complex string handler (last modified: 2026.03.16).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -15,7 +15,7 @@
 
 namespace Maikuolan\Common;
 
-class ComplexStringHandler extends CommonAbstract implements \ArrayAccess, \Countable, \IteratorAggregate
+class ComplexStringHandler extends CommonAbstract implements \ArrayAccess, \Countable, \IteratorAggregate, \Stringable
 {
     /**
      * @var string Supplied to the class at object instantiation or thereafter.

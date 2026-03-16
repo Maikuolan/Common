@@ -1,6 +1,6 @@
 <?php
 /**
- * IP header class (last modified: 2024.03.21).
+ * IP header class (last modified: 2026.03.16).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -15,7 +15,7 @@
 
 namespace Maikuolan\Common;
 
-class IPHeader extends CommonAbstract
+class IPHeader extends CommonAbstract implements \Stringable
 {
     /**
      * @var string The IP address resolved by the instance.
@@ -178,5 +178,15 @@ class IPHeader extends CommonAbstract
 
         /** Fail if nothing valid could be resolved. */
         return '';
+    }
+
+    /**
+     * PHP's magic "__toString" method.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->Resolution;
     }
 }

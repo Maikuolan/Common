@@ -14,7 +14,8 @@ found at:
 - [2026.03.16]: Added explicit implements Stringable to the YAML handler and
   the complex string handler (not strictly necessary, but improves
   compatibility with PHP8+ strict typing in cases where union types of
-  string|Stringable are used by the implementation).
+  string|Stringable are used by the implementation). IPHeader can now be
+  treated as a string.
 
 === Version/Release 2.15.0 ===
 MINOR RELEASE.

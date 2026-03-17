@@ -1,6 +1,6 @@
 <?php
 /**
- * L10N handler (last modified: 2026.03.10).
+ * L10N handler (last modified: 2026.03.17).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -18,12 +18,12 @@ namespace Maikuolan\Common;
 class L10N extends CommonAbstract implements \Countable
 {
     /**
-     * @var array All relevant L10N data.
+     * @var array|\ArrayAccess All relevant L10N data.
      */
     public $Data = [];
 
     /**
-     * @var array|\Maikuolan\Common\L10N All relevant fallback L10N data.
+     * @var array|\ArrayAccess|\Maikuolan\Common\L10N All relevant fallback L10N data.
      */
     public $Fallback = [];
 
@@ -65,16 +65,21 @@ class L10N extends CommonAbstract implements \Countable
     /**
      * Constructor.
      *
-     * @param array $Data The L10N data.
-     * @param array|\Maikuolan\Common\L10N $Fallback The fallback L10N data (optional).
+     * @param array|\ArrayAccess $Data The L10N data.
+     * @param array|\ArrayAccess|\Maikuolan\Common\L10N $Fallback The fallback L10N data (optional).
+     * @throws InvalidArgumentException when an incorrect parameter type is supplied.
      * @return void
      */
-    public function __construct(array $Data = [], $Fallback = [])
+    public function __construct($Data = [], $Fallback = [])
     {
-        $this->Data = $Data;
-        if (is_array($Fallback) || $Fallback instanceof \Maikuolan\Common\L10N) {
-            $this->Fallback = $Fallback;
+        if (!(is_array($Data) || $Data instanceof \ArrayAccess)) {
+            throw new \InvalidArgumentException('First parameter of __construct in \Maikuolan\Common\L10N must be an array, or an instance of \ArrayAccess. Parameter supplied was ' . gettype($Data));
         }
+        if (!(is_array($Fallback) || $Fallback instanceof \ArrayAccess || $Fallback instanceof \Maikuolan\Common\L10N)) {
+            throw new \InvalidArgumentException('Second parameter of __construct in \Maikuolan\Common\L10N must be an array, an instance of \ArrayAccess, or an instance of \Maikuolan\Common\L10N. Parameter supplied was ' . gettype($Fallback));
+        }
+        $this->Data = $Data;
+        $this->Fallback = $Fallback;
         if (!empty($Data['IntegerRule'])) {
             if (method_exists($this, $Data['IntegerRule'])) {
                 $this->IntegerRule = $Data['IntegerRule'];
@@ -89,7 +94,7 @@ class L10N extends CommonAbstract implements \Countable
                 $this->FractionRule = $this->getFractionRule($Data['FractionRule']);
             }
         }
-        if (is_array($Fallback)) {
+        if (is_array($Fallback) || $Fallback instanceof \ArrayAccess) {
             if (!empty($Fallback['IntegerRule'])) {
                 if (method_exists($this, $Fallback['IntegerRule'])) {
                     $this->FallbackIntegerRule = $Fallback['IntegerRule'];
@@ -199,7 +204,7 @@ class L10N extends CommonAbstract implements \Countable
      */
     public function arrayFromL10nToArray($References): array
     {
-        if (!is_array($References)) {
+        if (!is_array($References) && !($References instanceof \IteratorAggregate)) {
             $References = [$References];
         }
         $Out = [];
@@ -207,14 +212,14 @@ class L10N extends CommonAbstract implements \Countable
             $Try = '';
             if (isset($this->Data[$Reference])) {
                 $Try = $this->Data[$Reference];
-            } elseif (is_array($this->Fallback)) {
+            } elseif (is_array($this->Fallback) || $this->Fallback instanceof \ArrayAccess) {
                 if (isset($this->Fallback[$Reference])) {
                     $Try = $this->Fallback[$Reference];
                 }
             } elseif ($this->Fallback instanceof \Maikuolan\Common\L10N) {
                 if (isset($this->Fallback->Data[$Reference])) {
                     $Try = $this->Fallback->Data[$Reference];
-                } elseif (is_array($this->Fallback->Fallback) && isset($this->Fallback->Fallback[$Reference])) {
+                } elseif ((is_array($this->Fallback->Fallback) || $this->Fallback->Fallback instanceof \ArrayAccess) && isset($this->Fallback->Fallback[$Reference])) {
                     $Try = $this->Fallback->Fallback[$Reference];
                 }
             }

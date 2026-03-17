@@ -1,6 +1,6 @@
 <?php
 /**
- * Common abstract for the common classes package (last modified: 2026.03.16).
+ * Common abstract for the common classes package (last modified: 2026.03.17).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -41,6 +41,10 @@ abstract class CommonAbstract
             return $AllowNonScalar || is_scalar($Data) ? $Data : '';
         }
         $Segment = str_replace('\.', '.', $Segment);
+        if ($Data instanceof \Maikuolan\Common\LazyArray) {
+            $Data->trigger();
+            $Data = $Data->Data;
+        }
         if (is_array($Data)) {
             if (preg_match('~^(?:keys|flip|pop|shift)\\(\\)$~i', $Segment)) {
                 $Segment = 'array_' . substr($Segment, 0, -2);

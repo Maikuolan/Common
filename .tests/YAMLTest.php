@@ -319,80 +319,6 @@ $ExpectedForSyntax = [
 ];
 
 $ExpectedForSyntaxSerialised = serialize($ExpectedForSyntax);
-
-$ExpectedForReconstruction = [
-    'String foo' => 'Bar',
-    'Integer foo' => 1234,
-    'Float foo' => 123.4,
-    'Example implicit numeric array' => ['Bar0', 'Bar1', 'Bar2', 'Bar3'],
-    'Example associative array' => [
-        'Foo1' => 'Bar1',
-        'Foo2' => 'Bar2',
-        'Foo3' => 'Bar3',
-        'Foo4' => 'Bar4'
-    ],
-    'Example lazy associative array' => new \Maikuolan\Common\LazyArray(function ($Data) {
-        return $Data;
-    }, [
-        'Foo1' => 'Bar1',
-        'Foo2' => 'Bar2',
-        'Foo3' => 'Bar3',
-        'Foo4' => 'Bar4'
-    ]),
-    'Example null set' => [
-        'Bar0' => null,
-        'Bar1' => null,
-        'Bar2' => null,
-        'Bar3' => null
-    ],
-    'Example mixed multi-dimensional array' => [
-        0 => 'Bar0',
-        1 => 'Bar1',
-        'xFooX' => 'xBarX',
-        'Some int' => 4567,
-        'Sub array' => [
-            'Hello' => 'World',
-            'Sub-sub array' => [
-                'Foobar' => 'Barfoo'
-            ]
-        ]
-    ],
-    'Multi-line example' => "h e l l o - w o r l d\nhello-world",
-    'Example booleans and null' => [
-        'This is true' => true,
-        'This is false' => false,
-        'This is null' => null
-    ],
-    'Testing anchors' => [
-        'Anchored text push' => 'Some placeholder text.',
-        'Anchored text pull' => 'Some placeholder text.'
-    ],
-    'Escaping test' => 'Our number is #123-456-789.',
-    'Other kinds of floats' => [
-        'Infinity' => INF,
-        'Negative infinity' => -INF,
-        'Not a number' => NAN
-    ],
-    'Folded chomping keep test' => "This is a test.\n\nHello world.\n\n\n",
-    'Folded chomping clip test' => "This is a test.\n\nHello world.",
-    'A sequence with a folded scalar' => ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0'],
-    'Support for entities' => (object)[
-        'Hello World' => 'Hello World',
-        'I am a number' => 123,
-        'Does it work' => 'It works',
-        'Recursive entity' => (object)[
-            'Can it recurse' => 'Yes it can!'
-        ]
-    ],
-    'Compact Nested Mapping' => [
-        ['Hello' => 'World', 'Goodbye' => 'Planet Earth'],
-        ['Compact nested mapping example 1' => 'Compact nested mapping example 1', 'Compact nested mapping example 2' => 'Compact nested mapping example 2']
-    ],
-    'End of file' => ':-)'
-];
-
-$ExpectedForReconstructionSerialised = serialize($ExpectedForReconstruction);
-
 $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'syntax.yaml');
 
 $Object = new \Maikuolan\Common\YAML($RawYAML);
@@ -424,28 +350,103 @@ if ($ExpectedForSyntaxSerialised !== serialize($Object->Data)) {
     exit($ExitCode);
 }
 
-$RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'reconstruct.yaml');
+/** Tests will fail for PHP versions < 7.4, as they rely on magic methods introduced since PHP 7.4. */
+if (\PHP_VERSION_ID > 70400) {
+    $ExpectedForReconstruction = [
+        'String foo' => 'Bar',
+        'Integer foo' => 1234,
+        'Float foo' => 123.4,
+        'Example implicit numeric array' => ['Bar0', 'Bar1', 'Bar2', 'Bar3'],
+        'Example associative array' => [
+            'Foo1' => 'Bar1',
+            'Foo2' => 'Bar2',
+            'Foo3' => 'Bar3',
+            'Foo4' => 'Bar4'
+        ],
+        'Example lazy associative array' => new \Maikuolan\Common\LazyArray(function ($Data) {
+            return $Data;
+        }, [
+            'Foo1' => 'Bar1',
+            'Foo2' => 'Bar2',
+            'Foo3' => 'Bar3',
+            'Foo4' => 'Bar4'
+        ]),
+        'Example null set' => [
+            'Bar0' => null,
+            'Bar1' => null,
+            'Bar2' => null,
+            'Bar3' => null
+        ],
+        'Example mixed multi-dimensional array' => [
+            0 => 'Bar0',
+            1 => 'Bar1',
+            'xFooX' => 'xBarX',
+            'Some int' => 4567,
+            'Sub array' => [
+                'Hello' => 'World',
+                'Sub-sub array' => [
+                    'Foobar' => 'Barfoo'
+                ]
+            ]
+        ],
+        'Multi-line example' => "h e l l o - w o r l d\nhello-world",
+        'Example booleans and null' => [
+            'This is true' => true,
+            'This is false' => false,
+            'This is null' => null
+        ],
+        'Testing anchors' => [
+            'Anchored text push' => 'Some placeholder text.',
+            'Anchored text pull' => 'Some placeholder text.'
+        ],
+        'Escaping test' => 'Our number is #123-456-789.',
+        'Other kinds of floats' => [
+            'Infinity' => INF,
+            'Negative infinity' => -INF,
+            'Not a number' => NAN
+        ],
+        'Folded chomping keep test' => "This is a test.\n\nHello world.\n\n\n",
+        'Folded chomping clip test' => "This is a test.\n\nHello world.",
+        'A sequence with a folded scalar' => ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0'],
+        'Support for entities' => (object)[
+            'Hello World' => 'Hello World',
+            'I am a number' => 123,
+            'Does it work' => 'It works',
+            'Recursive entity' => (object)[
+                'Can it recurse' => 'Yes it can!'
+            ]
+        ],
+        'Compact Nested Mapping' => [
+            ['Hello' => 'World', 'Goodbye' => 'Planet Earth'],
+            ['Compact nested mapping example 1' => 'Compact nested mapping example 1', 'Compact nested mapping example 2' => 'Compact nested mapping example 2']
+        ],
+        'End of file' => ':-)'
+    ];
 
-$Object = new \Maikuolan\Common\YAML($RawYAML);
-$ExitCode++;
-if ($ExpectedForReconstructionSerialised !== serialize($Object->Data)) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
-    var_dump($ExpectedForReconstruction);
-    echo PHP_EOL . 'Actual: ';
-    var_dump($Object->Data);
-    echo PHP_EOL;
-    exit($ExitCode);
-}
+    $ExpectedForReconstructionSerialised = serialize($ExpectedForReconstruction);
+    $RawYAML = file_get_contents($TestsDir . 'fixtures' . DIRECTORY_SEPARATOR . 'reconstruct.yaml');
 
-$Reconstructed = $Object->reconstruct($Object->Data, true, true);
-$ExitCode++;
-if ($RawYAML !== $Reconstructed) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
-    var_dump($RawYAML);
-    echo PHP_EOL . 'Actual: ';
-    var_dump($Reconstructed);
-    echo PHP_EOL;
-    exit($ExitCode);
+    $Object = new \Maikuolan\Common\YAML($RawYAML);
+    $ExitCode++;
+    if ($ExpectedForReconstructionSerialised !== serialize($Object->Data)) {
+        echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+        var_dump($ExpectedForReconstruction);
+        echo PHP_EOL . 'Actual: ';
+        var_dump($Object->Data);
+        echo PHP_EOL;
+        exit($ExitCode);
+    }
+
+    $Reconstructed = $Object->reconstruct($Object->Data, true, true);
+    $ExitCode++;
+    if ($RawYAML !== $Reconstructed) {
+        echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
+        var_dump($RawYAML);
+        echo PHP_EOL . 'Actual: ';
+        var_dump($Reconstructed);
+        echo PHP_EOL;
+        exit($ExitCode);
+    }
 }
 
 $RawYAML = 'Depth 1:

@@ -48,11 +48,14 @@ if ($Object['test'] !== 'testing') {
     exit($ExitCode);
 }
 
-$Object = serialize($Object);
-$Expected = 'O:26:"Maikuolan\Common\LazyArray":4:{i:0;s:3:"foo";i:1;s:3:"bar";i:2;s:3:"baz";s:4:"test";s:7:"testing";}';
-$ExitCode++;
-if ($Object !== $Expected) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ' . $Expected;
-    echo PHP_EOL . 'Actual: ' . $Object . PHP_EOL;
-    exit($ExitCode);
+/** Test will fail for PHP versions < 7.4, as it relies on magic methods introduced since PHP 7.4. */
+if (\PHP_VERSION_ID > 70400) {
+    $Object = serialize($Object);
+    $Expected = 'O:26:"Maikuolan\Common\LazyArray":4:{i:0;s:3:"foo";i:1;s:3:"bar";i:2;s:3:"baz";s:4:"test";s:7:"testing";}';
+    $ExitCode++;
+    if ($Object !== $Expected) {
+        echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ' . $Expected;
+        echo PHP_EOL . 'Actual: ' . $Object . PHP_EOL;
+        exit($ExitCode);
+    }
 }

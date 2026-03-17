@@ -34,7 +34,7 @@ if (!is_readable($ClassesDir . 'CommonAbstract.php')) {
 require $ClassesDir . 'CommonAbstract.php';
 
 // Run tests.
-foreach (['ComplexStringHandler', 'DelayedIO', 'Demojibakefier', 'Events', 'IPHeader', 'L10N', 'Matrix', 'NumberFormatter', 'Operation', 'Request', 'YAML'] as $Case) {
+foreach (['ComplexStringHandler', 'DelayedIO', 'Demojibakefier', 'Events', 'IPHeader', 'L10N', 'LazyArray', 'Matrix', 'NumberFormatter', 'Operation', 'Request', 'YAML'] as $Case) {
     if (!is_readable($ClassesDir . $Case . '.php') || !is_readable($TestsDir . $Case . 'Test.php')) {
         echo $Case . '.php is not readable.' . PHP_EOL;
         exit(2);

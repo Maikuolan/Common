@@ -331,6 +331,14 @@ $ExpectedForReconstruction = [
         'Foo3' => 'Bar3',
         'Foo4' => 'Bar4'
     ],
+    'Example lazy associative array' => new \Maikuolan\Common\LazyArray(function ($Data) {
+        return $Data;
+    }, [
+        'Foo1' => 'Bar1',
+        'Foo2' => 'Bar2',
+        'Foo3' => 'Bar3',
+        'Foo4' => 'Bar4'
+    ]),
     'Example null set' => [
         'Bar0' => null,
         'Bar1' => null,

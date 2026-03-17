@@ -708,6 +708,7 @@ The overall specification is quite extensive, and writing this documentation tak
 __Tags (specific methods implemented)__ | __Description__
 :--|:--
 `!flatten` | Flattens a multidimensional array down to a single depth (similar to merge, but rather than merging the array to the parent collection, it merges all the sub-arrays into the array being worked upon).
+`!lazy` | Allows processing of the tagged data to be deferred until a later time, potentially improving performance at the implementation in some cases (e.g., for processing particularly large arrays which might be needed by the implementation only under specific circumstances).
 `!php/const` | Returns a PHP constant (e.g., `!php/const PHP_INT_MAX`).
 `!php/object` | Allows unserialisation of PHP serialised data (when `AllowObjectUnserialize` is set to `true`; is set to `false` by default).
 __Tags (directly invokes PHP functions at `coerce`)__ | __Description__
@@ -843,4 +844,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 10 March 2026 (2026.03.10).
+Last Updated: 17 March 2026 (2026.03.17).

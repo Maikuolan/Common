@@ -20,7 +20,7 @@ abstract class CommonAbstract
      * @var string Common Classes Package tag/release version.
      * @link https://github.com/Maikuolan/Common/tags
      */
-    public const VERSION = '2.15.1';
+    public const VERSION = '2.16.0';
 
     /**
      * Traverse data path.

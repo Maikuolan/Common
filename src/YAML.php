@@ -382,12 +382,20 @@ class YAML extends CommonAbstract implements \Countable, \Stringable
                             $Arr[$Key] = [];
                         }
                     }
-                    $Success = $this->process(preg_replace('~\n$~m', '', $SendTo), $Arr[$Key], $TabLen);
-                    if ($IsEntityEnd) {
-                        $Hydrate = $Arr[$Key];
-                        $Arr[$Key] = new \stdClass();
-                        foreach ($Hydrate as $EnKey => $EnValue) {
-                            $Arr[$Key]->{$EnKey} = $EnValue;
+                    if (!$IsEntityEnd && isset($ThisBlockTag) && $ThisBlockTag === 'lazy' && class_exists('\Maikuolan\Common\LazyArray')) {
+                        $Arr[$Key] = new \Maikuolan\Common\LazyArray(function ($Data) use ($TabLen): array {
+                            $Arr = [];
+                            $this->process($Data, $Arr, $TabLen);
+                            return $Arr;
+                        }, preg_replace('~\n$~m', '', $SendTo));
+                    } else {
+                        $Success = $this->process(preg_replace('~\n$~m', '', $SendTo), $Arr[$Key], $TabLen);
+                        if ($IsEntityEnd) {
+                            $Hydrate = $Arr[$Key];
+                            $Arr[$Key] = new \stdClass();
+                            foreach ($Hydrate as $EnKey => $EnValue) {
+                                $Arr[$Key]->{$EnKey} = $EnValue;
+                            }
                         }
                     }
                 } else {
@@ -445,7 +453,22 @@ class YAML extends CommonAbstract implements \Countable, \Stringable
                         $Arr[$Key] = [];
                     }
                 }
-                $Success = $this->process(preg_replace('~\n$~m', '', $SendTo), $Arr[$Key], $TabLen);
+                if (!$IsEntityEnd && isset($ThisBlockTag) && $ThisBlockTag === 'lazy' && class_exists('\Maikuolan\Common\LazyArray')) {
+                    $Arr[$Key] = new \Maikuolan\Common\LazyArray(function ($Data) use ($TabLen): array {
+                        $Arr = [];
+                        $this->process($Data, $Arr, $TabLen);
+                        return $Arr;
+                    }, preg_replace('~\n$~m', '', $SendTo));
+                } else {
+                    $Success = $this->process(preg_replace('~\n$~m', '', $SendTo), $Arr[$Key], $TabLen);
+                    if ($IsEntityEnd) {
+                        $Hydrate = $Arr[$Key];
+                        $Arr[$Key] = new \stdClass();
+                        foreach ($Hydrate as $EnKey => $EnValue) {
+                            $Arr[$Key]->{$EnKey} = $EnValue;
+                        }
+                    }
+                }
             } else {
                 $this->tryStringDataTraverseByRef($SendTo);
                 if ($this->Chomp === '-') {
@@ -525,6 +548,16 @@ class YAML extends CommonAbstract implements \Countable, \Stringable
                 $Data = str_replace($VarMatches[0][$Index], $Extracted, $Data);
             }
         }
+    }
+
+    /**
+     * Count processed data.
+     *
+     * @return int The number of elements in the processed data array.
+     */
+    public function count(): int
+    {
+        return count($this->Data);
     }
 
     /**
@@ -826,6 +859,11 @@ class YAML extends CommonAbstract implements \Countable, \Stringable
                 if (!$Sequential) {
                     $Out .= ($this->QuoteKeys ? $this->scalarToString($Key) : $this->escapeKey($Key)) . ':';
                 }
+                if ($Value instanceof \Maikuolan\Common\LazyArray) {
+                    $Out .= ' !lazy';
+                    $Value->trigger();
+                    $Value = $Value->Data;
+                }
                 if (is_array($Value)) {
                     $this->processInner($Value, $Out, $Depth + 1);
                     continue;
@@ -876,6 +914,11 @@ class YAML extends CommonAbstract implements \Countable, \Stringable
                 continue;
             } else {
                 $Out .= $ThisDepth . ($Sequential ? '-' : ($this->QuoteKeys ? $this->scalarToString($Key) : $this->escapeKey($Key)) . ':');
+            }
+            if ($Value instanceof \Maikuolan\Common\LazyArray) {
+                $Out .= ' !lazy';
+                $Value->trigger();
+                $Value = $Value->Data;
             }
             if (is_array($Value)) {
                 if ($Sequential && key($Value) !== 0 && $Depth < $this->FlowRebuildDepth - 2) {
@@ -1575,15 +1618,5 @@ class YAML extends CommonAbstract implements \Countable, \Stringable
             throw new \Error('Non-stringable object detected while attempting to reconstruct YAML data');
         }
         throw new \Error('Unsupported data type provided to scalarToString while attempting to reconstruct YAML data');
-    }
-
-    /**
-     * Count processed data.
-     *
-     * @return int The number of elements in the processed data array.
-     */
-    public function count(): int
-    {
-        return count($this->Data);
     }
 }

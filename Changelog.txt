@@ -17,6 +17,19 @@ found at:
   string|Stringable are used by the implementation). IPHeader can now be
   treated as a string.
 
+- [2026.03.17]: Added a new class to the repository, "LazyArray". For cases
+  where it might be necessary to process some data in some way to generate an
+  array, where that array mightn't always be needed for every request, but
+  where the process to generate it must always be defined at some specific
+  point in the code which is to be always executed, LazyArray provides a means
+  by which the process can be defined while deferring its actual execution
+  until either the array is actually accessed where needed (i.e., the object is
+  treated as an array) or the execution is triggered manually, which could
+  potentially improve performance at the implementation in some cases by
+  reducing unnecessary processing. Added support for !lazy tags to the YAML
+  handler, allowing processing of the tagged data to be deferred until a later
+  time.
+
 === Version/Release 2.15.0 ===
 MINOR RELEASE.
 

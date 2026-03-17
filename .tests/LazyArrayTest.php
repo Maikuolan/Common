@@ -49,7 +49,7 @@ if ($Object['test'] !== 'testing') {
 }
 
 /** Test will fail for PHP versions < 7.4, as it relies on magic methods introduced since PHP 7.4. */
-if (\PHP_VERSION_ID > 70400) {
+if (\PHP_VERSION_ID >= 70400) {
     $Object = serialize($Object);
     $Expected = 'O:26:"Maikuolan\Common\LazyArray":4:{i:0;s:3:"foo";i:1;s:3:"bar";i:2;s:3:"baz";s:4:"test";s:7:"testing";}';
     $ExitCode++;

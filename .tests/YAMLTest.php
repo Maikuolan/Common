@@ -351,7 +351,7 @@ if ($ExpectedForSyntaxSerialised !== serialize($Object->Data)) {
 }
 
 /** Tests will fail for PHP versions < 7.4, as they rely on magic methods introduced since PHP 7.4. */
-if (\PHP_VERSION_ID > 70400) {
+if (\PHP_VERSION_ID >= 70400) {
     $ExpectedForReconstruction = [
         'String foo' => 'Bar',
         'Integer foo' => 1234,

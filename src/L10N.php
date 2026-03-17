@@ -1113,6 +1113,6 @@ class L10N extends CommonAbstract implements \Countable
      */
     public function count(): int
     {
-        return count($this->Data);
+        return \count($this->Data);
     }
 }

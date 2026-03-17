@@ -195,7 +195,7 @@ class Operation extends CommonAbstract
                 $Part = (int)$Part;
             }
         }
-        $PartsPad = 3 - count($Parts);
+        $PartsPad = 3 - \count($Parts);
         while ($PartsPad > 0) {
             $Parts[] = 0;
             $PartsPad--;
@@ -262,7 +262,7 @@ class Operation extends CommonAbstract
                         $Part = $this->dataTraverse($Data, \substr($Part, 1, -1), false, $AllowMethodCalls);
                     }
                 }
-                $CParts = count($Parts);
+                $CParts = \count($Parts);
                 if (($CParts % 2) === 0) {
                     $IfPass = false;
                     continue 2;
@@ -336,7 +336,7 @@ class Operation extends CommonAbstract
             return true;
         }
         $Parts = \preg_split('~([-+*/%.]?=)~', $Instruction, 2, PREG_SPLIT_DELIM_CAPTURE);
-        if (count($Parts) !== 3) {
+        if (\count($Parts) !== 3) {
             return false;
         }
         if (\substr($Parts[2], 0, 1) === '{' && \substr($Parts[2], -1) === '}' && \substr_count($Parts[2], '{') === 1 && \substr_count($Parts[2], '}') === 1) {
@@ -438,7 +438,7 @@ class Operation extends CommonAbstract
         $First = \substr($Data, 0, 1);
         $Last = \substr($Data, -1);
         $Parts = \preg_split('~(?<!\\\\)\\{((?:[A-Za-z\d ()_-]+\\.?)+)\\}~', $Data, -1, PREG_SPLIT_DELIM_CAPTURE);
-        $NumOfParts = count($Parts);
+        $NumOfParts = \count($Parts);
         if ($NumOfParts % 2 !== 1) {
             return false;
         }
@@ -460,7 +460,7 @@ class Operation extends CommonAbstract
         }
         $PartsBefore = $Parts;
         $Parts = \preg_split('~(?<!\\\\)\\(([^()]+)\\)~', $Parts, -1, PREG_SPLIT_DELIM_CAPTURE);
-        $NumOfParts = count($Parts);
+        $NumOfParts = \count($Parts);
         if ($NumOfParts > 2) {
             for ($Iter = 0; $Iter < $NumOfParts - 1; $Iter += 2) {
                 $Parts[$Iter + 1] = $this->operateInner($Parts[$Iter + 1]);
@@ -487,7 +487,7 @@ class Operation extends CommonAbstract
     {
         $Part = \preg_split('~(?<!^)(?<![-+*/%{}\\\\])(\*\*|[-+*/%])~', $Part, -1, PREG_SPLIT_DELIM_CAPTURE);
         $Total = \array_shift($Part);
-        while (count($Part) > 1) {
+        while (\count($Part) > 1) {
             $Operator = \array_shift($Part);
             $Operand = \array_shift($Part);
             if (!\is_numeric($Total) || !\is_numeric($Operand)) {

@@ -141,10 +141,7 @@ class LazyArray extends CommonAbstract implements \ArrayAccess, \Countable, \Ite
     public function count(): int
     {
         $this->trigger();
-        if (!is_countable($this->Data)) {
-            return 0;
-        }
-        return count($this->Data);
+        return \is_array($this->Data) || ($this->Data instanceof \Countable) ? \count($this->Data) : 0;
     }
 
     /**

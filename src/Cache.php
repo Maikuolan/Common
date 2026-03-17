@@ -1461,7 +1461,7 @@ class Cache extends CommonAbstract implements \ArrayAccess, \Countable
     public function count(): int
     {
         if ($this->Using === 'Memcached') {
-            return count($this->Indexes);
+            return \count($this->Indexes);
         }
         $Output = 0;
         $PrefixLen = \strlen($this->Prefix);

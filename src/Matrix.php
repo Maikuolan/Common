@@ -88,10 +88,10 @@ class Matrix extends CommonAbstract
         /** Build ranges. */
         foreach ($Description as $Descriptor) {
             $Range = \explode('-', $Descriptor);
-            if (count($Range) === 2 && \is_numeric($Range[0]) && \is_numeric($Range[1]) && $Range[0] <= $Range[1]) {
+            if (\count($Range) === 2 && \is_numeric($Range[0]) && \is_numeric($Range[1]) && $Range[0] <= $Range[1]) {
                 $First = $Range[0];
                 $Last = $Range[1];
-            } elseif (count($Range) === 1) {
+            } elseif (\count($Range) === 1) {
                 $First = $Range[0];
                 $Last = $Range[0];
             } else {
@@ -109,7 +109,7 @@ class Matrix extends CommonAbstract
         }
 
         /** Exception: The number of indexes doesn't match the number of dimensions. */
-        if (($IndexCount = count($Indexes)) !== $this->Dimensions) {
+        if (($IndexCount = \count($Indexes)) !== $this->Dimensions) {
             throw new \Exception(\sprintf('iterateCallback() expects %d dimensions, but %d were given', $this->Dimensions, $IndexCount));
             return;
         }

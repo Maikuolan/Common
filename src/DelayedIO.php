@@ -168,6 +168,6 @@ class DelayedIO extends CommonAbstract implements \Countable
      */
     public function count(): int
     {
-        return count($this->OldData);
+        return \count($this->OldData);
     }
 }

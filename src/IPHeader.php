@@ -15,7 +15,7 @@
 
 namespace Maikuolan\Common;
 
-class IPHeader extends CommonAbstract implements \Stringable
+class IPHeader extends CommonAbstract
 {
     /**
      * @var string The IP address resolved by the instance.

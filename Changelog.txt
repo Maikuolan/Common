@@ -11,11 +11,7 @@ found at:
 
 === Changes made since last versioned release ===
 
-- [2026.03.16]: Added explicit implements Stringable to the YAML handler and
-  the complex string handler (not strictly necessary, but improves
-  compatibility with PHP8+ strict typing in cases where union types of
-  string|Stringable are used by the implementation). IPHeader can now be
-  treated as a string.
+- [2026.03.16]: IPHeader can now be treated as a string.
 
 - [2026.03.17]: Added a new class to the repository, "LazyArray". For cases
   where it might be necessary to process some data in some way to generate an

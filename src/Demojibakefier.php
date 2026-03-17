@@ -404,7 +404,7 @@ class Demojibakefier extends CommonAbstract
         }
 
         /** Check whether we can return a single possible value. */
-        if (($Count = count($Valid)) === 1) {
+        if (($Count = \count($Valid)) === 1) {
             $this->Last = $Current;
             return $Valid[$Current]['String'];
         }

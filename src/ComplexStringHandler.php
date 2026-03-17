@@ -15,7 +15,7 @@
 
 namespace Maikuolan\Common;
 
-class ComplexStringHandler extends CommonAbstract implements \ArrayAccess, \Countable, \IteratorAggregate, \Stringable
+class ComplexStringHandler extends CommonAbstract implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
      * @var string Supplied to the class at object instantiation or thereafter.
@@ -198,7 +198,7 @@ class ComplexStringHandler extends CommonAbstract implements \ArrayAccess, \Coun
      */
     public function count(): int
     {
-        return count($this->Working);
+        return \count($this->Working);
     }
 
     /**

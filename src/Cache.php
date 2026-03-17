@@ -1,6 +1,6 @@
 <?php
 /**
- * A simple, unified cache handler (last modified: 2026.03.12).
+ * A simple, unified cache handler (last modified: 2026.03.16).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -1112,7 +1112,7 @@ class Cache extends CommonAbstract implements \ArrayAccess, \Countable
      *
      * @param string $Pattern The pattern for which entries to return.
      * @param string $Replacement An optional replacement for entry names.
-     * @param ?callable $Sort An optional callable to sort entries.
+     * @param callable|null $Sort An optional callable to sort entries.
      * @return array An array of matching entries.
      */
     public function getAllEntriesWhere(string $Pattern, string $Replacement = '', ?callable $Sort = null): array
@@ -1454,53 +1454,6 @@ class Cache extends CommonAbstract implements \ArrayAccess, \Countable
     }
 
     /**
-     * Enforce key size limit.
-     *
-     * @param string $Key The key to check. Transforms the key if it doesn't
-     *      conform; Does nothing otherwise.
-     * @return void
-     */
-    private function enforceKeyLimit(string &$Key): void
-    {
-        /**
-         * SHA512 produces a hash equal to the current key size limit, and
-         * provides sufficient noise for our needs here, so we'll use that.
-         */
-        if (strlen($Key) > self::KEY_SIZE_LIMIT) {
-            if (
-                ($PrefixLen = strlen($this->Prefix)) &&
-                (substr($Key, 0, $PrefixLen) === $this->Prefix) &&
-                ($PrefixLen < self::KEY_SIZE_LIMIT)
-            ) {
-                $Key = $this->Prefix . substr(hash('sha512', substr($Key, $PrefixLen)), 0, self::KEY_SIZE_LIMIT - $PrefixLen);
-                return;
-            }
-            $Key = hash('sha512', $Key);
-        }
-    }
-
-    /**
-     * Try to enforce the permissions necessary to read and write a file.
-     *
-     * @param string $Directory The directory we're attempting to set
-     *      permissions for.
-     * @return bool True when successful or when not needed; False on failure.
-     */
-    private function tryEnforcePermissions(string $Directory): bool
-    {
-        if ($Directory === '' || !is_dir($Directory)) {
-            return false;
-        }
-        if (is_readable($Directory) && is_writable($Directory)) {
-            return true;
-        }
-        if (!$this->AllowEnforcingPermissions) {
-            return false;
-        }
-        return chmod($Directory, 0755);
-    }
-
-    /**
      * Count cache entries.
      *
      * @return int The number of cache entries attached to the current instance.
@@ -1565,5 +1518,52 @@ class Cache extends CommonAbstract implements \ArrayAccess, \Countable
             }
         }
         return $Output;
+    }
+
+    /**
+     * Enforce key size limit.
+     *
+     * @param string $Key The key to check. Transforms the key if it doesn't
+     *      conform; Does nothing otherwise.
+     * @return void
+     */
+    private function enforceKeyLimit(string &$Key): void
+    {
+        /**
+         * SHA512 produces a hash equal to the current key size limit, and
+         * provides sufficient noise for our needs here, so we'll use that.
+         */
+        if (strlen($Key) > self::KEY_SIZE_LIMIT) {
+            if (
+                ($PrefixLen = strlen($this->Prefix)) &&
+                (substr($Key, 0, $PrefixLen) === $this->Prefix) &&
+                ($PrefixLen < self::KEY_SIZE_LIMIT)
+            ) {
+                $Key = $this->Prefix . substr(hash('sha512', substr($Key, $PrefixLen)), 0, self::KEY_SIZE_LIMIT - $PrefixLen);
+                return;
+            }
+            $Key = hash('sha512', $Key);
+        }
+    }
+
+    /**
+     * Try to enforce the permissions necessary to read and write a file.
+     *
+     * @param string $Directory The directory we're attempting to set
+     *      permissions for.
+     * @return bool True when successful or when not needed; False on failure.
+     */
+    private function tryEnforcePermissions(string $Directory): bool
+    {
+        if ($Directory === '' || !is_dir($Directory)) {
+            return false;
+        }
+        if (is_readable($Directory) && is_writable($Directory)) {
+            return true;
+        }
+        if (!$this->AllowEnforcingPermissions) {
+            return false;
+        }
+        return chmod($Directory, 0755);
     }
 }

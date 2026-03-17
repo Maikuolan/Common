@@ -1,6 +1,6 @@
 <?php
 /**
- * Matrix handler (last modified: 2025.06.24).
+ * Matrix handler (last modified: 2026.03.16).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -58,7 +58,7 @@ class Matrix extends CommonAbstract
      * Iterate a callback function over the specified coordinates.
      *
      * @param string|int $Description The coordinates to iterate over.
-     * @param callable $Callback The callback function to iterate.
+     * @param callable|null $Callback The callback function to iterate.
      * @param array $Data Other data optionally passed to the callback.
      * @throws Exception if the number of indexes doesn't match the number of dimensions.
      * @return mixed The return value from the callback function (defaults to

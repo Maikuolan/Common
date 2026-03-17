@@ -37,7 +37,7 @@ class ComplexStringHandler extends CommonAbstract implements \ArrayAccess, \Coun
      *
      * @param string $Data The data supplied to the class at object instantiation.
      * @param string $Pattern An optional pattern to immediately call $this->generateMarkers.
-     * @param callable $Closure An optional closure to immediately call $this->iterateClosure.
+     * @param callable|null $Closure An optional closure to immediately call $this->iterateClosure.
      * @return void
      */
     public function __construct(string $Data = '', string $Pattern = '', ?callable $Closure = null)
@@ -157,7 +157,7 @@ class ComplexStringHandler extends CommonAbstract implements \ArrayAccess, \Coun
      * @return mixed The fetched segment.
      */
     #[\ReturnTypeWillChange]
-    public function offsetGet($Segment)
+    public function &offsetGet($Segment)
     {
         return $this->Working[$Segment];
     }

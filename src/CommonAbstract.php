@@ -33,40 +33,40 @@ abstract class CommonAbstract
      */
     public function dataTraverse(&$Data, $Path = [], bool $AllowNonScalar = false, bool $AllowMethodCalls = false)
     {
-        if (!is_array($Path)) {
-            $Path = preg_split('~(?<!\\\\)\\.~', $Path) ?: [];
+        if (!\is_array($Path)) {
+            $Path = \preg_split('~(?<!\\\\)\\.~', $Path) ?: [];
         }
-        $Segment = array_shift($Path);
-        if ($Segment === null || strlen($Segment) === 0) {
-            return $AllowNonScalar || is_scalar($Data) ? $Data : '';
+        $Segment = \array_shift($Path);
+        if ($Segment === null || \strlen($Segment) === 0) {
+            return $AllowNonScalar || \is_scalar($Data) ? $Data : '';
         }
-        $Segment = str_replace('\.', '.', $Segment);
+        $Segment = \str_replace('\.', '.', $Segment);
         if ($Data instanceof \Maikuolan\Common\LazyArray) {
             $Data->trigger();
             $Data = $Data->Data;
         }
-        if (is_array($Data)) {
-            if (preg_match('~^(?:keys|flip|pop|shift)\\(\\)$~i', $Segment)) {
-                $Segment = 'array_' . substr($Segment, 0, -2);
+        if (\is_array($Data)) {
+            if (\preg_match('~^(?:keys|flip|pop|shift)\\(\\)$~i', $Segment)) {
+                $Segment = 'array_' . \substr($Segment, 0, -2);
                 $Working = $Segment($Data);
                 return $this->dataTraverse($Working, $Path, $AllowNonScalar, $AllowMethodCalls);
             }
             return isset($Data[$Segment]) ? $this->dataTraverse($Data[$Segment], $Path, $AllowNonScalar, $AllowMethodCalls) : '';
         }
-        if (is_object($Data)) {
-            if (property_exists($Data, $Segment)) {
+        if (\is_object($Data)) {
+            if (\property_exists($Data, $Segment)) {
                 return $this->dataTraverse($Data->$Segment, $Path, $AllowNonScalar, $AllowMethodCalls);
             }
-            if ($AllowMethodCalls && method_exists($Data, $Segment)) {
+            if ($AllowMethodCalls && \method_exists($Data, $Segment)) {
                 $Working = $Data->{$Segment}(...$Path);
                 return $this->dataTraverse($Working, [], $AllowNonScalar);
             }
         }
         if (
-            (is_string($Data) && preg_match('~^(?:str(?:tolower|toupper|len)|trim)\\(\\)$~i', $Segment)) ||
-            (is_numeric($Data) && preg_match('~^(?:floor|ceil)\\(\\)$~i', $Segment))
+            (\is_string($Data) && \preg_match('~^(?:str(?:tolower|toupper|len)|trim)\\(\\)$~i', $Segment)) ||
+            (\is_numeric($Data) && \preg_match('~^(?:floor|ceil)\\(\\)$~i', $Segment))
         ) {
-            $Segment = substr($Segment, 0, -2);
+            $Segment = \substr($Segment, 0, -2);
             $Working = $Segment($Data);
             return $this->dataTraverse($Working, $Path, $AllowNonScalar, $AllowMethodCalls);
         }
@@ -80,10 +80,10 @@ abstract class CommonAbstract
      */
     public function __debugInfo(): array
     {
-        $Properties = get_object_vars($this);
+        $Properties = \get_object_vars($this);
 
         /** Attributes available as of PHP >= 8. Properties returned as is for older PHP versions. */
-        if (!class_exists('\ReflectionProperty') || !method_exists('\ReflectionProperty', 'getAttributes')) {
+        if (!\class_exists('\ReflectionProperty') || !\method_exists('\ReflectionProperty', 'getAttributes')) {
             return $Properties;
         }
 

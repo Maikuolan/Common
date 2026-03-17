@@ -29,6 +29,7 @@ found at:
   reducing unnecessary processing. Added support for !lazy tags to the YAML
   handler, allowing processing of the tagged data to be deferred until a later
   time. Added LazyArray support to the L10N handler and to dataTraverse.
+  Various minor performance improvements.
 
 === Version/Release 2.15.0 ===
 MINOR RELEASE.

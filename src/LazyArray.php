@@ -1,6 +1,6 @@
 <?php
 /**
- * Lazy process handler for arrays (last modified: 2026.03.16).
+ * Lazy process handler for arrays (last modified: 2026.03.17).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -60,7 +60,7 @@ class LazyArray extends CommonAbstract implements \ArrayAccess, \Countable, \Ite
         if ($this->Triggered) {
             return;
         }
-        $this->Data = call_user_func($this->Closure, $this->Raw);
+        $this->Data = \call_user_func($this->Closure, $this->Raw);
         $this->Triggered = true;
         $this->Closure = null;
         $this->Raw = null;
@@ -75,7 +75,7 @@ class LazyArray extends CommonAbstract implements \ArrayAccess, \Countable, \Ite
     public function offsetExists($Offset): bool
     {
         $this->trigger();
-        if (!is_scalar($Offset) || !is_array($this->Data)) {
+        if (!\is_scalar($Offset) || !\is_array($this->Data)) {
             return false;
         }
         return isset($this->Data[$Offset]);
@@ -112,7 +112,7 @@ class LazyArray extends CommonAbstract implements \ArrayAccess, \Countable, \Ite
     public function offsetSet($Offset, $Value): void
     {
         $this->trigger();
-        if (!is_array($this->Data)) {
+        if (!\is_array($this->Data)) {
             return;
         }
         $this->Data[$Offset] = $Value;
@@ -127,7 +127,7 @@ class LazyArray extends CommonAbstract implements \ArrayAccess, \Countable, \Ite
     public function offsetUnset($Offset): void
     {
         $this->trigger();
-        if (!is_array($this->Data)) {
+        if (!\is_array($this->Data)) {
             return;
         }
         unset($this->Data[$Offset]);

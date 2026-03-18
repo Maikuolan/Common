@@ -27,6 +27,8 @@ found at:
   time. Added LazyArray support to the L10N handler and to dataTraverse.
   Various minor performance improvements.
 
+- [2026.03.18]: Use RedisException for failed Redis connections.
+
 === Version/Release 2.15.0 ===
 MINOR RELEASE.
 

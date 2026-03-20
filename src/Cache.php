@@ -250,38 +250,35 @@ class Cache extends CommonAbstract implements \ArrayAccess, \Countable
             $this->WorkingData->close();
             return;
         }
-        if ($this->Using === 'PDO') {
-            $this->clearExpiredPDO();
+        if (!\is_array($this->WorkingData)) {
             return;
         }
-        if (\is_array($this->WorkingData)) {
-            if ($this->clearExpired($this->WorkingData)) {
-                $this->Modified = true;
+        if ($this->clearExpired($this->WorkingData)) {
+            $this->Modified = true;
+        }
+        if ($this->FFDefault && $this->Modified && $this->Using === 'FF') {
+            $Handle = false;
+            $Start = \time();
+            while (true) {
+                $Handle = \fopen($this->FFDefault, 'wb');
+                if ($Handle !== false || (\time() - $Start) > self::FLOCK_TIMEOUT) {
+                    break;
+                }
             }
-            if ($this->FFDefault && $this->Modified && $this->Using === 'FF') {
-                $Handle = false;
-                $Start = \time();
-                while (true) {
-                    $Handle = \fopen($this->FFDefault, 'wb');
-                    if ($Handle !== false || (\time() - $Start) > self::FLOCK_TIMEOUT) {
-                        break;
-                    }
-                }
-                if ($Handle === false) {
-                    return;
-                }
-                $Locked = false;
-                while (true) {
-                    if ($Locked = \flock($Handle, \LOCK_EX | \LOCK_NB) || (\time() - $Start) > self::FLOCK_TIMEOUT) {
-                        break;
-                    }
-                }
-                if ($Locked) {
-                    \fwrite($Handle, \serialize($this->WorkingData));
-                    \flock($Handle, LOCK_UN);
-                }
-                \fclose($Handle);
+            if ($Handle === false) {
+                return;
             }
+            $Locked = false;
+            while (true) {
+                if ($Locked = \flock($Handle, \LOCK_EX | \LOCK_NB) || (\time() - $Start) > self::FLOCK_TIMEOUT) {
+                    break;
+                }
+            }
+            if ($Locked) {
+                \fwrite($Handle, \serialize($this->WorkingData));
+                \flock($Handle, \LOCK_UN);
+            }
+            \fclose($Handle);
         }
     }
 

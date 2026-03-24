@@ -9,7 +9,8 @@ Detailed version release guidelines for the common classes package can be
 found at:
 - https://github.com/Maikuolan/Common/blob/v2/CONTRIBUTING.md#the-common-classes-package-code-style-guidelines
 
-=== Changes made since last versioned release ===
+=== Version/Release 2.16.0 ===
+MINOR RELEASE.
 
 - [2026.03.16]: IPHeader can now be treated as a string.
 
@@ -31,6 +32,9 @@ found at:
 
 - [2026.03.22]: Optimised the logic for when clearExpiredPDO triggers, which
   should improve performance a little for those using PDO for caching.
+
+Caleb M (Maikuolan),
+24 March, 2026.
 
 === Version/Release 2.15.0 ===
 MINOR RELEASE.

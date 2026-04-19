@@ -9,6 +9,14 @@ Detailed version release guidelines for the common classes package can be
 found at:
 - https://github.com/Maikuolan/Common/blob/v2/CONTRIBUTING.md#the-common-classes-package-code-style-guidelines
 
+=== Version/Release 2.16.1 ===
+PATCH RELEASE.
+
+- [2026.04.19; Bug-fix]: Found a few typos in the code for manually overriding
+  CURLOPT_SSL_VERIFYPEER at the Request handler that would've prevented it from
+  working as intended (although not currently actually used by any
+  implementations, thus why not discovered until now); Fixed.
+
 === Version/Release 2.16.0 ===
 MINOR RELEASE.
 

@@ -17,6 +17,9 @@
 - [ProxyAuth property.](#proxyauth-property)
 - [UserAgent property.](#useragent-property)
 - [MostRecentStatusCode property.](#mostrecentstatuscode-property)
+- [TryUsing property.](#tryusing-property)
+- [DF property.](#df-property)
+- [STREAM_BLOCKSIZE constant.](#stream_blocksize-constantproperty)
 - [request method.](#request-method)
 - [inCsv method.](#incsv-method)
 - [sendMessage method.](#sendmessage-method)
@@ -130,10 +133,36 @@ public $UserAgent = 'Request class (https://github.com/Maikuolan/Common)';
 
 #### MostRecentStatusCode property.
 
-Whenever a request is performed, the status code returned by that request will be populated to this property (e.g., 200, 403, 404, etc).
+Whenever a request is successfully performed, the status code returned by that request will be populated to this property (e.g., 200, 403, 404, etc).
 
 ```PHP
 public $MostRecentStatusCode = 0;
+```
+
+#### TryUsing property.
+
+Automatically set to a recommended value during instantiation based on the functionality available, but can be manually set by the implementation if so desired.
+
+When set to `1` (the default and preferred value), the request method will use curl to send requests. When set to `2` (intended for when curl isn't available at the implementation, e.g., if the curl PHP extension isn't enabled), the request method will use `fopen` with `stream_context_create` to send requests (i.e., as an HTTP/S wrapper/handler). When set to `0` (i.e., when neither curl nor the ability to use `fopen` with `stream_context_create` to send requests is available, e.g., because those functions are disabled, `open_basedir` is populated, and/or `allow_url_fopen` is set to `Off`), the request method will exit immediately upon being called/invoked, returning an empty string and not attempting to send the request. Setting any other value, for now, will have the same effect as setting to `1`, but shouldn't be relied upon in case those other values end up being used for additional functionality added to the class in the future (although such additional functionality isn't planned at this time).
+
+```PHP
+public $TryUsing = 1;
+```
+
+#### DF property.
+
+A private property populated during instantiation, used internally to check whether specific PHP functions are disabled.
+
+```PHP
+private $DF = [];
+```
+
+#### STREAM_BLOCKSIZE constant.
+
+A private constant representing how many bytes to read at a time when reading the response to a request sent using `fopen` with `stream_context_create`.
+
+```PHP
+private const STREAM_BLOCKSIZE = 131072;
 ```
 
 #### request method.
@@ -156,7 +185,7 @@ The fifth parameter (`$Depth`) represents the recursion depth of the current req
 
 The sixth parameter (`$Method`) can be used to specify the intended request method in the event that the method intended isn't GET or POST. When the intended request method is GET or POST, it shouldn't be populated manually by the implementation (the method will determine automatically whether GET or POST is needed, based on factors like request parameters). This can be useful when methods such as CONNECT or DELETE are needed.
 
-The method returns a string (either the returned resource, or an empty string on failure).
+The method returns a string (the response to the request if successful, or an empty string on failure).
 
 The class also implements the magic method `__invoke`, as a way to alias back to `request` when the instance is utilised as a callable or function.
 
@@ -183,4 +212,4 @@ public function sendMessage(string $Message): void;
 ---
 
 
-Last Updated: 2 July 2025 (2025.07.02).
+Last Updated: 22 April 2026 (2026.04.22).

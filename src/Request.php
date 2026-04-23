@@ -1,6 +1,6 @@
 <?php
 /**
- * Request handler (last modified: 2026.04.21).
+ * Request handler (last modified: 2026.04.24).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -216,10 +216,58 @@ class Request extends CommonAbstract
             break;
         }
 
-        $IsHTTPS = \strtolower(\substr($URI, 0, 6)) === 'https:';
+        $IsFTP = (($Six = \strtolower(\substr($URI, 0, 6))) === 'ftp://');
+        $IsFTPS = (($Seven = \strtolower(\substr($URI, 0, 7))) === 'ftps://' || $Seven === 'sftp://');
+        $IsHTTPS = (($Eight = \strtolower(\substr($URI, 0, 8))) === 'https://');
 
         /** Using fopen with stream_context_create instead of curl. */
         if ($this->TryUsing === 2) {
+            if ($IsFTP || $IsFTPS) {
+                $Context = ['ftp' => ['timeout' => $Timeout > 0 ? $Timeout : $this->DefaultTimeout, 'ignore_errors' => true]];
+                if ($IsFTPS) {
+                    $Cert = $this->getCertPath();
+                    if ($Cert !== '') {
+                        $VPeer = isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false;
+                        $Context['ssl'] = ['verify_peer' => $VPeer, 'verify_peer_name' => $VPeer, 'allow_self_signed' => false, 'cafile' => $Cert];
+                    } else {
+                        $Context['ssl'] = ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => false, 'cafile' => false];
+                    }
+                    $DebugMethod = 'FTPS';
+                } else {
+                    $DebugMethod = 'FTP';
+                }
+                $Context = \stream_context_create($Context);
+
+                if (isset($Overrides['CURLOPT_USERPWD'])) {
+                    $HandlePath = $IsFTPS ? $Seven . $Overrides['CURLOPT_USERPWD'] . '@' . \substr($URI, 7) : $Six . $Overrides['CURLOPT_USERPWD'] . '@' . \substr($URI, 6);
+                } elseif (isset($Params['USERPWD'])) {
+                    $HandlePath = $IsFTPS ? $Seven . $Params['USERPWD'] . '@' . \substr($URI, 7) : $Six . $Params['USERPWD'] . '@' . \substr($URI, 6);
+                } else {
+                    $HandlePath = $URI;
+                }
+                $Time = \microtime(true);
+                $Handle = \fopen($HandlePath, 'rb', false, $Context);
+                if (!\is_resource($Handle)) {
+                    return '';
+                }
+
+                /** Content of the request response. */
+                $Response = '';
+                while (!\feof($Handle)) {
+                    $Response .= \fread($Handle, self::STREAM_BLOCKSIZE);
+                }
+
+                \fclose($Handle);
+                $Time = \microtime(true) - $Time;
+                $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, 226, (\floor($Time * 100) / 100) . 's'));
+
+                /** Assuming 226, because no reliable way to tell otherwise. */
+                $this->MostRecentStatusCode = 226;
+
+                /** Return the results of the FTP/S request. */
+                return $Response;
+            }
+
             if (!empty($Params) && \gettype($Params) === 'array' && \function_exists('http_build_query') && !isset($this->DF['http_build_query'])) {
                 $Post = true;
                 $PostData = \http_build_query($Params);
@@ -255,30 +303,12 @@ class Request extends CommonAbstract
                 $Context['http']['content'] = $PostData;
             }
             if ($IsHTTPS) {
-                $Cert = '';
-                if (\function_exists('openssl_get_cert_locations') && !isset($this->DF['openssl_get_cert_locations'])) {
-                    $Certs = \openssl_get_cert_locations();
-                    if (!empty($Certs['ini_cafile']) && \is_readable($Certs['ini_cafile'])) {
-                        $Cert = $Certs['ini_cafile'];
-                    } elseif (!empty($Certs['default_cert_file_env']) && \is_readable($Certs['default_cert_file_env'])) {
-                        $Cert = $Certs['default_cert_file_env'];
-                    }
-                }
+                $Cert = $this->getCertPath();
                 if ($Cert !== '') {
                     $VPeer = isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false;
-                    $Context['ssl'] = [
-                        'verify_peer' => $VPeer,
-                        'verify_peer_name' => $VPeer,
-                        'allow_self_signed' => false,
-                        'cafile' => $Cert
-                    ];
+                    $Context['ssl'] = ['verify_peer' => $VPeer, 'verify_peer_name' => $VPeer, 'allow_self_signed' => false, 'cafile' => $Cert];
                 } else {
-                    $Context['ssl'] = [
-                        'verify_peer' => false,
-                        'verify_peer_name' => false,
-                        'allow_self_signed' => false,
-                        'cafile' => false
-                    ];
+                    $Context['ssl'] = ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => false, 'cafile' => false];
                 }
             }
             $Context = \stream_context_create($Context);
@@ -319,12 +349,62 @@ class Request extends CommonAbstract
                 $this->MostRecentStatusCode = 200;
             }
 
-            /** Return the results of the request. */
+            /** Return the results of the HTTP/S request. */
             return $Response;
         }
 
         /** Initialise the cURL session. */
         $Request = \curl_init($URI);
+        \curl_setopt($Request, \CURLOPT_RETURNTRANSFER, true);
+
+        if ($IsFTP || $IsFTPS) {
+            if (isset($Overrides['CURLOPT_USERPWD'])) {
+                \curl_setopt($Request, \CURLOPT_USERPWD, $Overrides['CURLOPT_USERPWD']);
+            } elseif (isset($Params['USERPWD'])) {
+                \curl_setopt($Request, \CURLOPT_USERPWD, $Params['USERPWD']);
+            }
+            if ($IsFTPS) {
+                \curl_setopt($Request, \CURLOPT_SSL_VERIFYPEER, (
+                    isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false
+                ));
+                $Cert = $this->getCertPath();
+                if ($Cert !== '') {
+                    \curl_setopt($Request, \CURLOPT_CAINFO, $Cert);
+                }
+                $DebugMethod = 'FTPS';
+            } else {
+                $DebugMethod = 'FTP';
+            }
+
+            /** Execute and get the response. */
+            $Time = \microtime(true);
+            $Response = \curl_exec($Request);
+            $Time = \microtime(true) - $Time;
+
+            if (($Info = \curl_getinfo($Request)) && \is_array($Info) && isset($Info['http_code'])) {
+                $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, $Info['http_code'], (\floor($Time * 100) / 100) . 's'));
+                $this->MostRecentStatusCode = $Info['http_code'];
+
+                /** Request failed. Try again using an alternative address. */
+                if ($Info['http_code'] >= 400 && isset($AlternateURI) && $Depth < 3) {
+                    if (\PHP_VERSION_ID < 80000) {
+                        \curl_close($Request);
+                    }
+                    return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
+                }
+            } else {
+                $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, 226, (\floor($Time * 100) / 100) . 's'));
+                $this->MostRecentStatusCode = 226;
+            }
+
+            /** Close the cURL session (PHP < 8). */
+            if (\PHP_VERSION_ID < 80000) {
+                \curl_close($Request);
+            }
+
+            /** Return the results of the FTP/S request. */
+            return $Response;
+        }
 
         \curl_setopt($Request, \CURLOPT_FRESH_CONNECT, true);
         \curl_setopt($Request, \CURLOPT_HEADER, false);
@@ -341,15 +421,7 @@ class Request extends CommonAbstract
             \curl_setopt($Request, \CURLOPT_SSL_VERIFYPEER, (
                 isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false
             ));
-            $Cert = '';
-            if (\function_exists('openssl_get_cert_locations') && !isset($this->DF['openssl_get_cert_locations'])) {
-                $Certs = \openssl_get_cert_locations();
-                if (!empty($Certs['ini_cafile']) && \is_readable($Certs['ini_cafile'])) {
-                    $Cert = $Certs['ini_cafile'];
-                } elseif (!empty($Certs['default_cert_file_env']) && \is_readable($Certs['default_cert_file_env'])) {
-                    $Cert = $Certs['default_cert_file_env'];
-                }
-            }
+            $Cert = $this->getCertPath();
             if ($Cert !== '') {
                 \curl_setopt($Request, \CURLOPT_CAINFO, $Cert);
             }
@@ -368,18 +440,15 @@ class Request extends CommonAbstract
         }
         \curl_setopt($Request, \CURLOPT_FOLLOWLOCATION, true);
         \curl_setopt($Request, \CURLOPT_MAXREDIRS, 1);
-        \curl_setopt($Request, \CURLOPT_RETURNTRANSFER, true);
         \curl_setopt($Request, \CURLOPT_TIMEOUT, ($Timeout > 0 ? $Timeout : $this->DefaultTimeout));
         \curl_setopt($Request, \CURLOPT_USERAGENT, $this->UserAgent);
         \curl_setopt($Request, \CURLOPT_HTTPHEADER, $Headers ?: []);
-        $Time = \microtime(true);
 
         /** Execute and get the response. */
+        $Time = \microtime(true);
         $Response = \curl_exec($Request);
-
         $Time = \microtime(true) - $Time;
 
-        /** Check for problems (e.g., resource not found, server errors, etc). */
         if (($Info = \curl_getinfo($Request)) && \is_array($Info) && isset($Info['http_code'])) {
             $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, $Info['http_code'], (\floor($Time * 100) / 100) . 's'));
             $this->MostRecentStatusCode = $Info['http_code'];
@@ -401,7 +470,7 @@ class Request extends CommonAbstract
             \curl_close($Request);
         }
 
-        /** Return the results of the request. */
+        /** Return the results of the HTTP/S request. */
         return $Response;
     }
 
@@ -443,5 +512,25 @@ class Request extends CommonAbstract
         $Handle = \fopen('php://stdout', 'wb');
         \fwrite($Handle, "\r" . $Message . "\n");
         \fclose($Handle);
+    }
+
+    /**
+     * Gets the certificate path.
+     *
+     * @return string
+     */
+    private function getCertPath(): string
+    {
+        if (!\function_exists('openssl_get_cert_locations') || isset($this->DF['openssl_get_cert_locations'])) {
+            return '';
+        }
+        $Certs = \openssl_get_cert_locations();
+        if (!empty($Certs['ini_cafile']) && \is_readable($Certs['ini_cafile'])) {
+            return $Certs['ini_cafile'];
+        }
+        if (!empty($Certs['default_cert_file_env']) && \is_readable($Certs['default_cert_file_env'])) {
+            return $Certs['default_cert_file_env'];
+        }
+        return '';
     }
 }

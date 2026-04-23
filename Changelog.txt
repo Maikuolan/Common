@@ -13,13 +13,15 @@ found at:
 PATCH RELEASE.
 
 - [2026.04.19; Bug-fix]: Found a few typos in the code for manually overriding
-  CURLOPT_SSL_VERIFYPEER at the Request handler that would've prevented it from
+  CURLOPT_SSL_VERIFYPEER at the request handler that would've prevented it from
   working as intended (although not currently actually used by any
   implementations, thus why not discovered until now); Fixed.
 
 - [2026.04.21]: Added a fallback to the request handler for sending requests
   using streams when curl isn't available, extending functionality of the
   request handler to those to whom curl isn't available.
+
+- [2026.04.24]: Added support for FTP/S requests to the request handler.
 
 === Version/Release 2.16.0 ===
 MINOR RELEASE.

@@ -23,6 +23,7 @@
 - [request method.](#request-method)
 - [inCsv method.](#incsv-method)
 - [sendMessage method.](#sendmessage-method)
+- [getCertPath method.](#getcertpath-method)
 
 #### DefaultTimeout property.
 
@@ -175,7 +176,11 @@ public function request(string $URI, $Params = [], int $Timeout = -1, array $Hea
 
 The first parameter (`$URI`) is the URL, URI, resource, etc that you want to request.
 
-The second parameter (`$Params`) is for any parameters you want to send along with your request. If empty or omitted, `CURLOPT_POST` is `false`. Otherwise, `CURLOPT_POST` is true, and the parameter is used to supply `CURLOPT_POSTFIELDS`. Normally an associative array of key-value pairs, but can be any kind of value supported by `CURLOPT_POSTFIELDS`. Optional.
+The second parameter (`$Params`) is an optional, associative array of key-value pairs for any post fields you may want to send along with your request.
+
+When sending an HTTP/S request: If empty or omitted, `CURLOPT_POST` is `false`. Otherwise, `CURLOPT_POST` is true. The post fields will be populated to `CURLOPT_POSTFIELDS`.
+
+When sending an FTP/S request: If sending the request to a server requiring a username and password, include an element with the key `USERPWD`, the value containing the required username and password as `Username:Password`. That element will be populated to `CURLOPT_USERPWD`.
 
 The third parameter (`$Timeout`) is an optional timeout limit for the request. When omitted, `DefaultTimeout` is used instead.
 
@@ -209,7 +214,15 @@ When `SendToOut` is `true`, this method sends messages to `stdout` whenever a re
 public function sendMessage(string $Message): void;
 ```
 
+#### getCertPath method.
+
+A private method used internally to fetch the path to the system's certificate file.
+
+```PHP
+private function getCertPath(): string;
+```
+
 ---
 
 
-Last Updated: 22 April 2026 (2026.04.22).
+Last Updated: 24 April 2026 (2026.04.24).

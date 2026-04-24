@@ -84,6 +84,11 @@ class Request extends CommonAbstract
     private $DF = [];
 
     /**
+     * @var array Supported protocols (populated by the constructor).
+     */
+    private $Supported = [1 => [], 2 => ['ftp' => 1, 'ftps' => 1, 'http' => 1, 'https' => 1]];
+
+    /**
      * @var int Default stream blocksize (128KB).
      */
     private const STREAM_BLOCKSIZE = 131072;
@@ -105,8 +110,14 @@ class Request extends CommonAbstract
             \function_exists('curl_setopt') &&
             !isset($this->DF['curl_setopt']) &&
             \function_exists('curl_exec') &&
-            !isset($this->DF['curl_exec'])
+            !isset($this->DF['curl_exec']) &&
+            \function_exists('curl_version') &&
+            !isset($this->DF['curl_version'])
         ) {
+            $CurlVer = \curl_version();
+            if (isset($CurlVer['protocols']) && \is_array($CurlVer['protocols'])) {
+                $this->Supported[1] = \array_flip($CurlVer['protocols']);
+            }
             return;
         }
         if (
@@ -216,15 +227,17 @@ class Request extends CommonAbstract
             break;
         }
 
-        $IsFTP = (($Six = \strtolower(\substr($URI, 0, 6))) === 'ftp://');
-        $IsFTPS = (($Seven = \strtolower(\substr($URI, 0, 7))) === 'ftps://' || $Seven === 'sftp://');
-        $IsHTTPS = (($Eight = \strtolower(\substr($URI, 0, 8))) === 'https://');
+        $Protocol = (($CPos = \strpos($URI, ':')) === false) ? '' : \strtolower(\substr($URI, 0, $CPos));
+        if ($Protocol === '' || !isset($this->Supported[$this->TryUsing][$Protocol])) {
+            $this->MostRecentStatusCode = 1;
+            return '';
+        }
 
         /** Using fopen with stream_context_create instead of curl. */
         if ($this->TryUsing === 2) {
-            if ($IsFTP || $IsFTPS) {
+            if ($Protocol === 'ftp' || $Protocol === 'ftps') {
                 $Context = ['ftp' => ['timeout' => $Timeout > 0 ? $Timeout : $this->DefaultTimeout, 'ignore_errors' => true]];
-                if ($IsFTPS) {
+                if ($Protocol === 'ftps') {
                     $Cert = $this->getCertPath();
                     if ($Cert !== '') {
                         $VPeer = isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false;
@@ -232,22 +245,20 @@ class Request extends CommonAbstract
                     } else {
                         $Context['ssl'] = ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => false, 'cafile' => false];
                     }
-                    $DebugMethod = 'FTPS';
-                } else {
-                    $DebugMethod = 'FTP';
                 }
                 $Context = \stream_context_create($Context);
 
                 if (isset($Overrides['CURLOPT_USERPWD'])) {
-                    $HandlePath = $IsFTPS ? $Seven . $Overrides['CURLOPT_USERPWD'] . '@' . \substr($URI, 7) : $Six . $Overrides['CURLOPT_USERPWD'] . '@' . \substr($URI, 6);
+                    $HandlePath = $Protocol === 'ftps' ? 'ftps://' . $Overrides['CURLOPT_USERPWD'] . '@' . \substr($URI, 7) : 'ftp://' . $Overrides['CURLOPT_USERPWD'] . '@' . \substr($URI, 6);
                 } elseif (isset($Params['USERPWD'])) {
-                    $HandlePath = $IsFTPS ? $Seven . $Params['USERPWD'] . '@' . \substr($URI, 7) : $Six . $Params['USERPWD'] . '@' . \substr($URI, 6);
+                    $HandlePath = $Protocol === 'ftps' ? 'ftps://' . $Params['USERPWD'] . '@' . \substr($URI, 7) : 'ftp://' . $Params['USERPWD'] . '@' . \substr($URI, 6);
                 } else {
                     $HandlePath = $URI;
                 }
                 $Time = \microtime(true);
                 $Handle = \fopen($HandlePath, 'rb', false, $Context);
                 if (!\is_resource($Handle)) {
+                    $this->MostRecentStatusCode = 500;
                     return '';
                 }
 
@@ -259,7 +270,7 @@ class Request extends CommonAbstract
 
                 \fclose($Handle);
                 $Time = \microtime(true) - $Time;
-                $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, 226, (\floor($Time * 100) / 100) . 's'));
+                $this->sendMessage(\sprintf('%s - %s - %s - %s', \strtoupper($Protocol), $URI, 226, (\floor($Time * 100) / 100) . 's'));
 
                 /** Assuming 226, because no reliable way to tell otherwise. */
                 $this->MostRecentStatusCode = 226;
@@ -302,7 +313,7 @@ class Request extends CommonAbstract
             if ($PostData !== '') {
                 $Context['http']['content'] = $PostData;
             }
-            if ($IsHTTPS) {
+            if ($Protocol === 'https') {
                 $Cert = $this->getCertPath();
                 if ($Cert !== '') {
                     $VPeer = isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false;
@@ -316,6 +327,7 @@ class Request extends CommonAbstract
             $Time = \microtime(true);
             $Handle = \fopen($URI, 'rb', false, $Context);
             if (!\is_resource($Handle)) {
+                $this->MostRecentStatusCode = 400;
                 return '';
             }
 
@@ -355,15 +367,19 @@ class Request extends CommonAbstract
 
         /** Initialise the cURL session. */
         $Request = \curl_init($URI);
+        if ($Request === false) {
+            $this->MostRecentStatusCode = \curl_errno();
+            return '';
+        }
         \curl_setopt($Request, \CURLOPT_RETURNTRANSFER, true);
 
-        if ($IsFTP || $IsFTPS) {
+        if ($Protocol === 'ftp' || $Protocol === 'ftps') {
             if (isset($Overrides['CURLOPT_USERPWD'])) {
                 \curl_setopt($Request, \CURLOPT_USERPWD, $Overrides['CURLOPT_USERPWD']);
             } elseif (isset($Params['USERPWD'])) {
                 \curl_setopt($Request, \CURLOPT_USERPWD, $Params['USERPWD']);
             }
-            if ($IsFTPS) {
+            if ($Protocol === 'ftps') {
                 \curl_setopt($Request, \CURLOPT_SSL_VERIFYPEER, (
                     isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false
                 ));
@@ -371,9 +387,6 @@ class Request extends CommonAbstract
                 if ($Cert !== '') {
                     \curl_setopt($Request, \CURLOPT_CAINFO, $Cert);
                 }
-                $DebugMethod = 'FTPS';
-            } else {
-                $DebugMethod = 'FTP';
             }
 
             /** Execute and get the response. */
@@ -382,8 +395,8 @@ class Request extends CommonAbstract
             $Time = \microtime(true) - $Time;
 
             if (($Info = \curl_getinfo($Request)) && \is_array($Info) && isset($Info['http_code'])) {
-                $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, $Info['http_code'], (\floor($Time * 100) / 100) . 's'));
                 $this->MostRecentStatusCode = $Info['http_code'];
+                $this->sendMessage(\sprintf('%s - %s - %s - %s', \strtoupper($Protocol), $URI, $Info['http_code'], (\floor($Time * 100) / 100) . 's'));
 
                 /** Request failed. Try again using an alternative address. */
                 if ($Info['http_code'] >= 400 && isset($AlternateURI) && $Depth < 3) {
@@ -393,8 +406,8 @@ class Request extends CommonAbstract
                     return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
                 }
             } else {
-                $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, 226, (\floor($Time * 100) / 100) . 's'));
-                $this->MostRecentStatusCode = 226;
+                $this->MostRecentStatusCode = $Response === false ? 500 : 226;
+                $this->sendMessage(\sprintf('%s - %s - %s - %s', \strtoupper($Protocol), $URI, $this->MostRecentStatusCode, (\floor($Time * 100) / 100) . 's'));
             }
 
             /** Close the cURL session (PHP < 8). */
@@ -403,6 +416,44 @@ class Request extends CommonAbstract
             }
 
             /** Return the results of the FTP/S request. */
+            return \is_string($Response) ? $Response : '';
+        }
+
+        if ($Protocol === 'sftp' || $Protocol === 'tftp') {
+            if ($Protocol === 'sftp') {
+                \curl_setopt($Request, \CURLOPT_PROTOCOLS, \CURLPROTO_SFTP);
+                $DefaultSuccess = 0;
+            } else {
+                $DefaultSuccess = 226;
+            }
+
+            /** Execute and get the response. */
+            $Time = \microtime(true);
+            $Response = \curl_exec($Request);
+            $Time = \microtime(true) - $Time;
+
+            if (\is_string($Response)) {
+                $this->MostRecentStatusCode = $DefaultSuccess;
+                $this->sendMessage(\sprintf('%s - %s - %s - %s', \strtoupper($Protocol), $URI, $this->MostRecentStatusCode, (\floor($Time * 100) / 100) . 's'));
+            } else {
+                $this->MostRecentStatusCode = \curl_errno();
+                $this->sendMessage(\sprintf('%s - %s - %s - %s', \strtoupper($Protocol), $URI, $this->MostRecentStatusCode, (\floor($Time * 100) / 100) . 's'));
+
+                /** Request failed. Try again using an alternative address. */
+                if ($this->MostRecentStatusCode > 0 && isset($AlternateURI) && $Depth < 3) {
+                    if (\PHP_VERSION_ID < 80000) {
+                        \curl_close($Request);
+                    }
+                    return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
+                }
+            }
+
+            /** Close the cURL session (PHP < 8). */
+            if (\PHP_VERSION_ID < 80000) {
+                \curl_close($Request);
+            }
+
+            /** Return the results of the request. */
             return $Response;
         }
 
@@ -416,7 +467,7 @@ class Request extends CommonAbstract
             \curl_setopt($Request, \CURLOPT_POSTFIELDS, $Params);
             $Post = true;
         }
-        if ($IsHTTPS) {
+        if ($Protocol === 'https') {
             \curl_setopt($Request, \CURLOPT_PROTOCOLS, \CURLPROTO_HTTPS);
             \curl_setopt($Request, \CURLOPT_SSL_VERIFYPEER, (
                 isset($Overrides['CURLOPT_SSL_VERIFYPEER']) ? !empty($Overrides['CURLOPT_SSL_VERIFYPEER']) : false
@@ -450,8 +501,8 @@ class Request extends CommonAbstract
         $Time = \microtime(true) - $Time;
 
         if (($Info = \curl_getinfo($Request)) && \is_array($Info) && isset($Info['http_code'])) {
-            $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, $Info['http_code'], (\floor($Time * 100) / 100) . 's'));
             $this->MostRecentStatusCode = $Info['http_code'];
+            $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, $Info['http_code'], (\floor($Time * 100) / 100) . 's'));
 
             /** Request failed. Try again using an alternative address. */
             if ($Info['http_code'] >= 400 && isset($AlternateURI) && $Depth < 3) {
@@ -461,8 +512,8 @@ class Request extends CommonAbstract
                 return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
             }
         } else {
-            $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, 200, (\floor($Time * 100) / 100) . 's'));
-            $this->MostRecentStatusCode = 200;
+            $this->MostRecentStatusCode = $Response === false ? 400 : 200;
+            $this->sendMessage(\sprintf('%s - %s - %s - %s', $DebugMethod, $URI, $this->MostRecentStatusCode, (\floor($Time * 100) / 100) . 's'));
         }
 
         /** Close the cURL session (PHP < 8). */
@@ -471,7 +522,7 @@ class Request extends CommonAbstract
         }
 
         /** Return the results of the HTTP/S request. */
-        return $Response;
+        return \is_string($Response) ? $Response : '';
     }
 
     /**

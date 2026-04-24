@@ -19,6 +19,7 @@
 - [MostRecentStatusCode property.](#mostrecentstatuscode-property)
 - [TryUsing property.](#tryusing-property)
 - [DF property.](#df-property)
+- [Supported property.](#supported-property)
 - [STREAM_BLOCKSIZE constant.](#stream_blocksize-constantproperty)
 - [request method.](#request-method)
 - [inCsv method.](#incsv-method)
@@ -157,6 +158,30 @@ A private property populated during instantiation, used internally to check whet
 ```PHP
 private $DF = [];
 ```
+
+#### Supported property.
+
+A private property populated during instantiation, used internally to check the protocol specified for any given request against which protocols supported by the class.
+
+```PHP
+private $Supported = [1 => [], 2 => ['ftp' => 1, 'ftps' => 1, 'http' => 1, 'https' => 1]];
+```
+
+Explicitly supported when using curl (when `$this->TryUsing` is set to `1`):
+- FTP
+- FTPS
+- HTTP
+- HTTPS
+- SFTP
+- TFTP
+
+Others *potentially may* work if your curl installation is configured accordingly, but as the class hasn't been coded specifically with others in mind, aren't guaranteed to work, and most likely won't.
+
+Supported when using `fopen` with `stream_context_create` (when `$this->TryUsing` is set to `2`):
+- FTP
+- FTPS
+- HTTP
+- HTTPS
 
 #### STREAM_BLOCKSIZE constant.
 

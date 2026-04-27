@@ -50,7 +50,7 @@ When tagging a new release, the "tag version" MUST be formatted as "vM.m.p" (whe
 
 ### **The common classes package documentation guidelines.**
 
-All formal documentation for the common classes package can be found in the `_docs` directory of the repository. Each major version branch contains its own documentation (to keep everything nicely bundled together in the same package, and in case any significant differences emerge between different major versions).
+All formal documentation for the common classes package can be found in the `docs` directory of the repository. Each major version branch contains its own documentation (to keep everything nicely bundled together in the same package, and in case any significant differences emerge between different major versions).
 
 ### **When sending pull requests, which branch should I target?**
 
@@ -59,4 +59,4 @@ Branches are named according to major version. Therefore, if you want to affect 
 ---
 
 
-Last Updated: 9 May 2019 (2019.05.09).
+Last Updated: 27 April 2026 (2026.04.27).

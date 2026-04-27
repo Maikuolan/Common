@@ -161,7 +161,7 @@ private $DF = [];
 
 #### Supported property.
 
-A private property populated during instantiation, used internally to check the protocol specified for any given request against which protocols supported by the class.
+A private property populated during instantiation, used internally to check the protocol specified for any given request against which protocols are supported by the class.
 
 ```PHP
 private $Supported = [1 => [], 2 => ['ftp' => 1, 'ftps' => 1, 'http' => 1, 'https' => 1]];

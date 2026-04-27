@@ -14,7 +14,7 @@
 
 /.github export-ignore
 /.tests export-ignore
-/_docs export-ignore
+/docs export-ignore
 /.gitattributes export-ignore
 /SECURITY.md export-ignore
 /tests.php export-ignore

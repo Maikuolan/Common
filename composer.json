@@ -6,7 +6,7 @@
     "support": {
         "issues": "https://github.com/Maikuolan/Common/issues",
         "source": "https://github.com/Maikuolan/Common",
-        "docs": "https://github.com/Maikuolan/Common/tree/v2/_docs",
+        "docs": "https://github.com/Maikuolan/Common/tree/v2/docs",
         "rss": "https://github.com/Maikuolan/Common/releases.atom"
     },
     "require": {

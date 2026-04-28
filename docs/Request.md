@@ -17,7 +17,9 @@
 - [ProxyAuth property.](#proxyauth-property)
 - [UserAgent property.](#useragent-property)
 - [MostRecentStatusCode property.](#mostrecentstatuscode-property)
-- [TryUsing property.](#tryusing-property)
+- [AllowCurl property.](#allowcurl-property)
+- [AllowFOpenWStream property.](#allowfopenwstream-property)
+- [AllowFSockOpenWStream property.](#allowfsockopenwstream-property)
 - [DF property.](#df-property)
 - [Supported property.](#supported-property)
 - [STREAM_BLOCKSIZE constant.](#stream_blocksize-constantproperty)
@@ -141,14 +143,28 @@ Whenever a request is successfully performed, the status code returned by that r
 public $MostRecentStatusCode = 0;
 ```
 
-#### TryUsing property.
+#### AllowCurl property.
 
-Automatically set to a recommended value during instantiation based on the functionality available, but can be manually set by the implementation if so desired.
-
-When set to `1` (the default and preferred value), the request method will use curl to send requests. When set to `2` (intended for when curl isn't available at the implementation, e.g., if the curl PHP extension isn't enabled), the request method will use `fopen` with `stream_context_create` to send requests (i.e., as an HTTP/S wrapper/handler). When set to `0` (i.e., when neither curl nor the ability to use `fopen` with `stream_context_create` to send requests is available, e.g., because those functions are disabled, `open_basedir` is populated, and/or `allow_url_fopen` is set to `Off`), the request method will exit immediately upon being called/invoked, returning an empty string and not attempting to send the request. Setting any other value, for now, will have the same effect as setting to `1`, but shouldn't be relied upon in case those other values end up being used for additional functionality added to the class in the future (although such additional functionality isn't planned at this time).
+Whether to allow using curl for sending requests. Automatically set during instantiation based on the functionality available, but can be manually set by the implementation if so desired.
 
 ```PHP
-public $TryUsing = 1;
+public $AllowCurl = false;
+```
+
+#### AllowFOpenWStream property.
+
+Whether to allow using fopen with streams for sending requests. Automatically set during instantiation based on the functionality available, but can be manually set by the implementation if so desired.
+
+```PHP
+public $AllowFOpenWStream = false;
+```
+
+#### AllowFSockOpenWStream property.
+
+Whether to allow using fsockopen with streams for sending requests. Automatically set during instantiation based on the functionality available, but can be manually set by the implementation if so desired.
+
+```PHP
+public $AllowFSockOpenWStream = false;
 ```
 
 #### DF property.
@@ -164,24 +180,27 @@ private $DF = [];
 A private property populated during instantiation, used internally to check the protocol specified for any given request against which protocols are supported by the class.
 
 ```PHP
-private $Supported = [1 => [], 2 => ['ftp' => 1, 'ftps' => 1, 'http' => 1, 'https' => 1]];
+private $Supported = [1 => [], 2 => ['ftp' => 1, 'ftps' => 1, 'http' => 1, 'https' => 1], 3 => ['tcp' => 1, 'udp' => 1]];
 ```
 
-Explicitly supported when using curl (when `$this->TryUsing` is set to `1`):
+Supported when using curl (others *potentially* may also work if your curl installation is configured accordingly, but as the class hasn't been coded specifically with others in mind, such isn't guaranteed):
 - FTP
 - FTPS
+- GOPHER
 - HTTP
 - HTTPS
 - SFTP
 - TFTP
 
-Others *potentially may* work if your curl installation is configured accordingly, but as the class hasn't been coded specifically with others in mind, aren't guaranteed to work, and most likely won't.
-
-Supported when using `fopen` with `stream_context_create` (when `$this->TryUsing` is set to `2`):
+Supported when using `fopen` with streams:
 - FTP
 - FTPS
 - HTTP
 - HTTPS
+
+Supported when using `fsockopen` with streams:
+- TCP
+- UDP
 
 #### STREAM_BLOCKSIZE constant.
 
@@ -196,26 +215,32 @@ private const STREAM_BLOCKSIZE = 131072;
 The main request method (this is what you'll want to use to actually perform a request).
 
 ```PHP
-public function request(string $URI, $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0, string $Method = ''): string;
+public function request(string $URI, array $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0, string $Method = ''): string;
 ```
 
-The first parameter (`$URI`) is the URL, URI, resource, etc that you want to request.
+The first parameter (`$URI`) is the URL or URI of the resource that you want to request.
 
-The second parameter (`$Params`) is an optional, associative array of key-value pairs for any post fields you may want to send along with your request.
+When sending an HTTP/S request, the second parameter (`$Params`) is an optional, associative array of key-value pairs for any POST fields you may want to send along with your request.
 
-When sending an HTTP/S request: If empty or omitted, `CURLOPT_POST` is `false`. Otherwise, `CURLOPT_POST` is true. The post fields will be populated to `CURLOPT_POSTFIELDS`.
+- When using curl: If provided and not empty, `CURLOPT_POST` will be `true`, and the POST fields will be populated to `CURLOPT_POSTFIELDS`. Otherwise, `CURLOPT_POST` will be `false`. 
+- When using `fopen` with streams: If provided and not empty, the POST fields will be populated to the stream context.
 
-When sending an FTP/S request: If sending the request to a server requiring a username and password, include an element with the key `USERPWD`, the value containing the required username and password as `Username:Password`. That element will be populated to `CURLOPT_USERPWD`.
+When sending an FTP/S request, if sending the request to a server requiring a username and password, include an element with the key `USERPWD`, the value containing the required username and password as `Username:Password`.
+
+- When using curl: `USERPWD` (if provided) will be populated to `CURLOPT_USERPWD`.
+- When using `fopen` with streams: `USERPWD` (if provided) will be infixed to the value from `$URI` when supplied to the resource handle (e.g., if `USERPWD` is `admin:password`, a `$URI` of `ftps://example.tld:21/foobar.txt` would see `ftps://admin:password@example.tld:21/foobar.txt` be supplied to the resource handle). This won't have any effect on data written to `ObjLogger` or `stdout` by the `sendMessage` method, as the `request` method supplies to it the provided `$URI` value verbatim, sans infix. However, the infix *could* potentially appear in logs at the server hosting the resource, and so could potentially be less secure than when using curl in some cases.
+
+When sending a TCP or UDP request (i.e., when using `fsockopen` with streams), the port number can be specified by including an element with the key `Port` and the value containing the port number, and the message to send can be specified by including an element with the key `Message` and the value containing the message to send.
 
 The third parameter (`$Timeout`) is an optional timeout limit for the request. When omitted, `DefaultTimeout` is used instead.
 
-The fourth parameter (`$Headers`) is an optional array of headers to send with the request.
+The fourth parameter (`$Headers`) is an optional array of headers to send with the request. Only relevant when sending HTTP/S requests and should generally be omitted otherwise.
 
 The fifth parameter (`$Depth`) represents the recursion depth of the current request instance, is populated automatically by `request`, and shouldn't be populated manually by the implementation (other than when needing access to the sixth parameter).
 
 The sixth parameter (`$Method`) can be used to specify the intended request method in the event that the method intended isn't GET or POST. When the intended request method is GET or POST, it shouldn't be populated manually by the implementation (the method will determine automatically whether GET or POST is needed, based on factors like request parameters). This can be useful when methods such as CONNECT or DELETE are needed.
 
-The method returns a string (the response to the request if successful, or an empty string on failure).
+The method returns a string (the response to the request upon success, or an empty string upon failure).
 
 The class also implements the magic method `__invoke`, as a way to alias back to `request` when the instance is utilised as a callable or function.
 
@@ -250,4 +275,4 @@ private function getCertPath(): string;
 ---
 
 
-Last Updated: 24 April 2026 (2026.04.24).
+Last Updated: 28 April 2026 (2026.04.28).

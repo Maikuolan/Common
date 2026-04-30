@@ -36,6 +36,8 @@ PATCH RELEASE.
   handler (i.e., for whether to use curl versus whether to use fopen/fsockopen
   with streams and so on).
 
+- [2026.04.30]: Added support for FILE requests to the request handler.
+
 === Version/Release 2.16.0 ===
 MINOR RELEASE.
 

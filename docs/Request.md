@@ -22,11 +22,13 @@
 - [AllowFSockOpenWStream property.](#allowfsockopenwstream-property)
 - [DF property.](#df-property)
 - [Supported property.](#supported-property)
+- [Time property.](#time-property)
 - [STREAM_BLOCKSIZE constant.](#stream_blocksize-constantproperty)
 - [request method.](#request-method)
 - [inCsv method.](#incsv-method)
 - [sendMessage method.](#sendmessage-method)
 - [getCertPath method.](#getcertpath-method)
+- [timer method.](#timer-method)
 
 #### DefaultTimeout property.
 
@@ -202,6 +204,17 @@ Supported when using `fsockopen` with streams:
 - TCP
 - UDP
 
+Additionally supported:
+- FILE (processed using `file_get_contents`)
+
+#### Time property.
+
+Used by the `timer` method.
+
+```PHP
+private $Time = 0.0;
+```
+
 #### STREAM_BLOCKSIZE constant.
 
 A private constant representing how many bytes to read at a time when reading the response to a request sent using `fopen` with `stream_context_create`.
@@ -270,6 +283,14 @@ A private method used internally to fetch the path to the system's certificate f
 
 ```PHP
 private function getCertPath(): string;
+```
+
+#### timer method.
+
+Starts or stops the timer for message logging.
+
+```PHP
+private function timer(bool $OnOff = true): string;
 ```
 
 ---

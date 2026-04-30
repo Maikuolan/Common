@@ -228,7 +228,7 @@ private const STREAM_BLOCKSIZE = 131072;
 The main request method (this is what you'll want to use to actually perform a request).
 
 ```PHP
-public function request(string $URI, array $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0, string $Method = ''): string;
+public function request(string $URI, array $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0, string $Method = '', int $MaxSegments = -1): string;
 ```
 
 The first parameter (`$URI`) is the URL or URI of the resource that you want to request.
@@ -252,6 +252,8 @@ The fourth parameter (`$Headers`) is an optional array of headers to send with t
 The fifth parameter (`$Depth`) represents the recursion depth of the current request instance, is populated automatically by `request`, and shouldn't be populated manually by the implementation (other than when needing access to the sixth parameter).
 
 The sixth parameter (`$Method`) can be used to specify the intended request method in the event that the method intended isn't GET or POST. When the intended request method is GET or POST, it shouldn't be populated manually by the implementation (the method will determine automatically whether GET or POST is needed, based on factors like request parameters). This can be useful when methods such as CONNECT or DELETE are needed.
+
+The seventh parameter (`$MaxSegments`) can be used to specify the maximum number of segments to receive (this can sometimes be useful to prevent timeouts for things like DNS lookups, but only very rarely is actually needed).
 
 The method returns a string (the response to the request upon success, or an empty string upon failure).
 

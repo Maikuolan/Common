@@ -195,9 +195,11 @@ class Request extends CommonAbstract
      * @param array $Headers An optional array of headers to send with the request.
      * @param int $Depth Recursion depth of the current closure instance.
      * @param string $Method The request method to use (if not GET or POST).
+     * @param int $MaxSegments The maximum number of segments to receive (can
+     *  sometimes be useful to prevent timeouts for things like DNS lookups).
      * @return string The results of the request, or an empty string upon failure.
      */
-    public function request(string $URI, array $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0, string $Method = ''): string
+    public function request(string $URI, array $Params = [], int $Timeout = -1, array $Headers = [], int $Depth = 0, string $Method = '', int $MaxSegments = -1): string
     {
         /** Option overrides (currently used only for manually overriding CURLOPT_SSL_VERIFYPEER). **/
         $Overrides = [];
@@ -226,7 +228,7 @@ class Request extends CommonAbstract
             }
             if ($this->inCsv($TriggerName, $this->Disabled)) {
                 if (isset($AlternateURI)) {
-                    return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth, $Method);
+                    return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth, $Method, $MaxSegments);
                 }
                 return '';
             }
@@ -301,7 +303,7 @@ class Request extends CommonAbstract
                         if (\PHP_VERSION_ID < 80000) {
                             \curl_close($Request);
                         }
-                        return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
+                        return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method, $MaxSegments);
                     }
                 } else {
                     $this->MostRecentStatusCode = $Response === false ? 500 : 226;
@@ -343,7 +345,7 @@ class Request extends CommonAbstract
                         if (\PHP_VERSION_ID < 80000) {
                             \curl_close($Request);
                         }
-                        return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
+                        return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method, $MaxSegments);
                     }
                 }
 
@@ -406,7 +408,7 @@ class Request extends CommonAbstract
                     if (\PHP_VERSION_ID < 80000) {
                         \curl_close($Request);
                     }
-                    return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
+                    return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method, $MaxSegments);
                 }
             } else {
                 $this->MostRecentStatusCode = $Response === false ? 400 : 200;
@@ -454,7 +456,9 @@ class Request extends CommonAbstract
 
                 /** Content of the request response. */
                 $Response = '';
-                while (!\feof($Handle)) {
+                $Iter = 0;
+                while (!\feof($Handle) && ($MaxSegments < 0 || $Iter < $MaxSegments)) {
+                    $Iter++;
                     $Segment = \fread($Handle, self::STREAM_BLOCKSIZE);
                     if ($Segment === '' || $Segment === false) {
                         break;
@@ -528,7 +532,9 @@ class Request extends CommonAbstract
 
                 /** Content of the request response. */
                 $Response = '';
-                while (!\feof($Handle)) {
+                $Iter = 0;
+                while (!\feof($Handle) && ($MaxSegments < 0 || $Iter < $MaxSegments)) {
+                    $Iter++;
                     $Segment = \fread($Handle, self::STREAM_BLOCKSIZE);
                     if ($Segment === '' || $Segment === false) {
                         break;
@@ -550,7 +556,7 @@ class Request extends CommonAbstract
 
                     /** Request failed. Try again using an alternative address. */
                     if ($Code >= 400 && isset($AlternateURI) && $Depth < 3) {
-                        return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method);
+                        return $this($AlternateURI, $Params, $Timeout, $Headers, $Depth + 1, $Method, $MaxSegments);
                     }
                 } else {
                     $this->sendMessage(\sprintf('%s - %s - %s - %s', $MethodToUse, $URI, 200, $this->timer(false)));
@@ -580,7 +586,9 @@ class Request extends CommonAbstract
             \stream_set_timeout($Handle, $Timeout > 0 ? $Timeout : $this->DefaultTimeout);
             \stream_set_blocking($Handle, true);
             $Response = '';
-            while (!\feof($Handle)) {
+            $Iter = 0;
+            while (!\feof($Handle) && ($MaxSegments < 0 || $Iter < $MaxSegments)) {
+                $Iter++;
                 $Segment = \fread($Handle, self::STREAM_BLOCKSIZE);
                 if ($Segment === '' || $Segment === false) {
                     break;

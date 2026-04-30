@@ -177,10 +177,10 @@ private $DF = [];
 
 #### Supported property.
 
-A private property populated during instantiation, used internally to check the protocol specified for any given request against which protocols are supported by the class.
+A private property populated during instantiation, used internally to check the protocol or socket transport specified for any given request against which protocols and socket transports are supported by the class.
 
 ```PHP
-private $Supported = [1 => [], 2 => ['ftp' => 1, 'ftps' => 1, 'http' => 1, 'https' => 1], 3 => ['tcp' => 1, 'udp' => 1]];
+private $Supported = [1 => [], 2 => ['FTP' => 1, 'FTPS' => 1, 'HTTP' => 1, 'HTTPS' => 1], 3 => ['TCP' => 1, 'UDP' => 1]];
 ```
 
 Supported when using curl (others *potentially* may also work if your curl installation is configured accordingly, but as the class hasn't been coded specifically with others in mind, such isn't guaranteed):
@@ -275,4 +275,4 @@ private function getCertPath(): string;
 ---
 
 
-Last Updated: 28 April 2026 (2026.04.28).
+Last Updated: 30 April 2026 (2026.04.30).

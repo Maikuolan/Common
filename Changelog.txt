@@ -33,7 +33,7 @@ PATCH RELEASE.
 - [2026.04.28]: Added support for TCP and UDP requests to the request handler.
   Added partial support for GOPHER requests to the request handler. Rewrote the
   code for determining and handling available functionality at the request
-  handler (i.e., for whether to use curl versus whether to open fopen/fsockopen
+  handler (i.e., for whether to use curl versus whether to use fopen/fsockopen
   with streams and so on).
 
 === Version/Release 2.16.0 ===

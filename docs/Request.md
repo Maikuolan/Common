@@ -1,6 +1,6 @@
 ### Documentation for the request handler.
 
-*Used by CIDRAM and phpMussel to send outbound requests through cURL.*
+*Used by CIDRAM and phpMussel to send outbound requests.*
 
 ---
 
@@ -17,22 +17,25 @@ $Request->DefaultTimeout = 30;
 // Sets a custom user agent.
 $Request->UserAgent = 'A custom user agent for my app or project';
 
-// Sends an HTTP POST request to a website with some arbitrary POST fields, using the timeout, user agent, etc that we set before. Response is saved to $Var.
+// Sends an HTTP POST request to a website with some arbitrary POST fields, using the timeout, user agent, etc that we
+// set before. Response is saved to $Var.
 $Var = $Request->request('https://example.com/', ['foo' => 'bar', 'foz' => 'baz']);
 
 // Sends the same HTTP POST request but with a custom timeout of 5 seconds. Response is saved to $Var.
 $Var = $Request->request('https://example.com/', ['foo' => 'bar', 'foz' => 'baz'], 5);
 
-// Sends the same HTTP POST request but with a custom timeout of 5 seconds and a custom X-PoweredBy header. Response is saved to $Var.
+// Sends the same HTTP POST request but with a custom timeout of 5 seconds and a custom X-PoweredBy header.
+// Response is saved to $Var.
 $Var = $Request->request('https://example.com/', ['foo' => 'bar', 'foz' => 'baz'], 5, ['X-PoweredBy' => 'My cool app']);
 
 // Sends an HTTP GET request to a website. Response is saved to $Var.
 $Var = $Request->request('https://example.com/');
 
 // Sends the same HTTP GET request but with a custom timeout of 10 seconds. Response is saved to $Var.
-$Var = $Request->request('https://example.com/', [], 3);
+$Var = $Request->request('https://example.com/', [], 10);
 
-// Sends the same HTTP GET request but with a custom X-PoweredBy header and no custom timeout (just using the instance's default timeout we set earlier). Response is saved to $Var.
+// Sends the same HTTP GET request but with a custom X-PoweredBy header and no custom timeout (just using the
+// instance's default timeout we set earlier). Response is saved to $Var.
 $Var = $Request->request('https://example.com/', [], -1, ['X-PoweredBy' => 'My cool app']);
 
 // What was the HTTP status code of that very last request? Let's find out.

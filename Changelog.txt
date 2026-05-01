@@ -40,6 +40,9 @@ PATCH RELEASE.
   new parameter to the request method of the request handler to limit the
   number of segments to receive.
 
+Caleb M (Maikuolan),
+1 May, 2026.
+
 === Version/Release 2.16.0 ===
 MINOR RELEASE.
 

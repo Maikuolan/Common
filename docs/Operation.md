@@ -1,11 +1,11 @@
-### Documentation for the "Operation" class.
+### Documentation for the operation handler.
 
 *Used by CIDRAM and phpMussel for various operations related to dependency management (an integral part of the internal updates system).*
 
 ---
 
 
-### How to use:
+### Class properties and methods:
 
 - [Cache property.](#cache-property)
 - [opVersions method.](#opversions-method)
@@ -406,4 +406,4 @@ public function operateInner(string $Part);
 ---
 
 
-Last Updated: 5 August 2025 (2025.08.05).
+Last Updated: 1 May 2026 (2026.05.01).

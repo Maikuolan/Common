@@ -5,7 +5,7 @@
 ---
 
 
-### Contents:
+### Class methods:
 
 - [dataTraverse method.](#datatraverse-method)
 - [__debugInfo method.](#__debuginfo-method)
@@ -76,4 +76,4 @@ public function __debugInfo(): array;
 ---
 
 
-Last Updated: 2 July 2025 (2025.07.02).
+Last Updated: 1 May 2026 (2026.05.01).

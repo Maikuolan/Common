@@ -1,4 +1,4 @@
-### Documentation for the "Cache" class.
+### Documentation for the cache handler.
 
 *A simple, unified cache handler used by CIDRAM and phpMussel for their caching needs. Currently, it supports APCu, Memcached, Redis, PDO, and flatfile caching.*
 
@@ -364,4 +364,4 @@ Returns the number of cache entries attached to the current instance.
 ---
 
 
-Last Updated: 12 March 2026 (2026.03.12).
+Last Updated: 1 May 2026 (2026.05.01).

@@ -1,11 +1,11 @@
-### Documentation for the "ComplexStringHandler" class.
+### Documentation for the complex string handler.
 
 *The complex string handler class provides an easy way to iterate over the parts of a given string, identified by a given pattern, in order to execute a given closure to those parts of the given string, or to the glue that separates those parts.*
 
 ---
 
 
-### How to use:
+### Class properties, constants, and methods:
 
 - [ComplexStringHandler constructor.](#complexstringhandler-constructor)
 - [generateMarkers method.](#generatemarkers-method)
@@ -149,4 +149,4 @@ foreach ($Object as $Value) {
 ---
 
 
-Last Updated: 30 December 2025 (2025.12.30).
+Last Updated: 1 May 2026 (2026.05.01).

@@ -1,4 +1,4 @@
-### Documentation for the "Events" class.
+### Documentation for the event orchestrator.
 
 *Allows the orchestration of "events" throughout a codebase by providing some simple methods to assign handlers to a particular event and to subsequently invoke those handlers at a later point in the codebase where the "event" is to occur.*
 
@@ -14,7 +14,7 @@ The class is utilised by CIDRAM and phpMussel to provide a means by which users 
 ---
 
 
-### How to use:
+### Class methods:
 
 - [addHandler method.](#addhandler-method)
 - [addHandlerFinal method.](#addhandlerfinal-method)
@@ -119,4 +119,4 @@ $Events->fireEvent('aHypotheticalEvent');
 ---
 
 
-Last Updated: 24 December 2025 (2025.12.24).
+Last Updated: 1 May 2026 (2026.05.01).

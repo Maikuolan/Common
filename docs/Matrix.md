@@ -5,7 +5,7 @@
 ---
 
 
-### How to use:
+### Class properties and methods:
 
 - [Matrix property.](#matrix-property)
 - [Dimensions property.](#dimensions-property)
@@ -187,4 +187,4 @@ You may also notice that, despite having a magnitude of three, for the coordinat
 ---
 
 
-Last Updated: 2 July 2025 (2025.07.02).
+Last Updated: 1 May 2026 (2026.05.01).

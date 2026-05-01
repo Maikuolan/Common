@@ -1,4 +1,4 @@
-### Documentation for the "YAML" class (a.k.a., the "YAML handler").
+### Documentation for the YAML handler.
 
 *Used by the CIDRAM and phpMussel projects to handle YAML data.*
 
@@ -844,4 +844,4 @@ If you want, you can also restrict tags to values only, to prevent those tags fr
 ---
 
 
-Last Updated: 17 March 2026 (2026.03.17).
+Last Updated: 1 May 2026 (2026.05.01).

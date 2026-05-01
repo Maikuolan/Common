@@ -1,11 +1,56 @@
-### Documentation for the "Request" class.
+### Documentation for the request handler.
 
 *Used by CIDRAM and phpMussel to send outbound requests through cURL.*
 
 ---
 
 
-### How to use:
+### Some simple examples.
+
+```PHP
+// Creates a new request handler instance.
+$Request = new \Maikuolan\Common\Request();
+
+// Sets the instance's default request timeout to 30 seconds (the class's default timeout is 12 seconds).
+$Request->DefaultTimeout = 30;
+
+// Sets a custom user agent.
+$Request->UserAgent = 'A custom user agent for my app or project';
+
+// Sends an HTTP POST request to a website with some arbitrary POST fields, using the timeout, user agent, etc that we set before. Response is saved to $Var.
+$Var = $Request->request('https://example.com/', ['foo' => 'bar', 'foz' => 'baz']);
+
+// Sends the same HTTP POST request but with a custom timeout of 5 seconds. Response is saved to $Var.
+$Var = $Request->request('https://example.com/', ['foo' => 'bar', 'foz' => 'baz'], 5);
+
+// Sends the same HTTP POST request but with a custom timeout of 5 seconds and a custom X-PoweredBy header. Response is saved to $Var.
+$Var = $Request->request('https://example.com/', ['foo' => 'bar', 'foz' => 'baz'], 5, ['X-PoweredBy' => 'My cool app']);
+
+// Sends an HTTP GET request to a website. Response is saved to $Var.
+$Var = $Request->request('https://example.com/');
+
+// Sends the same HTTP GET request but with a custom timeout of 10 seconds. Response is saved to $Var.
+$Var = $Request->request('https://example.com/', [], 3);
+
+// Sends the same HTTP GET request but with a custom X-PoweredBy header and no custom timeout (just using the instance's default timeout we set earlier). Response is saved to $Var.
+$Var = $Request->request('https://example.com/', [], -1, ['X-PoweredBy' => 'My cool app']);
+
+// What was the HTTP status code of that very last request? Let's find out.
+$Code = $Request->MostRecentStatusCode;
+
+// What if I need to request something from an FTP server? We can do that, too.
+$Var = $Request->request('ftp://example.com/some-file.txt');
+
+// What if that FTP server needs a username and password? We can supply that if needed.
+$Var = $Request->request('ftp://example.com/some-file.txt', ['USERPWD' => 'some-username:some-password']);
+```
+
+The request handler can handle plenty of other kinds of requests and situations where requests are needed, too, but those examples should be enough to convey the general idea.
+
+---
+
+
+### Class properties, constants, and methods:
 
 - [DefaultTimeout property.](#defaulttimeout-property)
 - [Channels property.](#channels-property)
@@ -298,4 +343,4 @@ private function timer(bool $OnOff = true): string;
 ---
 
 
-Last Updated: 30 April 2026 (2026.04.30).
+Last Updated: 1 May 2026 (2026.05.01).

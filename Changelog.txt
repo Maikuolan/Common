@@ -13,6 +13,14 @@ found at:
 
 - [2026.11.08]: Added PHP 8.6 to workflows.
 
+- [2026.11.09; Security]: The request handler disabled TLS certificate
+  verification by default for HTTPS and FTPS requests (both via curl and via
+  the streams fallback), allowing anyone able to intercept a request to present
+  a self-signed certificate and read or modify the data exchanged. Certificate
+  verification is now enabled by default; it can still be disabled for specific
+  channels via the CURLOPT_SSL_VERIFYPEER override (e.g., at hosts without any
+  CA bundle available).
+
 === Version/Release 2.16.1 ===
 PATCH RELEASE.
 

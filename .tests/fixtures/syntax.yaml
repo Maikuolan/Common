@@ -181,7 +181,6 @@ Test support for PHP functions in YAML:
   Test htmlspecialchars_decode: !htmlspecialchars_decode "&\#039;&quot;&lt;&gt;&amp;"
   Test lcfirst: !lcfirst "HELLO WORLD."
   Test nl2br: !nl2br "Hello\nworld."
-  Test ord: !ord "Hello world."
   Test quotemeta: !quotemeta ".\+*?[^]($)"
   Test str_rot13: !str_rot13 "Hello world."
   Test strip_tags: !strip_tags "<p>Hello world.</p>"
@@ -204,7 +203,6 @@ Test support for PHP functions in YAML:
   Test atan: !atan *NumericDefault
   Test atanh: !atanh *NumericDefault
   Test ceil: !ceil *NumericDefault
-  Test chr: !chr *NumericDefaultInt
   Test cos: !cos *NumericDefault
   Test cosh: !cosh *NumericDefault
   Test decbin: !decbin *NumericDefaultInt

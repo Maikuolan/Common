@@ -26,7 +26,7 @@ In cases where reporting to the issues page or to publicly accessible channels w
 
 ### TLS certificate verification vulnerability.
 - **Description:** The request handler disabled TLS certificate verification by default for HTTPS and FTPS requests (both via curl and via the streams fallback), allowing anyone able to intercept a request to present a self-signed certificate and read or modify the data exchanged. Certificate verification is now enabled by default; it can still be disabled for specific channels via the CURLOPT_SSL_VERIFYPEER override (e.g., at hosts without any CA bundle available).
-- **GitHub Security Advisory:** [GHSA-qmgw-f4f6-3x6j](https://github.com/phpMussel/phpMussel/security/advisories/GHSA-qmgw-f4f6-3x6j)
+- **GitHub Security Advisory:** [GHSA-qmgw-f4f6-3x6j](https://github.com/Maikuolan/Common/security/advisories/GHSA-qmgw-f4f6-3x6j)
 - **CVE:** *Pending.*
 - **Affected versions:** Common Classes Package &lt;= 2.16.1
 - **Solution:** Update Common Classes Package to v2.16.2 or later. Alternatively, if updating isn't possible, the implementation could set an override to specify `CURLOPT_SSL_VERIFYPEER` as `true`. Note that this vulnerability affects only the request handler (implementations which implement the package to make use of classes other than request handler but not the request handler itself aren't at risk, though updating is still recommended regardless).

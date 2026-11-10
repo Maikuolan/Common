@@ -1,6 +1,6 @@
 <?php
 /**
- * Request handler (last modified: 2026.04.30).
+ * Request handler (last modified: 2026.11.09).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.

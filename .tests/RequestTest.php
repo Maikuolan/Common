@@ -1,6 +1,6 @@
 <?php
 /**
- * Events orchestrator IO tests file.
+ * Request handler tests file.
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.

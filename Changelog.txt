@@ -9,9 +9,16 @@ Detailed version release guidelines for the common classes package can be
 found at:
 - https://github.com/Maikuolan/Common/blob/v1/CONTRIBUTING.md#the-common-classes-package-code-style-guidelines
 
-=== Changes made since last versioned release ===
+=== In development ===
 
-(none)
+- [2026.11.10]: Added PHP 8.6 to workflows.
+
+- [2026.11.10]: Synced the v1 codebase with the copy of the Common Classes
+  Package used by CIDRAM v1 in order to reduce the development drift between v1
+  and v2 which has accrued since the time I'd formally marked Common Classes
+  Package v1 as EoL/dead. This is a necessary step in preparing for an
+  impending security patch to be applied to v1 in order to keep it secure for
+  the benefit of those actively maintained packages which still use it.
 
 === Version/Release 1.11.0 ===
 MINOR RELEASE.

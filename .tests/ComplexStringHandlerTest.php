@@ -36,15 +36,15 @@ if ('(ab) "1" (cd) "2" (ef) "3" (gh) "4" (ij) "5" (kl) "6" (mn) "7" (op) "8" (qr
 
 $ExitCode++;
 
-if (count($ComplexStringHandler) !== 12) {
+if (count($ComplexStringHandler->Working) !== 12) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }
 
 $ExitCode++;
 
-foreach ($ComplexStringHandler as $Key => $Value) {
-    $ComplexStringHandler[$Key] = preg_replace('~\d~', 'x', $Value);
+foreach ($ComplexStringHandler->Working as $Key => $Value) {
+    $ComplexStringHandler->Working[$Key] = preg_replace('~\d~', 'x', $Value);
 }
 if ('(ab) "x" (cd) "x" (ef) "x" (gh) "x" (ij) "x" (kl) "x" (mn) "x" (op) "x" (qr) "x" (st) "xx" (uv)' !== $ComplexStringHandler->recompile()) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;

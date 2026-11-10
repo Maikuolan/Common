@@ -25,7 +25,7 @@ class ComplexStringHandler
     /**
      * @var array The data to be worked upon by the class.
      */
-    private $Working = [];
+    public $Working = [];
 
     /**
      * @var array Markers and pattern matches defined by generateMarkers.

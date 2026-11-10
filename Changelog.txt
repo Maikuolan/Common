@@ -9,7 +9,8 @@ Detailed version release guidelines for the common classes package can be
 found at:
 - https://github.com/Maikuolan/Common/blob/v1/CONTRIBUTING.md#the-common-classes-package-code-style-guidelines
 
-=== In development ===
+=== Version/Release 1.11.1 ===
+PATCH RELEASE.
 
 - [2026.11.10]: Added PHP 8.6 to workflows.
 
@@ -30,6 +31,9 @@ found at:
 
 - [2026.11.10; Bug-fix]: YAML handler tests were calling chr() and ord() in a
   deprecated way; Fixed.
+
+Caleb M (Maikuolan),
+November 10, 2026.
 
 === Version/Release 1.11.0 ===
 MINOR RELEASE.

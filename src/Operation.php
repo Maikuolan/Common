@@ -231,7 +231,7 @@ class Operation
         if (\is_array($Data)) {
             return isset($Data[$Segment]) ? $this->dataTraverse($Data[$Segment], $Path, $AllowNonScalar) : '';
         }
-        if (\is_object($Data) && property_exists($Data, $Segment)) {
+        if (\is_object($Data) && \property_exists($Data, $Segment)) {
             return $this->dataTraverse($Data->$Segment, $Path, $AllowNonScalar);
         }
         if (\is_string($Data)) {

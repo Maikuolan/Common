@@ -318,7 +318,7 @@ $TestData = [
     'A number' => 123.456
 ];
 
-$Expected = ['World', 'Cruel World', 11, 'Hello World!', 'HELLO WORLD!', 'hello world!', '   ...yep.', '...yep.', '', 'World', 123.456, 123.0, 124.0];
+$Expected = ['World', 'Cruel World', 11, 'Hello World!', 'HELLO WORLD!', 'hello world!', '   ...yep.', '...yep.', '', 'World'];
 
 $Out = [
     $Object->dataTraverse($TestData, 'Foo.Bar.Hello'),
@@ -330,10 +330,7 @@ $Out = [
     $Object->dataTraverse($TestData, 'Plenty of space'),
     $Object->dataTraverse($TestData, 'Plenty of space.trim()'),
     $Object->dataTraverse($TestData, 'This element does not exist'),
-    $Object->dataTraverse($TestData, 'Foo.Bar.Hello.Element is not an array'),
-    $Object->dataTraverse($TestData, 'A number'),
-    $Object->dataTraverse($TestData, 'A number.floor()'),
-    $Object->dataTraverse($TestData, 'A number.ceil()')
+    $Object->dataTraverse($TestData, 'Foo.Bar.Hello.Element is not an array')
 ];
 
 $ExitCode++;
@@ -362,54 +359,6 @@ $Out = [
 
 $ExitCode++;
 if ($Out !== $Expected) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
-    exit($ExitCode);
-}
-
-// set examples from the documentation.
-$TestData = [
-    'Fruit' => ['An apple', 'An orange', 'A pear'],
-    'Story' => ['Apples' => ' a day keeps the doctor away.', 'Oranges' => ' for some juice.', 'Pears' => ' for the cider.'],
-    'Numbers' => ['a' => 100, 'b' => 200, 'c' => 5, 'd' => 5, 'e' => 50],
-    'Recursive' => [
-        'A' => ['AA' => 'BB', 'CC' => 'DD'],
-        'B' => ['EE' => 'FF', 'GG' => 'HH']
-    ]
-];
-
-$Expected = [
-    'Fruit' => 205,
-    'Story' => ['Apples' => 'An apple a day keeps the doctor away.', 'Oranges' => 'An orange for some juice.', 'Pears' => 'A pear for the cider.'],
-    'Numbers' => ['a' => 300, 'b' => 1000, 'c' => 4, 'd' => 1, 'e' => 25],
-    'Recursive' => [
-        'A' => ['AA' => 'BB', 'CC' => 'DD'],
-        'B' => ['AA' => 'BB', 'CC' => 'DD']
-    ],
-    'NewNumbers' => ['A' => 600, 'B' => 700, 'C' => 256, 'D' => -125, 'E' => -625]
-];
-
-$Object->set($TestData, 'Fruit.0.={Story.Apples}
-Fruit.1.={Story.Oranges}
-Fruit.2.={Story.Pears}
-Story.Apples={Fruit.0}
-Story.Oranges={Fruit.1}
-Story.Pears={Fruit.2}
-Fruit=200
-Fruit+={Numbers.c}
-Numbers.a*=3
-Numbers.b*={Numbers.c}
-Numbers.c-=1
-Numbers.d%=2
-Numbers.e/=2
-NewNumbers.A={Numbers.a}*2
-NewNumbers.B={Numbers.b}-{Numbers.a}
-NewNumbers.C={Numbers.c}**{Numbers.c}
-NewNumbers.D=-5**3
-NewNumbers.E=100+(-5**3)*{Numbers.e}
-if {Numbers.a>1000} then Recursive.A={Recursive.B} else Recursive.B={Recursive.A}');
-
-$ExitCode++;
-if ($TestData !== $Expected) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }

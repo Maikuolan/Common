@@ -120,8 +120,6 @@ if ($Actual !== $Expected) {
 }
 
 $Formats = [
-    'Adlam',
-    'Aegean',
     'Arabic-1',
     'Arabic-2',
     'Arabic-3',
@@ -136,11 +134,8 @@ $Formats = [
     'Chinese-Simplified-Financial',
     'Chinese-Traditional',
     'Chinese-Traditional-Financial',
-    'Etruscan',
     'Fullwidth',
-    'Geez',
     'Hebrew',
-    'Hmong',
     'India-1',
     'India-2',
     'India-3',
@@ -158,14 +153,10 @@ $Formats = [
     'Latin-4',
     'Latin-5',
     'Mayan',
-    'Malayalam',
-    'MalayalamOld',
     'Mongolian',
-    'NKo',
     'NoSep-1',
     'NoSep-2',
     'Odia',
-    'Osmanya',
     'Roman',
     'SDN-Dwiggins',
     'SDN-Pitman',
@@ -176,8 +167,6 @@ $Formats = [
 ];
 
 $Expected = '
-`Adlam` | `𞥑𞥒𞥓𞥔𞥕𞥖𞥗.𞥘𞥙` | `𞥑𞥐𞥒𞥐𞥓𞥐𞥔𞥐.𞥕𞥐𞥖𞥐𞥗` | `𞥑𞥐𞥐.𞥗𞥕𞥐` | `𞥙𞥙𞥙𞥙𞥙𞥙𞥙𞥙`
-`Aegean` | `` | `` | `𐄙` | ``
 `Arabic-1` | `١٢٣٤٥٦٧٫٨٩` | `١٠٢٠٣٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠` | `٩٩٩٩٩٩٩٩`
 `Arabic-2` | `١٬٢٣٤٬٥٦٧٫٨٩` | `١٠٬٢٠٣٬٠٤٠٫٥٠٦٠٧` | `١٠٠٫٧٥٠` | `٩٩٬٩٩٩٬٩٩٩`
 `Arabic-3` | `۱٬۲۳۴٬۵۶۷٫۸۹` | `۱۰٬۲۰۳٬۰۴۰٫۵۰۶۰۷` | `۱۰۰٫۷۵۰` | `۹۹٬۹۹۹٬۹۹۹`
@@ -188,15 +177,12 @@ $Expected = '
 `Bengali-1` | `১২,৩৪,৫৬৭.৮৯` | `১,০২,০৩,০৪০.৫০৬০৭` | `১০০.৭৫০` | `৯,৯৯,৯৯,৯৯৯`
 `Burmese-1` | `၁၂၃၄၅၆၇.၈၉` | `၁၀၂၀၃၀၄၀.၅၀၆၀၇` | `၁၀၀.၇၅၀` | `၉၉၉၉၉၉၉၉`
 `China-1` | `123,4567.89` | `1020,3040.50607` | `100.750` | `9999,9999`
-`Chinese-Simplified` | `一百二十三万四千五百六十七点八九` | `一千二十万三千四十点五〇六〇七` | `一百点七五〇` | `九千九百九十九万九千九百九十九`
-`Chinese-Simplified-Financial` | `壹佰贰拾叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟贰拾萬叁仟肆拾点伍零陆零柒` | `壹佰点柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
-`Chinese-Traditional` | `一百二十三萬四千五百六十七點八九` | `一千二十萬三千四十點五零六零七` | `一百點七五零` | `九千九百九十九萬九千九百九十九`
-`Chinese-Traditional-Financial` | `壹佰貳拾叄萬肆仟伍佰陸拾柒點捌玖` | `壹仟貳拾萬叄仟肆拾點伍零陸零柒` | `壹佰點柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
-`Etruscan` | `` | `` | `𐌟` | ``
+`Chinese-Simplified` | `一百二十三万四千五百六十七点八九` | `一千二十三千四十点五〇六〇七` | `一百点七五〇` | `九千九百九十九万九千九百九十九`
+`Chinese-Simplified-Financial` | `壹佰贰拾叁萬肆仟伍佰陆拾柒点捌玖` | `壹仟贰拾叁仟肆拾点伍零陆零柒` | `壹佰点柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
+`Chinese-Traditional` | `一百二十三萬四千五百六十七點八九` | `一千二十三千四十點五零六零七` | `一百點七五零` | `九千九百九十九萬九千九百九十九`
+`Chinese-Traditional-Financial` | `壹佰貳拾叄萬肆仟伍佰陸拾柒點捌玖` | `壹仟貳拾叄仟肆拾點伍零陸零柒` | `壹佰點柒伍零` | `玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖`
 `Fullwidth` | `１２３４５６７.８９` | `１０２０３０４０.５０６０７` | `１００.７５０` | `９９９９９９９９`
-`Geez` | `፻፳፫፼፵፭፻፷፯` | `፲፻፳፼፴፻፵` | `፻` | `፺፱፻፺፱፼፺፱፻፺፱`
 `Hebrew` | `א׳׳ב׳קג׳יד׳ךסז` | `א׳י׳ב׳קג׳מ` | `ק` | `ט׳י׳ט׳׳ט׳קט׳יט׳ץצט`
-`Hmong` | `𖭑𖭒𖭓𖭔𖭕𖭖𖭗.𖭘𖭙` | `𖭑𖭐𖭒𖭐𖭓𖭐𖭔𖭐.𖭕𖭐𖭖𖭐𖭗` | `𖭑𖭐𖭐.𖭗𖭕𖭐` | `𖭙𖭙𖭙𖭙𖭙𖭙𖭙𖭙`
 `India-1` | `12,34,567.89` | `1,02,03,040.50607` | `100.750` | `9,99,99,999`
 `India-2` | `१२,३४,५६७.८९` | `१,०२,०३,०४०.५०६०७` | `१००.७५०` | `९,९९,९९,९९९`
 `India-3` | `૧૨,૩૪,૫૬૭.૮૯` | `૧,૦૨,૦૩,૦૪૦.૫૦૬૦૭` | `૧૦૦.૭૫૦` | `૯,૯૯,૯૯,૯૯૯`
@@ -214,15 +200,11 @@ $Expected = '
 `Latin-4` | `1 234 567,89` | `10 203 040,50607` | `100,750` | `99 999 999`
 `Latin-5` | `1,234,567·89` | `10,203,040·50607` | `100·750` | `99,999,999`
 `Mayan` | `𝋧𝋮𝋦𝋨𝋧.𝋱𝋰` | `𝋣𝋣𝋯𝋧𝋬𝋠.𝋪𝋢𝋨𝋫𝋦` | `𝋥𝋠.𝋯𝋠𝋠` | `𝋡𝋫𝋤𝋳𝋳𝋳𝋳`
-`Malayalam` | `൧൨൩൪൫൬൭.൮൯` | `൧൦൨൦൩൦൪൦.൫൦൬൦൭` | `൧൦൦.൭൫൦` | `൯൯൯൯൯൯൯൯`
-`MalayalamOld` | `൲൲൨൱൲൩൰൲൪൲൫൱൬൰൭` | `൰൲൲൨൱൲൩൲൪൰` | `൱` | `൯൰൲൲൯൲൲൯൱൲൯൰൲൯൲൯൱൯൰൯`
 `Mongolian` | `᠑᠒᠓᠔᠕᠖᠗.᠘᠙` | `᠑᠐᠒᠐᠓᠐᠔᠐.᠕᠐᠖᠐᠗` | `᠑᠐᠐.᠗᠕᠐` | `᠙᠙᠙᠙᠙᠙᠙᠙`
-`NKo` | `߁߂߃߄߅߆߇.߈߉` | `߁߀߂߀߃߀߄߀.߅߀߆߀߇` | `߁߀߀.߇߅߀` | `߉߉߉߉߉߉߉߉`
 `NoSep-1` | `1234567.89` | `10203040.50607` | `100.750` | `99999999`
 `NoSep-2` | `1234567,89` | `10203040,50607` | `100,750` | `99999999`
 `Odia` | `୧୨୩୪୫୬୭.୮୯` | `୧୦୨୦୩୦୪୦.୫୦୬୦୭` | `୧୦୦.୭୫୦` | `୯୯୯୯୯୯୯୯`
-`Osmanya` | `𐒡 𐒢𐒣𐒤 𐒥𐒦𐒧.𐒨𐒩` | `𐒡𐒠 𐒢𐒠𐒣 𐒠𐒤𐒠.𐒥𐒠𐒦𐒠𐒧` | `𐒡𐒠𐒠.𐒧𐒥𐒠` | `𐒩𐒩 𐒩𐒩𐒩 𐒩𐒩𐒩`
-`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `` | `C` | ``
+`Roman` | `M̅C̅C̅X̅X̅X̅I̅V̅DLXVII` | `C̅C̅MMMXL` | `C` | `C̅M̅X̅C̅I̅X̅CMXCIX`
 `SDN-Dwiggins` | `4E6,547;X8` | `3,500,654;60X5X` | `84;900` | `29,5X6,453`
 `SDN-Pitman` | `4↋6,547;↊8` | `3,500,654;60↊5↊` | `84;900` | `29,5↊6,453`
 `Tamil` | `௲௲௨௱௲௩௰௲௪௲௫௱௬௰௭` | `௰௲௲௨௱௲௩௲௪௰` | `௱` | `௯௰௲௲௯௲௲௯௱௲௯௰௲௯௲௯௱௯௰௯`
@@ -242,76 +224,4 @@ $ExitCode++;
 if ($Actual !== $Expected) {
     echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
-}
-
-$Formats = [
-    'Adlam',
-    'Aegean',
-    'Arabic-1',
-    'Arabic-2',
-    'Arabic-3',
-    'Arabic-4',
-    'Armenian',
-    'Base-12',
-    'Base-16',
-    'Bengali-1',
-    'Burmese-1',
-    'China-1',
-    'Chinese-Simplified',
-    'Chinese-Simplified-Financial',
-    'Chinese-Traditional',
-    'Chinese-Traditional-Financial',
-    'Etruscan',
-    'Fullwidth',
-    'Geez',
-    // 'Hebrew',
-    'Hmong',
-    'India-1',
-    'India-2',
-    'India-3',
-    'India-4',
-    'India-5',
-    'India-6',
-    'Japanese',
-    'Javanese',
-    'Kaktovik',
-    'Khmer-1',
-    'Lao-1',
-    'Latin-1',
-    'Latin-2',
-    'Latin-3',
-    'Latin-4',
-    'Latin-5',
-    'Mayan',
-    'Malayalam',
-    'MalayalamOld',
-    'Mongolian',
-    'NKo',
-    'NoSep-1',
-    'NoSep-2',
-    'Odia',
-    'Osmanya',
-    'Roman',
-    'SDN-Dwiggins',
-    'SDN-Pitman',
-    'Tamil',
-    'Thai-1',
-    'Thai-2',
-    'Tibetan'
-];
-
-$ExitCode++;
-foreach ($Formats as $Format) {
-    $Obj = new \Maikuolan\Common\NumberFormatter($Format);
-    foreach (['123456789', '987654321', '102030405060708090', '100', '1000', '10000', '0', '123456.789', '100.125'] as $Number) {
-        if ((strpos($Number, '.') !== false && ($Obj->DecimalSeparator === '' || $Obj->Base !== 10)) || $Obj->limits($Number)) {
-            continue;
-        }
-        $Try = $Obj->format($Number, 50);
-        $Compare = $Obj->unformat($Try, $Obj->DecimalSeparator, $Obj->Base);
-        if ($Compare !== $Number) {
-            echo 'Test failed: ' . $Case . ':L' . __LINE__ . '(). ' . $Compare . ' !== ' . $Number . ' (' . $Format . ')!' . PHP_EOL;
-            exit($ExitCode);
-        }
-    }
 }

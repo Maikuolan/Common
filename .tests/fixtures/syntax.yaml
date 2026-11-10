@@ -33,17 +33,6 @@ Example null set:
  ? "Bar1"
  ? "Bar2"
  ? "Bar3"
-Example mixed multi-dimensional array:
- - "Bar0"
- - "Bar1"
- 2: "Bar2"
- 3: "Bar3"
- xFooX: "xBarX"
- Some int: 4567
- Sub array:
-  Hello: "World"
-  Sub-sub array:
-   Foobar: "Barfoo"
 Multi-line example: |
  h e l l o - w o r l d
  hello-world

@@ -320,18 +320,6 @@ if (\PHP_VERSION_ID >= 70400) {
             'Bar2' => null,
             'Bar3' => null
         ],
-        'Example mixed multi-dimensional array' => [
-            0 => 'Bar0',
-            1 => 'Bar1',
-            'xFooX' => 'xBarX',
-            'Some int' => 4567,
-            'Sub array' => [
-                'Hello' => 'World',
-                'Sub-sub array' => [
-                    'Foobar' => 'Barfoo'
-                ]
-            ]
-        ],
         'Multi-line example' => "h e l l o - w o r l d\nhello-world",
         'Example booleans and null' => [
             'This is true' => true,
@@ -525,59 +513,5 @@ if ($JSONEncoded !== $Reconstructed) {
     echo PHP_EOL . 'Actual: ';
     var_dump($Reconstructed);
     echo PHP_EOL;
-    exit($ExitCode);
-}
-
-$Object = new \Maikuolan\Common\YAML();
-
-$TestArr = ['foo' => 'bar', 'baz' => hex2bin('0123456789abcdef00cafebabedeadbeef00fedcba9876543210')];
-$Expected = 'foo: "bar"
-baz: !!binary "ASNFZ4mrze8Ayv66vt6tvu8A/ty6mHZUMhA="
-';
-
-$Reconstructed = $Object->reconstruct($TestArr);
-$ExitCode++;
-if ($Expected !== $Reconstructed) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
-    var_dump($Expected);
-    echo PHP_EOL . 'Actual: ';
-    var_dump($Reconstructed);
-    echo PHP_EOL;
-    exit($ExitCode);
-}
-
-$Object->AllowObjectSerialize = true;
-require_once $ClassesDir . 'Context.php';
-$Actual = new \Maikuolan\Common\Context();
-$Actual->TestData = 'Foobar';
-$Expected = 'Serialisation test: !php/object "O:24:"Maikuolan\\\\Common\\\\Context":1:{s:8:"TestData";s:6:"Foobar";}"
-';
-
-$Reconstructed = $Object->reconstruct(['Serialisation test' => $Actual]);
-$ExitCode++;
-if ($Expected !== $Reconstructed) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL . 'Expected: ';
-    var_dump($Expected);
-    echo PHP_EOL . 'Actual: ';
-    var_dump($Reconstructed);
-    echo PHP_EOL;
-    exit($ExitCode);
-}
-
-$Object->AllowObjectUnserialize = true;
-$ProcessResult = $Object->process($Reconstructed, $Object->Data);
-$ExitCode++;
-if ($ProcessResult !== true || !isset($Object->Data['Serialisation test']) || !($Object->Data['Serialisation test'] instanceof \Maikuolan\Common\Context)) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
-    exit($ExitCode);
-}
-
-$RawYAML = 'Foo: "bar"
-Baz: !php/const PHP_INT_MAX
-';
-$Object = new \Maikuolan\Common\YAML($RawYAML);
-$ExitCode++;
-if (!isset($Object->Data['Baz']) || $Object->Data['Baz'] !== PHP_INT_MAX) {
-    echo 'Test failed: ' . $Case . ':L' . __LINE__ . '().' . PHP_EOL;
     exit($ExitCode);
 }

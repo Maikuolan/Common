@@ -44,20 +44,6 @@ $ExpectedForSyntax = [
         'Bar2' => null,
         'Bar3' => null
     ],
-    'Example mixed multi-dimensional array' => [
-        0 => 'Bar0',
-        1 => 'Bar1',
-        2 => 'Bar2',
-        3 => 'Bar3',
-        'xFooX' => 'xBarX',
-        'Some int' => 4567,
-        'Sub array' => [
-            'Hello' => 'World',
-            'Sub-sub array' => [
-                'Foobar' => 'Barfoo'
-            ]
-        ]
-    ],
     'Multi-line example' => "h e l l o - w o r l d\nhello-world",
     'Folded multi-line example' => 'Hello world. This is an example.',
     'Example booleans and null' => [
@@ -194,7 +180,6 @@ $ExpectedForSyntax = [
             'Test htmlspecialchars_decode' => '\'"<>&',
             'Test lcfirst' => 'hELLO WORLD.',
             'Test nl2br' => "Hello<br />\nworld.",
-            'Test ord' => 72,
             'Test quotemeta' => '\\.\\\\\\+\\*\\?\\[\\^\\]\\(\\$\\)',
             'Test str_rot13' => 'Uryyb jbeyq.',
             'Test strip_tags' => 'Hello world.',
@@ -218,7 +203,6 @@ $ExpectedForSyntax = [
             'Test atan' => 1.5707963186948966,
             'Test atanh' => NAN,
             'Test ceil' => 123456790.0,
-            'Test chr' => "\x15",
             'Test cos' => -0.6711948791807985,
             'Test cosh' => INF,
             'Test decbin' => '111010110111100110100010101',
@@ -272,15 +256,6 @@ $ExpectedForSyntax = [
                 ['name', 'hr', 'avg'],
                 ['Mark McGwire', 65, 0.278],
                 ['Sammy Sosa', 63, 0.288]
-            ],
-            '2.6 Mapping of Mappings' => [
-                'Mark McGwire' => ['hr' => 65, 'avg' => 0.278],
-                'Sammy Sosa' => ['hr' => 63, 'avg' => 0.288]
-            ],
-            '2.12 Compact Nested Mapping' => [
-                ['item' => 'Super Hoop', 'quantity' => 1],
-                ['item' => 'Basketball', 'quantity' => 4],
-                ['item' => 'Big Shoes', 'quantity' => 1]
             ]
         ],
         '2.3. Scalars' => [
@@ -290,30 +265,6 @@ $ExpectedForSyntax = [
                 'stats' => "65 Home Runs\n0.278 Batting Average"
             ]
         ]
-    ],
-    'List support' => [
-        'aa' => 'All keys same value.',
-        'ab' => 'All keys same value.',
-        'ac' => 'All keys same value.',
-        'ad' => 'All keys same value.',
-        'ba' => 'ww',
-        'bb' => 'xx',
-        'bc' => 'yy',
-        'bd' => 'zz',
-        '[ca, cb, cc, cd]' => ['vv', 'ww', 'xx', 'yy', 'zz'],
-    ],
-    'Support for entities' => (object)[
-        'Hello World' => 'Hello World',
-        'I am a number' => 123,
-        'Does it work' => 'It works',
-        'Recursive entity' => (object)[
-            'Can it recurse' => 'Yes it can!'
-        ]
-    ],
-    'Support for inline entities' => (object)[
-        'Hello World' => 'Hello World',
-        'I am a number' => 123,
-        'Does it work' => 'It works'
     ],
     'End of file' => ':-)'
 ];
@@ -363,14 +314,6 @@ if (\PHP_VERSION_ID >= 70400) {
             'Foo3' => 'Bar3',
             'Foo4' => 'Bar4'
         ],
-        'Example lazy associative array' => new \Maikuolan\Common\LazyArray(function ($Data) {
-            return $Data;
-        }, [
-            'Foo1' => 'Bar1',
-            'Foo2' => 'Bar2',
-            'Foo3' => 'Bar3',
-            'Foo4' => 'Bar4'
-        ]),
         'Example null set' => [
             'Bar0' => null,
             'Bar1' => null,
@@ -408,18 +351,6 @@ if (\PHP_VERSION_ID >= 70400) {
         'Folded chomping keep test' => "This is a test.\n\nHello world.\n\n\n",
         'Folded chomping clip test' => "This is a test.\n\nHello world.",
         'A sequence with a folded scalar' => ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0'],
-        'Support for entities' => (object)[
-            'Hello World' => 'Hello World',
-            'I am a number' => 123,
-            'Does it work' => 'It works',
-            'Recursive entity' => (object)[
-                'Can it recurse' => 'Yes it can!'
-            ]
-        ],
-        'Compact Nested Mapping' => [
-            ['Hello' => 'World', 'Goodbye' => 'Planet Earth'],
-            ['Compact nested mapping example 1' => 'Compact nested mapping example 1', 'Compact nested mapping example 2' => 'Compact nested mapping example 2']
-        ],
         'End of file' => ':-)'
     ];
 

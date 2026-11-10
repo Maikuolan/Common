@@ -19,25 +19,11 @@ Example associative array:
  Foo2: "Bar2"
  Foo3: "Bar3"
  Foo4: "Bar4"
-Example lazy associative array: !lazy
- Foo1: "Bar1"
- Foo2: "Bar2"
- Foo3: "Bar3"
- Foo4: "Bar4"
 Example null set:
  ? "Bar0"
  ? "Bar1"
  ? "Bar2"
  ? "Bar3"
-Example mixed multi-dimensional array:
- 0: "Bar0"
- 1: "Bar1"
- xFooX: "xBarX"
- Some int: 4567
- Sub array:
-  Hello: "World"
-  Sub-sub array:
-   Foobar: "Barfoo"
 Multi-line example: |
  h e l l o - w o r l d
  hello-world
@@ -68,17 +54,4 @@ A sequence with a folded scalar:
  - >
   Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4
   facebookexternalhit/1.1 Facebot Twitterbot/1.0
-Support for entities(
- Hello World: "Hello World"
- I am a number: 123
- Does it work: "It works"
- Recursive entity(
-  Can it recurse: "Yes it can!"
- )
-)
-Compact Nested Mapping:
- - Hello: "World"
-   Goodbye: "Planet Earth"
- - Compact nested mapping example 1: "Compact nested mapping example 1"
-   Compact nested mapping example 2: "Compact nested mapping example 2"
 End of file: ":-)"

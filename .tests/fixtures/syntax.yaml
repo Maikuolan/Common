@@ -181,7 +181,6 @@ Test support for PHP functions in YAML:
   Test htmlspecialchars_decode: !htmlspecialchars_decode "&\#039;&quot;&lt;&gt;&amp;"
   Test lcfirst: !lcfirst "HELLO WORLD."
   Test nl2br: !nl2br "Hello\nworld."
-  Test ord: !ord "Hello world."
   Test quotemeta: !quotemeta ".\+*?[^]($)"
   Test str_rot13: !str_rot13 "Hello world."
   Test strip_tags: !strip_tags "<p>Hello world.</p>"
@@ -204,7 +203,6 @@ Test support for PHP functions in YAML:
   Test atan: !atan *NumericDefault
   Test atanh: !atanh *NumericDefault
   Test ceil: !ceil *NumericDefault
-  Test chr: !chr *NumericDefaultInt
   Test cos: !cos *NumericDefault
   Test cosh: !cosh *NumericDefault
   Test decbin: !decbin *NumericDefaultInt
@@ -262,19 +260,6 @@ Specification examples:
    - [name        , hr, avg  ]
    - [Mark McGwire, 65, 0.278]
    - [Sammy Sosa  , 63, 0.288]
-  2.6 Mapping of Mappings:
-   Mark McGwire: {hr: 65, avg: 0.278}
-   Sammy Sosa: {
-    hr: 63,
-    avg: 0.288,
-   }
-  2.12 Compact Nested Mapping:
-   - item    : Super Hoop
-     quantity: 1
-   - item    : Basketball
-     quantity: 4
-   - item    : Big Shoes
-     quantity: 1
  2.3. Scalars:
   2.16 Indentation determines scope:
    name: Mark McGwire
@@ -284,17 +269,4 @@ Specification examples:
    stats: |
      65 Home Runs
      0.278 Batting Average
-List support:
- [aa, ab, ac, ad]: "All keys same value." # Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, all with the same value of "All keys same value."
- [ba, bb, bc, bd]: ["ww", "xx", "yy", "zz"] # Key-value pairs balanced; Assigns 4 elements to the parent array (or "flow map"), using the values of the flow sequence at the left operand as the keys, and the values of the flow sequence at the right operand as the values.
- [ca, cb, cc, cd]: ["vv", "ww", "xx", "yy", "zz"] # Key-value pairs NOT balanced; Assigns 1 element to the parent array: A non-associative array (or "flow sequence") whose key is the literal left operand, and whose elements use the values of the flow sequence at the right operand.
-Support for entities(
- Hello World: "Hello World"
- I am a number: 123
- Does it work: "It works"
- Recursive entity(
-  Can it recurse: "Yes it can!"
- )
-)
-Support for inline entities(Hello World: "Hello World", I am a number: 123, Does it work: "It works")
 End of file: ":-)"

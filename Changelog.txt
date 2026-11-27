@@ -11,7 +11,7 @@ found at:
 
 === In development ===
 
-
+- [2026.11.27]: Normalised casing for hex escapes.
 
 === Version/Release 2.16.2 ===
 PATCH RELEASE.

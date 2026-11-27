@@ -1,6 +1,6 @@
 <?php
 /**
- * Demojibakefier (last modified: 2026.03.26).
+ * Demojibakefier (last modified: 2026.11.27).
  *
  * Intended to normalise the character encoding of a given string to a
  * preferred character encoding when the given string's byte sequences don't
@@ -538,7 +538,7 @@ class Demojibakefier extends CommonAbstract
 
         /** Probably English, or at least, some western European language, compatible with ASCII. Let's try ISO-8859-1. */
         if (isset($Arr['ISO-8859-1']['Weight']) && \preg_match('~[\x20-\x7E]~', $String) && !\preg_match('~[^\x20-\x7E\xE0-\xF6\xF8-\xFD]~', $String)) {
-            $Arr['ISO-8859-1']['Weight'] += !\preg_match('~[^\x20-\x7e]~', $String) ? 2 : 1;
+            $Arr['ISO-8859-1']['Weight'] += !\preg_match('~[^\x20-\x7E]~', $String) ? 2 : 1;
         }
 
         /** There are some other encodings, too, that are used more frequently than others. Should account for these. */

@@ -1,6 +1,6 @@
 <?php
 /**
- * YAML handler (last modified: 2026.04.27).
+ * YAML handler (last modified: 2026.11.27).
  *
  * This file is a part of the "common classes package", utilised by a number of
  * packages and projects, including CIDRAM and phpMussel.
@@ -629,8 +629,8 @@ class YAML extends CommonAbstract implements \Countable
             ['`', '`', 1],
             ["\x91", "\x92", 1],
             ["\x93", "\x94", 1],
-            ["\xe2\x80\x98", "\xe2\x80\x99", 3],
-            ["\xe2\x80\x9c", "\xe2\x80\x9d", 3]
+            ["\xE2\x80\x98", "\xE2\x80\x99", 3],
+            ["\xE2\x80\x9C", "\xE2\x80\x9D", 3]
         ] as $Wrapper) {
             if (\substr($Value, 0, $Wrapper[2]) === $Wrapper[0] && \substr($Value, $ValueLen - $Wrapper[2]) === $Wrapper[1]) {
                 $Value = \substr($Value, $Wrapper[2], $ValueLen - ($Wrapper[2] * 2));
@@ -1040,7 +1040,7 @@ class YAML extends CommonAbstract implements \Countable
      */
     private function unescape(string $Value = '', string $Style = '"'): string
     {
-        if ($Style === '"' || $Style === "\xe2\x80\x9c" || $Style === "\x91") {
+        if ($Style === '"' || $Style === "\xE2\x80\x9C" || $Style === "\x91") {
             \set_error_handler(function ($errno) {
                 return;
             });
@@ -1083,7 +1083,7 @@ class YAML extends CommonAbstract implements \Countable
             \restore_error_handler();
             return $Value;
         }
-        if ($Style === "'" || $Style === "\xe2\x80\x98" || $Style === "\x93") {
+        if ($Style === "'" || $Style === "\xE2\x80\x98" || $Style === "\x93") {
             return \str_replace(["''", '\#', '\\\\'], ["'", '#', '\\'], $Value);
         }
         return \str_replace(['\#', '\\\\'], ['#', '\\'], $Value);

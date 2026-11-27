@@ -14,7 +14,7 @@ Anyone interested in contributing to the project is encouraged to do so.
 - **Good at thinking of new ideas or new features, or have something specific in mind that you'd like to see implemented?** Sharing ideas is always welcomed, and if we like your ideas, we might implement them.
 - **Good at unit testing?** Consider helping us implement better tests.
 - **Good at benchmarking?** If you'd be willing to test the codebase on your system, or willing to benchmark it, let us know what works, what doesn't work, and consider sharing your benchmarks and other findings, to help us find ways to improve the codebase and the project overall.
-- **Good at pentesting? Good at finding bugs?** If you find any problems, any bugs, anything dangerous in the codebase, etc, let us know so that we can work on it.
+- **Good at pentesting? Good at finding bugs?** If you find any problems, any bugs, anything dangerous in the codebase, etc, let us know so that we can work on it. *See: [`SECURITY.md`](https://github.com/phpMussel/.github/blob/master/SECURITY.md).*
 - **Good at writing documentation?** If you'd be willing to review our documentation, to add anything that could be missing, to improve on it at all, this would be welcome.
 - **Good at writing guides and tutorials?** Some users prefer guides and tutorials over documentation, and want practical, step by step tutorials, on how to achieve specific goals, or guides to provide perspective from other users, about the best ways to utilise the project and its classes.
 - **Good at reviewing? Good at quality control?** If there are any pending pull requests that haven't yet been reviewed or accepted, please consider offering to review them, offer feedback, suggestions, etc.
@@ -36,12 +36,14 @@ When writing code or markup, contributors SHOULD aim for maximum readability, an
 
 All PHP functions, methods, and closures MUST be properly and accurately annotated by an attached DocBlock. All PHP files MUST contain a DocBlock header, to describe the general nature of the file. All attached DocBlocks SHOULD be concise, and SHOULD NOT be overly verbose (i.e., containing more than necessary). All comments in all PHP files and code MUST conform to PHPDoc (i.e., as DocComments). Where the purpose and intent of some particular code is highly obtuse, unclear, or not easily understood, it SHOULD be commented. Where the purpose and intent of some particular code is highly transparent and easily understood (and where not otherwise already dictated by this document), it SHOULD NOT be commented. All annotation, and all comments, MUST be written in English.
 
+Pull requests are checked by the test suite (`composer test`) and by PHP-CS-Fixer, so if you can, please run both before submitting to catch potential problems. If you can't, the CI-enforced checks should catch most problems, but approval and merger may be delayed while we work through them.
+
 ### **The common classes package version release guidelines.**
 
 The common classes package adopts and adheres to *[SemVer](https://semver.org/) (Semantic Versioning)*. If you're unfamiliar with this, I would recommend reading the linked documentation carefully.
 
 Extending upon the rules provided by SemVer, the following are to be interpreted as backwards-incompatible changes:
-- Anything that increases the minimum PHP version requirement.
+- Anything that increases the minimum PHP version requirement (for &lt;=v1, that's PHP5.4; for &gt;v1 and &lt;=v2, that's PHP7.2; when this line becomes stale or wherever this document may be lacking, the `composer.json` file attached to each major version's branch specifies its minimum PHP version requirement). Contributors should take care to avoid newer syntax (CI workflows lint the codebase with the oldest and newest supported versions).
 - The permanent removal of any specific class.
 - Any backwards-incompatible changes to the overall way that a class is intended to be used.
 

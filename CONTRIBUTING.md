@@ -30,7 +30,7 @@ The common classes package adopts *[PHPDoc](https://docs.phpdoc.org/references/p
 
 To avoid unnecessary complexity, red tape, or hindrances to future contributions, future contributions will be measured against any other PSRs or style guides not yet mentioned, IF and WHEN it becomes relevant and useful to do so (i.e., we'll cross those bridges when we get to them). To be more concise and to avoid unnecessary duplication in this document, any points already covered, either by this document, or by any linked documents (e.g., the PSRs adopted by this project), won't be repeated.
 
-All project files (including all code, markup, etc) MUST utilise UTF-8 encoding (without BOM), and MUST NOT contain any trailing whitespace.
+Excluding some test fixtures where it's necessary, all project files (including all code, markup, etc) MUST utilise UTF-8 encoding (without BOM), and MUST NOT contain any trailing whitespace.
 
 When writing code or markup, contributors SHOULD aim for maximum readability, and maximum maintainability for their contributions.
 
